@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Studio - Premium Product Photography</title>
+    <meta name="description" content="Generate luxury scene variations for your products while preserving exact consistency.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✦</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <span class="logo-icon">✦</span>
+                <span class="logo-text">AI Studio</span>
+            </div>
+            <nav>
+                <button class="nav-button">Gallery</button>
+                <button class="nav-button primary">New Project</button>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <div class="hero-section" id="hero-section">
+                <h1 class="hero-title">Elevate Your Product</h1>
+                <p class="hero-subtitle">Upload a product. Generate unlimited luxury scenes. Perfect consistency, every time.</p>
+                
+                <div class="upload-zone" id="upload-zone">
+                    <div class="upload-content">
+                        <div class="upload-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                        </div>
+                        <h3 class="upload-heading">Drag & Drop Image</h3>
+                        <p class="upload-text">or <span class="upload-browse">browse files</span></p>
+                        <p class="upload-hint">Supports JPG, PNG, WEBP (Max 10MB)</p>
+                    </div>
+                    <input type="file" id="file-input" accept="image/*" hidden>
+                </div>
+                
+                <button class="demo-button" id="demo-button">Try with Demo Asset</button>
+            </div>
+
+            <div class="processing-section hidden" id="processing-section">
+                <div class="processing-card">
+                    <div class="product-preview">
+                        <img id="preview-image" src="" alt="Product Preview">
+                        <div class="scanner-line"></div>
+                    </div>
+                    
+                    <div class="processing-status">
+                        <h2 class="status-title" id="status-title">Analyzing Product Structure...</h2>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progress-bar"></div>
+                        </div>
+                        
+                        <ul class="processing-steps">
+                            <li class="step active" id="step-1">
+                                <span class="step-icon"></span>
+                                <span class="step-text">Isolating product from background</span>
+                            </li>
+                            <li class="step" id="step-2">
+                                <span class="step-icon"></span>
+                                <span class="step-text">Locking structure and textures</span>
+                            </li>
+                            <li class="step" id="step-3">
+                                <span class="step-icon"></span>
+                                <span class="step-text">Generating luxury scenes</span>
+                            </li>
+                            <li class="step" id="step-4">
+                                <span class="step-icon"></span>
+                                <span class="step-text">Applying photorealistic lighting</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section hidden" id="results-section">
+                <div class="results-header">
+                    <h2>Editorial Outputs</h2>
+                    <div class="results-actions">
+                        <button class="action-btn outline">Download All</button>
+                        <button class="action-btn primary" id="generate-more-btn">Generate More</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-grid" id="gallery-grid">
+                    <!-- Gallery items will be injected here via JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="modal hidden" id="image-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-image-container">
+                <img id="modal-image" src="" alt="Full size result">
+            </div>
+            <div class="modal-footer">
+                <div class="modal-info">
+                    <h3 id="modal-title">Luxury Scene</h3>
+                    <p id="modal-resolution">4096 x 4096 &bull; Photorealistic</p>
+                </div>
+                <button class="action-btn primary download-btn">Download 4K</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

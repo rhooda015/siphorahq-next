@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: #FDFAF6;
+    --color-bg-dark: #0F0E0C;
+    --color-text: #1A1A1A;
+    --color-text-muted: #6B6560;
+    --color-gold: #C9A84C;
+    --color-gold-light: #E8D5A3;
+    --color-emerald: #2D5016;
+    --color-burgundy: #6B1F2A;
+    --color-ivory: #F5F0E8;
+    --color-border: #E8E0D5;
+  }
+
+  body {
+    @apply bg-[var(--color-bg)] text-[var(--color-text)] font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-black text-white px-8 py-3 rounded-none hover:bg-gray-800 transition-colors duration-200 uppercase tracking-widest text-sm font-medium;
+  }
+  
+  .btn-secondary {
+    @apply bg-transparent text-black border border-black px-8 py-3 rounded-none hover:bg-black hover:text-white transition-colors duration-200 uppercase tracking-widest text-sm font-medium;
+  }
+
+  .nav-link {
+    @apply text-[var(--color-text)] hover:text-[var(--color-gold)] transition-colors duration-200 text-sm font-medium uppercase tracking-wider;
+  }
+}
