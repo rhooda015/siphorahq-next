@@ -64,7 +64,7 @@ export default function RootLayout({
         <Header />
         
         {/* Main Application Content */}
-        <main className="min-h-screen pt-20">{children}</main>
+        <main className="min-h-screen pt-[112px]">{children}</main>
 
         <Footer />
         <MobileBottomNav />

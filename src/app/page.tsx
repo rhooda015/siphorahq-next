@@ -52,14 +52,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Trust Signals Bar */}
-      <section className="bg-black text-white py-3 border-y border-neutral-800">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-center items-center gap-4 md:gap-16">
-          <span className="text-xs font-sans tracking-widest uppercase">Free Shipping on orders above ₹999</span>
-          <span className="hidden md:inline text-[#C9A84C]">✦</span>
-          <span className="text-xs font-sans tracking-widest uppercase">Use code SIPHORA10 for 10% off</span>
-        </div>
-      </section>
+
 
       {/* Tabbed Collection Section */}
       <section className="py-24 max-w-7xl mx-auto px-4">
@@ -119,7 +112,7 @@ export default function HomePage() {
       {/* Craftsmanship Section */}
       <section className="py-24 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-16">
-          <div className="w-full md:w-1/2 relative h-[600px] rounded-sm overflow-hidden shadow-2xl">
+          <div className="w-full md:w-1/2 relative aspect-[4/5] rounded-sm overflow-hidden shadow-2xl">
             <Image 
               src="/images/craftsmanship.png" 
               alt="Artisan crafting porcelain"
