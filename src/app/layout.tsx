@@ -1,13 +1,13 @@
 import React from 'react';
-import { Cormorant_Garamond, DM_Sans } from 'next/font/google';
+import { Playfair_Display, Lora } from 'next/font/google';
 import './globals.css';
 import { BRAND, getWhatsAppLink } from '@/config/brand';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileBottomNav from '@/components/MobileBottomNav';
 
-const cormorant = Cormorant_Garamond({ subsets: ['latin'], weight: ['300', '400', '600'], variable: '--font-cormorant' });
-const dmSans = DM_Sans({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-dm-sans' });
+const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-playfair' });
+const lora = Lora({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-lora', style: ['normal', 'italic'] });
 
 export const metadata = {
   title: `${BRAND.name} | Luxury Indian Fashion & Ethnic Wear`,
@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
+    <html lang="en" className={`${playfair.variable} ${lora.variable}`}>
       <head>
         <script
           type="application/ld+json"

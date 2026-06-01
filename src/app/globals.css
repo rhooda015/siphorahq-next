@@ -4,14 +4,15 @@
 
 @layer base {
   :root {
-    --color-bg: #FDFAF6;
-    --color-bg-dark: #0F0E0C;
-    --color-text: #1A1A1A;
-    --color-text-muted: #6B6560;
-    --color-gold: #C9A84C;
-    --color-gold-light: #E8D5A3;
-    --color-ivory: #F5F0E8;
-    --color-border: #E8E0D5;
+    --color-bg: #FFFFFF;
+    --color-bg-dark: #3D2F47;
+    --color-text: #3D2F47;
+    --color-text-muted: #69567B;
+    --color-primary: #3D2F47;
+    --color-secondary: #69567B;
+    --color-accent-light: #F8F2FF;
+    --color-accent-dark: #4F4059;
+    --color-border: #E0D9E5;
   }
 
   *, *::before, *::after {
@@ -38,26 +39,26 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-[#1A1A1A] text-white px-8 py-3 rounded-none
-           hover:bg-[#C9A84C] transition-colors duration-200
-           uppercase tracking-widest text-sm font-medium font-sans;
+    @apply bg-[var(--color-primary)] text-white px-8 py-4 rounded-[4px]
+           hover:bg-[var(--color-secondary)] transition-colors duration-200
+           tracking-wide text-sm font-sans border-2 border-[var(--color-primary)];
   }
 
   .btn-secondary {
-    @apply bg-transparent text-[#1A1A1A] border border-[#1A1A1A] px-8 py-3 rounded-none
-           hover:bg-[#1A1A1A] hover:text-white transition-colors duration-200
-           uppercase tracking-widest text-sm font-medium font-sans;
+    @apply bg-transparent text-[var(--color-primary)] border-2 border-[var(--color-primary)] px-8 py-4 rounded-[4px]
+           hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-200
+           tracking-wide text-sm font-sans;
   }
 
   .btn-gold {
-    @apply bg-[#C9A84C] text-black px-8 py-3 rounded-none
-           hover:bg-[#E8D5A3] transition-colors duration-200
-           uppercase tracking-widest text-sm font-medium font-sans;
+    @apply bg-[var(--color-accent-dark)] text-white px-8 py-4 rounded-[4px]
+           hover:bg-[var(--color-primary)] transition-colors duration-200
+           tracking-wide text-sm font-sans border-2 border-[var(--color-accent-dark)];
   }
 
   .nav-link {
-    @apply text-[#1A1A1A] hover:text-[#C9A84C] transition-colors duration-200
-           text-xs font-medium uppercase tracking-widest font-sans;
+    @apply text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors duration-200
+           text-[15px] font-sans;
   }
 
   .section-label {
