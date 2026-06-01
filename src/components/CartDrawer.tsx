@@ -74,13 +74,13 @@ export default function CartDrawer() {
 
               {/* Items */}
               {items.map((item) => (
-                <div key={item.cartItemId} className="flex gap-3.5 pb-4 border-b border-[var(--color-border)] relative">
-                  <div className="w-20 h-24 bg-neutral-50 rounded-sm relative overflow-hidden flex-shrink-0">
+                <div key={item.cartItemId} className="flex gap-4 pb-5 border-b border-[var(--color-border)] relative group">
+                  <div className="w-24 h-28 bg-neutral-50 rounded-sm relative overflow-hidden flex-shrink-0">
                     {item.image && (
-                      <Image src={item.image} alt={item.name} fill className="object-cover" sizes="80px" />
+                      <Image src={item.image} alt={item.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out" sizes="96px" />
                     )}
                   </div>
-                  <div className="flex-1 flex flex-col justify-between py-0.5">
+                  <div className="flex-1 flex flex-col justify-between py-1">
                     <div>
                       <div className="flex justify-between items-start">
                         <h3 className="font-serif text-[15px] pr-4 leading-tight">{item.name}</h3>
