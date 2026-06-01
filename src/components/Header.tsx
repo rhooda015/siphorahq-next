@@ -20,7 +20,7 @@ export default function Header() {
           
           {/* Center Logo */}
           <Link href="/" className="font-serif text-3xl font-bold tracking-widest uppercase flex-1 text-center md:flex-none">
-            SIPHORAHQ
+            SIPORAHQ
           </Link>
           
           {/* Right Links & Icons */}

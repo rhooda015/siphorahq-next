@@ -25,7 +25,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-[#FDFBF7]">
-      {/* Hero Section */}
+      {/* 1. Hero Section */}
       <section className="relative w-full h-[90vh] overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 z-0">
           <Image 
@@ -52,16 +52,43 @@ export default function HomePage() {
         </div>
       </section>
 
-
-
-      {/* Tabbed Collection Section */}
+      {/* 2. Featured Collections Grid */}
       <section className="py-24 max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-serif mb-4 text-gray-900">Curated Collections</h2>
-          <p className="text-gray-600 font-sans max-w-lg mx-auto">Elevate your dining experience with our signature handcrafted pieces.</p>
+          <h2 className="text-4xl font-serif mb-4 text-gray-900">Featured Collections</h2>
+          <p className="text-gray-600 font-sans max-w-lg mx-auto">Explore our most beloved categories designed to elevate your everyday rituals.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {[
+            { title: "Dinnerware", image: "/images/dinnerware.png", link: "/collections/dinnerware" },
+            { title: "Serveware", image: "/images/serveware.png", link: "/collections/serveware" },
+            { title: "Tea Sets", image: "/images/teaset.png", link: "/collections/tea-sets" },
+            { title: "Luxury Gifting", image: "/images/gifting.png", link: "/gifting" }
+          ].map((item, idx) => (
+            <Link href={item.link} key={idx} className="group relative aspect-[4/5] overflow-hidden rounded-sm block">
+              <Image 
+                src={item.image} 
+                alt={item.title} 
+                fill 
+                className="object-cover transition-transform duration-1000 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500" />
+              <div className="absolute inset-0 flex flex-col justify-end p-6">
+                <h3 className="text-white text-xl font-serif mb-2 tracking-wide translate-y-2 group-hover:translate-y-0 transition-transform duration-500">{item.title}</h3>
+                <span className="text-white text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-500 border-b border-white w-max pb-1">Shop Now</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* 3. Category Slider/Tabs */}
+      <section className="py-24 max-w-7xl mx-auto px-4 bg-white border-y border-gray-100">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-serif mb-4 text-gray-900">Curated Edit</h2>
+          <p className="text-gray-600 font-sans max-w-lg mx-auto">Discover our signature handcrafted pieces for your home.</p>
         </div>
         
-        {/* Tabs */}
         <div className="flex justify-center gap-8 border-b border-gray-200 mb-12 overflow-x-auto whitespace-nowrap pb-1">
           {tabs.map(tab => (
             <button 
@@ -78,7 +105,6 @@ export default function HomePage() {
           ))}
         </div>
         
-        {/* Product Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
             <Link href={`/products/${product.id}`} key={product.id} className="group cursor-pointer">
@@ -89,7 +115,6 @@ export default function HomePage() {
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                {/* Hover overlay actions */}
                 <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                   <button className="w-full bg-white/90 backdrop-blur-sm text-black py-3 text-xs uppercase tracking-widest font-medium hover:bg-black hover:text-white transition-colors">
                     Quick Add
@@ -101,16 +126,10 @@ export default function HomePage() {
             </Link>
           ))}
         </div>
-        
-        <div className="text-center mt-16">
-          <Link href="/collections/all" className="inline-block border-b border-black uppercase text-xs tracking-widest pb-1 hover:text-[#C9A84C] hover:border-[#C9A84C] transition-colors text-gray-900">
-            View Complete Catalog
-          </Link>
-        </div>
       </section>
 
-      {/* Craftsmanship Section */}
-      <section className="py-24 bg-white border-t border-gray-100">
+      {/* 4. Lifestyle Editorial Banner (Craftsmanship) */}
+      <section className="py-24 bg-[#FDFBF7]">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-16">
           <div className="w-full md:w-1/2 relative aspect-[4/5] rounded-sm overflow-hidden shadow-2xl">
             <Image 
@@ -124,7 +143,7 @@ export default function HomePage() {
             <h4 className="text-[#C9A84C] uppercase tracking-widest text-sm font-semibold mb-4">Our Heritage</h4>
             <h2 className="text-4xl md:text-5xl font-serif text-gray-900 mb-6 leading-tight">Masterfully Crafted in India</h2>
             <p className="text-gray-600 font-sans text-lg mb-8 leading-relaxed font-light">
-              Every Siphora piece tells a story of patience and precision. Our artisans spend weeks molding, firing, and hand-painting each plate and teapot, ensuring that no two pieces are exactly alike. We use ethically sourced clay and a unique double-firing process that guarantees heirloom durability without compromising delicate elegance.
+              Every Siporahq piece tells a story of patience and precision. Our artisans spend weeks molding, firing, and hand-painting each plate and teapot, ensuring that no two pieces are exactly alike. We use ethically sourced clay and a unique double-firing process that guarantees heirloom durability without compromising delicate elegance.
             </p>
             <Link href="/about" className="inline-block border border-gray-900 text-gray-900 px-8 py-3 uppercase tracking-widest text-xs font-medium hover:bg-gray-900 hover:text-white transition-colors">
               Discover Our Story
@@ -133,10 +152,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Studio Moments / UGC Section */}
-      <section className="py-24 bg-[#FDFBF7]">
+      {/* 5. Instagram Social Feed (Studio Moments) */}
+      <section className="py-24 bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h4 className="text-[#C9A84C] uppercase tracking-widest text-sm font-semibold mb-2">#SiphoraAtHome</h4>
+          <h4 className="text-[#C9A84C] uppercase tracking-widest text-sm font-semibold mb-2">#SiporaAtHome</h4>
           <h2 className="text-4xl font-serif text-gray-900 mb-12">Studio Moments</h2>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -167,31 +186,10 @@ export default function HomePage() {
           </div>
           
           <div className="mt-10">
-            <a href="https://instagram.com/siphorahq" target="_blank" rel="noopener noreferrer" className="inline-block border-b border-gray-400 text-gray-600 uppercase text-xs tracking-widest pb-1 hover:text-[#C9A84C] hover:border-[#C9A84C] transition-colors">
+            <a href="https://instagram.com/siporahq" target="_blank" rel="noopener noreferrer" className="inline-block border-b border-gray-400 text-gray-600 uppercase text-xs tracking-widest pb-1 hover:text-[#C9A84C] hover:border-[#C9A84C] transition-colors">
               Follow Us on Instagram
             </a>
           </div>
-        </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="py-24 bg-gray-900 text-white border-b-4 border-[#C9A84C]">
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-serif mb-6 drop-shadow-sm">Join the Inner Circle</h2>
-          <p className="text-gray-300 font-sans mb-10 text-lg font-light">
-            Subscribe to receive exclusive access to limited edition drops, intimate hosting guides, and 10% off your first Siphora purchase.
-          </p>
-          <form className="flex flex-col md:flex-row gap-4 max-w-xl mx-auto">
-            <input 
-              type="email" 
-              placeholder="Enter your email address" 
-              className="flex-1 bg-transparent border border-gray-600 px-6 py-4 text-white focus:outline-none focus:border-[#C9A84C] transition-colors"
-              required
-            />
-            <button type="submit" className="bg-white text-gray-900 px-8 py-4 uppercase tracking-widest text-xs font-bold hover:bg-[#C9A84C] hover:text-white transition-colors">
-              Subscribe
-            </button>
-          </form>
         </div>
       </section>
     </div>
