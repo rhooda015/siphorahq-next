@@ -10,10 +10,10 @@ export default function JournalPage() {
       date: 'October 12, 2025',
     },
     {
-      id: 'diwali-kurtas-2025',
-      title: 'The Best Festive Kurtas for Diwali 2025',
-      category: 'Curations',
-      date: 'September 28, 2025',
+      id: 'porcelain-care-guide',
+      title: 'How to Care for Your Luxury Porcelain Dinnerware',
+      category: 'Care Guide',
+      date: 'October 15, 2025',
     },
     {
       id: 'sustainable-fashion',

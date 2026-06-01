@@ -1,18 +1,17 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 import { BRAND } from '@/config/brand';
 import { ChevronRight, Star, Minus, Plus } from 'lucide-react';
+import { getProductById } from '@/data/products';
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  const product = {
-    id: params.id,
-    name: 'Siphorahq 46-Piece Dinner Set | Aesthetic Gold Pattern',
-    price: 35000,
-    salePrice: 25500,
-    reviews: 4.8,
-    reviewCount: 124,
-  };
+  const product = getProductById(params.id);
+
+  if (!product) {
+    notFound();
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 lg:flex lg:gap-12 pb-32 md:pb-12 bg-[var(--color-bg)]">
@@ -39,13 +38,13 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="aspect-[4/5] bg-[var(--color-accent-light)] rounded-none overflow-hidden relative cursor-zoom-in md:col-span-2">
-            <Image src="/images/dinnerware.png" fill className="object-cover" alt="Product" />
+            <Image src={product.image || '/images/dinnerware.png'} fill className="object-cover" alt="Product" />
           </div>
           <div className="aspect-[4/5] bg-[var(--color-accent-light)] rounded-none overflow-hidden relative cursor-zoom-in hidden md:block">
-            <Image src="/images/dinnerware_var1.png" fill className="object-cover" alt="Product View 2" />
+            <Image src={product.image || '/images/dinnerware.png'} fill className="object-cover" alt="Product View 2" />
           </div>
           <div className="aspect-[4/5] bg-[var(--color-accent-light)] rounded-none overflow-hidden relative cursor-zoom-in hidden md:block">
-            <Image src="/images/dinnerware_var2.png" fill className="object-cover" alt="Product View 3" />
+            <Image src={product.image || '/images/dinnerware.png'} fill className="object-cover" alt="Product View 3" />
           </div>
         </div>
       </div>
@@ -59,19 +58,23 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         <div className="flex items-center gap-2 mt-4">
           <div className="flex text-[#EED202]">
             {[1,2,3,4,5].map((star) => (
-              <Star key={star} className={`w-4 h-4 ${star === 5 ? 'fill-transparent' : 'fill-current'}`} />
+              <Star key={star} className={`w-4 h-4 ${star === 5 && product.reviews < 5 ? 'fill-transparent' : 'fill-current'}`} />
             ))}
           </div>
-          <span className="text-sm font-sans text-[var(--color-text-muted)]">({product.reviewCount} Reviews)</span>
+          <span className="text-sm font-sans text-[var(--color-text-muted)]">({product.reviewCount || 10} Reviews)</span>
         </div>
 
         {/* Price */}
         <div className="mt-6 flex items-center gap-4 border-b border-[var(--color-border)] pb-6">
-          <p className="text-2xl font-sans font-medium text-[var(--color-primary)]">₹{product.salePrice.toLocaleString('en-IN')}</p>
-          <p className="text-lg font-sans text-[var(--color-text-muted)] line-through">₹{product.price.toLocaleString('en-IN')}</p>
-          <span className="bg-red-50 text-red-700 px-2 py-1 text-[10px] font-medium font-sans uppercase tracking-widest rounded-sm border border-red-200">
-            Save 27%
-          </span>
+          <p className="text-2xl font-sans font-medium text-[var(--color-primary)]">₹{(product.salePrice || product.price).toLocaleString('en-IN')}</p>
+          {product.salePrice && product.salePrice < product.price && (
+            <>
+              <p className="text-lg font-sans text-[var(--color-text-muted)] line-through">₹{product.price.toLocaleString('en-IN')}</p>
+              <span className="bg-red-50 text-red-700 px-2 py-1 text-[10px] font-medium font-sans uppercase tracking-widest rounded-sm border border-red-200">
+                Save {Math.round((1 - product.salePrice / product.price) * 100)}%
+              </span>
+            </>
+          )}
         </div>
 
         {/* Color Swatches */}
@@ -120,9 +123,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               </span>
             </summary>
             <div className="mt-4 text-sm font-sans text-[var(--color-text-muted)] leading-relaxed">
-              Crafted from the finest bone china porcelain, this 46-piece dinner set features a timeless baroque gold pattern. It perfectly balances aesthetic appeal with exceptional durability, making it ideal for both everyday dining and festive occasions. 
-              <br/><br/>
-              <strong>Set Includes:</strong> 6 Full Plates, 6 Quarter Plates, 6 Soup Bowls, 6 Veg Bowls, 6 Spoons, 1 Rice Platter, 2 Serving Bowls with Lids.
+              {product.description || 'Crafted from the finest bone china porcelain, perfectly balancing aesthetic appeal with exceptional durability, making it ideal for both everyday dining and festive occasions.'}
             </div>
           </details>
           <details className="group border-b border-[var(--color-border)] py-4 cursor-pointer">
@@ -133,7 +134,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               </span>
             </summary>
             <div className="mt-4 text-sm font-sans text-[var(--color-text-muted)] leading-relaxed">
-              Hand wash recommended. Do not use abrasive scrubbers. Due to the real gold accents, this set is <strong>not</strong> microwave safe.
+              {product.care || 'Hand wash recommended. Do not use abrasive scrubbers.'}
             </div>
           </details>
           <details className="group border-b border-[var(--color-border)] py-4 cursor-pointer">

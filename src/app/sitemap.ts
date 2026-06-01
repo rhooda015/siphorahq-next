@@ -1,15 +1,12 @@
 import { MetadataRoute } from 'next';
+import { STATIC_PRODUCTS } from '@/data/products';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://siphorahq.in';
 
-  // In a real application, you would fetch these from your CMS/database
-  const dynamicRoutes = [
-    '/collections/women',
-    '/products/ivory-silk-blend-festive-kurta-set',
-    '/journal/how-to-style-silk-saree',
-  ].map((route) => ({
-    url: `${baseUrl}${route}`,
+  // Dynamic products routes
+  const dynamicRoutes = STATIC_PRODUCTS.map((product) => ({
+    url: `${baseUrl}/products/${product.id}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,

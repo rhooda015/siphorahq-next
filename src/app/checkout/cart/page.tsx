@@ -18,17 +18,15 @@ export default function CartPage() {
                <div className="absolute inset-0 flex items-center justify-center text-[10px] text-text-muted uppercase">Image</div>
             </div>
             <div className="flex flex-col flex-1">
-              <h3 className="font-serif text-lg pr-8">Ivory Silk Blend Festive Kurta Set</h3>
-              <p className="text-xs font-sans text-text-muted uppercase tracking-widest mt-1">Color: Ivory</p>
-              <p className="text-xs font-sans text-text-muted uppercase tracking-widest mt-1">Size: M</p>
-              
-              <div className="mt-auto flex justify-between items-end">
-                <div className="flex border border-border items-center h-8">
-                  <button className="px-3 text-text-muted hover:text-text"><Minus className="w-3 h-3" /></button>
-                  <span className="w-6 text-center font-sans text-xs">1</span>
-                  <button className="px-3 text-text-muted hover:text-text"><Plus className="w-3 h-3" /></button>
+              <h3 className="font-serif text-lg pr-8">Siphorahq 46-Piece Dinner Set | Aesthetic Gold Pattern</h3>
+              <p className="text-[var(--color-text-muted)] text-sm mt-1">Color: White & Gold</p>
+              <div className="mt-4 flex items-center justify-between">
+                <div className="flex border border-[var(--color-border)]">
+                  <button className="px-3 py-1 hover:bg-[var(--color-accent-light)]">-</button>
+                  <span className="px-4 py-1 border-x border-[var(--color-border)]">1</span>
+                  <button className="px-3 py-1 hover:bg-[var(--color-accent-light)]">+</button>
                 </div>
-                <span className="font-sans font-medium text-text">₹9,500</span>
+                <span className="font-sans font-medium text-[var(--color-primary)]">₹25,500</span>
               </div>
             </div>
           </div>

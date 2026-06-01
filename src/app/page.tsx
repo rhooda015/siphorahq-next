@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import { STATIC_PRODUCTS } from '@/data/products';
+
 // --- Reusable Components for exact Swasha UI ---
 
 const SectionHeading = ({ title }: { title: string }) => (
@@ -25,14 +27,14 @@ const ProductCard = ({ product }: { product: any }) => (
     {/* Image Container */}
     <div className="aspect-[4/5] bg-[var(--color-accent-light)] relative mb-4 overflow-hidden">
       <Image 
-        src={product.img} 
+        src={product.image || product.img} 
         alt={product.name}
         fill
         className="object-cover transition-transform duration-700 group-hover:scale-105"
       />
       
       {/* Sale Badge */}
-      {product.sale && (
+      {(product.sale || product.salePrice < product.price) && (
         <span className="absolute bottom-2 left-2 bg-white text-[var(--color-primary)] text-xs font-sans px-2 py-1 shadow-sm">
           Sale
         </span>
@@ -54,19 +56,23 @@ const ProductCard = ({ product }: { product: any }) => (
     {/* Stars */}
     <div className="flex items-center gap-1 mb-2">
       {[1,2,3,4,5].map(star => (
-        <svg key={star} className="w-3 h-3 text-[#EED202]" fill="currentColor" viewBox="0 0 20 20">
+        <svg key={star} className={`w-3 h-3 ${star <= Math.round(product.reviews || 4) ? 'text-[#EED202]' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
       ))}
-      <span className="text-xs text-[var(--color-text-muted)] ml-1">({product.reviews || 4})</span>
+      <span className="text-xs text-[var(--color-text-muted)] ml-1">({product.reviewCount || product.reviews || 4})</span>
     </div>
 
     {/* Pricing */}
     <div className="flex items-center gap-2 font-sans text-sm">
-      {product.oldPrice && (
-        <span className="text-[var(--color-text-muted)] line-through text-xs">{product.oldPrice}</span>
+      {(product.oldPrice || (product.salePrice && product.salePrice < product.price)) && (
+        <span className="text-[var(--color-text-muted)] line-through text-xs">
+          {product.oldPrice || `₹${product.price.toLocaleString('en-IN')}`}
+        </span>
       )}
-      <span className="text-[var(--color-primary)] font-medium">{product.price}</span>
+      <span className="text-[var(--color-primary)] font-medium">
+        {product.salePrice ? `₹${product.salePrice.toLocaleString('en-IN')}` : (typeof product.price === 'string' ? product.price : `₹${product.price.toLocaleString('en-IN')}`)}
+      </span>
     </div>
   </Link>
 );
@@ -92,27 +98,10 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, [heroSlides.length]);
 
-  // Mock Data
-  const productsNew = [
-    { id: 1, name: 'Siphorahq Premium Serving Tray Set of 2 | Gold Handle Trays (Brown)', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/prod1.png', reviews: 1 },
-    { id: 2, name: 'Siphorahq Designer Gift Box | Luxury Home Decor & Gifting', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/prod2.png', reviews: 4 },
-    { id: 3, name: 'Decorative Leatherette Trays Set of 2 | Luxury Serving Tray by Siphorahq', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/serveware_var1.png', reviews: 1 },
-    { id: 4, name: 'Siphorahq Baroque Print Gift Box | Gold Accent for Home', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/gifting.png', reviews: 1 },
-  ];
-
-  const productsServeFor6 = [
-    { id: 5, name: 'Siphorahq 46-Piece Dinner Set | Aesthetic Gold Pattern', price: 'Rs. 25,500.00', oldPrice: 'Rs. 35,000.00', sale: true, img: '/images/dinnerware.png', reviews: 6 },
-    { id: 6, name: '46-Piece Dinner Set | Premium Matte Finish', price: 'Rs. 20,200.00', oldPrice: 'Rs. 28,000.00', sale: true, img: '/images/dinnerware_var1.png', reviews: 8 },
-    { id: 7, name: 'Siphorahq 46-Piece Set | Elegant White & Gold', price: 'Rs. 28,000.00', oldPrice: 'Rs. 38,000.00', sale: true, img: '/images/dinnerware_var2.png', reviews: 2 },
-    { id: 8, name: 'Premium 46-Piece Dinner Set | Luxury Collection', price: 'Rs. 29,900.00', oldPrice: 'Rs. 40,000.00', sale: true, img: '/images/dinnerware.png', reviews: 5 },
-  ];
-
-  const productsBowls = [
-    { id: 9, name: 'Siphorahq Premium Serving Bowl Set of 3 | Airtight Lids', price: 'Rs. 2,200.00', oldPrice: 'Rs. 3,500.00', sale: true, img: '/images/serveware.png', reviews: 9 },
-    { id: 10, name: 'Premium Glassware Serving Bowl Set | Microwave Safe', price: 'Rs. 2,200.00', oldPrice: 'Rs. 3,500.00', sale: true, img: '/images/serveware_var2.png', reviews: 4 },
-    { id: 11, name: 'Siphorahq Airtight Serving Bowl Set of 3 | Premium Finish', price: 'Rs. 2,500.00', oldPrice: 'Rs. 4,000.00', sale: true, img: '/images/serveware_var1.png', reviews: 7 },
-    { id: 12, name: 'Luxury Serving Bowl Set of 3 | Microwave Safe', price: 'Rs. 1,200.00', oldPrice: 'Rs. 2,000.00', sale: true, img: '/images/serveware.png', reviews: 11 },
-  ];
+  // Centralized Data Source
+  const productsNew = STATIC_PRODUCTS.slice(0, 4);
+  const productsServeFor6 = STATIC_PRODUCTS.filter(p => p.category === 'dinner-set').slice(0, 4);
+  const productsBowls = STATIC_PRODUCTS.filter(p => p.category === 'serveware').slice(0, 4);
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)] pb-20">
