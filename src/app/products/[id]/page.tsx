@@ -136,15 +136,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           )}
         </div>
 
-        {/* Color Swatches */}
-        <div className="mt-8">
-          <h3 className="text-sm font-sans font-medium text-[var(--color-primary)] uppercase tracking-widest mb-3">Color: White & Gold</h3>
-          <div className="flex gap-3">
-            <button className="w-8 h-8 rounded-full bg-white border-2 border-[#C9A84C] ring-2 ring-transparent ring-offset-2"></button>
-            <button className="w-8 h-8 rounded-full bg-[#1A1A1A] border border-[var(--color-border)] hover:border-[var(--color-primary)]"></button>
-            <button className="w-8 h-8 rounded-full bg-[#F5F0E8] border border-[var(--color-border)] hover:border-[var(--color-primary)]"></button>
-          </div>
-        </div>
 
         {/* Delivery Checker */}
         <DeliveryChecker />
