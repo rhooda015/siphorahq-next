@@ -151,14 +151,14 @@ export default function HomePage() {
       <section className="py-12 px-4 max-w-7xl mx-auto border-b border-[var(--color-border)] mb-16">
         <div className="flex justify-start md:justify-center overflow-x-auto gap-4 md:gap-10 pb-4 hide-scrollbar">
           {[
-            { name: "Dinner Set", img: "/images/dinnerware.png" },
-            { name: "Platter", img: "/images/serveware.png" },
-            { name: "Plates", img: "/images/dinnerware.png" },
-            { name: "Snacks Set", img: "/images/teaset.png" },
-            { name: "Coffee Mug Set", img: "/images/teaset.png" },
+            { name: "Dinner Set", img: "/images/dinnerware_var1.png" },
+            { name: "Platter", img: "/images/serveware_var1.png" },
+            { name: "Plates", img: "/images/cat_plates.png" },
+            { name: "Snacks Set", img: "/images/cat_snacks.png" },
+            { name: "Coffee Mug Set", img: "/images/cat_mugs.png" },
             { name: "Tea Cup Set", img: "/images/teaset.png" },
-            { name: "Cake Stands", img: "/images/serveware.png" },
-            { name: "Opal Glass", img: "/images/dinnerware.png" },
+            { name: "Cake Stands", img: "/images/cat_cakestand.png" },
+            { name: "Opal Glass", img: "/images/cat_opalglass.png" },
           ].map((cat, idx) => (
             <Link href="/products" key={idx} className="flex flex-col items-center group min-w-[90px]">
               <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden mb-3 relative bg-[var(--color-accent-light)] border-2 border-transparent group-hover:border-[var(--color-primary)] transition-all">
@@ -248,11 +248,11 @@ export default function HomePage() {
         <div className="grid grid-cols-3 md:grid-cols-6 gap-4 text-center">
           {[
             { title: "Cups and Kettle Set", img: "/images/teaset.png" },
-            { title: "Dinner Set of 6", img: "/images/dinnerware.png" },
+            { title: "Dinner Set of 6", img: "/images/dinnerware_var2.png" },
             { title: "Dinner Set Serve For 8", img: "/images/dinnerware.png" },
-            { title: "Cutlery", img: "/images/serveware.png" },
-            { title: "Drinkware", img: "/images/teaset.png" },
-            { title: "Platter", img: "/images/serveware.png" },
+            { title: "Cutlery", img: "/images/cat_plates.png" },
+            { title: "Drinkware", img: "/images/cat_mugs.png" },
+            { title: "Platter", img: "/images/serveware_var2.png" },
           ].map((item, idx) => (
             <Link href="/products" key={idx} className="group">
               <div className="aspect-square rounded-full md:rounded-none overflow-hidden relative mb-2 bg-[var(--color-accent-light)]">
