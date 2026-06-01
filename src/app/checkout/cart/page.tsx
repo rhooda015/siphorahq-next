@@ -1,15 +1,48 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
-import { Minus, Plus, X } from 'lucide-react';
+import Image from 'next/image';
+import { Minus, Plus, X, ChevronLeft } from 'lucide-react';
+import { BRAND } from '@/config/brand';
+import { STATIC_PRODUCTS } from '@/data/products';
+import { trackBeginCheckout } from '@/lib/analytics';
+import ProductCard from '@/components/ProductCard';
 
-export default function CartPage() {
+  const cartTotal = 25500;
+  const progressToFreeShipping = Math.min((cartTotal / BRAND.freeShippingThreshold) * 100, 100);
+  const remainingForFreeShipping = Math.max(BRAND.freeShippingThreshold - cartTotal, 0);
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 pb-32">
-      <h1 className="text-3xl md:text-4xl font-serif font-light mb-8">Shopping Cart</h1>
+      <div className="flex items-center gap-4 mb-8">
+        <h1 className="text-3xl md:text-4xl font-serif font-light">Shopping Cart</h1>
+        <Link href="/products" className="hidden md:flex ml-auto items-center text-sm font-sans text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
+          <ChevronLeft className="w-4 h-4 mr-1" />
+          Continue Shopping
+        </Link>
+      </div>
       
       <div className="lg:flex gap-12">
         {/* Cart Items */}
         <div className="lg:w-2/3 flex flex-col gap-6">
+          
+          {/* Free Shipping Progress Bar */}
+          <div className="bg-[var(--color-accent-light)] p-4 border border-[var(--color-border)] mb-4">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm font-sans font-medium text-[var(--color-primary)]">
+                {remainingForFreeShipping > 0 
+                  ? `You are ₹${remainingForFreeShipping.toLocaleString('en-IN')} away from Free Shipping!` 
+                  : `Congratulations! You've unlocked Free Shipping.`}
+              </span>
+            </div>
+            <div className="w-full bg-white h-2 rounded-full overflow-hidden border border-[var(--color-border)]">
+              <div 
+                className="bg-green-500 h-full transition-all duration-500" 
+                style={{ width: `${progressToFreeShipping}%` }}
+              ></div>
+            </div>
+          </div>
           <div className="border-b border-border pb-6 flex gap-4 relative">
             <button className="absolute top-0 right-0 p-2 text-text-muted hover:text-text">
               <X className="w-4 h-4" />
@@ -59,9 +92,15 @@ export default function CartPage() {
               </div>
             </div>
 
-            <Link href="/checkout/address">
-              <button className="w-full btn-primary mt-6">Continue to Address</button>
-            </Link>
+            <button 
+              onClick={() => {
+                trackBeginCheckout(cartTotal, [{item_name: 'Dinner Set', price: 25500, quantity: 1}]);
+                window.location.href = '/checkout/address';
+              }}
+              className="w-full bg-[var(--color-primary)] text-white uppercase tracking-widest text-xs py-4 hover:bg-[var(--color-secondary)] transition-colors mt-6 font-medium"
+            >
+              Continue to Address
+            </button>
 
             <div className="mt-6 flex gap-4 items-center justify-center border-t border-border pt-4">
               <span className="text-[10px] text-neutral-500 font-medium">SECURE CHECKOUT</span>
@@ -69,6 +108,23 @@ export default function CartPage() {
               <span className="text-xs text-neutral-500 font-medium">UPI</span>
             </div>
           </div>
+        </div>
+      </div>
+      
+      {/* Continue Shopping CTA (Mobile) */}
+      <div className="mt-8 md:hidden">
+        <Link href="/products" className="flex items-center justify-center border border-[var(--color-primary)] text-[var(--color-primary)] py-4 text-xs font-sans font-medium uppercase tracking-widest hover:bg-[var(--color-accent-light)] transition-colors">
+          Continue Shopping
+        </Link>
+      </div>
+
+      {/* Cross-Sell Section */}
+      <div className="mt-24 pt-12 border-t border-[var(--color-border)]">
+        <h2 className="text-2xl md:text-3xl font-serif italic text-[var(--color-primary)] text-center mb-10">Frequently Bought Together</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
+          {STATIC_PRODUCTS.filter(p => p.category === 'serveware' || p.category === 'tea-set').slice(0, 4).map((relatedProduct) => (
+            <ProductCard key={relatedProduct.id} product={relatedProduct} />
+          ))}
         </div>
       </div>
     </div>

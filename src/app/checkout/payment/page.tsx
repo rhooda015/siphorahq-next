@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
-import { ChevronRight, CreditCard, Wallet, Truck } from 'lucide-react';
+import { ChevronRight, CreditCard, Wallet, Truck, ShieldCheck } from 'lucide-react';
 import { BRAND } from '@/config/brand';
+import { trackPurchase } from '@/lib/analytics';
 
 export default function PaymentPage() {
   const [method, setMethod] = useState('razorpay');
@@ -13,6 +14,7 @@ export default function PaymentPage() {
 
   const handlePayment = async () => {
     if (method === 'cod') {
+      trackPurchase(`COD-${Math.floor(100000 + Math.random() * 900000)}`, 9500, [{item_name: 'Dinner Set', price: 9500, quantity: 1}]);
       setSuccess(true);
       return;
     }
@@ -41,6 +43,7 @@ export default function PaymentPage() {
         order_id: order.id,
         handler: function (response: any) {
           console.log(response);
+          trackPurchase(response.razorpay_payment_id || `RZP-${order.id}`, 9500, [{item_name: 'Dinner Set', price: 9500, quantity: 1}]);
           setSuccess(true);
         },
         prefill: {
@@ -148,11 +151,17 @@ export default function PaymentPage() {
               <span>₹9,500</span>
             </div>
             
-            <div className="mt-6 border border-border bg-white p-4 flex gap-4 items-start">
-              <Wallet className="w-5 h-5 text-green-700 flex-shrink-0" />
+            <div className="mt-6 border border-[var(--color-border)] bg-white p-4 flex gap-4 items-start">
+              <ShieldCheck className="w-5 h-5 text-green-700 flex-shrink-0" />
               <div>
-                <p className="text-xs font-sans font-medium uppercase tracking-widest text-text">100% Secure Checkout</p>
-                <p className="text-xs font-sans text-text-muted mt-1">Your payment information is encrypted and securely processed.</p>
+                <p className="text-xs font-sans font-medium uppercase tracking-widest text-[var(--color-text)]">100% Secure Checkout</p>
+                <p className="text-xs font-sans text-[var(--color-text-muted)] mt-1">Your payment information is encrypted and securely processed.</p>
+                <div className="mt-4 flex gap-2 opacity-60 grayscale">
+                   <div className="h-6 w-10 border border-gray-200 rounded flex items-center justify-center text-[8px] font-bold">VISA</div>
+                   <div className="h-6 w-10 border border-gray-200 rounded flex items-center justify-center text-[8px] font-bold">MC</div>
+                   <div className="h-6 w-10 border border-gray-200 rounded flex items-center justify-center text-[8px] font-bold">AMEX</div>
+                   <div className="h-6 w-10 border border-gray-200 rounded flex items-center justify-center text-[8px] font-bold">UPI</div>
+                </div>
               </div>
             </div>
           </div>

@@ -59,6 +59,17 @@ export default function RootLayout({
             }),
           }}
         />
+        {/* Placeholder Google Tag Manager (GTM) script */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-XXXXXXXXXX');
+            `,
+          }}
+        />
       </head>
       <body className="pb-[60px] md:pb-0">
         <Header />

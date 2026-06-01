@@ -1,15 +1,46 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ShoppingBag, User, X } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { ShoppingBag, User, X, Search, Menu, Lock } from 'lucide-react';
 import { BRAND } from '@/config/brand';
 
 export default function Header() {
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isCheckout = pathname.startsWith('/checkout');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  if (isCheckout && pathname !== '/checkout/cart') {
+    return (
+      <header className="fixed w-full top-0 z-50 transition-all duration-300 bg-[var(--color-bg)] border-b border-[var(--color-border)] py-4">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center">
+          <Link href="/checkout/cart" className="text-sm font-sans text-[var(--color-text-muted)] hover:text-[var(--color-primary)]">
+            Return to Cart
+          </Link>
+          <Link href="/" className="font-serif text-2xl tracking-widest text-[var(--color-primary)] uppercase">
+            {BRAND.name}
+          </Link>
+          <div className="flex items-center gap-2 text-[var(--color-primary)]">
+            <Lock className="w-4 h-4" />
+            <span className="text-xs font-sans font-medium uppercase tracking-widest">Secure</span>
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[var(--color-bg)] border-b border-[var(--color-border)]">
+    <header className={`sticky top-0 z-50 w-full transition-all duration-300 bg-[var(--color-bg)] ${isScrolled ? 'border-b border-[var(--color-border)]' : 'border-b border-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Header Area: Icons & Logo */}

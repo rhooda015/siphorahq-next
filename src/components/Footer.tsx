@@ -2,10 +2,30 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { BRAND } from '@/config/brand';
 
 export default function Footer() {
   const [subscribed, setSubscribed] = useState(false);
+  const pathname = usePathname();
+  const isCheckout = pathname.startsWith('/checkout') && pathname !== '/checkout/cart';
+
+  if (isCheckout) {
+    return (
+      <footer className="bg-white border-t border-[var(--color-border)] py-8 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-[var(--color-text-muted)] font-sans">
+            &copy; {new Date().getFullYear()} {BRAND.name}. All rights reserved.
+          </p>
+          <div className="flex gap-6 text-xs text-[var(--color-text-muted)] font-sans">
+            <Link href="/refund-policy" className="hover:text-[var(--color-primary)]">Refund Policy</Link>
+            <Link href="/privacy-policy" className="hover:text-[var(--color-primary)]">Privacy Policy</Link>
+            <Link href="/terms-of-service" className="hover:text-[var(--color-primary)]">Terms of Service</Link>
+          </div>
+        </div>
+      </footer>
+    );
+  }
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
