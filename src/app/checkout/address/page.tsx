@@ -16,6 +16,33 @@ export default function AddressPage() {
   const [lastName, setLastName] = useState(customerDetails?.lastName || '');
   const [addressLine1, setAddressLine1] = useState(customerDetails?.addressLine1 || '');
   const [pincode, setPincode] = useState(customerDetails?.pincode || '');
+  const [city, setCity] = useState(customerDetails?.city || '');
+  const [state, setState] = useState(customerDetails?.state || '');
+
+  const handlePincodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+    setPincode(val);
+
+    if (val.length === 6) {
+      try {
+        const res = await fetch(`https://api.postalpincode.in/pincode/${val}`);
+        const data = await res.json();
+        if (data && data[0] && data[0].Status === 'Success') {
+          const postOffice = data[0].PostOffice[0];
+          setCity(postOffice.District || postOffice.Block || postOffice.Name);
+          setState(postOffice.State);
+        } else {
+          setCity('');
+          setState('');
+        }
+      } catch (err) {
+        console.error("Error fetching pincode", err);
+      }
+    } else {
+      setCity('');
+      setState('');
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,8 +53,8 @@ export default function AddressPage() {
       lastName,
       addressLine1,
       pincode,
-      city: pincode.length === 6 ? 'New Delhi' : '',
-      state: pincode.length === 6 ? 'Delhi' : ''
+      city,
+      state
     });
     router.push('/checkout/payment');
   };
@@ -107,17 +134,17 @@ export default function AddressPage() {
                   pattern="[0-9]{6}"
                   title="6 digit pincode"
                   value={pincode}
-                  onChange={(e) => setPincode(e.target.value)}
+                  onChange={handlePincodeChange}
                   className="w-full bg-white border border-border px-3 py-2 text-sm font-sans outline-none focus:border-gold" 
                 />
               </div>
               <div>
                 <label className="text-xs font-sans text-text-muted uppercase tracking-widest mb-1 block">City</label>
-                <input type="text" className="w-full bg-white border border-border px-3 py-2 text-sm font-sans outline-none focus:border-gold bg-neutral-50" readOnly value={pincode.length === 6 ? 'New Delhi' : ''} />
+                <input type="text" className="w-full bg-white border border-border px-3 py-2 text-sm font-sans outline-none focus:border-gold bg-neutral-50" readOnly value={city} />
               </div>
               <div>
                 <label className="text-xs font-sans text-text-muted uppercase tracking-widest mb-1 block">State</label>
-                <input type="text" className="w-full bg-white border border-border px-3 py-2 text-sm font-sans outline-none focus:border-gold bg-neutral-50" readOnly value={pincode.length === 6 ? 'Delhi' : ''} />
+                <input type="text" className="w-full bg-white border border-border px-3 py-2 text-sm font-sans outline-none focus:border-gold bg-neutral-50" readOnly value={state} />
               </div>
             </div>
 
