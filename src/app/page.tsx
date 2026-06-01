@@ -95,22 +95,22 @@ export default function HomePage() {
   // Mock Data
   const productsNew = [
     { id: 1, name: 'Siphorahq Premium Serving Tray Set of 2 | Gold Handle Trays (Brown)', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/serveware.png', reviews: 1 },
-    { id: 2, name: 'Siphorahq Designer Serving Trays Set of 2 | Luxury Home Decor & Gifting', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/gifting.png', reviews: 4 },
-    { id: 3, name: 'Decorative Leatherette Trays Set of 2 | Luxury Serving Tray by Siphorahq', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/serveware.png', reviews: 1 },
-    { id: 4, name: 'Siphorahq Baroque Print Serving Tray Set | Gold Accent Trays for Home', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/gifting.png', reviews: 1 },
+    { id: 2, name: 'Siphorahq Designer Gift Box | Luxury Home Decor & Gifting', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/gifting_siporahq.png', reviews: 4 },
+    { id: 3, name: 'Decorative Leatherette Trays Set of 2 | Luxury Serving Tray by Siphorahq', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/serveware_var1.png', reviews: 1 },
+    { id: 4, name: 'Siphorahq Baroque Print Gift Box | Gold Accent for Home', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/gifting.png', reviews: 1 },
   ];
 
   const productsServeFor6 = [
     { id: 5, name: 'Siphorahq 46-Piece Dinner Set | Aesthetic Gold Pattern', price: 'Rs. 25,500.00', oldPrice: 'Rs. 35,000.00', sale: true, img: '/images/dinnerware.png', reviews: 6 },
-    { id: 6, name: '46-Piece Dinner Set | Premium Matte Finish', price: 'Rs. 20,200.00', oldPrice: 'Rs. 28,000.00', sale: true, img: '/images/dinnerware.png', reviews: 8 },
-    { id: 7, name: 'Siphorahq 46-Piece Set | Elegant White & Gold', price: 'Rs. 28,000.00', oldPrice: 'Rs. 38,000.00', sale: true, img: '/images/dinnerware.png', reviews: 2 },
+    { id: 6, name: '46-Piece Dinner Set | Premium Matte Finish', price: 'Rs. 20,200.00', oldPrice: 'Rs. 28,000.00', sale: true, img: '/images/dinnerware_var1.png', reviews: 8 },
+    { id: 7, name: 'Siphorahq 46-Piece Set | Elegant White & Gold', price: 'Rs. 28,000.00', oldPrice: 'Rs. 38,000.00', sale: true, img: '/images/dinnerware_var2.png', reviews: 2 },
     { id: 8, name: 'Premium 46-Piece Dinner Set | Luxury Collection', price: 'Rs. 29,900.00', oldPrice: 'Rs. 40,000.00', sale: true, img: '/images/dinnerware.png', reviews: 5 },
   ];
 
   const productsBowls = [
     { id: 9, name: 'Siphorahq Premium Serving Bowl Set of 3 | Airtight Lids', price: 'Rs. 2,200.00', oldPrice: 'Rs. 3,500.00', sale: true, img: '/images/serveware.png', reviews: 9 },
-    { id: 10, name: 'Premium Glassware Serving Bowl Set | Microwave Safe', price: 'Rs. 2,200.00', oldPrice: 'Rs. 3,500.00', sale: true, img: '/images/serveware.png', reviews: 4 },
-    { id: 11, name: 'Siphorahq Airtight Serving Bowl Set of 3 | Premium Finish', price: 'Rs. 2,500.00', oldPrice: 'Rs. 4,000.00', sale: true, img: '/images/serveware.png', reviews: 7 },
+    { id: 10, name: 'Premium Glassware Serving Bowl Set | Microwave Safe', price: 'Rs. 2,200.00', oldPrice: 'Rs. 3,500.00', sale: true, img: '/images/serveware_var2.png', reviews: 4 },
+    { id: 11, name: 'Siphorahq Airtight Serving Bowl Set of 3 | Premium Finish', price: 'Rs. 2,500.00', oldPrice: 'Rs. 4,000.00', sale: true, img: '/images/serveware_var1.png', reviews: 7 },
     { id: 12, name: 'Luxury Serving Bowl Set of 3 | Microwave Safe', price: 'Rs. 1,200.00', oldPrice: 'Rs. 2,000.00', sale: true, img: '/images/serveware.png', reviews: 11 },
   ];
 
