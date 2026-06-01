@@ -54,23 +54,23 @@ export default function Header() {
 
         {/* Bottom Header Area: Navigation (Desktop Only) */}
         <nav className="hidden md:flex justify-center items-center pb-4 space-x-8">
-          <Link href="/" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
-            Home
-          </Link>
           <Link href="/products" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
-            Shop All
+            Products
           </Link>
           <Link href="/products?category=dinner-set" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
-            Premium Dinnerware
-          </Link>
-          <Link href="/products?category=tea-set" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
-            Tea & Coffee Sets
-          </Link>
-          <Link href="/products?category=serveware" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
-            Serveware & Bowls
+            Collections
           </Link>
           <Link href="/gifting" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
-            Luxury Gifting
+            Corporate Gifting
+          </Link>
+          <Link href="/about" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+            Our Story
+          </Link>
+          <Link href="/journal" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+            Journal
+          </Link>
+          <Link href="/contact" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+            Contact
           </Link>
         </nav>
 
@@ -79,25 +79,19 @@ export default function Header() {
       {/* Mobile Menu Drawer */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-[100] bg-white flex flex-col md:hidden">
-          <div className="flex justify-between items-center p-4 border-b border-[var(--color-border)]">
+          <div className="flex justify-between items-center p-4 border-b border-[var(--color-border)] min-h-[80px]">
             <span className="font-serif text-2xl tracking-widest text-[var(--color-primary)] uppercase">{BRAND.name}</span>
-            <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-[var(--color-primary)]">
-              <X className="h-6 w-6" />
+            <button onClick={() => setIsMobileMenuOpen(false)} className="p-4 text-[var(--color-primary)]" aria-label="Close menu">
+              <X className="h-8 w-8" />
             </button>
           </div>
           <div className="flex flex-col p-6 space-y-6 overflow-y-auto">
-            <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-2">Home</Link>
-            <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-2">Shop All</Link>
-            <Link href="/products?category=dinner-set" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-2">Premium Dinnerware</Link>
-            <Link href="/products?category=tea-set" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-2">Tea & Coffee Sets</Link>
-            <Link href="/products?category=serveware" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-2">Serveware & Bowls</Link>
-            <Link href="/gifting" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-2">Luxury Gifting</Link>
-            
-            <div className="mt-8 pt-8 border-t border-[var(--color-border)]">
-              <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-sans tracking-widest uppercase text-[var(--color-text-muted)] mb-4">Our Story</Link>
-              <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-sans tracking-widest uppercase text-[var(--color-text-muted)] mb-4">Contact Us</Link>
-              <Link href="/faq" onClick={() => setIsMobileMenuOpen(false)} className="block text-sm font-sans tracking-widest uppercase text-[var(--color-text-muted)] mb-4">FAQ</Link>
-            </div>
+            <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Products</Link>
+            <Link href="/products?category=dinner-set" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Collections</Link>
+            <Link href="/gifting" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Corporate Gifting</Link>
+            <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Our Story</Link>
+            <Link href="/journal" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Journal</Link>
+            <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Contact</Link>
           </div>
         </div>
       )}

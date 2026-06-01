@@ -1,11 +1,19 @@
 import React, { Suspense } from 'react';
+import Link from 'next/link';
+import { ChevronRight } from 'lucide-react';
 import ClientProductGrid from './ClientProductGrid';
 
 export default function ProductsPage() {
   return (
     <div className="min-h-screen bg-[var(--color-bg)]">
       {/* ── PAGE HEADER ── */}
-      <section className="bg-[var(--color-accent-light)] border-b border-[var(--color-border)] py-14 text-center px-4">
+      <section className="bg-[var(--color-accent-light)] border-b border-[var(--color-border)] py-14 text-center px-4 relative">
+        {/* Breadcrumbs */}
+        <div className="absolute top-4 left-4 md:left-8 flex items-center text-xs font-sans text-[var(--color-text-muted)]">
+          <Link href="/">Home</Link>
+          <ChevronRight className="w-3 h-3 mx-2" />
+          <span className="text-[var(--color-primary)]">Collections</span>
+        </div>
         <p className="text-[12px] font-sans font-medium uppercase tracking-widest text-[var(--color-text-muted)] mb-3">The Collection</p>
         <h1 className="text-4xl md:text-5xl font-serif text-[var(--color-primary)] mb-4">
           All Collections

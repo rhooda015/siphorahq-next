@@ -18,59 +18,65 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
         
         {/* Top Footer: Grid (Links & Newsletter) */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-16">
           
-          {/* Column 1: About */}
+          {/* Column 1: Shop */}
           <div className="col-span-1">
-            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">About Siphorahq</h2>
+            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">Shop</h2>
             <ul className="space-y-4">
-              <li><Link href="/about" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Our Story</Link></li>
-              <li><Link href="/craftsmanship" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Craftsmanship & Quality</Link></li>
-              <li><Link href="/sustainability" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Sustainability Commitment</Link></li>
-              <li><Link href="/corporate-gifting" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Corporate Gifting</Link></li>
-              <li><Link href="/corporate-gifting" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Bulk Orders</Link></li>
+              <li><Link href="/products" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">All Products</Link></li>
+              <li><Link href="/products?category=dinner-set" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Collections</Link></li>
+              <li><Link href="/products?category=new" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">New Arrivals</Link></li>
+              <li><Link href="/products?category=best-sellers" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Best Sellers</Link></li>
+              <li><Link href="/gifting" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Corporate Gifting</Link></li>
             </ul>
           </div>
 
-          {/* Column 2: Customer Care */}
+          {/* Column 2: Company */}
+          <div className="col-span-1">
+            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">Company</h2>
+            <ul className="space-y-4">
+              <li><Link href="/about" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Our Story</Link></li>
+              <li><Link href="/contact" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Contact</Link></li>
+              <li><Link href="/journal" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Journal</Link></li>
+              <li><Link href="/faq" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">FAQ</Link></li>
+            </ul>
+          </div>
+
+          {/* Column 3: Customer Care */}
           <div className="col-span-1">
             <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">Customer Care</h2>
             <ul className="space-y-4">
-              <li><Link href="/contact" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Contact Us</Link></li>
-              <li><Link href="/faq" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">FAQ</Link></li>
-              <li><Link href="/shipping-returns" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Shipping Information</Link></li>
-              <li><Link href="/refund-policy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Returns & Refunds</Link></li>
-              <li><Link href="/track-order" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Track Your Order</Link></li>
+              <li><Link href="/shipping-returns" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Shipping Policy</Link></li>
+              <li><Link href="/refund-policy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Returns & Refunds</Link></li>
+              <li><Link href="/privacy-policy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Privacy Policy</Link></li>
+              <li><Link href="/terms-of-service" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Terms & Conditions</Link></li>
             </ul>
           </div>
 
-          {/* Column 3: Policies */}
+          {/* Column 4: Why Siphorahq (Trust Signals) & Newsletter */}
           <div className="col-span-1">
-            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">Policies</h2>
-            <ul className="space-y-4">
-              <li><Link href="/privacy-policy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Privacy Policy</Link></li>
-              <li><Link href="/terms-of-service" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Terms & Conditions</Link></li>
-              <li><Link href="/shipping-returns" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Shipping Policy</Link></li>
-              <li><Link href="/refund-policy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Return Policy</Link></li>
-              <li><Link href="/privacy-policy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Cookie Policy</Link></li>
+            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">Why Siphorahq</h2>
+            <ul className="space-y-4 mb-8">
+              <li className="flex items-center gap-3 text-[var(--color-text-muted)] text-sm md:text-base py-1">
+                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Fast & Secure Shipping
+              </li>
+              <li className="flex items-center gap-3 text-[var(--color-text-muted)] text-sm md:text-base py-1">
+                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M5 13l4 4L19 7"></path></svg>
+                Handcrafted Porcelain
+              </li>
+              <li className="flex items-center gap-3 text-[var(--color-text-muted)] text-sm md:text-base py-1">
+                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z"></path></svg>
+                Secure Payments
+              </li>
+              <li className="flex items-center gap-3 text-[var(--color-text-muted)] text-sm md:text-base py-1">
+                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                Premium Packaging
+              </li>
             </ul>
-          </div>
 
-          {/* Column 4: Collections */}
-          <div className="col-span-1">
-            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">Collections</h2>
-            <ul className="space-y-4">
-              <li><Link href="/products?category=dinner-set" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Premium Dinnerware</Link></li>
-              <li><Link href="/products?category=tea-set" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Tea & Coffee Sets</Link></li>
-              <li><Link href="/products?category=serveware" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Serveware & Bowls</Link></li>
-              <li><Link href="/gifting" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Luxury Gifting</Link></li>
-              <li><Link href="/products?category=gifts" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Best Sellers</Link></li>
-            </ul>
-          </div>
-
-          {/* Column 5: Newsletter */}
-          <div className="col-span-1 md:col-span-1">
-            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">Stay Connected</h2>
+            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6 mt-12">Stay Connected</h2>
             <p className="text-[var(--color-text-muted)] text-sm mb-4 leading-relaxed">Subscribe to receive exclusive offers, early access to new collections, and styling inspiration.</p>
             {subscribed ? (
               <div className="text-green-700 bg-green-50 border border-green-200 p-3 text-sm font-medium tracking-wide">

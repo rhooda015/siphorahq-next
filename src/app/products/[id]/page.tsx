@@ -6,6 +6,7 @@ import { Metadata } from 'next';
 import { BRAND } from '@/config/brand';
 import { ChevronRight, Star, Minus, Plus } from 'lucide-react';
 import { STATIC_PRODUCTS, getProductById } from '@/data/products';
+import ProductCard from '@/components/ProductCard';
 
 export async function generateStaticParams() {
   return STATIC_PRODUCTS.map((product) => ({
@@ -202,6 +203,16 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             </div>
           </details>
         </div>
+      </div>
+    </div>
+    
+    {/* Related Products Section */}
+    <div className="max-w-7xl mx-auto px-4 py-16 border-t border-[var(--color-border)]">
+      <h2 className="text-3xl md:text-4xl font-serif italic text-[var(--color-primary)] text-center mb-12">You May Also Like</h2>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
+        {STATIC_PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4).map((relatedProduct) => (
+          <ProductCard key={relatedProduct.id} product={relatedProduct} />
+        ))}
       </div>
     </div>
     </>
