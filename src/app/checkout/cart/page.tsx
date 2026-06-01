@@ -13,6 +13,7 @@ import { useCart } from '@/store/useCart';
 export default function CartPage() {
   const { items, cartTotal, removeItem, updateQuantity } = useCart();
   const [mounted, setMounted] = React.useState(false);
+  const [isPromoOpen, setIsPromoOpen] = React.useState(false);
 
   React.useEffect(() => {
     setMounted(true);
@@ -110,11 +111,26 @@ export default function CartPage() {
               <span>₹{(total + (total >= BRAND.freeShippingThreshold || total === 0 ? 0 : BRAND.shippingCost)).toLocaleString('en-IN')}</span>
             </div>
 
-            <div className="mt-6">
-              <label className="text-xs font-sans font-medium text-text uppercase tracking-widest mb-2 block">Discount Code</label>
-              <div className="flex">
-                <input type="text" className="flex-1 bg-white border border-border border-r-0 px-3 py-2 text-sm font-sans outline-none focus:border-gold" />
-                <button className="bg-text text-white px-4 text-xs uppercase tracking-widest font-medium hover:bg-gold transition-colors">Apply</button>
+            <div className="mt-8 border-t border-[var(--color-border)] pt-5">
+              <button 
+                onClick={() => setIsPromoOpen(!isPromoOpen)}
+                className="w-full flex items-center justify-between text-sm font-sans text-text hover:text-[var(--color-primary)] transition-colors"
+              >
+                <span className="font-medium tracking-wide">Have a gift card or discount code?</span>
+                <span className="text-lg font-light">{isPromoOpen ? '-' : '+'}</span>
+              </button>
+              
+              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isPromoOpen ? 'max-h-24 mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className="flex shadow-sm">
+                  <input 
+                    type="text" 
+                    placeholder="Enter Code"
+                    className="flex-1 bg-white border border-[var(--color-border)] border-r-0 px-4 py-3 text-sm font-sans outline-none focus:border-[var(--color-primary)] placeholder:text-neutral-400" 
+                  />
+                  <button className="bg-text text-white px-6 text-xs uppercase tracking-widest font-medium hover:bg-[var(--color-primary)] transition-colors">
+                    Apply
+                  </button>
+                </div>
               </div>
             </div>
 
