@@ -74,32 +74,31 @@ export default function CartDrawer() {
 
               {/* Items */}
               {items.map((item) => (
-                <div key={item.cartItemId} className="flex gap-4 pb-4 border-b border-[var(--color-border)] relative">
+                <div key={item.cartItemId} className="flex gap-3.5 pb-4 border-b border-[var(--color-border)] relative">
                   <div className="w-20 h-24 bg-neutral-50 rounded-sm relative overflow-hidden flex-shrink-0">
                     {item.image && (
                       <Image src={item.image} alt={item.name} fill className="object-cover" sizes="80px" />
                     )}
                   </div>
-                  <div className="flex-1 flex flex-col justify-between">
+                  <div className="flex-1 flex flex-col justify-between py-0.5">
                     <div>
                       <div className="flex justify-between items-start">
-                        <h3 className="font-serif text-sm pr-4 line-clamp-2">{item.name}</h3>
-                        <button onClick={() => removeItem(item.cartItemId)} className="text-[var(--color-text-muted)] hover:text-red-500 transition-colors">
+                        <h3 className="font-serif text-[15px] pr-4 leading-tight">{item.name}</h3>
+                        <button onClick={() => removeItem(item.cartItemId)} className="text-[var(--color-text-muted)] hover:text-red-500 transition-colors p-0.5 -mr-1 -mt-0.5">
                           <X className="w-4 h-4" />
                         </button>
                       </div>
                       {item.isGiftWrapped && (
-                        <p className="text-[10px] text-[var(--color-primary)] font-medium mt-1 uppercase tracking-widest">+ Gift Wrapped (₹500)</p>
+                        <p className="text-[9px] text-[var(--color-primary)] font-medium mt-1 uppercase tracking-widest">+ Gift Wrapped (₹500)</p>
                       )}
-                      <p className="text-xs text-[var(--color-text-muted)] mt-1">₹{(item.salePrice || item.price).toLocaleString('en-IN')}</p>
                     </div>
-                    <div className="flex items-center justify-between mt-2">
-                      <div className="flex border border-[var(--color-border)]">
-                        <button onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)} className="px-2 py-1 hover:bg-neutral-100"><Minus className="w-3 h-3" /></button>
-                        <span className="px-3 py-1 text-xs font-medium border-x border-[var(--color-border)]">{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)} className="px-2 py-1 hover:bg-neutral-100"><Plus className="w-3 h-3" /></button>
+                    <div className="flex items-end justify-between mt-2.5">
+                      <div className="flex border border-[var(--color-border)] h-7 items-center">
+                        <button onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)} className="px-2 h-full flex items-center hover:bg-neutral-100 transition-colors"><Minus className="w-3 h-3" /></button>
+                        <span className="px-2.5 h-full flex items-center text-xs font-medium border-x border-[var(--color-border)]">{item.quantity}</span>
+                        <button onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)} className="px-2 h-full flex items-center hover:bg-neutral-100 transition-colors"><Plus className="w-3 h-3" /></button>
                       </div>
-                      <p className="font-medium text-sm">
+                      <p className="font-sans font-medium text-sm text-[var(--color-primary)]">
                         ₹{((item.salePrice || item.price) * item.quantity + (item.isGiftWrapped ? 500 * item.quantity : 0)).toLocaleString('en-IN')}
                       </p>
                     </div>
