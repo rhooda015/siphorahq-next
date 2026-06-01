@@ -75,7 +75,7 @@ export default function RootLayout({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Chat with ${BRAND.name} Concierge on WhatsApp`}
-          className="group fixed bottom-6 left-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-lg transition-transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-300"
+          className="group fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-lg transition-transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-300"
         >
           <span className="absolute left-16 px-3 py-1 bg-white text-gray-800 text-xs font-sans font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
             Chat with us
