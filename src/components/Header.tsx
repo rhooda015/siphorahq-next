@@ -3,52 +3,73 @@ import Link from 'next/link';
 
 export default function Header() {
   return (
-    <div className="fixed top-0 w-full z-50">
-      {/* Top Announcement Bar */}
-      <div className="bg-[#111111] text-white py-2 px-4 text-center text-xs tracking-widest uppercase flex items-center justify-center font-sans">
-        <span>Free Shipping on orders above ₹999 — Use code SIPHORA10 for 10% off your first order</span>
-      </div>
-      
-      {/* Navigation Header */}
-      <header className="w-full bg-[#FDFBF7]/95 backdrop-blur-sm border-b border-gray-200 h-20 px-6 md:px-12 flex flex-col justify-center">
-        <div className="flex items-center justify-between w-full max-w-[1400px] mx-auto">
-          {/* Left Links */}
-          <nav className="hidden md:flex items-center gap-8 text-xs font-medium tracking-widest uppercase text-gray-900">
-            <Link href="/products" className="hover:text-[#C9A84C] transition-colors">Collections</Link>
-            <Link href="/gifting" className="hover:text-[#C9A84C] transition-colors">Gifting</Link>
-          </nav>
+    <header className="sticky top-0 z-50 w-full bg-[var(--color-bg)] border-b border-[var(--color-border)]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Top Header Area: Icons & Logo */}
+        <div className="flex justify-between items-center h-20">
           
-          {/* Center Logo */}
-          <Link href="/" className="font-serif text-3xl font-bold tracking-widest uppercase flex-1 text-center md:flex-none">
-            SIPORAHQ
-          </Link>
-          
-          {/* Right Links & Icons */}
-          <div className="flex items-center gap-8 justify-end">
-            <Link href="/about" className="hidden md:block text-xs font-medium tracking-widest uppercase text-gray-900 hover:text-[#C9A84C] transition-colors">Our Story</Link>
-            
-            <div className="flex items-center gap-6">
-              {/* Search Icon */}
-              <button aria-label="Search" className="text-gray-900 hover:text-[#C9A84C] transition-colors">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-              </button>
-              
-              {/* Bag Icon */}
-              <button aria-label="Shopping Bag" className="text-gray-900 hover:text-[#C9A84C] transition-colors relative">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                  <line x1="3" y1="6" x2="21" y2="6"></line>
-                  <path d="M16 10a4 4 0 0 1-8 0"></path>
-                </svg>
-                <span className="absolute -top-1 -right-2 bg-[#C9A84C] text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-sans font-bold">0</span>
-              </button>
-            </div>
+          {/* Left: Mobile Menu & Search */}
+          <div className="flex items-center flex-1">
+            <button className="md:hidden p-2 text-[var(--color-primary)]">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <button className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
           </div>
+
+          {/* Center: Logo */}
+          <div className="flex-shrink-0 flex justify-center text-center">
+            <Link href="/" className="font-serif text-3xl tracking-widest text-[var(--color-primary)]">
+              SIPORAHQ
+            </Link>
+          </div>
+
+          {/* Right: Account & Cart */}
+          <div className="flex items-center justify-end flex-1 gap-2">
+            <Link href="/account" className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </Link>
+            <Link href="/cart" className="p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              <span className="absolute top-0 right-0 bg-[var(--color-primary)] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+            </Link>
+          </div>
+
         </div>
-      </header>
-    </div>
+
+        {/* Bottom Header Area: Navigation (Desktop Only) */}
+        <nav className="hidden md:flex justify-center items-center pb-4 space-x-8">
+          <Link href="/" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+            Home
+          </Link>
+          <Link href="/products" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+            Shop All
+          </Link>
+          <Link href="/products" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+            Premium Dinnerware
+          </Link>
+          <Link href="/products" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+            Tea & Coffee Sets
+          </Link>
+          <Link href="/products" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+            Serveware & Bowls
+          </Link>
+          <Link href="/gifting" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+            Luxury Gifting
+          </Link>
+        </nav>
+
+      </div>
+    </header>
   );
 }

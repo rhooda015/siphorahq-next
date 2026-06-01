@@ -27,7 +27,6 @@ export default function HomePage() {
 
       {/* Hero Banner Image */}
       <section className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center bg-[var(--color-accent-light)]">
-        {/* Placeholder for Hero Image - In Shopify this is Image Banner */}
         <div className="absolute inset-0 z-0">
           <Image 
             src="/images/hero.png" 
@@ -49,6 +48,26 @@ export default function HomePage() {
           <Link href="/products" className="btn-primary inline-block">
             Shop Collection
           </Link>
+        </div>
+      </section>
+
+      {/* Circular Categories List */}
+      <section className="py-12 px-4 max-w-7xl mx-auto border-b border-[var(--color-border)]">
+        <div className="flex justify-start md:justify-center overflow-x-auto gap-8 pb-4 hide-scrollbar">
+          {[
+            { name: "Dinnerware", img: "/images/dinnerware.png" },
+            { name: "Tea Sets", img: "/images/teaset.png" },
+            { name: "Serveware", img: "/images/serveware.png" },
+            { name: "Cutlery", img: "/images/dinnerware.png" },
+            { name: "Gifting", img: "/images/gifting.png" },
+          ].map((cat, idx) => (
+            <Link href="/products" key={idx} className="flex flex-col items-center group min-w-[100px]">
+              <div className="w-24 h-24 rounded-full overflow-hidden mb-4 relative bg-[var(--color-accent-light)] border-2 border-transparent group-hover:border-[var(--color-primary)] transition-all">
+                <Image src={cat.img} alt={cat.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+              </div>
+              <span className="text-[13px] text-[var(--color-primary)] font-sans text-center group-hover:font-medium transition-all">{cat.name}</span>
+            </Link>
+          ))}
         </div>
       </section>
 
