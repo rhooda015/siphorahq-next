@@ -94,8 +94,8 @@ export default function HomePage() {
 
   // Mock Data
   const productsNew = [
-    { id: 1, name: 'Siphorahq Premium Serving Tray Set of 2 | Gold Handle Trays (Brown)', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/serveware.png', reviews: 1 },
-    { id: 2, name: 'Siphorahq Designer Gift Box | Luxury Home Decor & Gifting', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/gifting_siporahq.png', reviews: 4 },
+    { id: 1, name: 'Siphorahq Premium Serving Tray Set of 2 | Gold Handle Trays (Brown)', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/prod1.png', reviews: 1 },
+    { id: 2, name: 'Siphorahq Designer Gift Box | Luxury Home Decor & Gifting', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/prod2.png', reviews: 4 },
     { id: 3, name: 'Decorative Leatherette Trays Set of 2 | Luxury Serving Tray by Siphorahq', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/serveware_var1.png', reviews: 1 },
     { id: 4, name: 'Siphorahq Baroque Print Gift Box | Gold Accent for Home', price: 'Rs. 3,600.00', oldPrice: 'Rs. 5,000.00', sale: true, img: '/images/gifting.png', reviews: 1 },
   ];
