@@ -2,9 +2,37 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
 import { BRAND } from '@/config/brand';
 import { ChevronRight, Star, Minus, Plus } from 'lucide-react';
-import { getProductById } from '@/data/products';
+import { STATIC_PRODUCTS, getProductById } from '@/data/products';
+
+export async function generateStaticParams() {
+  return STATIC_PRODUCTS.map((product) => ({
+    id: product.id,
+  }));
+}
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const product = getProductById(params.id);
+  if (!product) return { title: 'Product Not Found' };
+
+  return {
+    title: `${product.name} | ${BRAND.name}`,
+    description: product.description,
+    alternates: { canonical: `https://siphorahq.in/products/${product.id}` },
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      images: [product.image || ''],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.name,
+      description: product.description,
+    }
+  };
+}
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
   const product = getProductById(params.id);
@@ -13,8 +41,33 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
     notFound();
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description,
+    image: `https://siphorahq.in${product.image}`,
+    brand: {
+      '@type': 'Brand',
+      name: BRAND.name
+    },
+    offers: {
+      '@type': 'Offer',
+      url: `https://siphorahq.in/products/${product.id}`,
+      priceCurrency: 'INR',
+      price: product.salePrice || product.price,
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition'
+    }
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 lg:flex lg:gap-12 pb-32 md:pb-12 bg-[var(--color-bg)]">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="max-w-7xl mx-auto px-4 py-8 lg:flex lg:gap-12 pb-32 md:pb-12 bg-[var(--color-bg)]">
       
       {/* Breadcrumbs */}
       <div className="w-full lg:hidden mb-4 flex items-center text-xs font-sans text-[var(--color-text-muted)]">
@@ -151,5 +204,6 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         </div>
       </div>
     </div>
+    </>
   );
 }
