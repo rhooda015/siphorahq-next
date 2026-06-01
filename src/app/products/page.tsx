@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ClientProductGrid from './ClientProductGrid';
 
 export default function ProductsPage() {
@@ -16,7 +16,9 @@ export default function ProductsPage() {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <ClientProductGrid />
+        <Suspense fallback={<div className="py-20 text-center font-serif text-[var(--color-primary)]">Loading Collections...</div>}>
+          <ClientProductGrid />
+        </Suspense>
       </div>
     </div>
   );
