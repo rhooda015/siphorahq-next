@@ -1,8 +1,21 @@
+import React from "react";
+import { BRAND } from "@/config/brand";
+
+export const metadata = {
+  title: `Luxury Gifting | ${BRAND.name}`,
+};
+
 export default function Page() {
   return (
-    <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
-      <h1 className="text-3xl font-serif text-[#1A1A1A] mb-4">Gifting</h1>
-      <p className="text-sm font-sans text-[#6B6560]">This page is currently under construction. Please check in <a href="https://siphorahq.in" className="text-[#C9A84C] hover:text-[#B08D38] transition-colors underline">siphorahq.in</a></p>
+    <div className="min-h-screen bg-[var(--color-bg)] py-16 px-4">
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-3xl md:text-5xl font-serif text-[var(--color-primary)] mb-8 text-center">
+          Luxury Gifting
+        </h1>
+        <div className="prose prose-lg mx-auto text-[var(--color-text-muted)] font-sans whitespace-pre-wrap leading-relaxed">
+          Explore our curated selection of luxury gift boxes, premium tea sets, and elegant serveware. Perfect for weddings, corporate events, and special occasions.
+        </div>
+      </div>
     </div>
   );
 }

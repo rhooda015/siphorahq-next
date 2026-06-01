@@ -1,40 +1,22 @@
 import React from 'react';
 import ClientProductGrid from './ClientProductGrid';
 
-const API_URL = 'https://siporahq-backend.onrender.com/api/products';
-
-async function getProducts() {
-  try {
-    const res = await fetch(API_URL, {
-      next: { revalidate: 300 }
-    });
-    if (!res.ok) {
-      return null;
-    }
-    return res.json();
-  } catch (error) {
-    return null;
-  }
-}
-
-export default async function ProductsPage() {
-  const products = await getProducts();
-
+export default function ProductsPage() {
   return (
-    <div className="min-h-screen bg-[#FDFBF7]">
+    <div className="min-h-screen bg-[var(--color-bg)]">
       {/* ── PAGE HEADER ── */}
-      <section className="bg-[#F5F0E8] border-b border-[#E8E0D5] py-14 text-center">
-        <p className="section-label">The Collection</p>
-        <h1 className="text-4xl md:text-5xl font-serif text-[#1A1A1A] mb-3">
+      <section className="bg-[var(--color-accent-light)] border-b border-[var(--color-border)] py-14 text-center px-4">
+        <p className="text-[12px] font-sans font-medium uppercase tracking-widest text-[var(--color-text-muted)] mb-3">The Collection</p>
+        <h1 className="text-4xl md:text-5xl font-serif text-[var(--color-primary)] mb-4">
           All Collections
         </h1>
-        <p className="text-[#6B6560] font-sans text-sm max-w-md mx-auto">
-          Handcrafted porcelain for quiet rituals — made by master artisans across India.
+        <p className="text-[var(--color-text-muted)] font-sans text-sm max-w-md mx-auto leading-relaxed">
+          Discover our curated selection of premium porcelain dinnerware, luxury tea sets, and aesthetic home decor.
         </p>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <ClientProductGrid initialProducts={products} />
+        <ClientProductGrid />
       </div>
     </div>
   );

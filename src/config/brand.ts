@@ -1,13 +1,15 @@
 export const BRAND = {
-  name: "SIPORAHQ",
-  domain: "https://siporahq.com",
+  name: "Siphorahq",
+  domain: "https://siphorahq.in",
   social: {
-    instagram: "https://instagram.com/siporahq",
-    pinterest: "https://pinterest.com/siporahq",
+    instagram: "https://instagram.com/siphorahq",
+    pinterest: "https://pinterest.com/siphorahq",
   },
   contact: {
     whatsappNumber: "919540027978",
+    email: "support@siphorahq.in"
   },
+  freeShippingThreshold: 1999,
 };
 
 /**

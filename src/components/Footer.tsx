@@ -1,9 +1,18 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import { BRAND } from '@/config/brand';
 
 export default function Footer() {
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubscribed(true);
+    setTimeout(() => setSubscribed(false), 5000);
+  };
+
   return (
     <footer className="bg-[var(--color-accent-light)] border-t border-[var(--color-border)] font-sans mt-auto">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
@@ -13,7 +22,7 @@ export default function Footer() {
           
           {/* Column 1: About */}
           <div className="col-span-1">
-            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">About Siporahq</h2>
+            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">About Siphorahq</h2>
             <ul className="space-y-4">
               <li><Link href="/about" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Our Story</Link></li>
               <li><Link href="/craftsmanship" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Craftsmanship & Quality</Link></li>
@@ -51,11 +60,11 @@ export default function Footer() {
           <div className="col-span-1">
             <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">Collections</h2>
             <ul className="space-y-4">
-              <li><Link href="/products" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Premium Dinnerware</Link></li>
-              <li><Link href="/products" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Tea & Coffee Sets</Link></li>
-              <li><Link href="/products" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Serveware & Bowls</Link></li>
+              <li><Link href="/products?category=dinner-set" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Premium Dinnerware</Link></li>
+              <li><Link href="/products?category=tea-set" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Tea & Coffee Sets</Link></li>
+              <li><Link href="/products?category=serveware" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Serveware & Bowls</Link></li>
               <li><Link href="/gifting" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Luxury Gifting</Link></li>
-              <li><Link href="/products" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Best Sellers</Link></li>
+              <li><Link href="/products?category=gifts" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm">Best Sellers</Link></li>
             </ul>
           </div>
 
@@ -63,23 +72,29 @@ export default function Footer() {
           <div className="col-span-1 md:col-span-1">
             <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">Stay Connected</h2>
             <p className="text-[var(--color-text-muted)] text-sm mb-4 leading-relaxed">Subscribe to receive exclusive offers, early access to new collections, and styling inspiration.</p>
-            <form className="flex flex-col gap-3" onSubmit={(e) => e.preventDefault()}>
-              <div className="relative">
-                <input 
-                  type="email" 
-                  placeholder="Your email address" 
-                  className="w-full bg-transparent border-b border-[var(--color-border)] text-[var(--color-primary)] px-0 py-2 focus:outline-none focus:border-[var(--color-primary)] transition-colors rounded-none placeholder:text-gray-400"
-                  required
-                />
-                <button 
-                  type="submit" 
-                  className="absolute right-0 top-0 bottom-0 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors font-sans tracking-widest text-xs uppercase"
-                  aria-label="Subscribe"
-                >
-                  Join
-                </button>
+            {subscribed ? (
+              <div className="text-green-700 bg-green-50 border border-green-200 p-3 text-sm font-medium tracking-wide">
+                Thank you for subscribing!
               </div>
-            </form>
+            ) : (
+              <form className="flex flex-col gap-3" onSubmit={handleSubscribe}>
+                <div className="relative">
+                  <input 
+                    type="email" 
+                    placeholder="Your email address" 
+                    className="w-full bg-transparent border-b border-[var(--color-border)] text-[var(--color-primary)] px-0 py-2 focus:outline-none focus:border-[var(--color-primary)] transition-colors rounded-none placeholder:text-gray-400"
+                    required
+                  />
+                  <button 
+                    type="submit" 
+                    className="absolute right-0 top-0 bottom-0 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors font-sans tracking-widest text-xs uppercase"
+                    aria-label="Subscribe"
+                  >
+                    Join
+                  </button>
+                </div>
+              </form>
+            )}
             
             {/* Social Icons Placeholder */}
             <div className="mt-8 flex gap-4">
@@ -96,7 +111,7 @@ export default function Footer() {
         {/* Bottom Footer */}
         <div className="border-t border-[var(--color-border)] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[var(--color-text-muted)]">
           <div className="flex flex-col md:flex-row items-center gap-2">
-            <p>&copy; {new Date().getFullYear()}, Siporahq.</p>
+            <p>&copy; {new Date().getFullYear()}, {BRAND.name}.</p>
             <span className="hidden md:inline">•</span>
             <p className="font-serif italic text-[var(--color-primary)]">Poetry in Porcelain</p>
           </div>

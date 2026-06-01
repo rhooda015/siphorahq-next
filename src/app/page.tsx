@@ -151,16 +151,16 @@ export default function HomePage() {
       <section className="py-12 px-4 max-w-7xl mx-auto border-b border-[var(--color-border)] mb-16">
         <div className="flex justify-start md:justify-center overflow-x-auto gap-4 md:gap-10 pb-4 hide-scrollbar">
           {[
-            { name: "Dinner Set", img: "/images/dinnerware_var1.png" },
-            { name: "Platter", img: "/images/serveware_var1.png" },
-            { name: "Plates", img: "/images/cat_plates.png" },
-            { name: "Snacks Set", img: "/images/cat_snacks.png" },
-            { name: "Coffee Mug Set", img: "/images/cat_mugs.png" },
-            { name: "Tea Cup Set", img: "/images/teaset.png" },
-            { name: "Cake Stands", img: "/images/cat_cakestand.png" },
-            { name: "Opal Glass", img: "/images/cat_opalglass.png" },
+            { name: "Dinner Set", img: "/images/dinnerware_var1.png", cat: "dinner-set" },
+            { name: "Platter", img: "/images/serveware_var1.png", cat: "serveware" },
+            { name: "Plates", img: "/images/cat_plates.png", cat: "plates" },
+            { name: "Snacks Set", img: "/images/cat_snacks.png", cat: "serveware" },
+            { name: "Coffee Mug Set", img: "/images/cat_mugs.png", cat: "mugs" },
+            { name: "Tea Cup Set", img: "/images/teaset.png", cat: "tea-set" },
+            { name: "Cake Stands", img: "/images/cat_cakestand.png", cat: "serveware" },
+            { name: "Opal Glass", img: "/images/cat_opalglass.png", cat: "dinner-set" },
           ].map((cat, idx) => (
-            <Link href="/products" key={idx} className="flex flex-col items-center group min-w-[90px]">
+            <Link href={`/products?category=${cat.cat}`} key={idx} className="flex flex-col items-center group min-w-[90px]">
               <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden mb-3 relative bg-[var(--color-accent-light)] border-2 border-transparent group-hover:border-[var(--color-primary)] transition-all">
                 <Image src={cat.img} alt={cat.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>

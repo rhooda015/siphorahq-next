@@ -1,5 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
+import { ShoppingBag, User } from 'lucide-react';
+import { BRAND } from '@/config/brand';
 
 export default function Header() {
   return (
@@ -25,22 +27,18 @@ export default function Header() {
 
           {/* Center: Logo */}
           <div className="flex-shrink-0 flex justify-center text-center">
-            <Link href="/" className="font-serif text-3xl tracking-widest text-[var(--color-primary)]">
-              SIPORAHQ
+            <Link href="/" className="font-serif text-3xl tracking-widest text-[var(--color-primary)] uppercase">
+              {BRAND.name}
             </Link>
           </div>
 
           {/* Right: Account & Cart */}
           <div className="flex items-center justify-end flex-1 gap-2">
             <Link href="#" className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
+              <User className="h-5 w-5" />
             </Link>
             <Link href="/checkout/cart" className="p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
+              <ShoppingBag className="h-5 w-5" />
               <span className="absolute top-0 right-0 bg-[var(--color-primary)] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
             </Link>
           </div>

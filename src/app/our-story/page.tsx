@@ -2,7 +2,7 @@ import React from "react";
 import { BRAND } from "@/config/brand";
 
 export const metadata = {
-  title: `Sustainability Commitment | ${BRAND.name}`,
+  title: `Our Story | ${BRAND.name}`,
 };
 
 export default function Page() {
@@ -10,10 +10,10 @@ export default function Page() {
     <div className="min-h-screen bg-[var(--color-bg)] py-16 px-4">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl md:text-5xl font-serif text-[var(--color-primary)] mb-8 text-center">
-          Sustainability Commitment
+          Our Story
         </h1>
         <div className="prose prose-lg mx-auto text-[var(--color-text-muted)] font-sans whitespace-pre-wrap leading-relaxed">
-          We are committed to eco-friendly practices. Our packaging is 100% recyclable, and we continuously strive to minimize our carbon footprint across our supply chain.
+          Crafting Elegant Moments, One Table at a Time.\n\nAt SIPORAHQ, we believe that every meal deserves a beautiful setting. Inspired by timeless craftsmanship and refined living, we curate premium porcelain dinnerware, tea sets, serveware, and luxury gifting collections designed to elevate everyday experiences.
         </div>
       </div>
     </div>
