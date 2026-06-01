@@ -3,10 +3,12 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
-import { ChevronRight, CreditCard, Wallet, Truck, ShieldCheck } from 'lucide-react';
+import { ChevronRight, CreditCard, Wallet, Truck, ShieldCheck, Lock, CheckCircle, MessageCircle, HeartHandshake } from 'lucide-react';
 import { BRAND } from '@/config/brand';
 import { trackPurchase } from '@/lib/analytics';
 import { useCart } from '@/store/useCart';
+import CheckoutProgress from '@/components/CheckoutProgress';
+import CheckoutOrderSummary from '@/components/CheckoutOrderSummary';
 
 export default function PaymentPage() {
   const [method, setMethod] = useState('razorpay');
@@ -128,14 +130,7 @@ export default function PaymentPage() {
         src="https://checkout.razorpay.com/v1/checkout.js" 
         onLoad={() => setScriptLoaded(true)}
       />
-      {/* Checkout Steps */}
-      <div className="flex items-center text-xs font-sans text-text-muted mb-8 justify-center">
-        <Link href="/checkout/cart" className="hover:text-text">Cart</Link>
-        <ChevronRight className="w-3 h-3 mx-2" />
-        <Link href="/checkout/address" className="hover:text-text">Address</Link>
-        <ChevronRight className="w-3 h-3 mx-2" />
-        <span className="font-medium text-text">Payment</span>
-      </div>
+      <CheckoutProgress currentStep="payment" />
 
       <div className="max-w-6xl mx-auto lg:flex gap-12">
         <div className="lg:w-2/3">
@@ -162,44 +157,55 @@ export default function PaymentPage() {
             </label>
           </div>
 
-          <div className="mt-8 flex justify-end">
-            <button type="button" onClick={handlePayment} disabled={loading || (method === 'razorpay' && !scriptLoaded)} className="w-full md:w-auto btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
-              {loading ? 'Processing...' : (!scriptLoaded && method === 'razorpay' ? 'Loading Secure Gateway...' : 'Place Order')}
+          <div className="mt-8">
+            <button type="button" onClick={handlePayment} disabled={loading || (method === 'razorpay' && !scriptLoaded)} className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed text-sm py-4">
+              {loading ? 'Processing...' : (!scriptLoaded && method === 'razorpay' ? 'Loading Secure Gateway...' : 'Complete Purchase')}
             </button>
+            <p className="text-center text-xs font-sans text-[var(--color-text-muted)] mt-4 flex items-center justify-center gap-2">
+              <Lock className="w-3 h-3" />
+              Your payment information is encrypted and securely processed.
+            </p>
+          </div>
+
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-[var(--color-border)] pt-8">
+            {/* Customer Support Reassurance */}
+            <div className="bg-neutral-50 p-6 border border-[var(--color-border)]">
+              <div className="flex items-center gap-3 mb-3">
+                <MessageCircle className="w-5 h-5 text-[var(--color-primary)]" />
+                <h4 className="font-serif text-lg">Need Assistance?</h4>
+              </div>
+              <p className="text-xs font-sans text-[var(--color-text-muted)] leading-relaxed mb-3">
+                Our luxury concierges are available to assist you with your order.
+              </p>
+              <p className="text-xs font-sans font-medium text-[var(--color-text)]">WhatsApp: +91 98765 43210</p>
+              <p className="text-xs font-sans text-[var(--color-text-muted)] mt-1">Response Time: Under 1 Hour</p>
+            </div>
+
+            {/* Luxury Guarantee */}
+            <div className="bg-neutral-50 p-6 border border-[var(--color-border)]">
+              <div className="flex items-center gap-3 mb-3">
+                <HeartHandshake className="w-5 h-5 text-[var(--color-primary)]" />
+                <h4 className="font-serif text-lg">Siphorahq Guarantee</h4>
+              </div>
+              <ul className="text-xs font-sans text-[var(--color-text-muted)] space-y-2">
+                <li className="flex items-center gap-2"><CheckCircle className="w-3 h-3 text-[var(--color-primary)]" /> Handcrafted Premium Quality</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-3 h-3 text-[var(--color-primary)]" /> Secure Luxury Packaging</li>
+                <li className="flex items-center gap-2"><CheckCircle className="w-3 h-3 text-[var(--color-primary)]" /> Free Damage Replacement</li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        {/* Order Summary Sticky */}
-        <div className="lg:w-1/3 mt-12 lg:mt-0">
-          <div className="bg-bg p-6 border border-border sticky top-24">
-            <h3 className="font-serif text-xl mb-4">Order Summary</h3>
-            <div className="flex justify-between py-3 text-sm font-sans text-text-muted border-b border-border">
-              <span>Subtotal</span>
-              <span className="text-text font-medium">₹{total.toLocaleString('en-IN')}</span>
-            </div>
-            <div className="flex justify-between py-3 text-sm font-sans text-text-muted border-b border-border">
-              <span>Shipping</span>
-              <span className="text-gold font-medium">{total >= BRAND.freeShippingThreshold ? 'Free' : `₹${BRAND.shippingCost.toLocaleString('en-IN')}`}</span>
-            </div>
-            <div className="flex justify-between py-4 font-serif text-xl border-b border-border">
-              <span>Total</span>
-              <span>₹{finalAmount.toLocaleString('en-IN')}</span>
-            </div>
-            
-            <div className="mt-6 border border-[var(--color-border)] bg-white p-4 flex gap-4 items-start">
-              <ShieldCheck className="w-5 h-5 text-green-700 flex-shrink-0" />
-              <div>
-                <p className="text-xs font-sans font-medium uppercase tracking-widest text-[var(--color-text)]">100% Secure Checkout</p>
-                <p className="text-xs font-sans text-[var(--color-text-muted)] mt-1">Your payment information is encrypted and securely processed.</p>
-                <div className="mt-4 flex gap-3 opacity-70 grayscale">
-                   <svg viewBox="0 0 50 16" className="h-4 w-auto"><path fill="#1434CB" d="M21.93 1.05h3.42L23.1 15.5H19.7zm16.92 14.45h3.36l2.12-14.45h-3.36zm-7.6-14.28c-1.63-.44-3.5-.72-5.18-.72-5.46 0-9.29 2.83-9.33 6.91-.04 3 2.68 4.67 4.75 5.67 2.12 1.02 2.84 1.68 2.84 2.6-.02 1.4-1.7 2.05-3.26 2.05-2.07 0-3.32-.3-4.73-.93l-.66-.31L9 16c1.3.6 3.65 1.1 5.95 1.1 5.75 0 9.53-2.77 9.57-7.07.03-2.4-1.38-4.22-4.52-5.68-1.9-.94-3.07-1.57-3.07-2.54.02-.9.1-1.77 2.92-1.77 1.54 0 2.6.28 3.52.66l.4.18zM10.87 1.05L8.43 11l-.3-1.46C7.23 6.2 5.34 3.75 3 2.5L2.52 2.3l2.67 13.2h3.45L14.42 1.05z"/><path fill="#F5A623" d="M3 2.5v.02C1 3.2 0 4.68 0 7.82l.06-.32C.46 5.56 1.83 2.5 3 2.5z"/></svg>
-                   <svg viewBox="0 0 32 20" className="h-5 w-auto"><circle cx="10" cy="10" r="10" fill="#EB001B"/><circle cx="22" cy="10" r="10" fill="#F79E1B"/><path fill="#FF5F00" d="M16 10c0-3.3 1.9-6.2 4.7-7.9-2.8-1.7-6.6-1.7-9.4 0C14.1 3.8 16 6.7 16 10z"/></svg>
-                   <svg viewBox="0 0 24 24" className="h-6 w-auto" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20" /></svg>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {mounted && (
+          <CheckoutOrderSummary 
+            items={items}
+            total={total}
+            shippingCost={BRAND.shippingCost}
+            freeShippingThreshold={BRAND.freeShippingThreshold}
+            finalAmount={finalAmount}
+            isPaymentPage={true}
+          />
+        )}
       </div>
     </div>
   );

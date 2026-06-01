@@ -1,14 +1,17 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ChevronRight, CreditCard, ShieldCheck } from 'lucide-react';
+import { ChevronRight, CreditCard, ShieldCheck, Truck, Lock, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/store/useCart';
+import { BRAND } from '@/config/brand';
+import CheckoutProgress from '@/components/CheckoutProgress';
+import CheckoutOrderSummary from '@/components/CheckoutOrderSummary';
 
 export default function AddressPage() {
   const router = useRouter();
-  const { setCustomerDetails, customerDetails } = useCart();
+  const { setCustomerDetails, customerDetails, items, cartTotal } = useCart();
   
   const [email, setEmail] = useState(customerDetails?.email || '');
   const [phone, setPhone] = useState(customerDetails?.phone || '');
@@ -18,12 +21,25 @@ export default function AddressPage() {
   const [pincode, setPincode] = useState(customerDetails?.pincode || '');
   const [city, setCity] = useState(customerDetails?.city || '');
   const [state, setState] = useState(customerDetails?.state || '');
+  const [pincodeStatus, setPincodeStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    if (customerDetails?.pincode && customerDetails.pincode.length === 6 && customerDetails.city) {
+      setPincodeStatus('success');
+    }
+  }, [customerDetails]);
+
+  const total = mounted ? cartTotal() : 0;
+  const finalAmount = total + (total >= BRAND.freeShippingThreshold || total === 0 ? 0 : BRAND.shippingCost);
 
   const handlePincodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value.replace(/\D/g, '').slice(0, 6);
     setPincode(val);
 
     if (val.length === 6) {
+      setPincodeStatus('loading');
       try {
         const res = await fetch(`https://api.postalpincode.in/pincode/${val}`);
         const data = await res.json();
@@ -31,16 +47,20 @@ export default function AddressPage() {
           const postOffice = data[0].PostOffice[0];
           setCity(postOffice.District || postOffice.Block || postOffice.Name);
           setState(postOffice.State);
+          setPincodeStatus('success');
         } else {
           setCity('');
           setState('');
+          setPincodeStatus('error');
         }
       } catch (err) {
         console.error("Error fetching pincode", err);
+        setPincodeStatus('error');
       }
     } else {
       setCity('');
       setState('');
+      setPincodeStatus('idle');
     }
   };
 
@@ -61,17 +81,11 @@ export default function AddressPage() {
   
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 pb-32">
-      {/* Checkout Steps */}
-      <div className="flex items-center text-xs font-sans text-text-muted mb-8 justify-center">
-        <Link href="/checkout/cart" className="hover:text-text">Cart</Link>
-        <ChevronRight className="w-3 h-3 mx-2" />
-        <span className="font-medium text-text">Address</span>
-        <ChevronRight className="w-3 h-3 mx-2" />
-        <span className="opacity-50">Payment</span>
-      </div>
+      <CheckoutProgress currentStep="address" />
 
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-serif font-light mb-8 text-center">Shipping Details</h1>
+      <div className="max-w-6xl mx-auto lg:flex gap-12">
+        <div className="lg:w-2/3">
+          <h1 className="text-3xl font-serif font-light mb-8 lg:mb-12">Shipping Details</h1>
 
         <div className="bg-bg border border-border p-6 md:p-8">
           {/* Express Checkout Section */}
@@ -126,33 +140,81 @@ export default function AddressPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="text-xs font-sans text-text-muted uppercase tracking-widest mb-1 block">Pincode *</label>
-                <input 
-                  type="text" 
-                  inputMode="numeric" 
-                  required
-                  pattern="[0-9]{6}"
-                  title="6 digit pincode"
-                  value={pincode}
-                  onChange={handlePincodeChange}
-                  className="w-full bg-white border border-border px-3 py-2 text-sm font-sans outline-none focus:border-gold" 
-                />
+                <label className="text-xs font-sans text-[var(--color-text-muted)] uppercase tracking-widest mb-1 block">Pincode *</label>
+                <div className="relative">
+                  <input 
+                    type="text" 
+                    inputMode="numeric" 
+                    required
+                    pattern="[0-9]{6}"
+                    title="6 digit pincode"
+                    value={pincode}
+                    onChange={handlePincodeChange}
+                    className={`w-full bg-white border px-3 py-2 text-sm font-sans outline-none pr-10 transition-colors
+                      ${pincodeStatus === 'error' ? 'border-red-500 focus:border-red-500 bg-red-50' 
+                      : pincodeStatus === 'success' ? 'border-green-500 focus:border-green-500 bg-green-50' 
+                      : 'border-[var(--color-border)] focus:border-[var(--color-primary)]'}`} 
+                  />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    {pincodeStatus === 'loading' && <Loader2 className="w-4 h-4 text-[var(--color-text-muted)] animate-spin" />}
+                    {pincodeStatus === 'success' && <CheckCircle className="w-4 h-4 text-green-600" />}
+                    {pincodeStatus === 'error' && <XCircle className="w-4 h-4 text-red-500" />}
+                  </div>
+                </div>
+                {pincodeStatus === 'error' && (
+                  <p className="text-[10px] font-sans text-red-500 mt-1 uppercase tracking-widest">We currently do not deliver to this pincode.</p>
+                )}
+                {pincodeStatus === 'success' && (
+                  <p className="text-[10px] font-sans text-green-600 mt-1 uppercase tracking-widest">Delivery available to your location.</p>
+                )}
               </div>
               <div>
-                <label className="text-xs font-sans text-text-muted uppercase tracking-widest mb-1 block">City</label>
-                <input type="text" className="w-full bg-white border border-border px-3 py-2 text-sm font-sans outline-none focus:border-gold bg-neutral-50" readOnly value={city} />
+                <label className="text-xs font-sans text-[var(--color-text-muted)] uppercase tracking-widest mb-1 block">City</label>
+                <input type="text" className="w-full bg-neutral-50 border border-[var(--color-border)] px-3 py-2 text-sm font-sans outline-none text-[var(--color-text-muted)]" readOnly value={city} />
               </div>
               <div>
-                <label className="text-xs font-sans text-text-muted uppercase tracking-widest mb-1 block">State</label>
-                <input type="text" className="w-full bg-white border border-border px-3 py-2 text-sm font-sans outline-none focus:border-gold bg-neutral-50" readOnly value={state} />
+                <label className="text-xs font-sans text-[var(--color-text-muted)] uppercase tracking-widest mb-1 block">State</label>
+                <input type="text" className="w-full bg-neutral-50 border border-[var(--color-border)] px-3 py-2 text-sm font-sans outline-none text-[var(--color-text-muted)]" readOnly value={state} />
+              </div>
+            </div>
+
+            {/* Delivery Trust Signals */}
+            <div className="mt-4 pt-6 border-t border-[var(--color-border)] grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex items-center gap-3">
+                <Truck className="w-4 h-4 text-[var(--color-primary)]" />
+                <span className="text-xs font-sans font-medium text-[var(--color-text-muted)] uppercase tracking-widest">Free Shipping Across India</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CreditCard className="w-4 h-4 text-[var(--color-primary)]" />
+                <span className="text-xs font-sans font-medium text-[var(--color-text-muted)] uppercase tracking-widest">Cash on Delivery Available</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <ShieldCheck className="w-4 h-4 text-[var(--color-primary)]" />
+                <span className="text-xs font-sans font-medium text-[var(--color-text-muted)] uppercase tracking-widest">Secure Razorpay Payments</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle className="w-4 h-4 text-[var(--color-primary)]" />
+                <span className="text-xs font-sans font-medium text-[var(--color-text-muted)] uppercase tracking-widest">Est. Delivery: 3–7 Business Days</span>
               </div>
             </div>
 
             <div className="mt-8 flex justify-end">
-              <button type="submit" className="w-full md:w-auto btn-primary">Continue to Payment</button>
+              <button type="submit" disabled={pincodeStatus !== 'success'} className="w-full md:w-auto btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
+                Continue to Payment
+              </button>
             </div>
           </form>
         </div>
+        </div>
+        {mounted && (
+          <CheckoutOrderSummary 
+            items={items}
+            total={total}
+            shippingCost={BRAND.shippingCost}
+            freeShippingThreshold={BRAND.freeShippingThreshold}
+            finalAmount={finalAmount}
+          />
+        )}
       </div>
     </div>
   );
