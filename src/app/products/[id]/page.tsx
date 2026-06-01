@@ -5,8 +5,12 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { BRAND } from '@/config/brand';
 import { ChevronRight, Star, Minus, Plus } from 'lucide-react';
+import { STATIC_PRODUCTS, getProductById } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
 import ProductClientActions from './ProductClientActions';
+import DeliveryChecker from './DeliveryChecker';
+import FrequentlyBoughtTogether from './FrequentlyBoughtTogether';
+import ImageGallery from './ImageGallery';
 
 export async function generateStaticParams() {
   return STATIC_PRODUCTS.map((product) => ({
@@ -14,8 +18,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const product = getProductById(params.id);
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const product = getProductById(resolvedParams.id);
   if (!product) return { title: 'Product Not Found' };
 
   return {
@@ -35,8 +40,9 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   };
 }
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  const product = getProductById(params.id);
+export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const product = getProductById(resolvedParams.id);
 
   if (!product) {
     notFound();
@@ -61,6 +67,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
       itemCondition: 'https://schema.org/NewCondition'
     }
   };
+
+  const relatedProductForBundle = STATIC_PRODUCTS.find(p => p.id !== product.id && p.category !== product.category) || STATIC_PRODUCTS[0];
 
   return (
     <>
@@ -90,17 +98,14 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
           <span className="truncate">{product.name}</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="aspect-[4/5] bg-[var(--color-accent-light)] rounded-none overflow-hidden relative cursor-zoom-in md:col-span-2">
-            <Image src={product.image || '/images/dinnerware.png'} fill className="object-cover" alt="Product" />
-          </div>
-          <div className="aspect-[4/5] bg-[var(--color-accent-light)] rounded-none overflow-hidden relative cursor-zoom-in hidden md:block">
-            <Image src={product.image || '/images/dinnerware.png'} fill className="object-cover" alt="Product View 2" />
-          </div>
-          <div className="aspect-[4/5] bg-[var(--color-accent-light)] rounded-none overflow-hidden relative cursor-zoom-in hidden md:block">
-            <Image src={product.image || '/images/dinnerware.png'} fill className="object-cover" alt="Product View 3" />
-          </div>
-        </div>
+        <ImageGallery 
+          productName={product.name}
+          images={[
+            product.image || '/images/dinnerware.png',
+            '/images/serveware.png',
+            '/images/gifting.png'
+          ]} 
+        />
       </div>
 
       {/* Right: Product Details */}
@@ -142,13 +147,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         </div>
 
         {/* Delivery Checker */}
-        <div className="mt-8 bg-[var(--color-accent-light)] p-4 border border-[var(--color-border)] flex flex-col gap-2 mb-6">
-          <label className="text-sm font-sans font-medium text-[var(--color-primary)]">Check Delivery & COD</label>
-          <div className="flex">
-            <input type="text" placeholder="Enter Pincode" className="flex-1 bg-white border border-[var(--color-border)] px-3 py-2 text-sm font-sans outline-none focus:border-[#C9A84C]" />
-            <button className="bg-[var(--color-primary)] text-white px-4 text-xs uppercase tracking-widest font-medium hover:bg-[var(--color-secondary)] transition-colors">Check</button>
-          </div>
-        </div>
+        <DeliveryChecker />
 
         {/* Dynamic Client Actions (ATC, Buy Now, Trust Badges, Stock) */}
         <ProductClientActions product={product} />
@@ -193,35 +192,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
     </div>
     
     {/* Frequently Bought Together */}
-    <div className="max-w-7xl mx-auto px-4 py-16 border-t border-[var(--color-border)] bg-[var(--color-accent-light)]">
-      <h2 className="text-2xl md:text-3xl font-serif italic text-[var(--color-primary)] text-center mb-10">Frequently Bought Together</h2>
-      <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-        {/* Main Product */}
-        <div className="w-32 aspect-square relative bg-white border border-[var(--color-border)] p-2">
-          <Image src={product.image || '/images/dinnerware.png'} fill className="object-contain" alt={product.name} />
-        </div>
-        <Plus className="w-6 h-6 text-[var(--color-text-muted)]" />
-        {/* Recommended Product */}
-        <div className="w-32 aspect-square relative bg-white border border-[var(--color-border)] p-2">
-          <Image src="/images/serveware.png" fill className="object-contain" alt="Serving Bowl Set" />
-        </div>
-        
-        {/* Bundle Action */}
-        <div className="md:ml-12 mt-6 md:mt-0 flex flex-col items-center md:items-start">
-          <div className="text-[var(--color-primary)] text-xl font-sans font-medium mb-1">
-            Total price: ₹{(product.salePrice || product.price) + 2200}
-          </div>
-          <div className="text-sm font-sans text-[var(--color-text-muted)] mb-4">
-            Add <strong>Serving Bowl Set</strong> for ₹2,200
-          </div>
-          <Link href="/checkout/cart">
-            <button className="bg-[var(--color-primary)] text-white px-8 py-3 uppercase tracking-widest text-xs font-medium hover:bg-[var(--color-secondary)] transition-colors">
-              Add Both to Cart
-            </button>
-          </Link>
-        </div>
-      </div>
-    </div>
+    <FrequentlyBoughtTogether mainProduct={product} relatedProduct={relatedProductForBundle} />
 
     {/* Related Products Section */}
     <div className="max-w-7xl mx-auto px-4 py-16 border-t border-[var(--color-border)]">

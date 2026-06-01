@@ -26,10 +26,30 @@ export default function HeroCarousel() {
           key={slide.id} 
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
         >
-          <Image src={slide.img} alt={`Slide ${slide.id}`} fill priority={index === 0} className="object-cover object-center" sizes="100vw" />
+          <Image 
+            src={slide.img} 
+            alt={`Slide ${slide.id}`} 
+            fill 
+            priority={index === 0}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            className="object-cover object-center" 
+            sizes="100vw" 
+          />
           <div className="absolute inset-0 bg-black/10" />
         </div>
       ))}
+      
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none">
+        <h2 className="text-white text-4xl md:text-6xl font-serif mb-6 text-center shadow-sm drop-shadow-lg tracking-wide">
+          Elegance in Every Detail
+        </h2>
+        <a 
+          href="/products" 
+          className="pointer-events-auto bg-white text-[var(--color-primary)] px-8 py-3 uppercase tracking-widest text-sm font-medium hover:bg-gray-100 transition-colors shadow-lg"
+        >
+          Shop Now
+        </a>
+      </div>
       
       {/* Slider Dots */}
       <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center gap-2">

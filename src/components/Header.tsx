@@ -3,16 +3,20 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, User, X, Search, Menu, Lock } from 'lucide-react';
+import { ShoppingBag, User, X, Search, Menu, Lock, Truck, ShieldCheck, Phone } from 'lucide-react';
 import { BRAND } from '@/config/brand';
+import { useCart } from '@/store/useCart';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const isCheckout = pathname.startsWith('/checkout');
+  const { items } = useCart();
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
@@ -40,8 +44,31 @@ export default function Header() {
   }
 
   return (
-    <header className={`sticky top-0 z-50 w-full transition-all duration-300 bg-[var(--color-bg)] ${isScrolled ? 'border-b border-[var(--color-border)]' : 'border-b border-transparent'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <>
+      {/* Global Trust Bar */}
+      <div className="bg-[var(--color-primary)] text-white text-xs font-sans py-2 hidden md:block">
+        <div className="max-w-7xl mx-auto px-4 flex justify-center gap-12 items-center tracking-widest uppercase">
+          <div className="flex items-center gap-2">
+            <Truck className="w-3 h-3" />
+            <span>Free Shipping Over ₹{BRAND.freeShippingThreshold.toLocaleString('en-IN')}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="w-3 h-3" />
+            <span>100% Secure Checkout</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Phone className="w-3 h-3" />
+            <span>Premium Support</span>
+          </div>
+        </div>
+      </div>
+      {/* Mobile Trust Bar (Single Item) */}
+      <div className="bg-[var(--color-primary)] text-white text-[10px] font-sans py-1.5 md:hidden text-center tracking-widest uppercase">
+        Free Shipping Over ₹{BRAND.freeShippingThreshold.toLocaleString('en-IN')}
+      </div>
+
+      <header className={`sticky top-0 z-40 w-full transition-all duration-300 bg-[var(--color-bg)] ${isScrolled ? 'border-b border-[var(--color-border)] shadow-sm' : 'border-b border-transparent'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Header Area: Icons & Logo */}
         <div className="flex justify-between items-center h-20">
@@ -77,7 +104,11 @@ export default function Header() {
             </Link>
             <Link href="/checkout/cart" className="p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative">
               <ShoppingBag className="h-5 w-5" />
-              <span className="absolute top-0 right-0 bg-[var(--color-primary)] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+              {mounted && items.length > 0 && (
+                <span className="absolute top-0 right-0 bg-[var(--color-primary)] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                  {items.length}
+                </span>
+              )}
             </Link>
           </div>
 
@@ -127,5 +158,6 @@ export default function Header() {
         </div>
       )}
     </header>
+    </>
   );
 }

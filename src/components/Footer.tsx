@@ -1,38 +1,9 @@
-"use client";
-
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { BRAND } from '@/config/brand';
+import NewsletterForm from './NewsletterForm';
 
 export default function Footer() {
-  const [subscribed, setSubscribed] = useState(false);
-  const pathname = usePathname();
-  const isCheckout = pathname.startsWith('/checkout') && pathname !== '/checkout/cart';
-
-  if (isCheckout) {
-    return (
-      <footer className="bg-white border-t border-[var(--color-border)] py-8 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-[var(--color-text-muted)] font-sans">
-            &copy; {new Date().getFullYear()} {BRAND.name}. All rights reserved.
-          </p>
-          <div className="flex gap-6 text-xs text-[var(--color-text-muted)] font-sans">
-            <Link href="/refund-policy" className="hover:text-[var(--color-primary)]">Refund Policy</Link>
-            <Link href="/privacy-policy" className="hover:text-[var(--color-primary)]">Privacy Policy</Link>
-            <Link href="/terms-of-service" className="hover:text-[var(--color-primary)]">Terms of Service</Link>
-          </div>
-        </div>
-      </footer>
-    );
-  }
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubscribed(true);
-    setTimeout(() => setSubscribed(false), 5000);
-  };
-
   return (
     <footer className="bg-[var(--color-accent-light)] border-t border-[var(--color-border)] font-sans mt-auto">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
@@ -98,29 +69,8 @@ export default function Footer() {
 
             <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6 mt-12">Stay Connected</h2>
             <p className="text-[var(--color-text-muted)] text-sm mb-4 leading-relaxed">Subscribe to receive exclusive offers, early access to new collections, and styling inspiration.</p>
-            {subscribed ? (
-              <div className="text-green-700 bg-green-50 border border-green-200 p-3 text-sm font-medium tracking-wide">
-                Thank you for subscribing!
-              </div>
-            ) : (
-              <form className="flex flex-col gap-3" onSubmit={handleSubscribe}>
-                <div className="relative">
-                  <input 
-                    type="email" 
-                    placeholder="Your email address" 
-                    className="w-full bg-transparent border-b border-[var(--color-border)] text-[var(--color-primary)] px-0 py-2 focus:outline-none focus:border-[var(--color-primary)] transition-colors rounded-none placeholder:text-gray-400"
-                    required
-                  />
-                  <button 
-                    type="submit" 
-                    className="absolute right-0 top-0 bottom-0 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors font-sans tracking-widest text-xs uppercase"
-                    aria-label="Subscribe"
-                  >
-                    Join
-                  </button>
-                </div>
-              </form>
-            )}
+            {/* Newsletter Form */}
+            <NewsletterForm />
             
             {/* Social Icons Placeholder */}
             <div className="mt-8 flex gap-4">
@@ -141,11 +91,10 @@ export default function Footer() {
             <span className="hidden md:inline">•</span>
             <p className="font-serif italic text-[var(--color-primary)]">Poetry in Porcelain</p>
           </div>
-          <div className="flex gap-2">
-            {/* Fake Payment Icons */}
-            <div className="w-10 h-6 bg-white border border-[var(--color-border)] rounded-sm flex items-center justify-center text-[10px]">VISA</div>
-            <div className="w-10 h-6 bg-white border border-[var(--color-border)] rounded-sm flex items-center justify-center text-[10px]">MC</div>
-            <div className="w-10 h-6 bg-white border border-[var(--color-border)] rounded-sm flex items-center justify-center text-[10px]">AMEX</div>
+          <div className="flex gap-3 opacity-60 grayscale hover:grayscale-0 transition-all">
+             <svg viewBox="0 0 50 16" className="h-4 w-auto"><path fill="#1434CB" d="M21.93 1.05h3.42L23.1 15.5H19.7zm16.92 14.45h3.36l2.12-14.45h-3.36zm-7.6-14.28c-1.63-.44-3.5-.72-5.18-.72-5.46 0-9.29 2.83-9.33 6.91-.04 3 2.68 4.67 4.75 5.67 2.12 1.02 2.84 1.68 2.84 2.6-.02 1.4-1.7 2.05-3.26 2.05-2.07 0-3.32-.3-4.73-.93l-.66-.31L9 16c1.3.6 3.65 1.1 5.95 1.1 5.75 0 9.53-2.77 9.57-7.07.03-2.4-1.38-4.22-4.52-5.68-1.9-.94-3.07-1.57-3.07-2.54.02-.9.1-1.77 2.92-1.77 1.54 0 2.6.28 3.52.66l.4.18zM10.87 1.05L8.43 11l-.3-1.46C7.23 6.2 5.34 3.75 3 2.5L2.52 2.3l2.67 13.2h3.45L14.42 1.05z"/><path fill="#F5A623" d="M3 2.5v.02C1 3.2 0 4.68 0 7.82l.06-.32C.46 5.56 1.83 2.5 3 2.5z"/></svg>
+             <svg viewBox="0 0 32 20" className="h-5 w-auto"><circle cx="10" cy="10" r="10" fill="#EB001B"/><circle cx="22" cy="10" r="10" fill="#F79E1B"/><path fill="#FF5F00" d="M16 10c0-3.3 1.9-6.2 4.7-7.9-2.8-1.7-6.6-1.7-9.4 0C14.1 3.8 16 6.7 16 10z"/></svg>
+             <svg viewBox="0 0 24 24" className="h-6 w-auto" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20" /></svg>
           </div>
         </div>
 

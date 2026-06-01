@@ -5,6 +5,12 @@ import { BRAND, getWhatsAppLink } from '@/config/brand';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileBottomNav from '@/components/MobileBottomNav';
+import FooterWrapper from '@/components/FooterWrapper';
+import CartDrawer from '@/components/CartDrawer';
+import ExitIntentModal from '@/components/ExitIntentModal';
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from 'next/script';
 
 const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-playfair' });
 const lora = Lora({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-lora', style: ['normal', 'italic'] });
@@ -12,6 +18,29 @@ const lora = Lora({ subsets: ['latin'], weight: ['400', '500', '600', '700'], va
 export const metadata = {
   title: `${BRAND.name} | Premium Porcelain & Luxury Home Decor`,
   description: 'Elevate your dining experience with luxury porcelain dinnerware, aesthetic serveware, and premium home decor collections.',
+  metadataBase: new URL('https://siphorahq.in'),
+  openGraph: {
+    title: `${BRAND.name} | Premium Porcelain & Luxury Home Decor`,
+    description: 'Elevate your dining experience with luxury porcelain dinnerware, aesthetic serveware, and premium home decor collections.',
+    url: 'https://siphorahq.in',
+    siteName: BRAND.name,
+    images: [
+      {
+        url: '/images/hero.png',
+        width: 1200,
+        height: 630,
+        alt: `${BRAND.name} Luxury Dinnerware`,
+      },
+    ],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${BRAND.name} | Premium Porcelain & Luxury Home Decor`,
+    description: 'Elevate your dining experience with luxury porcelain dinnerware, aesthetic serveware, and premium home decor collections.',
+    images: ['/images/hero.png'],
+  },
 };
 
 export default function RootLayout({
@@ -59,26 +88,46 @@ export default function RootLayout({
             }),
           }}
         />
-        {/* Placeholder Google Tag Manager (GTM) script */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-XXXXXXXXXX');
-            `,
-          }}
-        />
       </head>
       <body className="pb-[60px] md:pb-0">
+        {/* Google Analytics (GA4) */}
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXX');
+          `}
+        </Script>
+        {/* Meta Pixel Code */}
+        <Script id="meta-pixel" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', 'XXXXXXXXXXXXXXXX');
+            fbq('track', 'PageView');
+          `}
+        </Script>
+
         <Header />
         
         {/* Main Application Content */}
         <main className="min-h-screen pt-[112px]">{children}</main>
 
-        <Footer />
+        <FooterWrapper>
+          <Footer />
+        </FooterWrapper>
+        <CartDrawer />
         <MobileBottomNav />
+        <ExitIntentModal />
+        <Analytics />
+        <SpeedInsights />
 
         {/* Global Footer Block: Floating Real-Time Concierge Support Component */}
         <a

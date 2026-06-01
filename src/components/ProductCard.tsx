@@ -1,9 +1,7 @@
-"use client";
-
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { trackAddToCart } from '@/lib/analytics';
+import ProductCardActions from './ProductCardActions';
 
 export default function ProductCard({ product }: { product: any }) {
   return (
@@ -16,39 +14,24 @@ export default function ProductCard({ product }: { product: any }) {
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        
-        {/* Special Badge (Bestseller, New Arrival) */}
-        {product.badge && (
-          <span className="absolute top-2 left-2 bg-[var(--color-primary)] text-white text-[10px] font-sans font-medium uppercase tracking-widest px-2 py-1 z-10 shadow-sm">
-            {product.badge}
-          </span>
-        )}
+        {/* Badges Container */}
+        <div className="absolute top-2 left-2 flex flex-col gap-1.5 z-10 items-start">
+          {/* Special Badge (Bestseller, New Arrival) */}
+          {product.badge && (
+            <span className="bg-[var(--color-primary)] text-white text-[10px] font-sans font-medium uppercase tracking-widest px-2 py-1 shadow-sm">
+              {product.badge}
+            </span>
+          )}
 
-        {/* Savings Badge */}
-        {(product.sale || (product.salePrice && product.salePrice < product.price)) && (
-          <span className={`absolute ${product.badge ? 'top-10' : 'top-2'} left-2 bg-red-50 text-red-700 border border-red-200 text-[10px] font-sans font-bold uppercase tracking-widest px-2 py-1 z-10 shadow-sm`}>
-            Save {product.salePrice ? Math.round((1 - product.salePrice / product.price) * 100) : 10}%
-          </span>
-        )}
+          {/* Savings Badge */}
+          {(product.sale || (product.salePrice && product.salePrice < product.price)) && (
+            <span className="bg-red-50 text-red-700 border border-red-200 text-[10px] font-sans font-bold uppercase tracking-widest px-2 py-1 shadow-sm">
+              Save {product.salePrice ? Math.round((1 - product.salePrice / product.price) * 100) : 10}%
+            </span>
+          )}
+        </div>
 
-        {/* Quick Add to Cart (Hover) */}
-        <button 
-          onClick={(e) => {
-            e.preventDefault();
-            trackAddToCart(product, 1);
-            window.location.href = '/checkout/cart';
-          }}
-          className="absolute bottom-0 left-0 w-full bg-white/90 backdrop-blur-sm text-[var(--color-primary)] uppercase tracking-widest text-xs font-medium py-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] hover:bg-[var(--color-primary)] hover:text-white z-20"
-        >
-          Quick Add
-        </button>
-
-        {/* Heart Icon (Wishlist) */}
-        <button className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm text-[var(--color-text-muted)] hover:text-red-500 transition-colors z-10" aria-label="Add to wishlist">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-          </svg>
-        </button>
+        <ProductCardActions product={product} />
       </div>
 
       {/* Product Info */}

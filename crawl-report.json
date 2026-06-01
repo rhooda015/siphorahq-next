@@ -1,0 +1,38 @@
+{
+  "brokenLinksReport": {
+    "totalInternalLinksChecked": 33,
+    "brokenLinks": []
+  },
+  "missingImagesReport": {
+    "totalImages": 16,
+    "brokenImages": [
+      "/_next/image?url=%2Fimages%2Fhero.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fserveware.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fgifting.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fdinnerware_var1.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fserveware_var1.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fcat_plates.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fcat_snacks.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fcat_mugs.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fteaset.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fcat_cakestand.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fcat_opalglass.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fdinnerware.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fprod1.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fprod2.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fdinnerware_var2.png&amp;w=3840&amp;q=75",
+      "/_next/image?url=%2Fimages%2Fserveware_var2.png&amp;w=3840&amp;q=75"
+    ],
+    "imagesMissingAltText": 0
+  },
+  "missingMetadataReport": {
+    "hasTitle": true,
+    "hasDescription": true,
+    "hasOgImage": true,
+    "hasJsonLd": true
+  },
+  "crawlabilityReport": {
+    "robotsTxtExists": true,
+    "sitemapXmlExists": true
+  }
+}

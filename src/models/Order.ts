@@ -15,10 +15,17 @@ const OrderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending_payment', 'paid', 'failed', 'shipped', 'delivered'],
+    enum: ['pending_payment', 'paid', 'failed', 'shipped', 'delivered', 'pending_confirmation'],
     default: 'pending_payment'
   },
+  paymentMethod: {
+    type: String,
+    default: 'razorpay'
+  },
   customerEmail: String,
+  customerDetails: {
+    type: mongoose.Schema.Types.Mixed
+  },
   shippingAddress: {
     name: String,
     addressLine1: String,
@@ -32,7 +39,10 @@ const OrderSchema = new mongoose.Schema({
     quantity: Number,
     price: Number,
     size: String
-  }]
+  }],
+  items: {
+    type: [mongoose.Schema.Types.Mixed]
+  }
 }, {
   timestamps: true,
 });
