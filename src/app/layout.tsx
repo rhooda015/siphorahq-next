@@ -10,8 +10,8 @@ const playfair = Playfair_Display({ subsets: ['latin'], weight: ['400', '500', '
 const lora = Lora({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-lora', style: ['normal', 'italic'] });
 
 export const metadata = {
-  title: `${BRAND.name} | Luxury Indian Fashion & Ethnic Wear`,
-  description: 'Premium handcrafted luxury Indian fashion, festive kurtas, and silk sarees.',
+  title: `${BRAND.name} | Premium Porcelain & Luxury Home Decor`,
+  description: 'Elevate your dining experience with luxury porcelain dinnerware, aesthetic serveware, and premium home decor collections.',
 };
 
 export default function RootLayout({
@@ -33,13 +33,13 @@ export default function RootLayout({
                   "@id": `${BRAND.domain}/#organization`,
                   "name": BRAND.name,
                   "url": BRAND.domain,
-                  "description": `Premium handcrafted luxury Indian fashion. ${BRAND.name} specializes in festive kurtas, silk sarees, and occasion wear.`,
+                  "description": `Luxury home decor and premium tableware. ${BRAND.name} specializes in high-end porcelain dinner sets, serveware, and aesthetic gifting.`,
                   "knowsAbout": [
-                    "Luxury Fashion",
-                    "Indian Ethnic Wear",
-                    "Silk Sarees",
-                    "Designer Kurtas",
-                    "Bridal Lehengas"
+                    "Luxury Home Decor",
+                    "Premium Dinnerware",
+                    "Porcelain Tea Sets",
+                    "Aesthetic Serveware",
+                    "Luxury Gifting"
                   ],
                   "sameAs": [
                     BRAND.social.instagram,
@@ -75,8 +75,11 @@ export default function RootLayout({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Chat with ${BRAND.name} Concierge on WhatsApp`}
-          className="fixed bottom-6 left-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-lg transition-transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-300"
+          className="group fixed bottom-6 left-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-lg transition-transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-green-300"
         >
+          <span className="absolute left-16 px-3 py-1 bg-white text-gray-800 text-xs font-sans font-medium rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+            Chat with us
+          </span>
           {/* SVG Icon for WhatsApp */}
           <svg
             xmlns="http://www.w3.org/2000/svg"

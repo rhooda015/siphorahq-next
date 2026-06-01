@@ -1,5 +1,5 @@
 export const BRAND = {
-  name: "Siphora",
+  name: "SIPORAHQ",
   domain: "https://siporahq.com",
   social: {
     instagram: "https://instagram.com/siporahq",
