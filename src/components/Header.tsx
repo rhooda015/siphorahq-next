@@ -14,7 +14,7 @@ export default function Header() {
         <div className="flex items-center justify-between w-full max-w-[1400px] mx-auto">
           {/* Left Links */}
           <nav className="hidden md:flex items-center gap-8 text-xs font-medium tracking-widest uppercase text-gray-900">
-            <Link href="/collections" className="hover:text-[#C9A84C] transition-colors">Collections</Link>
+            <Link href="/products" className="hover:text-[#C9A84C] transition-colors">Collections</Link>
             <Link href="/gifting" className="hover:text-[#C9A84C] transition-colors">Gifting</Link>
           </nav>
           

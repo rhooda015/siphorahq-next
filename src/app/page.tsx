@@ -46,7 +46,7 @@ export default function HomePage() {
           <p className="text-[#F5F0E8] text-lg md:text-xl font-sans mb-10 max-w-2xl mx-auto font-light drop-shadow-sm">
             Discover timeless, double-fired kitchenware intricately molded by master artisans across India, bridging the gap between ancient craftsmanship and contemporary hosting.
           </p>
-          <Link href="/collections" className="inline-block bg-white text-gray-900 px-10 py-4 uppercase tracking-widest font-medium text-sm hover:scale-105 transition-transform duration-300 shadow-xl">
+          <Link href="/products" className="inline-block bg-white text-gray-900 px-10 py-4 uppercase tracking-widest font-medium text-sm hover:scale-105 transition-transform duration-300 shadow-xl">
             Explore Collection ✦
           </Link>
         </div>
@@ -60,9 +60,9 @@ export default function HomePage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {[
-            { title: "Dinnerware", image: "/images/dinnerware.png", link: "/collections/dinnerware" },
-            { title: "Serveware", image: "/images/serveware.png", link: "/collections/serveware" },
-            { title: "Tea Sets", image: "/images/teaset.png", link: "/collections/tea-sets" },
+            { title: "Dinnerware", image: "/images/dinnerware.png", link: "/products" },
+            { title: "Serveware", image: "/images/serveware.png", link: "/products" },
+            { title: "Tea Sets", image: "/images/teaset.png", link: "/products" },
             { title: "Luxury Gifting", image: "/images/gifting.png", link: "/gifting" }
           ].map((item, idx) => (
             <Link href={item.link} key={idx} className="group relative aspect-[4/5] overflow-hidden rounded-sm block">
