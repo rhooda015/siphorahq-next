@@ -101,9 +101,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         <ImageGallery 
           productName={product.name}
           images={[
-            product.image || '/images/dinnerware.png',
-            '/images/serveware.png',
-            '/images/gifting.png'
+            product.image || '/images/dinnerware.webp',
+            '/images/serveware.webp',
+            '/images/gifting.webp'
           ]} 
         />
       </div>

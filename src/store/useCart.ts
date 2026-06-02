@@ -89,6 +89,16 @@ export const useCart = create<CartStore>()(
         items: state.items,
         customerDetails: state.customerDetails 
       }),
+      merge: (persistedState: any, currentState) => {
+        if (persistedState?.items) {
+          persistedState.items = persistedState.items.map((item: any) => ({
+            ...item,
+            image: item.image?.replace(/\.png$/, '.webp'),
+            img: item.img?.replace(/\.png$/, '.webp')
+          }));
+        }
+        return { ...currentState, ...persistedState };
+      },
     }
   )
 );

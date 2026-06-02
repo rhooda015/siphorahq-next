@@ -21,12 +21,12 @@ export default function FrequentlyBoughtTogether({ mainProduct, relatedProduct }
       <div className="flex flex-col md:flex-row items-center justify-center gap-6">
         {/* Main Product */}
         <div className="w-32 aspect-square relative bg-white border border-[var(--color-border)] p-2">
-          <Image src={mainProduct.image || '/images/dinnerware.png'} fill className="object-contain" alt={mainProduct.name} />
+          <Image src={mainProduct.image || '/images/dinnerware.webp'} fill className="object-contain" alt={mainProduct.name} />
         </div>
         <Plus className="w-6 h-6 text-[var(--color-text-muted)]" />
         {/* Recommended Product */}
         <div className="w-32 aspect-square relative bg-white border border-[var(--color-border)] p-2">
-          <Image src={relatedProduct.image || '/images/serveware.png'} fill className="object-contain" alt={relatedProduct.name} />
+          <Image src={relatedProduct.image || '/images/serveware.webp'} fill className="object-contain" alt={relatedProduct.name} />
         </div>
         
         {/* Bundle Action */}

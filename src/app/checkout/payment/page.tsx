@@ -68,7 +68,7 @@ export default function PaymentPage() {
       }
 
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_mock', 
+        key: order.key_id, 
         amount: order.amount,
         currency: order.currency,
         name: "Siphorahq",
@@ -83,7 +83,7 @@ export default function PaymentPage() {
         prefill: {
           name: customerDetails?.firstName ? `${customerDetails.firstName} ${customerDetails.lastName}` : "Test Customer",
           email: customerDetails?.email || "customer@example.com",
-          contact: customerDetails?.phone || "9999999999"
+          contact: customerDetails?.phone?.replace(/\D/g, '') || "9999999999"
         },
         theme: {
           color: "#C9A84C"
@@ -177,7 +177,7 @@ export default function PaymentPage() {
               <p className="text-xs font-sans text-[var(--color-text-muted)] leading-relaxed mb-3">
                 Our luxury concierges are available to assist you with your order.
               </p>
-              <p className="text-xs font-sans font-medium text-[var(--color-text)]">WhatsApp: +91 98765 43210</p>
+              <p className="text-xs font-sans font-medium text-[var(--color-text)]">WhatsApp: +91 95400 27978</p>
               <p className="text-xs font-sans text-[var(--color-text-muted)] mt-1">Response Time: Under 1 Hour</p>
             </div>
 

@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     });
 
     const options = {
-      amount: amount * 100, // amount in smallest currency unit (paise)
+      amount: Math.round(amount * 100), // amount in smallest currency unit (paise)
       currency: 'INR',
       receipt: `receipt_order_${Math.random() * 10000}`,
     };
@@ -36,7 +36,10 @@ export async function POST(req: Request) {
       status: 'pending_payment'
     });
 
-    return NextResponse.json(order);
+    return NextResponse.json({
+      ...order,
+      key_id: process.env.RAZORPAY_KEY_ID
+    });
   } catch (error) {
     console.error('Razorpay Error:', error);
     return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
