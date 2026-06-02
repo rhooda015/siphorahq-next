@@ -7,9 +7,9 @@ export default function HeroCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const heroSlides = [
-    { id: 1, img: "/images/hero.png" },
-    { id: 2, img: "/images/serveware.png" },
-    { id: 3, img: "/images/gifting.png" },
+    { id: 1, img: "/images/hero.webp" },
+    { id: 2, img: "/images/serveware.webp" },
+    { id: 3, img: "/images/gifting.webp" },
   ];
 
   useEffect(() => {

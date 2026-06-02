@@ -12,6 +12,7 @@ export default function ProductCard({ product }: { product: any }) {
           src={product.image || product.img} 
           alt={product.name}
           fill
+          sizes="(max-width: 768px) 50vw, 25vw"
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
         {/* Badges Container */}
