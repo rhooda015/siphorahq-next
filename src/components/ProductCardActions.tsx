@@ -2,13 +2,16 @@
 
 import React from 'react';
 import { trackAddToCart } from '@/lib/analytics';
+import { useCart } from '@/store/useCart';
 
 export default function ProductCardActions({ product }: { product: any }) {
+  const addItem = useCart((state) => state.addItem);
   return (
     <>
       <button 
         onClick={(e) => {
           e.preventDefault();
+          addItem(product, 1);
           trackAddToCart(product, 1);
           alert(`${product.name} added to cart!`);
         }}
