@@ -10,6 +10,8 @@ import { useCart } from '@/store/useCart';
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const isCheckout = pathname.startsWith('/checkout');
@@ -68,41 +70,42 @@ export default function Header() {
       </div>
 
       <header className={`sticky top-0 z-40 w-full transition-all duration-300 bg-[var(--color-bg)] ${isScrolled ? 'border-b border-[var(--color-border)] shadow-sm' : 'border-b border-transparent'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-50">
         
         {/* Top Header Area: Icons & Logo */}
         <div className="flex justify-between items-center h-20">
           
           {/* Left: Mobile Menu & Search */}
-          <div className="flex items-center flex-1">
+          <div className="flex items-center flex-1 relative z-50 pointer-events-auto">
             <button 
-              className="md:hidden p-2 text-[var(--color-primary)]"
+              className="md:hidden p-2 text-[var(--color-primary)] relative z-50 cursor-pointer pointer-events-auto"
               onClick={() => setIsMobileMenuOpen(true)}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <button className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+            <button 
+              className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer pointer-events-auto"
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+            >
+              <Search className="h-5 w-5" />
             </button>
           </div>
 
           {/* Center: Logo */}
-          <div className="flex-shrink-0 flex justify-center text-center">
-            <Link href="/" className="font-serif text-3xl tracking-widest text-[var(--color-primary)] uppercase">
+          <div className="flex-shrink-0 flex justify-center text-center relative z-50 pointer-events-auto">
+            <Link href="/" className="font-serif text-3xl tracking-widest text-[var(--color-primary)] uppercase relative z-50">
               {BRAND.name}
             </Link>
           </div>
 
           {/* Right: Account & Cart */}
-          <div className="flex items-center justify-end flex-1 gap-2">
-            <Link href="#" className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors">
+          <div className="flex items-center justify-end flex-1 gap-2 relative z-50 pointer-events-auto">
+            <Link href="/account" className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
               <User className="h-5 w-5" />
             </Link>
-            <Link href="/checkout/cart" className="p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative">
+            <Link href="/checkout/cart" className="p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
               <ShoppingBag className="h-5 w-5" />
               {mounted && items.length > 0 && (
                 <span className="absolute top-0 right-0 bg-[var(--color-primary)] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
@@ -115,26 +118,45 @@ export default function Header() {
         </div>
 
         {/* Bottom Header Area: Navigation (Desktop Only) */}
-        <nav className="hidden md:flex justify-center items-center pb-4 space-x-8">
-          <Link href="/products" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+        <nav className="hidden md:flex justify-center items-center pb-4 space-x-8 relative z-50 pointer-events-auto">
+          <Link href="/products" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50">
             Products
           </Link>
-          <Link href="/products?category=dinner-set" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+          <Link href="/products?category=dinner-set" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50">
             Collections
           </Link>
-          <Link href="/gifting" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+          <Link href="/gifting" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50">
             Corporate Gifting
           </Link>
-          <Link href="/about" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+          <Link href="/about" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50">
             Our Story
           </Link>
-          <Link href="/journal" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+          <Link href="/journal" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50">
             Journal
           </Link>
-          <Link href="/contact" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide">
+          <Link href="/contact" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50">
             Contact
           </Link>
         </nav>
+
+        {/* Desktop Search Dropdown */}
+        {isSearchOpen && (
+          <div className="absolute top-full left-0 w-full bg-[var(--color-bg)] shadow-md p-6 border-t border-[var(--color-border)] z-[60] pointer-events-auto">
+            <div className="max-w-3xl mx-auto">
+              <div className="relative">
+                <input 
+                  type="text" 
+                  placeholder="Search by style, category, occasion..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full border-b border-[var(--color-primary)] text-xl font-serif py-3 px-2 focus:outline-none focus:border-[var(--color-secondary)] bg-transparent text-[var(--color-primary)]"
+                  autoFocus
+                />
+                <Search className="absolute right-2 top-3 w-6 h-6 text-[var(--color-text-muted)] pointer-events-none" />
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
 
