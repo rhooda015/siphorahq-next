@@ -42,7 +42,7 @@ export default function HomePage() {
 
       {/* Circular Categories List */}
       <section className="py-20 px-4 max-w-7xl mx-auto border-b-[0.5px] border-[var(--color-border)] mb-24">
-        <div className="flex justify-start md:justify-center overflow-x-auto gap-6 md:gap-8 lg:gap-10 pb-4 hide-scrollbar">
+        <div className="flex justify-start overflow-x-auto gap-6 md:gap-8 lg:gap-10 pb-4 hide-scrollbar">
           {[
             { name: "Dinner Set", img: "/images/dinnerware_var1.webp", cat: "dinner-set" },
             { name: "Platter", img: "/images/serveware_var1.webp", cat: "serveware" },
