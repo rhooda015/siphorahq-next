@@ -5,14 +5,15 @@
 @layer base {
   :root {
     --color-bg: #FFFFFF;
-    --color-bg-dark: #3D2F47;
-    --color-text: #3D2F47;
-    --color-text-muted: #69567B;
-    --color-primary: #3D2F47;
-    --color-secondary: #69567B;
-    --color-accent-light: #F8F2FF;
-    --color-accent-dark: #4F4059;
-    --color-border: #E0D9E5;
+    --color-bg-dark: #1a1612;
+    --color-text: #1a1612;
+    --color-text-muted: #666666;
+    --color-primary: #1a1612;
+    --color-secondary: #b8922a;
+    --color-accent-light: #FAFAFA;
+    --color-accent-dark: #8b6914;
+    --color-border: #E5E5E5;
+    --color-gold-light: #d4af37;
   }
 
   *, *::before, *::after {
@@ -40,26 +41,26 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-[var(--color-primary)] text-white px-8 py-4 rounded-[4px]
-           hover:bg-[var(--color-secondary)] transition-colors duration-200
-           tracking-wide text-sm font-sans border-2 border-[var(--color-primary)];
+    @apply bg-[var(--color-primary)] text-white px-8 py-4 rounded-none
+           hover:bg-[var(--color-secondary)] hover:border-[var(--color-secondary)] transition-colors duration-300
+           tracking-widest text-xs uppercase font-sans border-[0.5px] border-[var(--color-primary)];
   }
 
   .btn-secondary {
-    @apply bg-transparent text-[var(--color-primary)] border-2 border-[var(--color-primary)] px-8 py-4 rounded-[4px]
-           hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-200
-           tracking-wide text-sm font-sans;
+    @apply bg-transparent text-[var(--color-primary)] border-[0.5px] border-[var(--color-primary)] px-8 py-4 rounded-none
+           hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-300
+           tracking-widest text-xs uppercase font-sans;
   }
 
   .btn-gold {
-    @apply bg-[var(--color-accent-dark)] text-white px-8 py-4 rounded-[4px]
-           hover:bg-[var(--color-primary)] transition-colors duration-200
-           tracking-wide text-sm font-sans border-2 border-[var(--color-accent-dark)];
+    @apply bg-[var(--color-accent-dark)] text-white px-8 py-4 rounded-none
+           hover:bg-[var(--color-primary)] hover:border-[var(--color-primary)] transition-colors duration-300
+           tracking-widest text-xs uppercase font-sans border-[0.5px] border-[var(--color-accent-dark)];
   }
 
   .nav-link {
-    @apply text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors duration-200
-           text-[15px] font-sans;
+    @apply text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors duration-300
+           text-sm uppercase tracking-widest font-sans;
   }
 
   .section-label {

@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { BRAND } from '@/config/brand';
 import { useCart } from '@/store/useCart';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 // metadata cannot be exported from a Client Component, so we must remove it.
@@ -131,9 +131,9 @@ export default function AccountDashboardPage() {
               Manage your {BRAND.name} experience
             </p>
           </div>
-          <Link href="/login" className="border-[0.5px] border-[#1a1612] rounded-[3px] px-8 py-3 text-[10px] uppercase tracking-[0.2em] text-[#1a1612] hover:bg-[#1a1612] hover:text-white transition-colors duration-300">
+          <button onClick={() => signOut({ callbackUrl: '/login' })} className="border-[0.5px] border-[#1a1612] rounded-[3px] px-8 py-3 text-[10px] uppercase tracking-[0.2em] text-[#1a1612] hover:bg-[#1a1612] hover:text-white transition-colors duration-300">
             Sign Out
-          </Link>
+          </button>
         </div>
 
         {/* Dashboard Grid */}
