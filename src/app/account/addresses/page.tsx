@@ -159,7 +159,7 @@ export default function AddressesPage() {
         }
       },
       (error) => {
-        console.error(error);
+        console.warn("Geolocation warning:", error.message);
         alert("Could not detect location. Please ensure location permissions are granted.");
       }
     );
