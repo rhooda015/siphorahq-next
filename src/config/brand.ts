@@ -7,7 +7,7 @@ export const BRAND = {
   },
   contact: {
     whatsappNumber: "919540027978",
-    email: "support@siphorahq.in"
+    email: "concierge@siphorahq.in"
   },
   freeShippingThreshold: 1999,
   shippingCost: 500,
