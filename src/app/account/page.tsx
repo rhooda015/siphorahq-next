@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import { BRAND } from '@/config/brand';
 import { useCart } from '@/store/useCart';
+import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 // metadata cannot be exported from a Client Component, so we must remove it.
 // To handle SEO for this route, we would normally put it in a layout.tsx file, 
@@ -61,11 +63,16 @@ const accountCards = [
 
 export default function AccountDashboardPage() {
   const { items, openDrawer } = useCart();
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
     setMounted(true);
-  }, []);
+    if (status === 'unauthenticated') {
+      router.push('/login');
+    }
+  }, [status, router]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -81,9 +88,15 @@ export default function AccountDashboardPage() {
           </Link>
           
           <div className="flex items-center gap-6">
-            <span className="hidden md:block font-sans text-xs tracking-[0.1em] uppercase text-[#1a1612]">
-              Welcome back
-            </span>
+            {session?.user?.name ? (
+              <span className="hidden md:block font-sans text-xs tracking-[0.1em] uppercase text-[#1a1612]">
+                Welcome, {session.user.name.split(' ')[0]}
+              </span>
+            ) : (
+              <span className="hidden md:block font-sans text-xs tracking-[0.1em] uppercase text-[#1a1612]">
+                Welcome back
+              </span>
+            )}
             <div className="text-[#1a1612] transition-colors">
               <User className="w-5 h-5 stroke-[1.5]" />
             </div>
@@ -121,9 +134,12 @@ export default function AccountDashboardPage() {
               Manage your {BRAND.name} experience
             </p>
           </div>
-          <Link href="/login" className="border-[0.5px] border-[#1a1612] rounded-[3px] px-8 py-3 text-[10px] uppercase tracking-[0.2em] text-[#1a1612] hover:bg-[#1a1612] hover:text-white transition-colors duration-300">
+          <button 
+            onClick={() => signOut({ callbackUrl: '/login' })}
+            className="border-[0.5px] border-[#1a1612] rounded-[3px] px-8 py-3 text-[10px] uppercase tracking-[0.2em] text-[#1a1612] hover:bg-[#1a1612] hover:text-white transition-colors duration-300"
+          >
             Sign Out
-          </Link>
+          </button>
         </div>
 
         {/* Dashboard Grid */}

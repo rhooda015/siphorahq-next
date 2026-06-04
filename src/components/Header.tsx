@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { ShoppingBag, User, X, Search, Menu, Lock, Truck, ShieldCheck, Phone } from 'lucide-react';
 import { BRAND } from '@/config/brand';
 import { useCart } from '@/store/useCart';
+import { useSession } from 'next-auth/react';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -17,6 +18,7 @@ export default function Header() {
   const router = useRouter();
   const isCheckout = pathname.startsWith('/checkout');
   const { items, openDrawer } = useCart();
+  const { data: session } = useSession();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,7 +117,7 @@ export default function Header() {
 
           {/* Right: Account & Cart */}
           <div className="flex items-center justify-end flex-1 gap-2 relative z-50 pointer-events-auto">
-            <Link href="/login" className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
+            <Link href={session ? "/account" : "/login"} className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
               <User className="h-5 w-5" />
             </Link>
             <button onClick={openDrawer} className="p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
