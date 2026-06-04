@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, X } from 'lucide-react';
 import { BRAND } from '@/config/brand';
+import { signIn } from 'next-auth/react';
 
 // Validation Helpers
 const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -106,7 +107,7 @@ export default function LoginPage() {
                 <div className="flex-1 h-[1px] bg-gray-200" />
               </div>
               <div className="grid grid-cols-3 gap-3">
-                <button onClick={() => showToast('Connecting to Google...', 'success')} className="flex items-center justify-center gap-2 border-[0.5px] border-gray-300 py-3 rounded-[2px] hover:bg-gray-50 transition-colors">
+                <button onClick={() => signIn('google', { callbackUrl: '/' })} className="flex items-center justify-center gap-2 border-[0.5px] border-gray-300 py-3 rounded-[2px] hover:bg-gray-50 transition-colors">
                   <span className="font-bold font-sans text-lg leading-none">G</span>
                   <span className="font-sans text-[10px] tracking-widest uppercase">Google</span>
                 </button>
@@ -325,7 +326,7 @@ function OtpLoginForm({ inputBaseStyle, btnBaseStyle, showToast, router }: any) 
           <div className="flex-1 h-[1px] bg-gray-200" />
         </div>
         <div className="flex gap-3">
-           <button type="button" onClick={() => showToast('Connecting to Google...', 'success')} className="flex-1 flex items-center justify-center gap-2 border-[0.5px] border-gray-300 py-3 rounded-[2px] hover:bg-gray-50 transition-colors">
+           <button type="button" onClick={() => signIn('google', { callbackUrl: '/' })} className="flex-1 flex items-center justify-center gap-2 border-[0.5px] border-gray-300 py-3 rounded-[2px] hover:bg-gray-50 transition-colors">
             <span className="font-sans text-[10px] tracking-widest uppercase">Google</span>
           </button>
           <button type="button" onClick={() => showToast('Connecting to Facebook...', 'success')} className="flex-1 flex items-center justify-center gap-2 border-[0.5px] border-gray-300 py-3 rounded-[2px] hover:bg-gray-50 transition-colors">
