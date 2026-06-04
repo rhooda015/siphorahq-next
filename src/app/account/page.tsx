@@ -65,14 +65,17 @@ export default function AccountDashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { items, openDrawer } = useCart();
-
-  if (status === 'loading') return <div className="min-h-screen flex items-center justify-center"><p className="font-sans text-gray-400 tracking-widest text-sm">Loading...</p></div>;
-  if (!session) { if (typeof window !== 'undefined') router.push('/login'); return null; }
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
     setMounted(true);
-  }, []);
+    if (status === 'unauthenticated') {
+      router.push('/login');
+    }
+  }, [status, router]);
+
+  if (status === 'loading') return <div className="min-h-screen flex items-center justify-center"><p className="font-sans text-gray-400 tracking-widest text-sm">Loading...</p></div>;
+  if (!session) return null;
 
   return (
     <div className="min-h-screen bg-white">
