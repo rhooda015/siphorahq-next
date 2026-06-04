@@ -22,13 +22,6 @@ import { useRouter } from 'next/navigation';
 // To handle SEO for this route, we would normally put it in a layout.tsx file, 
 // but for now removing it is the safest fix since it's an authenticated route anyway.
 
-export default function AccountPage() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-
-  if (status === 'loading') return <div className='min-h-screen flex items-center justify-center'><p className='font-sans text-gray-400 tracking-widest text-sm'>Loading...</p></div>;
-  if (!session) { if (typeof window !== 'undefined') router.push('/login'); return null; }
-
 const accountCards = [
   {
     title: 'My Orders',
@@ -69,7 +62,12 @@ const accountCards = [
 ];
 
 export default function AccountDashboardPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const { items, openDrawer } = useCart();
+
+  if (status === 'loading') return <div className="min-h-screen flex items-center justify-center"><p className="font-sans text-gray-400 tracking-widest text-sm">Loading...</p></div>;
+  if (!session) { if (typeof window !== 'undefined') router.push('/login'); return null; }
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
