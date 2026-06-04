@@ -9,7 +9,7 @@ import { Home, Grid, Search, ShoppingCart } from 'lucide-react';
 const NAV_ITEMS = [
   { label: 'Home',        href: '/',        icon: Home },
   { label: 'Collections', href: '/products', icon: Grid },
-  { label: 'Search',      href: '/products', icon: Search },
+  { label: 'Search',      href: '/search', icon: Search },
   { label: 'Cart',        href: '/checkout/cart', icon: ShoppingCart },
 ];
 
