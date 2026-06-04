@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
 import { 
@@ -10,16 +12,13 @@ import {
   Search,
   User,
   ShoppingBag
-  User,
-  ShoppingBag
 } from 'lucide-react';
 import { BRAND } from '@/config/brand';
 import { useCart } from '@/store/useCart';
 
-export const metadata = {
-  title: `My Account | ${BRAND.name}`,
-  description: `Manage your ${BRAND.name} account, orders, and preferences.`,
-};
+// metadata cannot be exported from a Client Component, so we must remove it.
+// To handle SEO for this route, we would normally put it in a layout.tsx file, 
+// but for now removing it is the safest fix since it's an authenticated route anyway.
 
 const accountCards = [
   {

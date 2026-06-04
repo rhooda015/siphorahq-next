@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useCart } from '@/store/useCart';
 import { Home, Grid, Search, ShoppingCart } from 'lucide-react';
 
 const NAV_ITEMS = [
