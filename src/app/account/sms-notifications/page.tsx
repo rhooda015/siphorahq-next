@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { BRAND } from '@/config/brand';
 
 export const metadata = {
-  title: `Communication Preferences | Account | ${BRAND.name}`
+  title: `SMS Notifications | Account | ${BRAND.name}`
 };
 
 export default function Page() {
@@ -14,7 +14,7 @@ export default function Page() {
           ← BACK TO ACCOUNT
         </Link>
         
-        <h1 className="text-3xl md:text-4xl font-serif text-[#1a1612] mb-4">Communication Preferences</h1>
+        <h1 className="text-3xl md:text-4xl font-serif text-[#1a1612] mb-4">SMS Notifications</h1>
         <p className="text-[#1a1612]/60 font-sans text-xs uppercase tracking-widest mb-12">MANAGE YOUR SIPHORAHQ EXPERIENCE</p>
         
         <div className="bg-white border-[0.5px] border-[#1a1612]/20 p-8 md:p-12">
