@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, X } from 'lucide-react';
 import { BRAND } from '@/config/brand';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 // Validation Helpers
 const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -28,8 +28,15 @@ const Toast = ({ message, type, onClose }: { message: string; type: 'success' | 
 
 export default function LoginPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [activeTab, setActiveTab] = useState<'email' | 'otp' | 'register'>('email');
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/account');
+    }
+  }, [status, router]);
 
   // Common styles
   const inputBaseStyle = "w-full border-[0.5px] rounded-[2px] px-[14px] py-[12px] font-sans text-[13px] outline-none transition-colors";
