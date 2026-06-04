@@ -7,10 +7,9 @@ import {
   CreditCard, 
   Heart, 
   Headphones,
-  Settings,
-  Mail,
-  Gift,
-  LogOut
+  Search,
+  User,
+  ShoppingBag
 } from 'lucide-react';
 import { BRAND } from '@/config/brand';
 
@@ -19,7 +18,6 @@ export const metadata = {
   description: `Manage your ${BRAND.name} account, orders, and preferences.`,
 };
 
-// Define the cards for the dashboard
 const accountCards = [
   {
     title: 'My Orders',
@@ -61,21 +59,63 @@ const accountCards = [
 
 export default function AccountDashboardPage() {
   return (
-    <div className="min-h-screen bg-[var(--color-bg)] py-12 md:py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white">
+      {/* Top Navbar */}
+      <div className="border-b-[0.5px] border-[#1a1612]/20">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
+          <button className="text-[#1a1612] hover:text-[#8b6914] transition-colors">
+            <Search className="w-5 h-5 stroke-[1.5]" />
+          </button>
+          
+          <Link href="/" className="text-3xl font-serif tracking-[0.2em] uppercase text-[#1a1612] hover:text-[#8b6914] transition-colors">
+            {BRAND.name}
+          </Link>
+          
+          <div className="flex items-center gap-6">
+            <span className="hidden md:block font-sans text-xs tracking-[0.1em] uppercase text-[#1a1612]">
+              Welcome, Priya
+            </span>
+            <Link href="/account" className="text-[#1a1612] hover:text-[#8b6914] transition-colors">
+              <User className="w-5 h-5 stroke-[1.5]" />
+            </Link>
+            <div className="relative text-[#1a1612] hover:text-[#8b6914] transition-colors cursor-pointer">
+              <ShoppingBag className="w-5 h-5 stroke-[1.5]" />
+              <span className="absolute -top-1 -right-2 bg-[#8b6914] text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-sans">
+                2
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Secondary Nav Bar */}
+      <div className="border-b-[0.5px] border-[#1a1612]/10 hidden md:block">
+        <div className="max-w-7xl mx-auto px-8 h-12 flex items-center justify-center gap-12">
+          {['Products', 'Collections', 'Corporate Gifting', 'Our Story', 'Journal', 'Contact'].map((item) => (
+            <Link 
+              key={item} 
+              href="#" 
+              className="font-sans text-[11px] uppercase tracking-[0.15em] text-[#1a1612] hover:text-[#8b6914] transition-colors"
+            >
+              {item}
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-16 border-b-[0.5px] border-[#1a1612]/20 pb-8">
           <div className="text-center md:text-left mb-6 md:mb-0">
-            <h1 className="text-4xl font-serif text-[var(--color-primary)] mb-2">My Account</h1>
-            <p className="text-[var(--color-text-muted)] font-sans text-sm tracking-wide">
+            <h1 className="text-4xl md:text-5xl font-serif text-[#1a1612] mb-3">My Account</h1>
+            <p className="text-[#1a1612]/60 font-sans text-xs uppercase tracking-[0.15em]">
               Manage your {BRAND.name} experience
             </p>
           </div>
-          <button className="flex items-center gap-2 border border-[var(--color-border)] px-6 py-3 text-xs uppercase tracking-widest text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-300">
-            <LogOut className="w-4 h-4" />
+          <Link href="/login" className="border-[0.5px] border-[#1a1612] rounded-[3px] px-8 py-3 text-[10px] uppercase tracking-[0.2em] text-[#1a1612] hover:bg-[#1a1612] hover:text-white transition-colors duration-300">
             Sign Out
-          </button>
+          </Link>
         </div>
 
         {/* Dashboard Grid */}
@@ -86,17 +126,17 @@ export default function AccountDashboardPage() {
               <Link 
                 href={card.href} 
                 key={index}
-                className="group block bg-white p-8 border border-[var(--color-border)] hover:border-[var(--color-primary)] hover:shadow-lg transition-all duration-300"
+                className="group block bg-white p-8 border-[0.5px] border-[#1a1612]/20 rounded-[3px] hover:border-[#8b6914] transition-colors duration-300"
               >
                 <div className="flex items-start gap-5">
-                  <div className="p-3 bg-[var(--color-bg)] text-[var(--color-primary)] group-hover:bg-[var(--color-primary)] group-hover:text-white transition-colors duration-300">
-                    <Icon className="w-6 h-6 stroke-[1.5]" />
+                  <div className="text-[#1a1612] group-hover:text-[#8b6914] transition-colors duration-300">
+                    <Icon className="w-6 h-6 stroke-[1]" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-serif text-[var(--color-primary)] mb-2 group-hover:text-[var(--color-secondary)] transition-colors">
+                    <h2 className="text-xl font-serif text-[#1a1612] mb-2 group-hover:text-[#8b6914] transition-colors">
                       {card.title}
                     </h2>
-                    <p className="text-sm font-sans text-[var(--color-text-muted)] leading-relaxed">
+                    <p className="text-xs font-sans tracking-wide text-[#1a1612]/60 leading-relaxed">
                       {card.description}
                     </p>
                   </div>
@@ -107,45 +147,36 @@ export default function AccountDashboardPage() {
         </div>
 
         {/* Bottom Settings Section */}
-        <div className="mt-20 pt-16 border-t border-[var(--color-border)]">
+        <div className="mt-20 pt-16 border-t-[0.5px] border-[#1a1612]/20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             
             {/* Column 1 */}
             <div>
-              <div className="flex items-center gap-3 mb-6">
-                <Settings className="w-5 h-5 text-[var(--color-primary)]" />
-                <h3 className="text-lg font-serif text-[var(--color-primary)]">Account Settings</h3>
-              </div>
+              <h3 className="text-lg font-serif text-[#1a1612] mb-6">Account Settings</h3>
               <ul className="space-y-4">
-                <li><Link href="#" className="text-sm font-sans text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:underline underline-offset-4 transition-all">Default Purchase Settings</Link></li>
-                <li><Link href="#" className="text-sm font-sans text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:underline underline-offset-4 transition-all">Communication Preferences</Link></li>
-                <li><Link href="#" className="text-sm font-sans text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:underline underline-offset-4 transition-all">Language & Region</Link></li>
+                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Default Purchase Settings</Link></li>
+                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Communication Preferences</Link></li>
+                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Language & Region</Link></li>
               </ul>
             </div>
 
             {/* Column 2 */}
             <div>
-              <div className="flex items-center gap-3 mb-6">
-                <Mail className="w-5 h-5 text-[var(--color-primary)]" />
-                <h3 className="text-lg font-serif text-[var(--color-primary)]">Email & Alerts</h3>
-              </div>
+              <h3 className="text-lg font-serif text-[#1a1612] mb-6">Email & Alerts</h3>
               <ul className="space-y-4">
-                <li><Link href="#" className="text-sm font-sans text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:underline underline-offset-4 transition-all">Promotional Emails</Link></li>
-                <li><Link href="#" className="text-sm font-sans text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:underline underline-offset-4 transition-all">Order Notifications (SMS)</Link></li>
-                <li><Link href="#" className="text-sm font-sans text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:underline underline-offset-4 transition-all">Message Center</Link></li>
+                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Promotional Emails</Link></li>
+                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Order Notifications (SMS)</Link></li>
+                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Message Center</Link></li>
               </ul>
             </div>
 
             {/* Column 3 */}
             <div>
-              <div className="flex items-center gap-3 mb-6">
-                <Gift className="w-5 h-5 text-[var(--color-primary)]" />
-                <h3 className="text-lg font-serif text-[var(--color-primary)]">Siphora Exclusives</h3>
-              </div>
+              <h3 className="text-lg font-serif text-[#1a1612] mb-6">Siphora Exclusives</h3>
               <ul className="space-y-4">
-                <li><Link href="#" className="text-sm font-sans text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:underline underline-offset-4 transition-all">My Membership Benefits</Link></li>
-                <li><Link href="#" className="text-sm font-sans text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:underline underline-offset-4 transition-all">Corporate Gifting History</Link></li>
-                <li><Link href="#" className="text-sm font-sans text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:underline underline-offset-4 transition-all">Redeem Gift Cards</Link></li>
+                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">My Membership Benefits</Link></li>
+                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Corporate Gifting History</Link></li>
+                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Redeem Gift Cards</Link></li>
               </ul>
             </div>
 
