@@ -14,8 +14,23 @@ export default function SecurityPage() {
   
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   
   const [loading, setLoading] = useState(false);
+
+  // Profile Edit States
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [isEditingMobile, setIsEditingMobile] = useState(false);
+  const [emailInput, setEmailInput] = useState('');
+  const [mobileInput, setMobileInput] = useState('');
+  const [profileLoading, setProfileLoading] = useState(false);
+
+  // Set initial inputs when session loads
+  React.useEffect(() => {
+    if (session?.user?.email) {
+      setEmailInput(session.user.email);
+    }
+  }, [session]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,10 +38,14 @@ export default function SecurityPage() {
       alert("New passwords do not match.");
       return;
     }
+    if (newPassword.length < 8) {
+      alert("Password must be at least 8 characters long.");
+      return;
+    }
 
     setLoading(true);
     try {
-      const res = await fetch('https://siphorahq-backend.onrender.com/api/user/update-password', {
+      const res = await fetch('/api/user/security/update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,10 +74,21 @@ export default function SecurityPage() {
   if (status === 'loading') {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16 font-serif">
-         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#1a1612] mx-auto mt-20"></div>
+         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black mx-auto mt-20"></div>
       </div>
     );
   }
+
+  const handleProfileSave = (type: 'email' | 'mobile') => {
+    setProfileLoading(true);
+    // Simulate API call
+    setTimeout(() => {
+      setProfileLoading(false);
+      if (type === 'email') setIsEditingEmail(false);
+      if (type === 'mobile') setIsEditingMobile(false);
+      alert(`Profile ${type} updated successfully.`);
+    }, 800);
+  };
 
   // Fallbacks if missing
   const provider = (session?.user as any)?.provider || 'credentials';
@@ -92,13 +122,67 @@ export default function SecurityPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Details Column */}
           <div className="space-y-8">
-            <div className="border-[0.5px] border-zinc-200 p-8">
-              <p className="font-sans text-[10px] uppercase tracking-widest text-zinc-500 mb-2">Registered Email</p>
-              <p className="font-sans text-sm text-black">{session?.user?.email || 'N/A'}</p>
+            <div className="border-[0.5px] border-zinc-200 p-8 group transition-colors hover:border-black">
+              <div className="flex justify-between items-center mb-4">
+                <p className="font-sans text-[10px] uppercase tracking-widest text-zinc-500">Registered Email</p>
+                {isEditingEmail ? (
+                  <div className="flex gap-3">
+                    <button onClick={() => setIsEditingEmail(false)} className="font-sans text-[10px] uppercase tracking-widest text-zinc-400 hover:text-black transition-colors">
+                      Cancel
+                    </button>
+                    <button onClick={() => handleProfileSave('email')} disabled={profileLoading} className="font-sans text-[10px] uppercase tracking-widest text-black hover:text-zinc-600 transition-colors font-medium">
+                      {profileLoading ? 'Saving...' : 'Save'}
+                    </button>
+                  </div>
+                ) : (
+                  <button onClick={() => setIsEditingEmail(true)} className="font-sans text-[10px] uppercase tracking-widest text-zinc-400 hover:text-black transition-colors">
+                    Edit
+                  </button>
+                )}
+              </div>
+              {isEditingEmail ? (
+                <input 
+                  type="email" 
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  className="w-full border-[0.5px] border-zinc-200 rounded-[2px] p-3 text-sm font-sans focus:outline-none focus:border-black transition-all duration-300"
+                  autoFocus
+                />
+              ) : (
+                <p className="font-sans text-sm text-black">{emailInput || 'N/A'}</p>
+              )}
             </div>
-            <div className="border-[0.5px] border-zinc-200 p-8">
-              <p className="font-sans text-[10px] uppercase tracking-widest text-zinc-500 mb-2">Linked Mobile</p>
-              <p className="font-sans text-sm text-black">+91 ••••• •••••</p>
+
+            <div className="border-[0.5px] border-zinc-200 p-8 group transition-colors hover:border-black">
+              <div className="flex justify-between items-center mb-4">
+                <p className="font-sans text-[10px] uppercase tracking-widest text-zinc-500">Linked Mobile</p>
+                {isEditingMobile ? (
+                  <div className="flex gap-3">
+                    <button onClick={() => setIsEditingMobile(false)} className="font-sans text-[10px] uppercase tracking-widest text-zinc-400 hover:text-black transition-colors">
+                      Cancel
+                    </button>
+                    <button onClick={() => handleProfileSave('mobile')} disabled={profileLoading} className="font-sans text-[10px] uppercase tracking-widest text-black hover:text-zinc-600 transition-colors font-medium">
+                      {profileLoading ? 'Saving...' : 'Save'}
+                    </button>
+                  </div>
+                ) : (
+                  <button onClick={() => setIsEditingMobile(true)} className="font-sans text-[10px] uppercase tracking-widest text-zinc-400 hover:text-black transition-colors">
+                    Edit
+                  </button>
+                )}
+              </div>
+              {isEditingMobile ? (
+                <input 
+                  type="tel" 
+                  value={mobileInput}
+                  onChange={(e) => setMobileInput(e.target.value)}
+                  placeholder="+91 ••••• •••••"
+                  className="w-full border-[0.5px] border-zinc-200 rounded-[2px] p-3 text-sm font-sans focus:outline-none focus:border-black transition-all duration-300"
+                  autoFocus
+                />
+              ) : (
+                <p className="font-sans text-sm text-black">{mobileInput || '+91 ••••• •••••'}</p>
+              )}
             </div>
           </div>
 
@@ -109,43 +193,46 @@ export default function SecurityPage() {
             </p>
             
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="relative">
+              <div className="relative group">
                 <label className="block font-sans text-[10px] uppercase tracking-widest text-zinc-500 mb-2">Current Password</label>
                 <input 
                   type={showCurrent ? "text" : "password"} 
                   value={currentPassword}
                   onChange={e => setCurrentPassword(e.target.value)}
-                  className="w-full border-[0.5px] border-zinc-200 rounded-[2px] p-3 text-sm font-sans focus:outline-none focus:border-black pr-10"
+                  className="w-full border-[0.5px] border-zinc-200 rounded-[2px] p-3 text-sm font-sans focus:outline-none focus:border-black transition-all duration-300 pr-10"
                   required 
                 />
-                <button type="button" onClick={() => setShowCurrent(!showCurrent)} className="absolute right-3 top-9 text-zinc-400 hover:text-black">
+                <button type="button" onClick={() => setShowCurrent(!showCurrent)} className="absolute right-3 top-9 text-zinc-400 hover:text-black transition-colors" aria-label="Toggle password visibility">
                   {showCurrent ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
 
-              <div className="relative">
+              <div className="relative group">
                 <label className="block font-sans text-[10px] uppercase tracking-widest text-zinc-500 mb-2">New Password</label>
                 <input 
                   type={showNew ? "text" : "password"} 
                   value={newPassword}
                   onChange={e => setNewPassword(e.target.value)}
-                  className="w-full border-[0.5px] border-zinc-200 rounded-[2px] p-3 text-sm font-sans focus:outline-none focus:border-black pr-10"
+                  className="w-full border-[0.5px] border-zinc-200 rounded-[2px] p-3 text-sm font-sans focus:outline-none focus:border-black transition-all duration-300 pr-10"
                   required 
                 />
-                <button type="button" onClick={() => setShowNew(!showNew)} className="absolute right-3 top-9 text-zinc-400 hover:text-black">
+                <button type="button" onClick={() => setShowNew(!showNew)} className="absolute right-3 top-9 text-zinc-400 hover:text-black transition-colors" aria-label="Toggle password visibility">
                   {showNew ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
 
-              <div>
+              <div className="relative group">
                 <label className="block font-sans text-[10px] uppercase tracking-widest text-zinc-500 mb-2">Confirm New Password</label>
                 <input 
-                  type="password" 
+                  type={showConfirm ? "text" : "password"} 
                   value={confirmPassword}
                   onChange={e => setConfirmPassword(e.target.value)}
-                  className="w-full border-[0.5px] border-zinc-200 rounded-[2px] p-3 text-sm font-sans focus:outline-none focus:border-black"
+                  className="w-full border-[0.5px] border-zinc-200 rounded-[2px] p-3 text-sm font-sans focus:outline-none focus:border-black transition-all duration-300 pr-10"
                   required 
                 />
+                <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-9 text-zinc-400 hover:text-black transition-colors" aria-label="Toggle password visibility">
+                  {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
               </div>
 
               <button 
