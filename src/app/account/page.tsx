@@ -126,7 +126,9 @@ export default function AccountDashboardPage() {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-16 border-b-[0.5px] border-[#1a1612]/20 pb-8">
           <div className="text-center md:text-left mb-6 md:mb-0">
-            <h1 className="text-4xl md:text-5xl font-serif text-[#1a1612] mb-3">My Account</h1>
+            <h1 className="text-4xl font-serif text-[var(--color-primary)] mb-4">
+              Welcome, {session?.user?.name?.split(' ')[0] || 'Guest'}
+            </h1>
             <p className="text-[#1a1612]/60 font-sans text-xs uppercase tracking-[0.15em]">
               Manage your {BRAND.name} experience
             </p>

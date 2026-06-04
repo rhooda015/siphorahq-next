@@ -112,10 +112,34 @@ export default function ProductClientActions({ product }: { product: any }) {
       </div>
       
       {/* Checkout Badges */}
-      <div className="mt-6 flex justify-center items-center gap-3 opacity-70 grayscale hover:grayscale-0 transition-all">
-         <svg viewBox="0 0 50 16" className="h-4 w-auto"><path fill="#1434CB" d="M21.93 1.05h3.42L23.1 15.5H19.7zm16.92 14.45h3.36l2.12-14.45h-3.36zm-7.6-14.28c-1.63-.44-3.5-.72-5.18-.72-5.46 0-9.29 2.83-9.33 6.91-.04 3 2.68 4.67 4.75 5.67 2.12 1.02 2.84 1.68 2.84 2.6-.02 1.4-1.7 2.05-3.26 2.05-2.07 0-3.32-.3-4.73-.93l-.66-.31L9 16c1.3.6 3.65 1.1 5.95 1.1 5.75 0 9.53-2.77 9.57-7.07.03-2.4-1.38-4.22-4.52-5.68-1.9-.94-3.07-1.57-3.07-2.54.02-.9.1-1.77 2.92-1.77 1.54 0 2.6.28 3.52.66l.4.18zM10.87 1.05L8.43 11l-.3-1.46C7.23 6.2 5.34 3.75 3 2.5L2.52 2.3l2.67 13.2h3.45L14.42 1.05z"/><path fill="#F5A623" d="M3 2.5v.02C1 3.2 0 4.68 0 7.82l.06-.32C.46 5.56 1.83 2.5 3 2.5z"/></svg>
-         <svg viewBox="0 0 32 20" className="h-5 w-auto"><circle cx="10" cy="10" r="10" fill="#EB001B"/><circle cx="22" cy="10" r="10" fill="#F79E1B"/><path fill="#FF5F00" d="M16 10c0-3.3 1.9-6.2 4.7-7.9-2.8-1.7-6.6-1.7-9.4 0C14.1 3.8 16 6.7 16 10z"/></svg>
-         <svg viewBox="0 0 24 24" className="h-6 w-auto" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20" /></svg>
+      <div className="mt-8 py-5 border-[0.5px] border-[var(--color-border)] bg-[#fdfbf9] text-center">
+        <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[var(--color-primary)] mb-4">Guaranteed Safe Checkout</p>
+        <div className="flex justify-center items-center gap-5">
+          {/* Visa */}
+          <div className="bg-white border border-gray-200 py-1 px-2 rounded-sm shadow-sm flex items-center justify-center">
+            <svg className="h-5 w-auto" viewBox="0 0 32 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.075 0.354004L11.554 9.689H8.441L9.123 6.452C9.28 5.711 9.423 4.966 9.544 4.225C9.405 4.945 9.176 5.65 8.854 6.312L5.803 9.689H2.433L0.015 0.354004H3.256L4.478 6.007C4.659 6.848 4.825 7.695 4.975 8.544C5.064 7.643 5.234 6.751 5.485 5.882L7.151 0.354004H10.596L14.075 0.354004Z" fill="#1434CB"/>
+              <path d="M18.891 0.354004L16.37 9.689H13.257L15.778 0.354004H18.891Z" fill="#1434CB"/>
+              <path d="M25.794 0.354004C27.172 0.354004 28.324 0.901004 28.784 2.235C28.877 2.493 28.91 2.766 28.883 3.037L28.353 5.011C28.243 5.385 27.971 5.69 27.595 5.861C26.549 6.35 25.433 6.643 24.281 6.721C23.633 6.758 23.364 6.551 23.473 6.166L23.778 5.034C23.905 4.606 24.316 4.315 24.763 4.293C25.541 4.256 26.305 4.095 27.037 3.815C27.354 3.693 27.525 3.398 27.464 3.072L27.423 2.915C27.351 2.651 27.135 2.457 26.865 2.417C25.486 2.229 24.088 2.23 22.71 2.421C22.062 2.502 21.602 3.013 21.602 3.673C21.602 4.417 22.091 4.887 23.123 5.253C24.498 5.728 25.59 6.273 25.109 8.016C24.795 9.155 23.829 9.878 22.259 9.878C20.655 9.878 19.06 9.489 17.653 8.749C17.078 8.441 16.924 7.685 17.29 7.151L18.17 5.879C18.423 5.516 18.91 5.4 19.313 5.596C20.485 6.182 21.758 6.527 23.056 6.613C23.639 6.645 23.921 6.425 23.81 5.922L23.513 4.808C23.385 4.407 22.986 4.143 22.562 4.167C21.109 4.225 19.673 4.544 18.337 5.111C18.069 5.215 17.771 5.176 17.534 5.01C17.332 4.862 17.202 4.63 17.18 4.382C17.155 3.903 17.155 3.424 17.18 2.944C17.228 2.222 17.64 1.583 18.28 1.226C20.584 0.0570042 23.155 -0.210996 25.794 0.354004Z" fill="#1434CB"/>
+              <path d="M31.985 0.354004L29.626 9.689H26.549L27.601 5.578C27.765 4.966 27.917 4.351 28.058 3.731C28.261 4.526 28.514 5.308 28.815 6.071L30.126 9.689H31.985V0.354004Z" fill="#1434CB"/>
+            </svg>
+          </div>
+          {/* Mastercard */}
+          <div className="bg-white border border-gray-200 py-1 px-2 rounded-sm shadow-sm flex items-center justify-center">
+            <svg className="h-5 w-auto" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="10.5" cy="10" r="9.5" fill="#EB001B"/>
+              <circle cx="21.5" cy="10" r="9.5" fill="#F79E1B"/>
+              <path d="M16 17.766C14.073 16.035 12.875 13.593 12.875 10C12.875 6.406 14.073 3.964 16 2.234C17.927 3.964 19.125 6.406 19.125 10C19.125 13.593 17.927 16.035 16 17.766Z" fill="#FF5F00"/>
+            </svg>
+          </div>
+          {/* Amex / Generic Card */}
+          <div className="bg-white border border-gray-200 py-1 px-2 rounded-sm shadow-sm flex items-center justify-center">
+            <svg className="h-5 w-auto text-[var(--color-primary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <path d="M2 10h20" />
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   );

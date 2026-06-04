@@ -197,7 +197,7 @@ export default function Header() {
           <Link href="/journal" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Journal</Link>
           <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Contact</Link>
           <Link href={session ? "/account" : "/login"} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] pt-4">
-            {session ? "My Account" : "Sign In"}
+            {session ? session.user?.name || "My Account" : "Sign In"}
           </Link>
         </div>
       </div>
