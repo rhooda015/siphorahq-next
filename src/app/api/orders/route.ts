@@ -2,12 +2,25 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Order from '@/models/Order';
 
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+
 export async function GET() {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user || !session.user.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     await dbConnect();
     
-    // Fetch orders from MongoDB, sort by newest first
-    const orders = await Order.find({}).sort({ createdAt: -1 }).limit(50);
+    const email = session.user.email;
+    const orders = await Order.find({
+      $or: [
+        { customerEmail: email },
+        { 'customerDetails.email': email }
+      ]
+    }).sort({ createdAt: -1 }).limit(50);
     
     return NextResponse.json(orders);
   } catch (error) {
