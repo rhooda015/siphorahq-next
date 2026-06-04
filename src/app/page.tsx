@@ -55,7 +55,7 @@ export default function HomePage() {
           ].map((cat, idx) => (
             <Link href={`/products?category=${cat.cat}`} key={idx} className="flex flex-col items-center group min-w-[100px] md:min-w-[140px]">
               <div className="w-[90px] h-[90px] md:w-[120px] md:h-[120px] rounded-full overflow-hidden mb-3 relative bg-[var(--color-accent-light)] border-2 border-transparent group-hover:border-[var(--color-primary)] transition-all">
-                <Image src={cat.img} alt={cat.name} fill sizes="(max-width: 768px) 90px, 120px" className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                <Image src={cat.img} alt={cat.name} fill sizes="(max-width: 768px) 90px, 120px" priority={idx < 4} className="object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <span className="text-[12px] md:text-[14px] text-[var(--color-primary)] font-serif text-center group-hover:font-bold transition-all max-w-[100px] leading-tight">{cat.name}</span>
             </Link>
@@ -176,9 +176,9 @@ export default function HomePage() {
             <Link href={`/products?maxPrice=${item.maxPrice}`} key={idx} className="group flex flex-col relative aspect-[4/5] bg-[var(--color-accent-light)] overflow-hidden">
               <Image src={item.img} alt={item.title} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
               {/* Overlay with Text */}
-              <div className="absolute inset-0 bg-black/20 flex flex-col items-center justify-start pt-8">
-                <span className="text-[var(--color-gold-light)] font-serif italic text-sm mb-1">Gifts</span>
-                <span className="text-white font-sans font-bold tracking-widest uppercase text-xl border-b-2 border-white pb-1">{item.title}</span>
+              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent flex flex-col items-center justify-start pt-8">
+                <span className="text-[var(--color-gold-light)] font-serif italic text-sm mb-1 drop-shadow-md">Gifts</span>
+                <span className="text-white font-sans font-bold tracking-widest uppercase text-xl border-b-2 border-white pb-1 drop-shadow-md">{item.title}</span>
               </div>
             </Link>
           ))}

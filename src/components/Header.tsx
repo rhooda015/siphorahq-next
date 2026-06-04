@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ShoppingBag, User, X, Search, Menu, Lock, Truck, ShieldCheck, Phone } from 'lucide-react';
 import { BRAND } from '@/config/brand';
 import { useCart } from '@/store/useCart';
@@ -14,8 +14,17 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const isCheckout = pathname.startsWith('/checkout');
-  const { items } = useCart();
+  const { items, openDrawer } = useCart();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -109,14 +118,14 @@ export default function Header() {
             <Link href="/login" className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
               <User className="h-5 w-5" />
             </Link>
-            <Link href="/checkout/cart" className="p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
+            <button onClick={openDrawer} className="p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
               <ShoppingBag className="h-5 w-5" />
               {mounted && items.length > 0 && (
                 <span className="absolute top-0 right-0 bg-[var(--color-primary)] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
                   {items.length}
                 </span>
               )}
-            </Link>
+            </button>
           </div>
 
         </div>
@@ -147,7 +156,7 @@ export default function Header() {
         {isSearchOpen && (
           <div className="absolute top-full left-0 w-full bg-[var(--color-bg)] shadow-md p-6 border-t border-[var(--color-border)] z-[60] pointer-events-auto">
             <div className="max-w-3xl mx-auto">
-              <div className="relative">
+              <form className="relative" onSubmit={handleSearch}>
                 <input 
                   type="text" 
                   placeholder="Search by style, category, occasion..." 
@@ -156,8 +165,10 @@ export default function Header() {
                   className="w-full border-b border-[var(--color-primary)] text-xl font-serif py-3 px-2 focus:outline-none focus:border-[var(--color-secondary)] bg-transparent text-[var(--color-primary)]"
                   autoFocus
                 />
-                <Search className="absolute right-2 top-3 w-6 h-6 text-[var(--color-text-muted)] pointer-events-none" />
-              </div>
+                <button type="submit" className="absolute right-2 top-3 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
+                  <Search className="w-6 h-6" />
+                </button>
+              </form>
             </div>
           </div>
         )}
@@ -165,24 +176,26 @@ export default function Header() {
       </div>
 
       {/* Mobile Menu Drawer */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-[100] bg-white flex flex-col md:hidden">
-          <div className="flex justify-between items-center p-4 border-b border-[var(--color-border)] min-h-[80px]">
-            <span className="font-serif text-2xl tracking-widest text-[var(--color-primary)] uppercase">{BRAND.name}</span>
-            <button onClick={() => setIsMobileMenuOpen(false)} className="p-4 text-[var(--color-primary)]" aria-label="Close menu">
-              <X className="h-8 w-8" />
-            </button>
-          </div>
-          <div className="flex flex-col p-6 space-y-6 overflow-y-auto">
-            <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Products</Link>
-            <Link href="/products?category=dinner-set" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Collections</Link>
-            <Link href="/gifting" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Corporate Gifting</Link>
-            <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Our Story</Link>
-            <Link href="/journal" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Journal</Link>
-            <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Contact</Link>
-          </div>
+      <div 
+        className={`fixed inset-0 z-[100] bg-white flex flex-col md:hidden transform transition-transform duration-300 ease-in-out ${
+          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex justify-between items-center p-4 border-b border-[var(--color-border)] min-h-[80px]">
+          <span className="font-serif text-2xl tracking-widest text-[var(--color-primary)] uppercase">{BRAND.name}</span>
+          <button onClick={() => setIsMobileMenuOpen(false)} className="p-4 text-[var(--color-primary)]" aria-label="Close menu">
+            <X className="h-8 w-8" />
+          </button>
         </div>
-      )}
+        <div className="flex flex-col p-6 space-y-6 overflow-y-auto">
+          <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Products</Link>
+          <Link href="/products?category=dinner-set" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Collections</Link>
+          <Link href="/gifting" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Corporate Gifting</Link>
+          <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Our Story</Link>
+          <Link href="/journal" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Journal</Link>
+          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Contact</Link>
+        </div>
+      </div>
     </header>
     </>
   );

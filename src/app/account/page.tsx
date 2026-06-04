@@ -10,8 +10,11 @@ import {
   Search,
   User,
   ShoppingBag
+  User,
+  ShoppingBag
 } from 'lucide-react';
 import { BRAND } from '@/config/brand';
+import { useCart } from '@/store/useCart';
 
 export const metadata = {
   title: `My Account | ${BRAND.name}`,
@@ -58,6 +61,13 @@ const accountCards = [
 ];
 
 export default function AccountDashboardPage() {
+  const { items, openDrawer } = useCart();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Top Navbar */}
@@ -73,17 +83,19 @@ export default function AccountDashboardPage() {
           
           <div className="flex items-center gap-6">
             <span className="hidden md:block font-sans text-xs tracking-[0.1em] uppercase text-[#1a1612]">
-              Welcome, Priya
+              Welcome back
             </span>
-            <Link href="/account" className="text-[#1a1612] hover:text-[#8b6914] transition-colors">
+            <div className="text-[#1a1612] transition-colors">
               <User className="w-5 h-5 stroke-[1.5]" />
-            </Link>
-            <div className="relative text-[#1a1612] hover:text-[#8b6914] transition-colors cursor-pointer">
-              <ShoppingBag className="w-5 h-5 stroke-[1.5]" />
-              <span className="absolute -top-1 -right-2 bg-[#8b6914] text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-sans">
-                2
-              </span>
             </div>
+            <button onClick={openDrawer} className="relative text-[#1a1612] hover:text-[#8b6914] transition-colors cursor-pointer">
+              <ShoppingBag className="w-5 h-5 stroke-[1.5]" />
+              {mounted && items.length > 0 && (
+                <span className="absolute -top-1 -right-2 bg-[#8b6914] text-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-sans">
+                  {items.length}
+                </span>
+              )}
+            </button>
           </div>
         </div>
       </div>
@@ -91,15 +103,12 @@ export default function AccountDashboardPage() {
       {/* Secondary Nav Bar */}
       <div className="border-b-[0.5px] border-[#1a1612]/10 hidden md:block">
         <div className="max-w-7xl mx-auto px-8 h-12 flex items-center justify-center gap-12">
-          {['Products', 'Collections', 'Corporate Gifting', 'Our Story', 'Journal', 'Contact'].map((item) => (
-            <Link 
-              key={item} 
-              href="#" 
-              className="font-sans text-[11px] uppercase tracking-[0.15em] text-[#1a1612] hover:text-[#8b6914] transition-colors"
-            >
-              {item}
-            </Link>
-          ))}
+          <Link href="/products" className="font-sans text-[11px] uppercase tracking-[0.15em] text-[#1a1612] hover:text-[#8b6914] transition-colors">Products</Link>
+          <Link href="/products?category=dinner-set" className="font-sans text-[11px] uppercase tracking-[0.15em] text-[#1a1612] hover:text-[#8b6914] transition-colors">Collections</Link>
+          <Link href="/gifting" className="font-sans text-[11px] uppercase tracking-[0.15em] text-[#1a1612] hover:text-[#8b6914] transition-colors">Corporate Gifting</Link>
+          <Link href="/about" className="font-sans text-[11px] uppercase tracking-[0.15em] text-[#1a1612] hover:text-[#8b6914] transition-colors">Our Story</Link>
+          <Link href="/journal" className="font-sans text-[11px] uppercase tracking-[0.15em] text-[#1a1612] hover:text-[#8b6914] transition-colors">Journal</Link>
+          <Link href="/contact" className="font-sans text-[11px] uppercase tracking-[0.15em] text-[#1a1612] hover:text-[#8b6914] transition-colors">Contact</Link>
         </div>
       </div>
 
