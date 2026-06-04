@@ -8,17 +8,28 @@ export default function ProductCardActions({ product }: { product: any }) {
   const addItem = useCart((state) => state.addItem);
   return (
     <>
-      <button 
-        onClick={(e) => {
-          e.preventDefault();
-          addItem(product, 1);
-          trackAddToCart(product, 1);
-          alert(`${product.name} added to cart!`);
-        }}
-        className="absolute bottom-0 left-0 w-full bg-white/90 backdrop-blur-sm text-[var(--color-primary)] uppercase tracking-widest text-xs font-medium py-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] hover:bg-[var(--color-primary)] hover:text-white z-20"
-      >
-        Quick Add
-      </button>
+      <div className="absolute bottom-0 left-0 w-full flex flex-col translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20">
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = `/products/${product.id || product.slug || '1'}`;
+          }}
+          className="w-full bg-white/95 backdrop-blur-sm text-[var(--color-text-muted)] uppercase tracking-widest text-[10px] font-medium py-2 border-b border-[var(--color-border)] hover:bg-neutral-50 transition-colors"
+        >
+          Quick View
+        </button>
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            addItem(product, 1);
+            trackAddToCart(product, 1);
+            alert(`${product.name} added to cart!`);
+          }}
+          className="w-full bg-[var(--color-primary)] text-white uppercase tracking-widest text-xs font-medium py-3 hover:bg-[#1a2520] transition-colors shadow-lg"
+        >
+          Add to Cart
+        </button>
+      </div>
 
       <button 
         onClick={(e) => {

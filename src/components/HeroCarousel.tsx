@@ -39,9 +39,9 @@ export default function HeroCarousel() {
         </div>
       ))}
       
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none">
-        <h2 className="text-white text-4xl md:text-6xl font-serif mb-6 text-center shadow-sm drop-shadow-lg tracking-wide">
-          Elegance in Every Detail
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none px-4">
+        <h2 className="text-white text-4xl md:text-6xl font-serif mb-6 text-center shadow-sm drop-shadow-lg tracking-wide max-w-4xl leading-tight">
+          Handcrafted Porcelain for Timeless Gatherings
         </h2>
         <a 
           href="/products" 

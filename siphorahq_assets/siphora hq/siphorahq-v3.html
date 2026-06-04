@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SiphoraHQ — Premium Porcelain & Ceramic</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════ TOKENS ═══════════════ */
+:root{
+  --cream:#FAF7F2;--warm:#FFFEF9;--sand:#E8DFD0;--bone:#F2EDE7;
+  --terra:#C4713A;--tl:#E8A87C;--td:#8B4C22;
+  --coal:#2C2520;--smoke:#6B5E55;--ash:#9B8E88;
+  --gold:#B8963E;--emerald:#4A7C59;--violet:#7C3AED;
+  --fd:'Cormorant Garamond',serif;--fs:'DM Sans',sans-serif;
+  --r2:2px;--r6:6px;--r8:8px;--r12:12px;--r20:20px;--r50:50%;
+  --ease:.25s cubic-bezier(.4,0,.2,1);
+  --ease-spring:.4s cubic-bezier(.34,1.56,.64,1);
+  --nav-h:68px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--fs);background:var(--cream);color:var(--coal);overflow-x:hidden}
+
+/* ═══ EDIT MODE HIGHLIGHT ═══ */
+body.edit [contenteditable="true"]{
+  outline:1.5px dashed rgba(196,113,58,.5);
+  outline-offset:3px;border-radius:2px;cursor:text;
+  transition:all .15s;
+}
+body.edit [contenteditable="true"]:hover{outline-color:var(--terra);background:rgba(196,113,58,.04)}
+body.edit [contenteditable="true"]:focus{
+  outline:2px solid var(--terra);background:rgba(255,255,255,.9);
+  box-shadow:0 0 0 5px rgba(196,113,58,.12);
+}
+body.edit .product-card{
+  outline:1.5px dashed rgba(196,113,58,.3);outline-offset:6px;border-radius:6px;
+}
+body.edit .product-card:hover{outline-color:var(--terra)}
+
+/* Edit mode pill */
+.em-pill{
+  position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-40px);
+  background:var(--terra);color:#fff;padding:6px 18px;border-radius:var(--r20);
+  font-size:11.5px;font-weight:500;letter-spacing:.08em;z-index:9999;
+  transition:transform .3s var(--ease-spring);pointer-events:none;
+  box-shadow:0 4px 14px rgba(196,113,58,.4);
+}
+body.edit .em-pill{transform:translateX(-50%) translateY(0)}
+
+/* ═══ ANNOUNCEMENT BAR ═══ */
+.ann{background:var(--coal);color:#fff;height:36px;display:flex;align-items:center;overflow:hidden;font-size:12.5px;letter-spacing:.05em}
+.ann-track{display:flex;gap:60px;animation:marquee 30s linear infinite;white-space:nowrap;flex-shrink:0}
+.ann-track span::before{content:"✦  ";color:var(--tl)}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ═══ NAV ═══ */
+nav{
+  position:sticky;top:0;z-index:400;height:var(--nav-h);
+  background:rgba(250,247,242,.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--sand);
+  display:flex;align-items:center;padding:0 5%;justify-content:space-between;
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-gem{width:20px;height:20px;background:var(--terra);transform:rotate(45deg);flex-shrink:0}
+.logo-name{font-family:var(--fd);font-size:23px;font-weight:600;color:var(--coal);letter-spacing:.01em}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{text-decoration:none;color:var(--smoke);font-size:13.5px;letter-spacing:.03em;transition:color var(--ease);position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--terra);transition:width var(--ease)}
+.nav-links a:hover{color:var(--coal)}
+.nav-links a:hover::after{width:100%}
+.nav-r{display:flex;align-items:center;gap:12px}
+.cart-wrap{position:relative;background:none;border:none;cursor:pointer;padding:8px;color:var(--coal)}
+.cart-badge{position:absolute;top:3px;right:3px;background:var(--terra);color:#fff;font-size:9px;width:15px;height:15px;border-radius:var(--r50);display:flex;align-items:center;justify-content:center;font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;font-family:var(--fs);font-size:12.5px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;text-decoration:none;border-radius:var(--r2);transition:all var(--ease)}
+.btn-solid{background:var(--terra);color:#fff;border:none}
+.btn-solid:hover{background:var(--td);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--coal);border:1.5px solid var(--coal)}
+.btn-ghost:hover{background:var(--coal);color:#fff}
+
+/* ═══ HERO ═══ */
+.hero{position:relative;min-height:calc(100vh - var(--nav-h) - 36px);display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+.hero-l{display:flex;flex-direction:column;justify-content:center;padding:72px 6% 72px 8%;position:relative;z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--bone);border:1px solid var(--sand);color:var(--smoke);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;padding:6px 14px;border-radius:var(--r2);margin-bottom:26px;width:fit-content}
+.hero-badge::before{content:'';width:5px;height:5px;background:var(--terra);border-radius:var(--r50)}
+h1.hero-h{font-family:var(--fd);font-size:clamp(50px,5.5vw,78px);font-weight:300;line-height:1.08;margin-bottom:22px}
+h1.hero-h em{font-style:italic;color:var(--terra)}
+.hero-p{color:var(--smoke);font-size:15.5px;line-height:1.8;max-width:420px;margin-bottom:36px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero-stats{display:flex;gap:32px;margin-top:48px;padding-top:28px;border-top:1px solid var(--sand)}
+.hs-n{font-family:var(--fd);font-size:30px;font-weight:600;line-height:1}
+.hs-l{font-size:11.5px;color:var(--smoke);margin-top:3px;letter-spacing:.03em}
+.hero-r{background:linear-gradient(135deg,#D4B896 0%,#A67B50 55%,#7A5232 100%);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.hero-r-overlay{position:absolute;inset:0;background:linear-gradient(to right,var(--cream) 0%,transparent 25%)}
+
+/* ═══ TRUST BAR ═══ */
+.trust{background:var(--warm);border-top:1px solid var(--sand);border-bottom:1px solid var(--sand);padding:20px 5%}
+.trust-g{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1100px;margin:0 auto}
+.ti{display:flex;align-items:center;gap:12px}
+.ti-ic{width:38px;height:38px;background:var(--bone);border-radius:var(--r50);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ti-t strong{display:block;font-size:13px;font-weight:500}
+.ti-t span{font-size:11.5px;color:var(--smoke)}
+
+/* ═══ SECTIONS ═══ */
+section{padding:76px 5%}
+.sh{text-align:center;margin-bottom:48px}
+.stag{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra);font-weight:500;display:block;margin-bottom:10px}
+.stit{font-family:var(--fd);font-size:clamp(34px,3.8vw,50px);font-weight:300;line-height:1.15}
+.stit em{font-style:italic;color:var(--terra)}
+.ssub{color:var(--smoke);font-size:14.5px;line-height:1.75;max-width:500px;margin:12px auto 0}
+
+/* ═══ CATEGORIES ═══ */
+.cat-g{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px;max-width:1200px;margin:0 auto}
+.cat{position:relative;border-radius:var(--r2);overflow:hidden;cursor:pointer}
+.cat:first-child{min-height:460px}
+.cat:not(:first-child){min-height:220px}
+.cat-bg{position:absolute;inset:0;transition:transform .6s ease}
+.cat:hover .cat-bg{transform:scale(1.04)}
+.c1 .cat-bg{background:linear-gradient(160deg,#C9A882,#7A5A3E)}
+.c2 .cat-bg{background:linear-gradient(160deg,#D4B8A0,#B08B6E)}
+.c3 .cat-bg{background:linear-gradient(160deg,#C4A882,#A07850)}
+.c4 .cat-bg{background:linear-gradient(160deg,#BAA88C,#9B7A58)}
+.cat-ovl{position:absolute;inset:0;background:linear-gradient(to top,rgba(25,16,10,.76) 0%,transparent 55%)}
+.cat-info{position:absolute;bottom:0;left:0;right:0;padding:20px}
+.cat-lbl{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:5px}
+.cat-nm{font-family:var(--fd);font-size:24px;color:#fff;line-height:1.2}
+.cat:first-child .cat-nm{font-size:36px}
+.cat-arr{font-size:11.5px;color:rgba(255,255,255,.6);margin-top:7px;display:inline-block;transition:all var(--ease)}
+.cat:hover .cat-arr{color:#fff;transform:translateX(5px)}
+
+/* ═══ PRODUCTS ═══ */
+.prods-sec{background:var(--warm)}
+.filters{display:flex;gap:7px;justify-content:center;margin-bottom:38px;flex-wrap:wrap}
+.fbtn{padding:7px 18px;border:1px solid var(--sand);background:transparent;color:var(--smoke);font-family:var(--fs);font-size:12px;letter-spacing:.04em;cursor:pointer;border-radius:var(--r2);transition:all var(--ease)}
+.fbtn.on,.fbtn:hover{background:var(--coal);color:#fff;border-color:var(--coal)}
+#prod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1200px;margin:0 auto}
+.product-card{background:var(--cream);border-radius:var(--r2);overflow:hidden;cursor:pointer;transition:all var(--ease);position:relative}
+.product-card:hover{transform:translateY(-5px);box-shadow:0 18px 44px rgba(44,37,32,.13)}
+.p-img{aspect-ratio:1;position:relative;overflow:hidden}
+.p-bg{width:100%;height:100%;transition:transform .5s;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center}
+.product-card:hover .p-bg{transform:scale(1.07)}
+.p-badge{position:absolute;top:10px;left:10px;padding:4px 9px;font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;border-radius:var(--r2)}
+.bd-best{background:var(--coal);color:#fff}
+.bd-new{background:#1B6B45;color:#fff}
+.bd-sale{background:var(--terra);color:#fff}
+.p-wish{position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(255,255,255,.88);border:none;border-radius:var(--r50);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:all var(--ease);font-size:14px}
+.product-card:hover .p-wish{opacity:1}
+.p-add{position:absolute;bottom:0;left:0;right:0;background:var(--coal);color:#fff;border:none;padding:10px;font-family:var(--fs);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;opacity:0;transform:translateY(100%);transition:all var(--ease)}
+.product-card:hover .p-add{opacity:1;transform:translateY(0)}
+.p-info{padding:13px 13px 15px}
+.p-name{font-family:var(--fd);font-size:17.5px;font-weight:400;margin-bottom:2px}
+.p-var{font-size:11.5px;color:var(--smoke);margin-bottom:8px}
+.p-price{display:flex;align-items:baseline;gap:7px}
+.p-cur{font-family:var(--fd);font-size:19px;font-weight:600}
+.p-orig{font-size:13px;color:var(--ash);text-decoration:line-through}
+.p-save{font-size:10.5px;color:var(--terra);font-weight:500}
+.p-stars{display:flex;align-items:center;gap:4px;margin-top:5px}
+.stars-ico{color:var(--gold);font-size:11.5px;letter-spacing:.5px}
+.stars-cnt{font-size:11.5px;color:var(--ash)}
+.view-all-wrap{text-align:center;margin-top:36px}
+
+/* ═══ WHY ═══ */
+.why-sec{background:var(--coal);padding:76px 5%}
+.why-sec .stag{color:var(--tl)}
+.why-sec .stit{color:#fff}
+.why-sec .ssub{color:rgba(255,255,255,.4)}
+.why-g{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;max-width:1100px;margin:0 auto}
+.wc{background:rgba(255,255,255,.04);padding:38px 30px;border:1px solid rgba(255,255,255,.05);transition:all var(--ease)}
+.wc:hover{background:rgba(255,255,255,.08)}
+.w-n{font-family:var(--fd);font-size:48px;font-weight:300;color:var(--tl);opacity:.28;line-height:1;margin-bottom:16px}
+.w-t{font-family:var(--fd);font-size:20px;color:#fff;margin-bottom:10px}
+.w-d{font-size:13px;color:rgba(255,255,255,.42);line-height:1.82}
+
+/* ═══ STORY ═══ */
+.story-sec{background:var(--cream);display:grid;grid-template-columns:1fr 1fr;padding:0}
+.story-img{background:linear-gradient(160deg,#C9A882,#8B5E3C);position:relative;overflow:hidden;min-height:480px;display:flex;align-items:center;justify-content:center}
+.story-pat{position:absolute;inset:0;opacity:.05;background-image:repeating-linear-gradient(45deg,transparent,transparent 24px,rgba(255,255,255,.5) 24px,rgba(255,255,255,.5) 25px)}
+.story-cnt{padding:72px 7% 72px 6%;display:flex;flex-direction:column;justify-content:center}
+.story-body{color:var(--smoke);font-size:14.5px;line-height:1.92;margin:20px 0 28px}
+.story-hl{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px}
+.shl{display:flex;gap:10px;align-items:flex-start}
+.shl-dot{width:6px;height:6px;background:var(--terra);border-radius:var(--r50);flex-shrink:0;margin-top:6px}
+.shl strong{display:block;font-size:13px;font-weight:500;margin-bottom:1px}
+.shl span{font-size:12px;color:var(--smoke)}
+
+/* ═══ TESTIMONIALS ═══ */
+.testi-sec{background:var(--warm)}
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto}
+.tc{background:var(--cream);border:1px solid var(--sand);border-radius:var(--r2);padding:26px 22px;position:relative}
+.tc::before{content:'"';font-family:var(--fd);font-size:64px;color:var(--terra);opacity:.1;position:absolute;top:12px;left:16px;line-height:1}
+.t-stars{color:var(--gold);font-size:12px;margin-bottom:12px}
+.t-txt{font-size:13.5px;line-height:1.8;color:var(--smoke);margin-bottom:16px}
+.t-auth{display:flex;align-items:center;gap:10px}
+.t-av{width:34px;height:34px;border-radius:var(--r50);background:var(--sand);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:14px;color:var(--smoke);font-weight:600;flex-shrink:0}
+.t-name{font-size:12.5px;font-weight:500}
+.t-loc{font-size:11.5px;color:var(--ash)}
+.t-plt{margin-left:auto;font-size:10px;color:var(--terra);background:rgba(196,113,58,.08);padding:3px 8px;border-radius:var(--r20);white-space:nowrap}
+
+/* ═══ CTA ═══ */
+.cta-sec{background:var(--terra);padding:76px 5%;text-align:center;position:relative;overflow:hidden}
+.cta-sec::before,.cta-sec::after{content:'';position:absolute;border-radius:var(--r50);background:rgba(255,255,255,.05)}
+.cta-sec::before{width:280px;height:280px;top:-80px;right:-60px}
+.cta-sec::after{width:200px;height:200px;bottom:-70px;left:-30px}
+.cta-sec .stag{color:rgba(255,255,255,.6)}
+.cta-sec .stit{color:#fff}
+.cta-sub-p{color:rgba(255,255,255,.72);font-size:15px;margin:14px auto 32px;max-width:440px}
+.cta-row{display:flex;max-width:400px;margin:0 auto 18px;position:relative;z-index:1}
+.cta-in{flex:1;padding:13px 16px;border:none;font-family:var(--fs);font-size:14px;color:var(--coal);background:rgba(255,255,255,.95);border-radius:var(--r2) 0 0 var(--r2);outline:none}
+.cta-submit{padding:13px 22px;background:var(--coal);color:#fff;border:none;font-family:var(--fs);font-size:12.5px;font-weight:500;letter-spacing:.06em;cursor:pointer;border-radius:0 var(--r2) var(--r2) 0}
+.cta-perks{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;position:relative;z-index:1}
+.cta-pk{font-size:12.5px;color:rgba(255,255,255,.78);display:flex;align-items:center;gap:5px}
+.cta-pk::before{content:'✓';font-weight:600}
+
+/* ═══ PLATFORMS ═══ */
+.plat-sec{background:var(--cream);padding:52px 5%}
+.plat-g{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;max-width:860px;margin:0 auto}
+.plt{background:var(--warm);border:1px solid var(--sand);border-radius:var(--r2);padding:18px 26px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all var(--ease);text-decoration:none;min-width:126px}
+.plt:hover{border-color:var(--terra);transform:translateY(-2px);box-shadow:0 6px 20px rgba(196,113,58,.12)}
+.plt-ic{font-size:24px}
+.plt-nm{font-size:12.5px;font-weight:500;color:var(--coal)}
+.plt-ac{font-size:11px;color:var(--terra)}
+
+/* ═══ FOOTER ═══ */
+footer{background:var(--coal);color:rgba(255,255,255,.42);padding:56px 5% 26px}
+.ft-g{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.ft-brand-name{font-family:var(--fd);font-size:20px;color:#fff;display:block;margin-bottom:10px}
+.ft-desc{font-size:12.5px;line-height:1.8;max-width:220px}
+.ft-soc{display:flex;gap:8px;margin-top:16px}
+.ft-sl{width:30px;height:30px;border:1px solid rgba(255,255,255,.1);border-radius:var(--r50);display:flex;align-items:center;justify-content:center;text-decoration:none;color:rgba(255,255,255,.4);font-size:11px;transition:all var(--ease)}
+.ft-sl:hover{border-color:var(--tl);color:var(--tl)}
+.ft-col h4{font-family:var(--fd);font-size:14.5px;font-weight:400;color:rgba(255,255,255,.75);margin-bottom:14px}
+.ft-links{list-style:none;display:flex;flex-direction:column;gap:8px}
+.ft-links a{text-decoration:none;color:rgba(255,255,255,.38);font-size:12.5px;transition:color var(--ease)}
+.ft-links a:hover{color:rgba(255,255,255,.78)}
+.ft-bot{border-top:1px solid rgba(255,255,255,.07);padding-top:22px;display:flex;justify-content:space-between;align-items:center;font-size:11.5px;flex-wrap:wrap;gap:8px}
+.ft-bot a{color:var(--tl);text-decoration:none}
+
+/* ═══ WA FLOAT ═══ */
+.wa-float{position:fixed;bottom:28px;right:28px;z-index:500;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.wa-tip{background:var(--coal);color:#fff;font-size:11.5px;padding:7px 14px;border-radius:var(--r20);white-space:nowrap;opacity:0;transform:translateX(8px);transition:all var(--ease);pointer-events:none}
+.wa-float:hover .wa-tip{opacity:1;transform:translateX(0)}
+.wa-btn{width:52px;height:52px;background:#25D366;border-radius:var(--r50);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 18px rgba(37,211,102,.38);transition:all var(--ease);border:none}
+.wa-btn:hover{transform:scale(1.09)}
+
+/* ═══════════════════════════════════════════
+   ADMIN PANEL — full sidebar
+═══════════════════════════════════════════ */
+.adm-trigger{
+  position:fixed;bottom:28px;left:28px;z-index:500;
+  width:52px;height:52px;border-radius:var(--r50);
+  background:linear-gradient(135deg,var(--violet),var(--terra));
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 18px rgba(124,58,237,.38);transition:all var(--ease);color:#fff;font-size:20px;
+}
+.adm-trigger:hover{transform:scale(1.09);box-shadow:0 6px 26px rgba(124,58,237,.5)}
+
+.adm-backdrop{
+  position:fixed;inset:0;background:rgba(20,14,10,.55);z-index:700;
+  opacity:0;pointer-events:none;transition:opacity var(--ease);backdrop-filter:blur(3px);
+}
+.adm-backdrop.on{opacity:1;pointer-events:all}
+
+.adm-panel{
+  position:fixed;left:0;top:0;bottom:0;width:400px;z-index:800;
+  background:#1C1512;display:flex;flex-direction:column;overflow:hidden;
+  transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+  box-shadow:5px 0 40px rgba(0,0,0,.45);
+}
+.adm-panel.on{transform:translateX(0)}
+
+/* Panel header */
+.adm-head{
+  padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.adm-title{display:flex;align-items:center;gap:10px}
+.adm-title-txt{font-family:var(--fd);font-size:20px;color:#fff;font-weight:400}
+.adm-badge{
+  background:linear-gradient(135deg,var(--violet),var(--terra));
+  color:#fff;font-size:9px;font-weight:600;letter-spacing:.12em;
+  padding:3px 9px;border-radius:var(--r20);text-transform:uppercase;
+}
+.adm-close{
+  width:30px;height:30px;background:rgba(255,255,255,.07);border:none;
+  border-radius:var(--r50);color:rgba(255,255,255,.5);cursor:pointer;
+  font-size:15px;display:flex;align-items:center;justify-content:center;
+  transition:all var(--ease);
+}
+.adm-close:hover{background:rgba(255,255,255,.14);color:#fff}
+
+/* Tabs */
+.adm-tabs{display:flex;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;overflow-x:auto}
+.adm-tabs::-webkit-scrollbar{display:none}
+.adm-tab{
+  flex:1;min-width:fit-content;padding:11px 6px;background:none;border:none;
+  color:rgba(255,255,255,.35);font-family:var(--fs);font-size:10.5px;font-weight:500;
+  letter-spacing:.07em;cursor:pointer;transition:all var(--ease);text-transform:uppercase;
+  border-bottom:2px solid transparent;white-space:nowrap;
+}
+.adm-tab.on{color:#fff;border-bottom-color:var(--terra)}
+
+/* Scrollable body */
+.adm-body{flex:1;overflow-y:auto;padding:18px}
+.adm-body::-webkit-scrollbar{width:3px}
+.adm-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:4px}
+
+/* Labels inside panel */
+.ap-label{
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.27);margin-bottom:10px;margin-top:6px;display:block;
+}
+
+/* Toggle row */
+.tgl-row{
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.05);border-radius:var(--r8);padding:13px 15px;
+  margin-bottom:14px;border:1px solid rgba(255,255,255,.07);
+}
+.tgl-l strong{display:block;font-size:13px;color:#fff;font-weight:500;margin-bottom:2px}
+.tgl-l span{font-size:11px;color:rgba(255,255,255,.35)}
+.sw{position:relative;width:40px;height:21px;flex-shrink:0}
+.sw input{opacity:0;width:0;height:0;position:absolute}
+.sw .sl{position:absolute;cursor:pointer;inset:0;background:rgba(255,255,255,.14);border-radius:21px;transition:.25s}
+.sw .sl::before{content:'';position:absolute;width:15px;height:15px;left:3px;bottom:3px;background:#fff;border-radius:var(--r50);transition:.25s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.sw input:checked+.sl{background:var(--terra)}
+.sw input:checked+.sl::before{transform:translateX(19px)}
+
+/* Dark inputs */
+.di{
+  width:100%;padding:9px 12px;border:1.5px solid rgba(255,255,255,.09);
+  border-radius:var(--r6);font-family:var(--fs);font-size:13px;
+  color:#fff;background:rgba(255,255,255,.06);outline:none;transition:all var(--ease);
+}
+.di:focus{border-color:var(--terra);background:rgba(255,255,255,.1)}
+.di::placeholder{color:rgba(255,255,255,.25)}
+select.di option{background:#2a1e18;color:#fff}
+textarea.di{resize:vertical;min-height:60px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.field label{font-size:10.5px;color:rgba(255,255,255,.38);font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* Quick edit inputs */
+.qe-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:var(--r8);padding:14px;margin-bottom:10px}
+.qe-card-title{font-size:12px;color:rgba(255,255,255,.5);font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+
+/* Quick action buttons */
+.qa-g{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+.qa{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
+  border-radius:var(--r8);padding:13px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  cursor:pointer;transition:all var(--ease);color:#fff;
+  font-family:var(--fs);font-size:11.5px;font-weight:500;letter-spacing:.04em;
+  text-align:center;
+}
+.qa:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.14)}
+.qa-ic{font-size:20px}
+
+/* Dark btn */
+.dark-btn{
+  width:100%;padding:12px;border:none;border-radius:var(--r6);
+  font-family:var(--fs);font-size:13px;font-weight:500;cursor:pointer;
+  letter-spacing:.05em;transition:all var(--ease);
+}
+.dark-btn-terra{background:var(--terra);color:#fff}
+.dark-btn-terra:hover{background:var(--td)}
+.dark-btn-terra:disabled{opacity:.45;cursor:not-allowed}
+.dark-btn-gradient{background:linear-gradient(135deg,var(--violet),var(--terra));color:#fff}
+.dark-btn-gradient:disabled{opacity:.45;cursor:not-allowed}
+.dark-btn-coal{background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.1)}
+.dark-btn-coal:hover{background:rgba(255,255,255,.13)}
+
+/* AI upload zone */
+.ai-zone{
+  border:2px dashed rgba(255,255,255,.12);border-radius:var(--r8);
+  padding:28px 16px;text-align:center;cursor:pointer;transition:all var(--ease);
+  background:rgba(255,255,255,.03);position:relative;margin-bottom:12px;
+}
+.ai-zone:hover,.ai-zone.drag{border-color:var(--terra);background:rgba(196,113,58,.07)}
+.ai-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.ai-zone .z-ic{font-size:30px;margin-bottom:6px}
+.ai-zone .z-t{font-size:13px;color:#fff;font-weight:500;margin-bottom:3px}
+.ai-zone .z-s{font-size:11px;color:rgba(255,255,255,.32)}
+.ai-prev{width:100%;border-radius:var(--r6);max-height:170px;object-fit:cover;display:none;margin-bottom:12px}
+
+/* AI thinking */
+.ai-think{
+  background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.22);
+  border-radius:var(--r8);padding:13px;font-size:12px;color:rgba(255,255,255,.55);
+  line-height:1.72;display:none;margin-bottom:12px;
+}
+.ai-think.on{display:block}
+.td{display:inline-block;width:5px;height:5px;background:var(--violet);border-radius:var(--r50);margin:0 2px;animation:blink 1.1s infinite}
+.td:nth-child(2){animation-delay:.18s}
+.td:nth-child(3){animation-delay:.36s}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+
+/* AI result fields */
+.ai-results{display:none;flex-direction:column;gap:8px}
+.ai-results.on{display:flex}
+
+/* Product manager list */
+.pm-list{display:flex;flex-direction:column;gap:7px}
+.pm-item{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,.05);border-radius:var(--r8);
+  padding:10px 11px;border:1px solid rgba(255,255,255,.07);
+}
+.pm-thumb{width:38px;height:38px;border-radius:var(--r6);object-fit:cover;flex-shrink:0}
+.pm-ph{width:38px;height:38px;border-radius:var(--r6);background:linear-gradient(135deg,#C9A882,#8B5E3C);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px}
+.pm-info{flex:1;min-width:0}
+.pm-name{font-size:12.5px;color:#fff;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pm-price{font-size:11.5px;color:var(--tl)}
+.pm-acts{display:flex;gap:5px;flex-shrink:0}
+.pm-act{
+  width:26px;height:26px;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);border-radius:var(--r6);
+  color:rgba(255,255,255,.45);cursor:pointer;font-size:12px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all var(--ease);
+}
+.pm-act:hover{background:rgba(255,255,255,.12);color:#fff}
+.pm-del:hover{background:rgba(220,50,50,.2);border-color:rgba(220,50,50,.3);color:#ff6b6b}
+
+/* Analytics cards */
+.stat-g{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px}
+.sc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:var(--r8);padding:14px}
+.sc-val{font-family:var(--fd);font-size:30px;color:#fff;line-height:1}
+.sc-lbl{font-size:11px;color:rgba(255,255,255,.38);margin-top:3px}
+.sc-chg{font-size:10.5px;margin-top:3px}
+.up{color:#4ade80}.dn{color:#f87171}.nt{color:var(--tl)}
+
+/* Activity */
+.act-list{display:flex;flex-direction:column}
+.act{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.act:last-child{border-bottom:none}
+.act-dot{width:6px;height:6px;border-radius:var(--r50);flex-shrink:0;margin-top:5px}
+.dg{background:#4ade80}.db{background:var(--tl)}.dp{background:#a78bfa}
+.act-txt{font-size:12px;color:rgba(255,255,255,.5);line-height:1.5}
+.act-t{font-size:10.5px;color:rgba(255,255,255,.22);margin-top:2px}
+
+/* Settings */
+.s-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);border-radius:var(--r8);padding:13px 14px;margin-bottom:8px}
+.s-lbl{font-size:12.5px;color:#fff;font-weight:500;margin-bottom:2px}
+.s-sub{font-size:11px;color:rgba(255,255,255,.32);margin-bottom:8px}
+
+/* Global toast */
+.toast{
+  position:fixed;top:82px;right:22px;z-index:9999;
+  background:#1C1512;color:#fff;padding:12px 18px;border-radius:var(--r8);
+  font-size:12.5px;display:flex;align-items:center;gap:9px;
+  opacity:0;transform:translateY(-8px) scale(.97);
+  transition:all var(--ease);pointer-events:none;
+  border-left:3px solid var(--terra);
+  box-shadow:0 8px 28px rgba(0,0,0,.3);
+}
+.toast.on{opacity:1;transform:translateY(0) scale(1)}
+
+/* ── MULTI-IMAGE CAROUSEL ── */
+.p-img{position:relative}
+.p-carousel{width:100%;height:100%;position:relative;overflow:hidden}
+.p-slides{display:flex;height:100%;transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.p-slide{min-width:100%;height:100%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background-size:cover;background-position:center}
+.car-prev,.car-next{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.82);
+  border:none;cursor:pointer;font-size:13px;display:flex;align-items:center;
+  justify-content:center;opacity:0;transition:opacity var(--ease);z-index:5;
+  box-shadow:0 1px 4px rgba(0,0,0,.18);
+}
+.car-prev{left:7px}.car-next{right:7px}
+.product-card:hover .car-prev,.product-card:hover .car-next{opacity:1}
+.car-dots{
+  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  display:flex;gap:4px;z-index:5;
+}
+.car-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;transition:all .2s}
+.car-dot.on{background:#fff;width:14px;border-radius:3px}
+
+/* Multi-image upload strip */
+.mi-strip{
+  display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;
+}
+.mi-thumb{
+  width:56px;height:56px;border-radius:var(--r6);object-fit:cover;
+  border:1.5px solid rgba(255,255,255,.12);position:relative;
+  cursor:default;flex-shrink:0;
+}
+.mi-thumb-wrap{position:relative;display:inline-block}
+.mi-rm{
+  position:absolute;top:-5px;right:-5px;width:16px;height:16px;
+  background:#e53e3e;border-radius:50%;border:none;color:#fff;
+  font-size:9px;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;font-weight:700;line-height:1;
+}
+.mi-add-btn{
+  width:56px;height:56px;border-radius:var(--r6);
+  border:1.5px dashed rgba(255,255,255,.22);
+  background:rgba(255,255,255,.04);color:rgba(255,255,255,.4);
+  font-size:20px;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;transition:all var(--ease);
+}
+.mi-add-btn:hover{border-color:var(--terra);color:var(--terra)}
+
+/* AI-generated card pop */
+.product-card.ai-new{animation:cardpop .5s var(--ease-spring)}
+@keyframes cardpop{from{transform:scale(.82);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* Responsive */
+@media(max-width:1024px){
+  #prod-grid{grid-template-columns:repeat(3,1fr)}
+  .cat-g{grid-template-columns:1fr 1fr}
+  .cat:first-child{grid-column:span 2;min-height:280px}
+  .ft-g{grid-template-columns:1fr 1fr;gap:28px}
+  .adm-panel{width:100%}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero{grid-template-columns:1fr}
+  .hero-r{display:none}
+  .trust-g{grid-template-columns:1fr 1fr}
+  #prod-grid{grid-template-columns:1fr 1fr}
+  .why-g{grid-template-columns:1fr}
+  .story-sec{grid-template-columns:1fr}
+  .story-img{min-height:200px}
+  .tg{grid-template-columns:1fr}
+  .ft-g{grid-template-columns:1fr}
+}
+
+/* Hero animation */
+.hero-l>*{opacity:0;animation:fup .7s ease forwards}
+.hero-badge{animation-delay:.1s}
+h1.hero-h{animation-delay:.22s}
+.hero-p{animation-delay:.36s}
+.hero-ctas{animation-delay:.46s}
+.hero-stats{animation-delay:.56s}
+@keyframes fup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<!-- Edit mode indicator -->
+<div class="em-pill">✏️ Edit Mode Active — Click any text to edit</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span id="toast-ic">✓</span>
+  <span id="toast-msg">Done!</span>
+</div>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="ann">
+  <div class="ann-track" id="ann-track">
+    <span>Free Shipping on Orders Above ₹999</span>
+    <span>Handcrafted Premium Porcelain — Made in India</span>
+    <span>WhatsApp Orders Available</span>
+    <span>7-Day Easy Returns</span>
+    <span>Now Available on Amazon, Flipkart &amp; Meesho</span>
+    <span>Free Shipping on Orders Above ₹999</span>
+    <span>Handcrafted Premium Porcelain — Made in India</span>
+    <span>WhatsApp Orders Available</span>
+    <span>7-Day Easy Returns</span>
+    <span>Now Available on Amazon, Flipkart &amp; Meesho</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-gem"></div>
+    <span class="logo-name" id="store-name-nav">Siphorahq</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#categories">Collection</a></li>
+    <li><a href="#products">Gift Sets</a></li>
+    <li><a href="#">AI Studio</a></li>
+    <li><a href="#contact">Enquire</a></li>
+  </ul>
+  <div class="nav-r">
+    <button class="cart-wrap" aria-label="Cart">
+      <svg width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18"/><path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      <span class="cart-badge" id="cart-count">0</span>
+    </button>
+    <a href="#contact" class="btn btn-solid">Get in Touch</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-l">
+    <div class="hero-badge" id="hero-badge-txt">Handcrafted in India</div>
+    <h1 class="hero-h">Sip Together,<br><em id="hero-em">Stay Together</em></h1>
+    <p class="hero-p" id="hero-sub">Discover artisan porcelain cups, plates &amp; utensils crafted with centuries-old techniques. Each piece tells a story worth sharing.</p>
+    <div class="hero-ctas">
+      <a href="#products" class="btn btn-solid">Shop Collection →</a>
+      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hs-n" id="hs-customers">2000+</div><div class="hs-l">Happy Customers</div></div>
+      <div><div class="hs-n" id="hs-designs">150+</div><div class="hs-l">Unique Designs</div></div>
+      <div><div class="hs-n" id="hs-rating">4.8★</div><div class="hs-l">Average Rating</div></div>
+    </div>
+  </div>
+  <div class="hero-r">
+    <svg viewBox="0 0 440 400" fill="none" style="width:78%;max-width:400px;position:relative;z-index:1;opacity:.9">
+      <ellipse cx="200" cy="220" rx="92" ry="82" fill="rgba(255,255,255,.18)" stroke="rgba(255,255,255,.38)" stroke-width="2"/>
+      <path d="M108 210 Q68 190 73 230 Q78 260 113 245" stroke="rgba(255,255,255,.38)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M292 200 Q332 185 337 215 Q322 235 297 228" stroke="rgba(255,255,255,.38)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="200" cy="143" rx="52" ry="15" fill="rgba(255,255,255,.18)" stroke="rgba(255,255,255,.38)" stroke-width="2"/>
+      <rect x="174" y="123" width="52" height="26" rx="4" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.28)" stroke-width="1.5"/>
+      <circle cx="200" cy="116" r="9" fill="rgba(255,255,255,.3)" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
+      <path d="M78 312 Q76 337 98 342 L142 342 Q164 337 162 312Z" fill="rgba(255,255,255,.2)" stroke="rgba(255,255,255,.48)" stroke-width="2"/>
+      <ellipse cx="120" cy="313" rx="42" ry="8" fill="rgba(255,255,255,.14)" stroke="rgba(255,255,255,.36)" stroke-width="1.5"/>
+      <path d="M262 292 Q260 320 284 326 L324 326 Q348 320 346 292Z" fill="rgba(255,255,255,.2)" stroke="rgba(255,255,255,.48)" stroke-width="2"/>
+      <ellipse cx="304" cy="293" rx="44" ry="9" fill="rgba(255,255,255,.14)" stroke="rgba(255,255,255,.36)" stroke-width="1.5"/>
+    </svg>
+    <div class="hero-r-overlay"></div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust">
+  <div class="trust-g">
+    <div class="ti"><div class="ti-ic"><svg width="17" height="17" fill="none" stroke="#C4713A" stroke-width="1.8" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div><div class="ti-t"><strong>Free Shipping</strong><span>On orders above ₹999</span></div></div>
+    <div class="ti"><div class="ti-ic"><svg width="17" height="17" fill="none" stroke="#C4713A" stroke-width="1.8" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.36"/></svg></div><div class="ti-t"><strong>Easy Returns</strong><span>7-day return policy</span></div></div>
+    <div class="ti"><div class="ti-ic"><svg width="17" height="17" fill="none" stroke="#C4713A" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="ti-t"><strong>100% Authentic</strong><span>Handcrafted originals</span></div></div>
+    <div class="ti"><div class="ti-ic"><svg width="17" height="17" fill="none" stroke="#25D366" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div class="ti-t"><strong>WhatsApp Support</strong><span>Chat anytime</span></div></div>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section id="categories">
+  <div class="sh"><span class="stag">Shop by Category</span><h2 class="stit">Find Your <em>Perfect Piece</em></h2></div>
+  <div class="cat-g">
+    <div class="cat c1"><div class="cat-bg"></div><div class="cat-ovl"></div><div class="cat-info"><div class="cat-lbl">Best Seller</div><div class="cat-nm">Premium<br>Cup Sets</div><div class="cat-arr">Shop Now →</div></div></div>
+    <div class="cat c2"><div class="cat-bg"></div><div class="cat-ovl"></div><div class="cat-info"><div class="cat-lbl">New Arrival</div><div class="cat-nm">Dinner Plates</div><div class="cat-arr">Explore →</div></div></div>
+    <div class="cat c3"><div class="cat-bg"></div><div class="cat-ovl"></div><div class="cat-info"><div class="cat-lbl">Trending</div><div class="cat-nm">Gift Sets</div><div class="cat-arr">Shop Now →</div></div></div>
+    <div class="cat c4"><div class="cat-bg"></div><div class="cat-ovl"></div><div class="cat-info"><div class="cat-lbl">Essentials</div><div class="cat-nm">Serving Bowls</div><div class="cat-arr">Explore →</div></div></div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="prods-sec" id="products">
+  <div class="sh">
+    <span class="stag">Our Collection</span>
+    <h2 class="stit">Artisan <em>Crafted</em> Pieces</h2>
+    <p class="ssub">Each piece is individually crafted and may carry slight variations — a mark of its authenticity.</p>
+  </div>
+  <div class="filters">
+    <button class="fbtn on" data-f="all">All Products</button>
+    <button class="fbtn" data-f="cups">Cups &amp; Mugs</button>
+    <button class="fbtn" data-f="plates">Plates</button>
+    <button class="fbtn" data-f="bowls">Bowls</button>
+    <button class="fbtn" data-f="gifts">Gift Sets</button>
+    <button class="fbtn" data-f="new">New Arrivals</button>
+  </div>
+  <div id="prod-grid"></div>
+  <div class="view-all-wrap"><a href="#" class="btn btn-ghost">View Full Collection →</a></div>
+</section>
+
+<!-- WHY -->
+<section class="why-sec">
+  <div class="sh"><span class="stag">Why SiphoraHq</span><h2 class="stit">Crafted with <em>Purpose</em></h2><p class="ssub" style="color:rgba(255,255,255,.4)">Every decision we make is guided by a love for craftsmanship and respect for the artisans.</p></div>
+  <div class="why-g">
+    <div class="wc"><div class="w-n">01</div><div class="w-t">Premium Materials</div><p class="w-d">We source only the finest porcelain and ceramic clay, fired at precise temperatures to achieve that signature smooth finish and durability.</p></div>
+    <div class="wc"><div class="w-n">02</div><div class="w-t">Artisan Made</div><p class="w-d">Every piece is hand-thrown and finished by skilled craftspeople. Minor variations are a mark of authenticity, not imperfection.</p></div>
+    <div class="wc"><div class="w-n">03</div><div class="w-t">Made in India</div><p class="w-d">Proudly manufactured across India's ceramics belts, supporting local artisan communities and preserving heritage techniques.</p></div>
+    <div class="wc"><div class="w-n">04</div><div class="w-t">Gift-Ready Packaging</div><p class="w-d">Each order ships in premium kraft packaging with a handwritten note option — perfect for gifting as-is.</p></div>
+    <div class="wc"><div class="w-n">05</div><div class="w-t">Honest Pricing</div><p class="w-d">We sell direct — no middlemen, no retail markups. Premium quality at prices that don't require justification.</p></div>
+    <div class="wc"><div class="w-n">06</div><div class="w-t">Dedicated Support</div><p class="w-d">Real human support via WhatsApp. We respond fast, resolve issues genuinely, and stand by every piece we ship.</p></div>
+  </div>
+</section>
+
+<!-- STORY -->
+<div class="story-sec">
+  <div class="story-img">
+    <div class="story-pat"></div>
+    <svg viewBox="0 0 300 280" fill="none" style="width:65%;max-width:250px;position:relative;z-index:1">
+      <ellipse cx="150" cy="140" rx="105" ry="105" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.18)" stroke-width="1"/>
+      <path d="M90 95 Q86 150 95 178 Q105 202 150 202 Q195 202 205 178 Q214 150 210 95Z" fill="rgba(255,255,255,.24)" stroke="rgba(255,255,255,.58)" stroke-width="2"/>
+      <path d="M210 112 Q236 107 236 130 Q236 153 210 147" stroke="rgba(255,255,255,.52)" stroke-width="2.5" fill="none"/>
+      <ellipse cx="150" cy="96" rx="58" ry="16" fill="rgba(255,255,255,.18)" stroke="rgba(255,255,255,.48)" stroke-width="2"/>
+    </svg>
+  </div>
+  <div class="story-cnt">
+    <span class="stag">Our Story</span>
+    <h2 class="stit">Born from a <em>Love of Tea</em></h2>
+    <p class="story-body">SiphoraHq started with a simple belief — that the vessel you drink from matters as much as what's inside it. We set out to bring museum-quality porcelain into everyday Indian homes, without the museum price tag.</p>
+    <a href="#" class="btn btn-solid" style="width:fit-content">Read Our Full Story →</a>
+    <div class="story-hl">
+      <div class="shl"><div class="shl-dot"></div><div><strong>Faridabad Based</strong><span>Shipped across India</span></div></div>
+      <div class="shl"><div class="shl-dot"></div><div><strong>150+ Designs</strong><span>New drops every month</span></div></div>
+      <div class="shl"><div class="shl-dot"></div><div><strong>2000+ Customers</strong><span>And growing daily</span></div></div>
+      <div class="shl"><div class="shl-dot"></div><div><strong>GST Registered</strong><span>HSN 6911 · 12% GST</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testi-sec">
+  <div class="sh"><span class="stag">Customer Love</span><h2 class="stit">What Our <em>Customers Say</em></h2></div>
+  <div class="tg">
+    <div class="tc"><div class="t-stars">★★★★★</div><p class="t-txt">Ordered the couple gift set for our anniversary and it was absolutely stunning. The packaging was beautiful too — didn't even need to wrap it separately!</p><div class="t-auth"><div class="t-av">P</div><div><div class="t-name">Priya Sharma</div><div class="t-loc">Delhi, India</div></div><span class="t-plt">Amazon ✓</span></div></div>
+    <div class="tc"><div class="t-stars">★★★★★</div><p class="t-txt">The quality is genuinely comparable to what you'd find in high-end stores for 3x the price. I've ordered twice now and gifted to friends.</p><div class="t-auth"><div class="t-av">R</div><div><div class="t-name">Rahul Verma</div><div class="t-loc">Gurgaon, India</div></div><span class="t-plt">Flipkart ✓</span></div></div>
+    <div class="tc"><div class="t-stars">★★★★★</div><p class="t-txt">WhatsApp support is super helpful. Had a minor issue with delivery and they resolved it within the hour. Great team behind this brand.</p><div class="t-auth"><div class="t-av">A</div><div><div class="t-name">Anjali Gupta</div><div class="t-loc">Faridabad, India</div></div><span class="t-plt">Instagram ✓</span></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec" id="contact">
+  <span class="stag">Stay Connected</span>
+  <h2 class="stit">Join the <em>SiphoraHq</em> Family</h2>
+  <p class="cta-sub-p">Get early access to new collections, exclusive offers, and handpicked styling tips for your home.</p>
+  <div class="cta-row"><input type="email" class="cta-in" placeholder="Enter your email address"><button class="cta-submit">Subscribe</button></div>
+  <div class="cta-perks"><span class="cta-pk">Early access to new drops</span><span class="cta-pk">Exclusive discounts</span><span class="cta-pk">No spam, ever</span></div>
+</section>
+
+<!-- PLATFORMS -->
+<section class="plat-sec">
+  <div class="sh" style="margin-bottom:28px"><span class="stag">Shop Anywhere</span><p style="font-size:17px;color:var(--smoke);font-family:var(--fs);font-weight:400;margin-top:6px">Find us on your favourite platform</p></div>
+  <div class="plat-g">
+    <a href="#" class="plt" id="plt-amazon"><div class="plt-ic">🛒</div><div class="plt-nm">Amazon</div><div class="plt-ac">Shop Now →</div></a>
+    <a href="#" class="plt" id="plt-flipkart"><div class="plt-ic">📦</div><div class="plt-nm">Flipkart</div><div class="plt-ac">Shop Now →</div></a>
+    <a href="#" class="plt" id="plt-meesho"><div class="plt-ic">🏷️</div><div class="plt-nm">Meesho</div><div class="plt-ac">Shop Now →</div></a>
+    <a href="#" class="plt" id="plt-instagram"><div class="plt-ic">📸</div><div class="plt-nm">Instagram</div><div class="plt-ac">DM to Order →</div></a>
+    <a href="#" class="plt" id="plt-whatsapp"><div class="plt-ic">💬</div><div class="plt-nm">WhatsApp</div><div class="plt-ac">Order Directly →</div></a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-g">
+    <div><span class="ft-brand-name">Siphorahq</span><p class="ft-desc">Premium porcelain &amp; ceramic homewares, handcrafted in India. Shipped across the country with care.</p><div class="ft-soc"><a href="#" class="ft-sl">in</a><a href="#" class="ft-sl">ig</a><a href="#" class="ft-sl">fb</a><a href="#" class="ft-sl">yt</a></div></div>
+    <div class="ft-col"><h4>Collections</h4><ul class="ft-links"><li><a href="#">Cups &amp; Mugs</a></li><li><a href="#">Dinner Plates</a></li><li><a href="#">Serving Bowls</a></li><li><a href="#">Gift Sets</a></li><li><a href="#">New Arrivals</a></li></ul></div>
+    <div class="ft-col"><h4>Customer Care</h4><ul class="ft-links"><li><a href="#">Track Your Order</a></li><li><a href="#">Return Policy</a></li><li><a href="#">Shipping Info</a></li><li><a href="#">FAQ</a></li><li><a href="#">WhatsApp Us</a></li></ul></div>
+    <div class="ft-col"><h4>Company</h4><ul class="ft-links"><li><a href="#">About Us</a></li><li><a href="#">Our Story</a></li><li><a href="#">AI Studio</a></li><li><a href="#">Bulk Orders</a></li><li><a href="#">Contact</a></li></ul></div>
+  </div>
+  <div class="ft-bot"><span>© 2025 SiphoraHq · Faridabad, Haryana</span><span><a href="#">Privacy</a> · <a href="#">Terms</a> · GST 12% · HSN 6911</span></div>
+</footer>
+
+<!-- WA FLOAT -->
+<div class="wa-float">
+  <div class="wa-tip">Order on WhatsApp</div>
+  <button class="wa-btn" id="wa-btn">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </button>
+</div>
+
+<!-- ADMIN TRIGGER -->
+<button class="adm-trigger" id="admTrigger" title="Open Admin Panel">⚙️</button>
+
+<!-- ADMIN BACKDROP -->
+<div class="adm-backdrop" id="admBackdrop"></div>
+
+<!-- ADMIN PANEL -->
+<div class="adm-panel" id="admPanel">
+  <div class="adm-head">
+    <div class="adm-title">
+      <div class="adm-title-txt">Admin</div>
+      <span class="adm-badge">SiphoraHQ</span>
+    </div>
+    <button class="adm-close" id="admClose">✕</button>
+  </div>
+
+  <div class="adm-tabs">
+    <button class="adm-tab on" data-tab="edit">✏️ Edit</button>
+    <button class="adm-tab" data-tab="ai">🤖 AI Add</button>
+    <button class="adm-tab" data-tab="products">📦 Products</button>
+    <button class="adm-tab" data-tab="analytics">📊 Stats</button>
+    <button class="adm-tab" data-tab="settings">⚙️ Settings</button>
+  </div>
+
+  <!-- ── TAB: EDIT ── -->
+  <div class="adm-body" id="tab-edit">
+    <span class="ap-label">Page Editing</span>
+    <div class="tgl-row">
+      <div class="tgl-l"><strong>Edit Mode</strong><span>Click any text on page to edit inline</span></div>
+      <label class="sw"><input type="checkbox" id="editToggle" onchange="setEditMode(this.checked)"><span class="sl"></span></label>
+    </div>
+
+    <span class="ap-label">Hero Section</span>
+    <div class="qe-card">
+      <div class="qe-card-title">🏠 Hero Text</div>
+      <div class="field"><label>Main Headline</label><input class="di" id="qe-h1" value="Sip Together, Stay Together" oninput="liveEdit('hero-em', this.value.split(',')[1]?.trim()||'Stay Together')"></div>
+      <div class="field"><label>Sub-description</label><textarea class="di" id="qe-sub" rows="2" oninput="document.getElementById('hero-sub').textContent=this.value">Discover artisan porcelain cups, plates &amp; utensils crafted with centuries-old techniques.</textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Customers</label><input class="di" value="2000+" oninput="liveEdit('hs-customers',this.value)"></div>
+        <div class="field"><label>Designs</label><input class="di" value="150+" oninput="liveEdit('hs-designs',this.value)"></div>
+      </div>
+      <div class="field"><label>Rating</label><input class="di" value="4.8★" oninput="liveEdit('hs-rating',this.value)"></div>
+    </div>
+
+    <span class="ap-label">Quick Navigation</span>
+    <div class="qa-g">
+      <button class="qa" onclick="scrollTo('#categories')"><span class="qa-ic">🏷️</span>Categories</button>
+      <button class="qa" onclick="scrollTo('#products')"><span class="qa-ic">🛍️</span>Products</button>
+      <button class="qa" onclick="scrollTo('#contact')"><span class="qa-ic">📧</span>Newsletter</button>
+      <button class="qa" onclick="window.scrollTo({top:0,behavior:'smooth'})"><span class="qa-ic">⬆️</span>Back to Top</button>
+    </div>
+
+    <span class="ap-label">Platform Links</span>
+    <div class="qe-card">
+      <div class="field"><label>Amazon URL</label><input class="di" placeholder="https://amazon.in/your-store" oninput="setPlatformLink('amazon',this.value)"></div>
+      <div class="field"><label>Flipkart URL</label><input class="di" placeholder="https://flipkart.com/your-store" oninput="setPlatformLink('flipkart',this.value)"></div>
+      <div class="field"><label>Meesho URL</label><input class="di" placeholder="https://meesho.com/your-store" oninput="setPlatformLink('meesho',this.value)"></div>
+      <div class="field"><label>Instagram Handle</label><input class="di" placeholder="@siphorahq" oninput="setPlatformLink('instagram','https://instagram.com/'+this.value.replace('@',''))"></div>
+    </div>
+  </div>
+
+  <!-- ── TAB: AI ADD ── -->
+  <div class="adm-body" id="tab-ai" style="display:none">
+    <span class="ap-label">Product Images (up to 6)</span>
+
+    <!-- Multi-image strip -->
+    <div class="mi-strip" id="miStrip"></div>
+
+    <!-- Primary upload zone (shows until at least 1 image) -->
+    <div class="ai-zone" id="aiZone">
+      <input type="file" id="aiFile" accept="image/*" multiple onchange="handleMultiImg(this)">
+      <div class="z-ic">🖼️</div>
+      <div class="z-t">📸 Drop or click to upload images</div>
+      <div class="z-s">Select up to 6 photos · JPG PNG WEBP · First image = primary (used for AI)</div>
+    </div>
+
+    <!-- Image count hint -->
+    <div id="miCountHint" style="font-size:11px;color:rgba(255,255,255,.32);text-align:center;margin-bottom:8px;display:none">✦ First image will be used for AI analysis &amp; shown as main card photo</div>
+    <!-- Hidden full-width preview of first image -->
+    <img id="aiPrev" class="ai-prev" alt="preview">
+
+    <button class="dark-btn dark-btn-gradient" id="aiAnalyzeBtn" onclick="analyzeImage()" disabled style="margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px">
+      <svg id="aiSpinSvg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="display:none;animation:spin .7s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+      <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+      <span id="aiAnalyzeTxt">✦ Analyze with AI (uses 1st image)</span>
+    </button>
+
+    <div class="ai-think" id="aiThink">
+      <span class="td"></span><span class="td"></span><span class="td"></span>
+      <span id="thinkTxt"> Claude is reading your product image...</span>
+    </div>
+
+    <div class="ai-results" id="aiResults">
+      <span class="ap-label">AI Generated — Edit if needed</span>
+      <div class="field"><label>Product Name</label><input class="di" id="f-name" placeholder="Classic Ivory Cup"></div>
+      <div class="field-row">
+        <div class="field"><label>Selling Price ₹</label><input class="di" id="f-price" type="number" placeholder="699"></div>
+        <div class="field"><label>MRP ₹ (optional)</label><input class="di" id="f-orig" type="number" placeholder="999"></div>
+      </div>
+      <div class="field-row" style="grid-template-columns: 1fr 1fr 1fr">
+        <div class="field"><label>Size</label><input class="di" id="f-size" placeholder="220ml"></div>
+        <div class="field"><label>Material</label><input class="di" id="f-mat" placeholder="Porcelain"></div>
+        <div class="field"><label>Units/Set</label><input class="di" id="f-units" type="number" placeholder="1"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Badge</label>
+          <select class="di" id="f-badge">
+            <option value="">None</option>
+            <option value="bestseller">Bestseller</option>
+            <option value="new">New Arrival</option>
+            <option value="sale">Sale</option>
+          </select>
+        </div>
+        <div class="field"><label>Category</label>
+          <select class="di" id="f-cat">
+            <option value="cups">Cups &amp; Mugs</option>
+            <option value="plates">Plates</option>
+            <option value="bowls">Bowls</option>
+            <option value="gifts">Gift Sets</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Rating</label>
+        <select class="di" id="f-rating">
+          <option value="5">★★★★★ 5.0</option>
+          <option value="4.5">★★★★½ 4.5</option>
+          <option value="4">★★★★☆ 4.0</option>
+        </select>
+      </div>
+      <div class="field"><label>Short Description</label><textarea class="di" id="f-desc" rows="2" placeholder="Handcrafted ivory porcelain cup with gold rim..."></textarea></div>
+      <div class="field"><label>WhatsApp Message Preview</label><textarea class="di" id="f-wa-msg" rows="2" placeholder="Auto-generated WhatsApp order message..."></textarea></div>
+      <button class="dark-btn dark-btn-terra" onclick="addProduct()" style="margin-top:4px">➕ Add Product to Store</button>
+      <button class="dark-btn dark-btn-coal" onclick="resetAI()" style="margin-top:6px">↺ Analyze Another Image</button>
+    </div>
+  </div>
+
+  <!-- ── TAB: PRODUCTS ── -->
+  <div class="adm-body" id="tab-products" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <span class="ap-label" style="margin:0">All Products (<span id="p-count">8</span>)</span>
+      <button class="dark-btn dark-btn-terra" style="width:auto;padding:7px 14px;font-size:11px" onclick="switchTab('ai')">+ Add New</button>
+    </div>
+    <div class="pm-list" id="pmList"></div>
+  </div>
+
+  <!-- ── TAB: ANALYTICS ── -->
+  <div class="adm-body" id="tab-analytics" style="display:none">
+    <span class="ap-label">Today's Snapshot</span>
+    <div class="stat-g">
+      <div class="sc"><div class="sc-val" id="sv-views">247</div><div class="sc-lbl">Page Views</div><div class="sc-chg up">↑ 12% vs yesterday</div></div>
+      <div class="sc"><div class="sc-val" id="sv-cart">18</div><div class="sc-lbl">Add to Cart</div><div class="sc-chg up">↑ 5 today</div></div>
+      <div class="sc"><div class="sc-val" id="sv-wa">34</div><div class="sc-lbl">WA Clicks</div><div class="sc-chg up">↑ 8 today</div></div>
+      <div class="sc"><div class="sc-val" id="sv-prods">8</div><div class="sc-lbl">Products Live</div><div class="sc-chg nt">Active</div></div>
+    </div>
+    <span class="ap-label">Live Activity Feed</span>
+    <div class="act-list" id="actList">
+      <div class="act"><div class="act-dot dg"></div><div><div class="act-txt">Visitor viewed Classic Ivory Cup</div><div class="act-t">2 min ago</div></div></div>
+      <div class="act"><div class="act-dot db"></div><div><div class="act-txt">Add to cart — Couple Gift Set</div><div class="act-t">8 min ago</div></div></div>
+      <div class="act"><div class="act-dot dp"></div><div><div class="act-txt">WhatsApp enquiry received</div><div class="act-t">15 min ago</div></div></div>
+      <div class="act"><div class="act-dot dg"></div><div><div class="act-txt">New visitor from Instagram</div><div class="act-t">22 min ago</div></div></div>
+      <div class="act"><div class="act-dot db"></div><div><div class="act-txt">Wishlist — Morning Ritual Mug</div><div class="act-t">34 min ago</div></div></div>
+    </div>
+  </div>
+
+  <!-- ── TAB: SETTINGS ── -->
+  <div class="adm-body" id="tab-settings" style="display:none">
+    <span class="ap-label">Store Configuration</span>
+    <div class="s-card">
+      <div class="s-lbl">Store Name</div>
+      <div class="s-sub">Shown in browser title and nav</div>
+      <input class="di" id="cfg-name" value="SiphoraHQ — Premium Porcelain &amp; Ceramic">
+    </div>
+    <div class="s-card">
+      <div class="s-lbl">WhatsApp Number</div>
+      <div class="s-sub">For float button &amp; order links (with country code)</div>
+      <input class="di" id="cfg-wa" placeholder="919XXXXXXXXX">
+    </div>
+    <div class="s-card">
+      <div class="s-lbl">Free Shipping Threshold (₹)</div>
+      <input class="di" id="cfg-ship" value="999">
+    </div>
+    <div class="s-card">
+      <div class="s-lbl">GST Rate (%)</div>
+      <input class="di" id="cfg-gst" value="12">
+    </div>
+    <div class="s-card">
+      <div class="s-lbl">Announcement Bar Text</div>
+      <div class="s-sub">First item in scrolling bar</div>
+      <input class="di" id="cfg-ann" value="Free Shipping on Orders Above ₹999">
+    </div>
+    <button class="dark-btn dark-btn-terra" onclick="saveSettings()" style="margin-top:10px">💾 Save All Settings</button>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════
+   PRODUCT DATA STORE
+════════════════════════════════════════ */
+function saveProducts() {
+  try {
+    localStorage.setItem('siphoraProducts', JSON.stringify(products));
+    localStorage.setItem('siphoraNextId', nextId);
+  } catch(e) {
+    console.error("Storage full", e);
+    toast("Storage full! Images might be too large.", "⚠️");
+  }
+}
+
+let defaultProducts = [
+  {id:1,name:'Classic Ivory Cup',variant:'220ml · Porcelain',price:649,orig:899,badge:'bestseller',cat:'cups',rating:5,reviews:142,bg:'linear-gradient(145deg,#E8D5BC,#C4A882)',imgs:[]},
+  {id:2,name:'Matte Sand Mug',variant:'300ml · Ceramic',price:799,orig:null,badge:'new',cat:'cups',rating:5,reviews:87,bg:'linear-gradient(145deg,#D4C5B0,#B08B6E)',imgs:[]},
+  {id:3,name:'Couple Gift Set',variant:'2 Cups · 180ml each',price:1299,orig:1699,badge:'',cat:'gifts',rating:5,reviews:203,bg:'linear-gradient(145deg,#EDE0D0,#C9A882)',imgs:[]},
+  {id:4,name:'Large Latte Cup',variant:'380ml · Stoneware',price:549,orig:749,badge:'sale',cat:'cups',rating:4,reviews:64,bg:'linear-gradient(145deg,#DDD0BE,#BAA07A)',imgs:[]},
+  {id:5,name:'Espresso Set of 4',variant:'90ml · Fine Porcelain',price:1899,orig:null,badge:'new',cat:'cups',rating:5,reviews:38,bg:'linear-gradient(145deg,#E2D4C2,#C49870)',imgs:[]},
+  {id:6,name:'Tea Cup & Saucer',variant:'160ml · Bone China',price:849,orig:1099,badge:'',cat:'cups',rating:5,reviews:115,bg:'linear-gradient(145deg,#D8C8B0,#AE8860)',imgs:[]},
+  {id:7,name:'Morning Ritual Mug',variant:'250ml · Ceramic',price:699,orig:null,badge:'bestseller',cat:'cups',rating:5,reviews:189,bg:'linear-gradient(145deg,#EAD8C0,#C8A47A)',imgs:[]},
+  {id:8,name:'Heritage Dinner Set',variant:'6-piece · Mixed',price:3299,orig:4500,badge:'sale',cat:'plates',rating:4,reviews:52,bg:'linear-gradient(145deg,#DFD2BE,#B89870)',imgs:[]},
+];
+
+let products = JSON.parse(localStorage.getItem('siphoraProducts')) || defaultProducts;
+let nextId = parseInt(localStorage.getItem('siphoraNextId')) || 9;
+let activeFilter = 'all';
+let cartCount = 0;
+let aiB64 = null;
+
+/* ════════════════════════════════════════
+   RENDER PRODUCTS
+════════════════════════════════════════ */
+function renderProducts(f='all'){
+  const grid = document.getElementById('prod-grid');
+  const list = f==='all' ? products : products.filter(p=>p.cat===f||(f==='new'&&p.badge==='new'));
+  if(list.length===0){
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--ash)">No products in this category yet.</div>`;
+    return;
+  }
+  grid.innerHTML = list.map(p=>{
+    const savePct = p.orig ? Math.round((1-p.price/p.orig)*100) : 0;
+    const starsHtml = '★'.repeat(Math.floor(p.rating))+(p.rating%1>=.5?'½':'')+'☆'.repeat(5-Math.ceil(p.rating));
+    const badgeHtml = p.badge ? `<span class="p-badge bd-${p.badge==='bestseller'?'best':p.badge==='new'?'new':'sale'}">${p.badge==='bestseller'?'Bestseller':p.badge==='new'?'New':'Sale'}</span>` : '';
+    const imgs = p.imgs && p.imgs.length ? p.imgs : (p.img ? [p.img] : []);
+    const hasImgs = imgs.length > 0;
+    const cupSvg = `<svg width="66" height="76" viewBox="0 0 80 90" fill="none" opacity=".75"><path d="M15 20 Q13 50 18 65 Q22 75 40 75 Q58 75 62 65 Q67 50 65 20Z" fill="rgba(255,255,255,.5)" stroke="rgba(255,255,255,.8)" stroke-width="1.5"/><path d="M65 28 Q78 26 78 36 Q78 47 65 45" stroke="rgba(255,255,255,.7)" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="40" cy="21" rx="25" ry="7" fill="rgba(255,255,255,.4)" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/></svg>`;
+    const slidesHtml = hasImgs
+      ? imgs.map(src=>`<div class="p-slide" style="background-image:url(${src});background-size:cover;background-position:center"></div>`).join('')
+      : `<div class="p-slide" style="background:${p.bg}">${cupSvg}</div>`;
+    const dotsHtml = imgs.length > 1
+      ? `<div class="car-dots">${imgs.map((_,i)=>`<div class="car-dot${i===0?' on':''}" onclick="carGoTo(${p.id},${i})"></div>`).join('')}</div>` : '';
+    const arrowsHtml = imgs.length > 1
+      ? `<button class="car-prev" onclick="carNav(${p.id},-1)">‹</button><button class="car-next" onclick="carNav(${p.id},1)">›</button>` : '';
+    return `
+    <div class="product-card" id="pc-${p.id}">
+      <div class="p-img">
+        <div class="p-carousel" id="car-${p.id}">
+          <div class="p-slides" id="slides-${p.id}">${slidesHtml}</div>
+          ${arrowsHtml}${dotsHtml}
+        </div>
+        ${badgeHtml}
+        <button class="p-wish" onclick="toggleWish(this)">♡</button>
+        <button class="p-add" onclick="addToCart(${p.id},this)">+ Add to Cart</button>
+      </div>
+      <div class="p-info">
+        <div class="p-name" contenteditable="false" onblur="prodUpdate(${p.id},'name',this.textContent)">${p.name}</div>
+        <div class="p-var" contenteditable="false" onblur="prodUpdate(${p.id},'variant',this.textContent)">${p.variant}</div>
+        <div class="p-price">
+          <span class="p-cur" contenteditable="false" onblur="prodUpdate(${p.id},'priceRaw',this.textContent)">₹${p.price.toLocaleString('en-IN')}</span>
+          ${p.orig ? `<span class="p-orig">₹${p.orig.toLocaleString('en-IN')}</span><span class="p-save">Save ${savePct}%</span>` : ''}
+        </div>
+        <div class="p-stars"><span class="stars-ico">${starsHtml}</span><span class="stars-cnt">(${p.reviews})</span></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // re-apply edit mode state
+  const em = document.getElementById('editToggle').checked;
+  document.querySelectorAll('[contenteditable]').forEach(el=>el.contentEditable=em?'true':'false');
+  renderPmList();
+}
+
+function prodUpdate(id,field,val){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  if(field==='priceRaw'){ const n=parseInt(val.replace(/\D/g,'')); if(!isNaN(n)) p.price=n; }
+  else p[field]=val.trim();
+  saveProducts();
+  renderPmList();
+}
+
+/* ════════════════════════════════════════
+   PRODUCT MANAGER LIST (sidebar)
+════════════════════════════════════════ */
+function renderPmList(){
+  const l = document.getElementById('pmList');
+  document.getElementById('p-count').textContent = products.length;
+  document.getElementById('sv-prods').textContent = products.length;
+  l.innerHTML = products.map(p=>{
+    const thumb = (p.imgs&&p.imgs[0]) || p.img || null;
+    return `
+    <div class="pm-item" id="pmi-${p.id}">
+      ${thumb ? `<img src="${thumb}" class="pm-thumb">` : `<div class="pm-ph">🍵</div>`}
+      <div class="pm-info">
+        <div class="pm-name">${p.name}</div>
+        <div class="pm-price">₹${p.price.toLocaleString('en-IN')} · ${p.variant}${p.imgs&&p.imgs.length>1?' · '+p.imgs.length+' photos':''}</div>
+      </div>
+      <div class="pm-acts">
+        <button class="pm-act" title="Scroll to" onclick="scrollToProduct(${p.id})">👁</button>
+        <button class="pm-act pm-del" title="Delete" onclick="deleteProduct(${p.id})">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function deleteProduct(id){
+  if(!confirm('Delete this product from the store?')) return;
+  products = products.filter(p=>p.id!==id);
+  saveProducts();
+  renderProducts(activeFilter);
+  toast('Product deleted','⚠️');
+  logActivity(`Product removed from store`,'dp');
+}
+
+function scrollToProduct(id){
+  const el = document.getElementById(`pc-${id}`);
+  if(el){ el.scrollIntoView({behavior:'smooth',block:'center'}); closeAdmin(); }
+}
+
+/* ════════════════════════════════════════
+   ADMIN PANEL OPEN/CLOSE
+════════════════════════════════════════ */
+const admTrigger = document.getElementById('admTrigger');
+const admPanel   = document.getElementById('admPanel');
+const admBackdrop= document.getElementById('admBackdrop');
+const admClose   = document.getElementById('admClose');
+
+function openAdmin(){ admPanel.classList.add('on'); admBackdrop.classList.add('on'); }
+function closeAdmin(){ admPanel.classList.remove('on'); admBackdrop.classList.remove('on'); }
+admTrigger.addEventListener('click', openAdmin);
+admClose.addEventListener('click', closeAdmin);
+admBackdrop.addEventListener('click', closeAdmin);
+
+/* TABS */
+document.querySelectorAll('.adm-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>switchTab(tab.dataset.tab));
+});
+function switchTab(name){
+  document.querySelectorAll('.adm-tab').forEach(t=>t.classList.toggle('on', t.dataset.tab===name));
+  ['edit','ai','products','analytics','settings'].forEach(t=>{
+    const el = document.getElementById('tab-'+t);
+    if(el) el.style.display = t===name ? 'block' : 'none';
+  });
+}
+
+/* ════════════════════════════════════════
+   EDIT MODE
+════════════════════════════════════════ */
+function setEditMode(on){
+  document.body.classList.toggle('edit', on);
+  document.querySelectorAll('[contenteditable]').forEach(el=>el.contentEditable=on?'true':'false');
+  toast(on ? 'Edit Mode ON — Click any text to edit' : 'Edit Mode OFF','✏️');
+}
+
+function liveEdit(id, val){
+  const el = document.getElementById(id);
+  if(el) el.textContent = val;
+}
+
+/* ════════════════════════════════════════
+   AI IMAGE ANALYSIS (Anthropic API)
+════════════════════════════════════════ */
+// Pending images for new product
+let pendingImgs = []; // array of dataURLs
+
+function renderMiStrip(){
+  const strip = document.getElementById('miStrip');
+  const zone  = document.getElementById('aiZone');
+  const hint  = document.getElementById('miCountHint');
+  let html = pendingImgs.map((src,i)=>
+    `<div class="mi-thumb-wrap" title="Image ${i+1}${i===0?' (Primary — used for AI)':''}">
+      <img src="${src}" class="mi-thumb" style="${i===0?'border-color:var(--terra);box-shadow:0 0 0 2px var(--terra)':''}">
+      <button class="mi-rm" onclick="removeImg(${i})" title="Remove">✕</button>
+      ${i===0 ? '<span style="position:absolute;bottom:-1px;left:0;right:0;background:var(--terra);color:#fff;font-size:8px;font-weight:700;text-align:center;letter-spacing:.04em;border-radius:0 0 6px 6px;padding:1px 0">PRIMARY</span>' : ''}
+    </div>`
+  ).join('');
+  if(pendingImgs.length < 6){
+    html += `<button class="mi-add-btn" onclick="document.getElementById('aiFile').click()" title="Add more images (+${6-pendingImgs.length} slots)">+<span style="font-size:9px;display:block;line-height:1;margin-top:2px;opacity:.6">${pendingImgs.length}/6</span></button>`;
+  }
+  strip.innerHTML = html;
+  zone.style.display = pendingImgs.length === 0 ? 'block' : 'none';
+  hint.style.display = pendingImgs.length > 0 ? 'block' : 'none';
+  const prev = document.getElementById('aiPrev');
+  if(pendingImgs.length > 0){
+    prev.src = pendingImgs[0];
+    prev.style.display = 'block';
+    aiB64 = pendingImgs[0].split(',')[1];
+    document.getElementById('aiAnalyzeBtn').disabled = false;
+  } else {
+    prev.style.display = 'none';
+    aiB64 = null;
+    document.getElementById('aiAnalyzeBtn').disabled = true;
+  }
+}
+
+function removeImg(i){
+  pendingImgs.splice(i,1);
+  if(i===0) aiB64 = pendingImgs.length ? pendingImgs[0].split(',')[1] : null;
+  renderMiStrip();
+}
+
+function handleMultiImg(input){
+  const files = Array.from(input.files);
+  const remaining = 6 - pendingImgs.length;
+  const toLoad = files.slice(0, remaining);
+  let loaded = 0;
+  toLoad.forEach(file=>{
+    if(!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = e=>{
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 800;
+        const MAX_HEIGHT = 800;
+        let width = img.width;
+        let height = img.height;
+        if (width > height) {
+          if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+        } else {
+          if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+        }
+        canvas.width = width; canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        pendingImgs.push(canvas.toDataURL('image/jpeg', 0.8));
+        loaded++;
+        if(loaded === toLoad.length){
+          renderMiStrip();
+          document.getElementById('aiResults').classList.remove('on');
+          document.getElementById('aiThink').classList.remove('on');
+          document.getElementById('aiAnalyzeTxt').textContent = '✦ Analyze Image with AI';
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
+// Drag & drop on upload zone
+const aiZone = document.getElementById('aiZone');
+aiZone.addEventListener('dragover', e=>{ e.preventDefault(); aiZone.classList.add('drag'); });
+aiZone.addEventListener('dragleave', ()=>aiZone.classList.remove('drag'));
+aiZone.addEventListener('drop', e=>{
+  e.preventDefault(); aiZone.classList.remove('drag');
+  const files = Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/'));
+  const dt = new DataTransfer();
+  files.forEach(f=>dt.items.add(f));
+  document.getElementById('aiFile').files = dt.files;
+  handleMultiImg(document.getElementById('aiFile'));
+});
+
+async function analyzeImage(){
+  if(!aiB64){ toast('Please upload an image first','⚠️'); return; }
+  const btn = document.getElementById('aiAnalyzeBtn');
+  const spin = document.getElementById('aiSpinSvg');
+  const think = document.getElementById('aiThink');
+  const results = document.getElementById('aiResults');
+
+  btn.disabled = true;
+  spin.style.display = 'block';
+  document.getElementById('aiAnalyzeTxt').textContent = 'Analyzing...';
+  think.classList.add('on');
+  results.classList.remove('on');
+
+  const steps = [
+    'Identifying product type and material...',
+    'Estimating dimensions and capacity...',
+    'Generating a premium product name...',
+    'Calculating competitive pricing...',
+    'Finalizing product details...'
+  ];
+  let si = 0;
+  const stepInterval = setInterval(()=>{
+    if(si < steps.length) document.getElementById('thinkTxt').textContent = ' '+steps[si++];
+  }, 900);
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-opus-4-5',
+        max_tokens: 1200,
+        messages: [{
+          role: 'user',
+          content: [
+            {
+              type: 'image',
+              source: { type: 'base64', media_type: 'image/jpeg', data: aiB64 }
+            },
+            {
+              type: 'text',
+              text: `You are a senior product listing expert for SiphoraHQ — a premium Indian porcelain & ceramic homewares brand based in Faridabad. We sell cups, mugs, plates, bowls, dinner sets, and gift sets online (Amazon, Flipkart, WhatsApp).
+
+Carefully examine this product image and return ONLY a single valid JSON object. No markdown, no explanation, no code fences. Just raw JSON.
+
+{
+  "name": "Evocative 2-5 word premium product name (e.g. 'Ivory Sunrise Cup', 'Matte Earth Mug Set')",
+  "size": "Precise volume or dimension (e.g. '220ml', '28cm diameter')",
+  "material": "Exact material (Porcelain / Fine Bone China / Stoneware / Ceramic / Opalware)",
+  "units": <integer, number of pieces/units in the set or box. Default to 1 if it's a single item>,
+  "color": "Primary color description (e.g. 'Ivory White', 'Matte Sand', 'Sage Green')",
+  "price": <integer INR — cups 399-999, mugs 499-1299, plates 299-799, sets 999-4999, gift sets 1299-3999>,
+  "orig_price": <integer INR — 20-35% above price to show savings, or null for new/premium items>,
+  "badge": "bestseller" | "new" | "sale" | "",
+  "category": "cups" | "plates" | "bowls" | "gifts",
+  "rating": 4.5 | 5,
+  "features": ["feature 1", "feature 2", "feature 3"] (3 short selling-point phrases, e.g. "Dishwasher safe", "Lead-free glaze", "Gift-ready box"),
+  "description": "One compelling sentence (max 18 words) highlighting the product's key appeal for Indian home buyers.",
+  "whatsapp_msg": "Hi SiphoraHQ! I'm interested in the [name] (₹[price]). Please share availability and delivery details."
+}`
+            }
+          ]
+        }]
+      })
+    });
+
+    clearInterval(stepInterval);
+    const data = await res.json();
+    const raw = data.content?.[0]?.text || '{}';
+    const clean = raw.replace(/```json\n?|```\n?/g,'').trim();
+    const parsed = JSON.parse(clean);
+
+    document.getElementById('f-name').value   = parsed.name || '';
+    document.getElementById('f-price').value  = parsed.price || '';
+    document.getElementById('f-orig').value   = parsed.orig_price || '';
+    document.getElementById('f-size').value   = parsed.size || '';
+    document.getElementById('f-mat').value    = parsed.material || '';
+    document.getElementById('f-units').value  = parsed.units || '1';
+    document.getElementById('f-badge').value  = parsed.badge || '';
+    document.getElementById('f-cat').value    = parsed.category || 'cups';
+    document.getElementById('f-rating').value = String(parsed.rating || '5');
+    document.getElementById('f-desc').value   = parsed.description || '';
+    document.getElementById('f-wa-msg').value = parsed.whatsapp_msg || '';
+    // Store features + color for product card
+    window._aiFeatures = parsed.features || [];
+    window._aiColor    = parsed.color || '';
+
+    think.classList.remove('on');
+    results.classList.add('on');
+    toast(`AI done: "${parsed.name}" · ${parsed.color||parsed.material} ✨`,'🤖');
+
+  } catch(e){
+    clearInterval(stepInterval);
+    console.error('AI error:', e);
+    // Smart fallback with all fields
+    document.getElementById('f-name').value   = 'Artisan Porcelain Cup';
+    document.getElementById('f-price').value  = '699';
+    document.getElementById('f-orig').value   = '999';
+    document.getElementById('f-size').value   = '220ml';
+    document.getElementById('f-mat').value    = 'Porcelain';
+    document.getElementById('f-units').value  = '1';
+    document.getElementById('f-badge').value  = 'new';
+    document.getElementById('f-cat').value    = 'cups';
+    document.getElementById('f-rating').value = '5';
+    document.getElementById('f-desc').value   = 'Handcrafted porcelain cup with a smooth finish, perfect for your daily tea or coffee ritual.';
+    document.getElementById('f-wa-msg').value = 'Hi SiphoraHQ! I am interested in the Artisan Porcelain Cup (₹699). Please share availability.';
+    window._aiFeatures = ['Lead-free glaze','Dishwasher safe','Gift-ready packaging'];
+    window._aiColor    = 'Ivory White';
+    think.classList.remove('on');
+    results.classList.add('on');
+    toast('No API key? Smart defaults applied — edit & add! 💡','💡');
+  }
+
+  spin.style.display = 'none';
+  btn.disabled = false;
+  document.getElementById('aiAnalyzeTxt').textContent = '↺ Re-analyze';
+}
+
+function addProduct(){
+  const name   = document.getElementById('f-name').value.trim() || 'New Product';
+  const price  = parseInt(document.getElementById('f-price').value) || 699;
+  const orig   = parseInt(document.getElementById('f-orig').value) || null;
+  const size   = document.getElementById('f-size').value.trim();
+  const mat    = document.getElementById('f-mat').value.trim();
+  const units  = parseInt(document.getElementById('f-units').value) || 1;
+  const badge  = document.getElementById('f-badge').value;
+  const cat    = document.getElementById('f-cat').value;
+  const rating = parseFloat(document.getElementById('f-rating').value) || 5;
+  const desc     = document.getElementById('f-desc').value.trim();
+  const waMsg    = document.getElementById('f-wa-msg').value.trim();
+  const features = window._aiFeatures || [];
+  const color    = window._aiColor || '';
+  const p = {
+    id: nextId++,
+    name,
+    variant: `${size} · ${mat}${color?' · '+color:''}${units>1?' · '+units+' pcs':''}`,
+    price,
+    orig: (orig && orig > price) ? orig : null,
+    badge, cat, rating,
+    reviews: Math.floor(Math.random()*40)+8,
+    bg: 'linear-gradient(145deg,#E2D4C2,#C49870)',
+    imgs: [...pendingImgs],
+    desc, waMsg, features
+  };
+
+  products.unshift(p);
+  saveProducts();
+  renderProducts(activeFilter);
+
+  // Reset pending images
+  pendingImgs = [];
+  renderMiStrip();
+
+  // Animate the new card
+  setTimeout(()=>{
+    const el = document.getElementById(`pc-${p.id}`);
+    if(el){ el.classList.add('ai-new'); el.scrollIntoView({behavior:'smooth',block:'center'}); }
+  }, 120);
+
+  resetAI();
+  switchTab('products');
+  closeAdmin();
+  toast(`"${name}" added to store! 🎉`, '✅');
+  logActivity(`New product added: ${name}`, 'dp');
+  document.getElementById('sv-prods').textContent = products.length;
+}
+
+function resetAI(){
+  aiB64 = null;
+  pendingImgs = [];
+  window._aiFeatures = [];
+  window._aiColor = '';
+  document.getElementById('aiFile').value = '';
+  document.getElementById('aiPrev').style.display = 'none';
+  document.getElementById('miCountHint').style.display = 'none';
+  document.getElementById('miStrip').innerHTML = '';
+  document.getElementById('aiZone').style.display = 'block';
+  document.getElementById('aiAnalyzeBtn').disabled = true;
+  document.getElementById('aiAnalyzeTxt').textContent = '✦ Analyze with AI (uses 1st image)';
+  document.getElementById('aiThink').classList.remove('on');
+  document.getElementById('aiResults').classList.remove('on');
+  ['f-name','f-price','f-orig','f-size','f-mat','f-units','f-desc','f-wa-msg'].forEach(id=>{
+    const el = document.getElementById(id); if(el) el.value='';
+  });
+}
+
+/* ════════════════════════════════════════
+   IMAGE CAROUSEL
+════════════════════════════════════════ */
+const carIdx = {}; // product id -> current slide index
+
+function carGoTo(pid, idx){
+  const p = products.find(x=>x.id===pid);
+  const imgs = p && p.imgs && p.imgs.length ? p.imgs : [];
+  if(!imgs.length) return;
+  idx = (idx + imgs.length) % imgs.length;
+  carIdx[pid] = idx;
+  const slides = document.getElementById(`slides-${pid}`);
+  if(slides) slides.style.transform = `translateX(-${idx * 100}%)`;
+  const dots = document.querySelectorAll(`#car-${pid} .car-dot`);
+  dots.forEach((d,i)=>d.classList.toggle('on', i===idx));
+}
+
+function carNav(pid, dir){
+  const cur = carIdx[pid] || 0;
+  carGoTo(pid, cur + dir);
+}
+
+/* ════════════════════════════════════════
+   FILTERS
+════════════════════════════════════════ */
+document.querySelectorAll('.fbtn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    activeFilter = btn.dataset.f;
+    renderProducts(activeFilter);
+  });
+});
+
+/* ════════════════════════════════════════
+   CART
+════════════════════════════════════════ */
+function addToCart(id, btn){
+  cartCount++;
+  document.getElementById('cart-count').textContent = cartCount;
+  btn.textContent = '✓ Added!';
+  btn.style.background = '#4A7C59';
+  setTimeout(()=>{ btn.textContent='+ Add to Cart'; btn.style.background=''; }, 1800);
+  const p = products.find(x=>x.id===id);
+  const cartEl = document.getElementById('sv-cart');
+  cartEl.textContent = parseInt(cartEl.textContent)+1;
+  logActivity(`Add to cart: ${p?p.name:'Product'}`, 'db');
+}
+
+function toggleWish(btn){
+  const isWished = btn.textContent==='♥';
+  btn.textContent = isWished ? '♡' : '♥';
+  btn.style.color = isWished ? '' : '#C4713A';
+}
+
+/* ════════════════════════════════════════
+   SETTINGS
+════════════════════════════════════════ */
+function saveSettings(){
+  const name  = document.getElementById('cfg-name').value;
+  const wa    = document.getElementById('cfg-wa').value;
+  const ann   = document.getElementById('cfg-ann').value;
+  if(name){ document.title=name; document.getElementById('store-name-nav').textContent=name.split('—')[0].trim(); }
+  if(wa){ const url=`https://wa.me/${wa}?text=Hi! I want to order from SiphoraHq`; document.getElementById('wa-btn').onclick=()=>window.open(url,'_blank'); document.getElementById('plt-whatsapp').href=`https://wa.me/${wa}`; }
+  toast('Settings saved successfully ✓', '💾');
+}
+
+function setPlatformLink(plt, url){
+  const el = document.getElementById(`plt-${plt}`);
+  if(el && url) el.href = url;
+}
+
+/* ════════════════════════════════════════
+   SCROLL / UTIL
+════════════════════════════════════════ */
+function scrollTo(sel){
+  const el = document.querySelector(sel);
+  if(el){ el.scrollIntoView({behavior:'smooth'}); closeAdmin(); }
+}
+
+/* ════════════════════════════════════════
+   ACTIVITY LOG
+════════════════════════════════════════ */
+function logActivity(txt, dotClass='dg'){
+  const list = document.getElementById('actList');
+  const item = document.createElement('div');
+  item.className = 'act';
+  item.innerHTML = `<div class="act-dot ${dotClass}"></div><div><div class="act-txt">${txt}</div><div class="act-t">Just now</div></div>`;
+  list.prepend(item);
+  if(list.children.length > 10) list.removeChild(list.lastChild);
+}
+
+/* ════════════════════════════════════════
+   TOAST
+════════════════════════════════════════ */
+let toastTimer;
+function toast(msg, icon='✓'){
+  const el = document.getElementById('toast');
+  document.getElementById('toast-ic').textContent = icon;
+  document.getElementById('toast-msg').textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove('on'), 3200);
+}
+
+/* ════════════════════════════════════════
+   WA BUTTON
+════════════════════════════════════════ */
+document.getElementById('wa-btn').addEventListener('click', ()=>{
+  window.open('https://wa.me/919XXXXXXXXX?text=Hi! I want to order from SiphoraHq', '_blank');
+});
+
+/* ════════════════════════════════════════
+   INIT
+════════════════════════════════════════ */
+renderProducts();
+</script>
+</body>
+</html>

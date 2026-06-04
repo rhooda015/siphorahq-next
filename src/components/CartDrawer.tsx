@@ -105,6 +105,23 @@ export default function CartDrawer() {
                   </div>
                 </div>
               ))}
+
+              {/* Upsell Section */}
+              <div className="mt-8 pt-6 border-t border-[var(--color-border)]">
+                <h4 className="font-serif text-sm text-[var(--color-primary)] mb-4">You May Also Like</h4>
+                <div className="flex gap-4">
+                  <div className="w-20 h-20 bg-neutral-100 relative rounded-sm overflow-hidden flex-shrink-0">
+                     <Image src="/images/teaset.webp" alt="Gold Rim Tea Cup" fill className="object-cover" />
+                  </div>
+                  <div className="flex-1 flex flex-col justify-center">
+                    <h5 className="font-serif text-[13px] leading-tight mb-1">Vintage Gold Rim Tea Cup</h5>
+                    <p className="font-sans text-xs text-[var(--color-text-muted)] mb-2">₹1,200</p>
+                    <button className="text-[10px] font-sans font-medium uppercase tracking-widest text-[var(--color-primary)] border border-[var(--color-primary)] py-1.5 px-4 self-start hover:bg-[var(--color-primary)] hover:text-white transition-colors">
+                      Add
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>

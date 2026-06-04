@@ -118,7 +118,7 @@ export default function RootLayout({
         <Header />
         
         {/* Main Application Content */}
-        <main className="min-h-screen pt-[112px]">{children}</main>
+        <main className="min-h-screen pt-0">{children}</main>
 
         <FooterWrapper>
           <Footer />
