@@ -26,6 +26,10 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  if (pathname === '/login' || pathname.startsWith('/account')) {
+    return null;
+  }
+
   if (isCheckout && pathname !== '/checkout/cart') {
     return (
       <header className="fixed w-full top-0 z-50 transition-all duration-300 bg-[var(--color-bg)] border-b border-[var(--color-border)] py-4">
@@ -102,7 +106,7 @@ export default function Header() {
 
           {/* Right: Account & Cart */}
           <div className="flex items-center justify-end flex-1 gap-2 relative z-50 pointer-events-auto">
-            <Link href="/account" className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
+            <Link href="/login" className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
               <User className="h-5 w-5" />
             </Link>
             <Link href="/checkout/cart" className="p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">

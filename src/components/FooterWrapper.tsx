@@ -7,6 +7,10 @@ export default function FooterWrapper({ children }: { children: React.ReactNode 
   const pathname = usePathname();
   const isCheckout = pathname.startsWith('/checkout') && pathname !== '/checkout/cart';
 
+  if (pathname === '/login' || pathname.startsWith('/account')) {
+    return null;
+  }
+
   if (isCheckout) {
     // Render a minimal footer for checkout
     return (
