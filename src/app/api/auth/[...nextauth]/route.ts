@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import dbConnect from "@/lib/db";
-import { User } from "@/models/User";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions = {
   providers: [
@@ -9,45 +8,38 @@ export const authOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
-  ],
-  callbacks: {
-    async signIn({ user, account }: any) {
-      if (account.provider === "google") {
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
+
         try {
-          await dbConnect();
-          const existingUser = await User.findOne({ email: user.email });
-          
-          if (!existingUser) {
-            await User.create({
-              name: user.name,
-              email: user.email,
-              image: user.image,
-              provider: "google",
-            });
+          const res = await fetch("https://siphorahq-backend.onrender.com/api/auth/login", {
+            method: 'POST',
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password
+            }),
+            headers: { "Content-Type": "application/json" }
+          });
+
+          const user = await res.json();
+
+          if (res.ok && user) {
+            return user; 
           }
-          return true;
+          return null;
         } catch (error) {
-          console.error("Error saving user to DB:", error);
-          return false;
+          console.error("Backend login error:", error);
+          return null;
         }
       }
-      return true;
-    },
-    async jwt({ token, user }: any) {
-      if (user) {
-        token.id = user.id;
-        token.name = user.name;
-      }
-      return token;
-    },
-    async session({ session, token }: any) {
-      if (session?.user) {
-        (session.user as any).id = token.id;
-        (session.user as any).name = token.name;
-      }
-      return session;
-    },
-  },
+    })
+  ],
   pages: {
     signIn: "/login",
     error: "/login",
