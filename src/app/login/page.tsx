@@ -147,7 +147,7 @@ function EmailLoginForm({ inputBaseStyle, btnBaseStyle, showToast, router }: any
 
   const clearErr = (field: string) => setErrors(prev => ({ ...prev, [field]: undefined }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: any = {};
     if (!email) newErrors.email = "Email is required.";
@@ -162,11 +162,24 @@ function EmailLoginForm({ inputBaseStyle, btnBaseStyle, showToast, router }: any
     }
 
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const res = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      });
+      if (res?.error) {
+        showToast("Invalid email or password.", "error");
+        setErrors({ password: "Incorrect email or password." });
+      } else {
+        showToast("Successfully logged in.", "success");
+        router.push('/account');
+      }
+    } catch {
+      showToast("Something went wrong. Try again.", "error");
+    } finally {
       setLoading(false);
-      showToast("Successfully logged in.", "success");
-      router.push('/account');
-    }, 1500);
+    }
   };
 
   const getInputClass = (val: string, err?: string) => {
@@ -384,7 +397,7 @@ function RegisterForm({ inputBaseStyle, btnBaseStyle, showToast, router, setActi
     return "";
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: any = {};
     if (name.length < 2) newErrors.name = "Enter a valid name.";
@@ -400,11 +413,26 @@ function RegisterForm({ inputBaseStyle, btnBaseStyle, showToast, router, setActi
     }
 
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password: pwd }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showToast(data.error || "Registration failed.", "error");
+        if (data.error?.includes('email')) setErrors((p:any) => ({ ...p, email: data.error }));
+      } else {
+        showToast("Account created! Signing you in...", "success");
+        await signIn('credentials', { redirect: false, email, password: pwd });
+        router.push('/account');
+      }
+    } catch {
+      showToast("Something went wrong. Try again.", "error");
+    } finally {
       setLoading(false);
-      showToast("Account created successfully.", "success");
-      router.push('/account');
-    }, 1500);
+    }
   };
 
   const getInputClass = (val: string, err?: string, customValid?: boolean) => {
