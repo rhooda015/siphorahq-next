@@ -27,7 +27,7 @@ export const metadata = {
     siteName: BRAND.name,
     images: [
       {
-        url: '/images/hero.webp',
+        url: '/images/og-banner.png',
         width: 1200,
         height: 630,
         alt: `${BRAND.name} Luxury Dinnerware`,
@@ -40,7 +40,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: `${BRAND.name} | Premium Porcelain & Luxury Home Decor`,
     description: 'Elevate your dining experience with luxury porcelain dinnerware, aesthetic serveware, and premium home decor collections.',
-    images: ['/images/hero.webp'],
+    images: ['/images/og-banner.png'],
   },
 };
 
