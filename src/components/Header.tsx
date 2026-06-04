@@ -122,11 +122,9 @@ export default function Header() {
             </Link>
             <button onClick={openDrawer} className="p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
               <ShoppingBag className="h-5 w-5" />
-              {mounted && items.length > 0 && (
-                <span className="absolute top-0 right-0 bg-[var(--color-primary)] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
-                  {items.length}
-                </span>
-              )}
+              <span className={`absolute top-0 right-0 bg-[var(--color-primary)] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center transition-all duration-300 ${mounted && items.length > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
+                {mounted ? items.length : 0}
+              </span>
             </button>
           </div>
 

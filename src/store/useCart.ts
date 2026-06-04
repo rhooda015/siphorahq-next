@@ -26,6 +26,7 @@ interface CartStore {
   removeItem: (cartItemId: string) => void;
   updateQuantity: (cartItemId: string, quantity: number) => void;
   clearCart: () => void;
+  setItems: (items: CartItem[]) => void;
   openDrawer: () => void;
   closeDrawer: () => void;
   cartTotal: () => number;
@@ -72,6 +73,7 @@ export const useCart = create<CartStore>()(
           ),
         })),
       clearCart: () => set({ items: [] }),
+      setItems: (items) => set({ items }),
       openDrawer: () => set({ isDrawerOpen: true }),
       closeDrawer: () => set({ isDrawerOpen: false }),
       cartTotal: () => {

@@ -11,6 +11,7 @@ import ExitIntentModal from '@/components/ExitIntentModal';
 import CookieConsent from '@/components/CookieConsent';
 import Script from 'next/script';
 import SessionWrapper from '@/components/SessionWrapper';
+import CartSync from '@/components/CartSync';
 
 const cormorant = Cormorant_Garamond({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-serif', style: ['normal', 'italic'] });
 const jost = Jost({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-sans' });
@@ -50,6 +51,7 @@ export default function RootLayout({
 }) {
   return (
     <SessionWrapper>
+      <CartSync />
     <html lang="en" className={`${cormorant.variable} ${jost.variable}`}>
       <head>
         <script
