@@ -9,8 +9,6 @@ import FooterWrapper from '@/components/FooterWrapper';
 import CartDrawer from '@/components/CartDrawer';
 import ExitIntentModal from '@/components/ExitIntentModal';
 import CookieConsent from '@/components/CookieConsent';
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from 'next/script';
 
 const cormorant = Cormorant_Garamond({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-serif', style: ['normal', 'italic'] });
@@ -103,8 +101,6 @@ export default function RootLayout({
         <CartDrawer />
         <MobileBottomNav />
         <ExitIntentModal />
-        <Analytics />
-        <SpeedInsights />
 
         {/* Global Footer Block: Floating Real-Time Concierge Support Component */}
         <a
