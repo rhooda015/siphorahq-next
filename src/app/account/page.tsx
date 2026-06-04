@@ -15,10 +15,19 @@ import {
 } from 'lucide-react';
 import { BRAND } from '@/config/brand';
 import { useCart } from '@/store/useCart';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 // metadata cannot be exported from a Client Component, so we must remove it.
 // To handle SEO for this route, we would normally put it in a layout.tsx file, 
 // but for now removing it is the safest fix since it's an authenticated route anyway.
+
+export default function AccountPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  if (status === 'loading') return <div className='min-h-screen flex items-center justify-center'><p className='font-sans text-gray-400 tracking-widest text-sm'>Loading...</p></div>;
+  if (!session) { if (typeof window !== 'undefined') router.push('/login'); return null; }
 
 const accountCards = [
   {

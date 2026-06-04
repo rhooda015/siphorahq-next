@@ -10,6 +10,7 @@ import CartDrawer from '@/components/CartDrawer';
 import ExitIntentModal from '@/components/ExitIntentModal';
 import CookieConsent from '@/components/CookieConsent';
 import Script from 'next/script';
+import SessionWrapper from '@/components/SessionWrapper';
 
 const cormorant = Cormorant_Garamond({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-serif', style: ['normal', 'italic'] });
 const jost = Jost({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-sans' });
@@ -48,6 +49,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+    <SessionWrapper>
     <html lang="en" className={`${cormorant.variable} ${jost.variable}`}>
       <head>
         <script
@@ -130,5 +132,6 @@ export default function RootLayout({
         </a>
       </body>
     </html>
+  </SessionWrapper>
   );
 }
