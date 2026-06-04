@@ -117,7 +117,7 @@ export default function Header() {
 
           {/* Right: Account & Cart */}
           <div className="flex items-center justify-end flex-1 gap-2 relative z-50 pointer-events-auto">
-            <Link href={session ? "/account" : "/login"} className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
+            <Link href={session ? "/account" : "/login"} className="block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
               <User className="h-5 w-5" />
             </Link>
             <button onClick={openDrawer} className="p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
@@ -196,6 +196,9 @@ export default function Header() {
           <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Our Story</Link>
           <Link href="/journal" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Journal</Link>
           <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Contact</Link>
+          <Link href={session ? "/account" : "/login"} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] pt-4">
+            {session ? "My Account" : "Sign In"}
+          </Link>
         </div>
       </div>
     </header>
