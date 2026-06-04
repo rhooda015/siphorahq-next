@@ -13,6 +13,7 @@ import CheckoutOrderSummary from '@/components/CheckoutOrderSummary';
 export default function PaymentPage() {
   const [method, setMethod] = useState('razorpay');
   const [success, setSuccess] = useState(false);
+  const [orderDetails, setOrderDetails] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const { items, cartTotal, clearCart, customerDetails } = useCart();
@@ -42,6 +43,13 @@ export default function PaymentPage() {
         const orderData = await orderRes.json();
         
         trackPurchase(orderData.id || `COD-${Math.floor(100000 + Math.random() * 900000)}`, finalAmount, items);
+        setOrderDetails({
+          id: orderData.id || `COD-${Math.floor(100000 + Math.random() * 900000)}`,
+          amount: finalAmount,
+          items: [...items],
+          shippingCost: total >= BRAND.freeShippingThreshold ? 0 : BRAND.shippingCost,
+          subtotal: total
+        });
         setSuccess(true);
         clearCart();
       } catch (error) {
@@ -77,6 +85,13 @@ export default function PaymentPage() {
         handler: function (response: any) {
           console.log(response);
           trackPurchase(response.razorpay_payment_id || `RZP-${order.id}`, finalAmount, items);
+          setOrderDetails({
+            id: response.razorpay_payment_id || `RZP-${order.id}`,
+            amount: finalAmount,
+            items: [...items],
+            shippingCost: total >= BRAND.freeShippingThreshold ? 0 : BRAND.shippingCost,
+            subtotal: total
+          });
           setSuccess(true);
           clearCart();
         },
@@ -102,24 +117,75 @@ export default function PaymentPage() {
     setLoading(false);
   };
 
-  if (success) {
+  if (success && orderDetails) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-24 text-center">
-        <div className="w-20 h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8">
-          <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+      <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
+        <div className="text-center mb-16">
+          <div className="w-16 h-16 bg-[#fdfbf9] border-[0.5px] border-zinc-200 text-[#1a1612] rounded-full flex items-center justify-center mx-auto mb-8">
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M5 13l4 4L19 7"></path></svg>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-serif text-[#1a1612] tracking-wide mb-4">Order Confirmed</h1>
+          <p className="text-[#1a1612]/60 font-sans text-xs uppercase tracking-[0.2em] mb-2">Order #{orderDetails.id}</p>
+          <p className="text-[#1a1612]/60 font-sans text-sm">Thank you for your purchase. A confirmation has been sent to your email.</p>
         </div>
-        <h1 className="text-4xl font-serif mb-4">Order Confirmed</h1>
-        <p className="text-text-muted font-sans mb-2">Order #SHQ-{Math.floor(100000 + Math.random() * 900000)}</p>
-        <p className="text-text-muted font-sans mb-8">Thank you for your purchase. A confirmation has been sent to your email.</p>
         
-        <div className="bg-bg border border-border p-6 mb-8 text-left">
-          <h3 className="font-sans font-medium uppercase tracking-widest text-sm text-text border-b border-border pb-2 mb-4">Estimated Delivery</h3>
-          <p className="text-text-muted font-sans text-sm">Your order is being handcrafted. Expect delivery by {new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toLocaleDateString()}.</p>
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-5xl mx-auto">
+          <div className="lg:col-span-2">
+            <h3 className="font-serif text-2xl text-[#1a1612] mb-6 border-b-[0.5px] border-zinc-200 pb-4">Order Details</h3>
+            <div className="space-y-6">
+              {orderDetails.items.map((item: any, idx: number) => (
+                <div key={idx} className="flex gap-6 border-b-[0.5px] border-zinc-200 pb-6">
+                  <div className="w-24 h-32 bg-neutral-50 relative flex-shrink-0 border-[0.5px] border-zinc-100">
+                    <img src={item.image} alt={item.name} className="absolute inset-0 w-full h-full object-cover" />
+                  </div>
+                  <div className="flex flex-col flex-1 py-1">
+                    <h4 className="font-sans text-sm uppercase tracking-widest text-[#1a1612] mb-2">{item.name}</h4>
+                    <p className="font-sans text-xs text-[#1a1612]/60 mb-1">Quantity: {item.quantity}</p>
+                    {item.isGiftWrapped && <p className="font-sans text-[10px] uppercase tracking-widest text-[#8b6914] mt-2">+ Luxury Packaging</p>}
+                    <p className="font-sans text-sm font-medium text-[#1a1612] mt-auto">₹{((item.salePrice || item.price) * item.quantity).toLocaleString('en-IN')}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
-        <Link href="/">
-          <button className="btn-primary">Continue Shopping</button>
-        </Link>
+          <div className="lg:col-span-1">
+            <div className="bg-[#fdfbf9] border-[0.5px] border-zinc-200 p-8 sticky top-24">
+              <h3 className="font-serif text-xl text-[#1a1612] mb-6">Payment Summary</h3>
+              
+              <div className="space-y-4 font-sans text-sm text-[#1a1612]/70 border-b-[0.5px] border-zinc-200 pb-6 mb-6">
+                <div className="flex justify-between">
+                  <span>Subtotal</span>
+                  <span>₹{orderDetails.subtotal.toLocaleString('en-IN')}</span>
+                </div>
+                {orderDetails.items.some((i:any) => i.isGiftWrapped) && (
+                  <div className="flex justify-between">
+                    <span>Luxury Packaging</span>
+                    <span>₹{(orderDetails.items.filter((i:any) => i.isGiftWrapped).length * 500).toLocaleString('en-IN')}</span>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <span className="max-w-[120px]">Shipping & Transit Insurance</span>
+                  <span className="text-right">{orderDetails.shippingCost === 0 ? 'Complimentary' : `₹${orderDetails.shippingCost.toLocaleString('en-IN')}`}</span>
+                </div>
+              </div>
+              
+              <div className="flex justify-between font-serif text-2xl text-[#1a1612] mb-8">
+                <span>Total Paid</span>
+                <span>₹{orderDetails.amount.toLocaleString('en-IN')}</span>
+              </div>
+
+              <div className="space-y-4">
+                <Link href="/collections" className="block w-full bg-[#1a1612] text-white text-center py-4 text-[10px] font-sans tracking-[0.2em] uppercase hover:bg-[#8b6914] transition-colors duration-300">
+                  Continue Shopping
+                </Link>
+                <Link href="/account/orders" className="block w-full bg-transparent border-[0.5px] border-[#1a1612] text-[#1a1612] text-center py-4 text-[10px] font-sans tracking-[0.2em] uppercase hover:bg-white transition-colors duration-300">
+                  Track Order In Account
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

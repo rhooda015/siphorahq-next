@@ -145,10 +145,12 @@ export default function CartPage() {
               Continue to Address
             </button>
 
-            <div className="mt-6 flex gap-3 items-center justify-center border-t border-border pt-4 opacity-70 grayscale">
-              <svg viewBox="0 0 50 16" className="h-4 w-auto"><path fill="#1434CB" d="M21.93 1.05h3.42L23.1 15.5H19.7zm16.92 14.45h3.36l2.12-14.45h-3.36zm-7.6-14.28c-1.63-.44-3.5-.72-5.18-.72-5.46 0-9.29 2.83-9.33 6.91-.04 3 2.68 4.67 4.75 5.67 2.12 1.02 2.84 1.68 2.84 2.6-.02 1.4-1.7 2.05-3.26 2.05-2.07 0-3.32-.3-4.73-.93l-.66-.31L9 16c1.3.6 3.65 1.1 5.95 1.1 5.75 0 9.53-2.77 9.57-7.07.03-2.4-1.38-4.22-4.52-5.68-1.9-.94-3.07-1.57-3.07-2.54.02-.9.1-1.77 2.92-1.77 1.54 0 2.6.28 3.52.66l.4.18zM10.87 1.05L8.43 11l-.3-1.46C7.23 6.2 5.34 3.75 3 2.5L2.52 2.3l2.67 13.2h3.45L14.42 1.05z"/><path fill="#F5A623" d="M3 2.5v.02C1 3.2 0 4.68 0 7.82l.06-.32C.46 5.56 1.83 2.5 3 2.5z"/></svg>
-              <svg viewBox="0 0 32 20" className="h-5 w-auto"><circle cx="10" cy="10" r="10" fill="#EB001B"/><circle cx="22" cy="10" r="10" fill="#F79E1B"/><path fill="#FF5F00" d="M16 10c0-3.3 1.9-6.2 4.7-7.9-2.8-1.7-6.6-1.7-9.4 0C14.1 3.8 16 6.7 16 10z"/></svg>
-              <svg viewBox="0 0 24 24" className="h-6 w-auto" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20" /></svg>
+            <div className="mt-6 border-t border-[var(--color-border)] pt-6 text-center">
+              <div className="flex gap-4 items-center justify-center grayscale opacity-60">
+                <svg viewBox="0 0 50 16" className="h-4 w-auto" fill="#1a1612"><path d="M21.93 1.05h3.42L23.1 15.5H19.7zm16.92 14.45h3.36l2.12-14.45h-3.36zm-7.6-14.28c-1.63-.44-3.5-.72-5.18-.72-5.46 0-9.29 2.83-9.33 6.91-.04 3 2.68 4.67 4.75 5.67 2.12 1.02 2.84 1.68 2.84 2.6-.02 1.4-1.7 2.05-3.26 2.05-2.07 0-3.32-.3-4.73-.93l-.66-.31L9 16c1.3.6 3.65 1.1 5.95 1.1 5.75 0 9.53-2.77 9.57-7.07.03-2.4-1.38-4.22-4.52-5.68-1.9-.94-3.07-1.57-3.07-2.54.02-.9.1-1.77 2.92-1.77 1.54 0 2.6.28 3.52.66l.4.18zM10.87 1.05L8.43 11l-.3-1.46C7.23 6.2 5.34 3.75 3 2.5L2.52 2.3l2.67 13.2h3.45L14.42 1.05z"/></svg>
+                <svg viewBox="0 0 32 20" className="h-5 w-auto" fill="#1a1612"><circle cx="10" cy="10" r="10"/><circle cx="22" cy="10" r="10"/><path fill="#fff" d="M16 10c0-3.3 1.9-6.2 4.7-7.9-2.8-1.7-6.6-1.7-9.4 0C14.1 3.8 16 6.7 16 10z"/></svg>
+                <svg viewBox="0 0 24 24" className="h-6 w-auto" fill="none" stroke="#1a1612" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2" /><path d="M2 10h20" /></svg>
+              </div>
             </div>
           </div>
         </div>
