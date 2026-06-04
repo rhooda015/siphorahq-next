@@ -1,30 +1,95 @@
-import React from "react";
-import Link from "next/link";
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { BRAND } from '@/config/brand';
 
-export default function Page() {
+export const metadata = {
+  title: `Our Story | ${BRAND.name}`,
+};
+
+export default function AboutPage() {
   return (
-    <div className="max-w-4xl mx-auto py-20 px-4 min-h-[50vh]">
-      <h1 className="font-serif text-4xl mb-12 text-[var(--color-primary)] text-center">Our Story</h1>
-      <div className="text-[var(--color-text-muted)] leading-relaxed text-lg">
-        <p className="mb-4">Crafting Elegant Moments, One Table at a Time</p>
-        <p className="mb-4">At SIPHORAHQ, we believe that every meal deserves a beautiful setting. Inspired by timeless craftsmanship and refined living, we curate premium <Link href="/products?category=dinner-set" className="text-[var(--color-primary)] underline hover:text-[var(--color-secondary)]">porcelain dinnerware</Link>, <Link href="/products?category=tea-set" className="text-[var(--color-primary)] underline hover:text-[var(--color-secondary)]">tea sets</Link>, <Link href="/products?category=serveware" className="text-[var(--color-primary)] underline hover:text-[var(--color-secondary)]">serveware</Link>, and <Link href="/gifting" className="text-[var(--color-primary)] underline hover:text-[var(--color-secondary)]">luxury gifting collections</Link> designed to elevate everyday experiences.</p>
-        <p className="mb-4">Our collections combine elegance, functionality, and enduring quality, making every gathering feel special—from intimate family dinners to grand celebrations.</p>
-        <p className="mb-4">Every piece is carefully selected to reflect sophistication, attention to detail, and a passion for exceptional table aesthetics.</p>
-        <div className="mb-4">
-          <h2 className="text-2xl font-serif text-[var(--color-primary)] mb-4">Our Promise</h2>
-          <ul className="space-y-2 mb-8">
-            <li>✓ Premium Quality Materials</li>
-            <li>✓ Elegant & Timeless Designs</li>
-            <li>✓ Secure Packaging</li>
-            <li>✓ Reliable Nationwide Delivery</li>
-            <li>✓ Exceptional Customer Support</li>
-          </ul>
-          <Link href="/products" className="bg-[var(--color-primary)] text-white px-8 py-3 text-sm font-sans tracking-widest uppercase hover:bg-[var(--color-secondary)] transition-colors">
-            Explore All Collections
-          </Link>
+    <div className="min-h-screen bg-[var(--color-bg)] pb-24">
+      {/* Hero Section */}
+      <section className="relative w-full h-[60vh] md:h-[70vh] bg-[var(--color-primary)] flex items-center justify-center">
+        <Image 
+          src="/images/hero.webp" 
+          alt="Siphorahq Heritage" 
+          fill 
+          className="object-cover opacity-60 mix-blend-overlay"
+          priority
+        />
+        <div className="relative z-10 text-center px-4">
+          <h1 className="text-white text-5xl md:text-7xl font-serif tracking-wide drop-shadow-md mb-6">Our Heritage</h1>
+          <p className="text-[var(--color-gold-light)] font-sans tracking-[0.3em] uppercase text-xs">Crafting Elegant Moments</p>
         </div>
-        <p className="mb-4 mt-12">SIPHORAHQ is more than dinnerware—it’s about creating memorable moments around the table.</p>
-      </div>
+      </section>
+
+      {/* Editorial Split Section 1 */}
+      <section className="max-w-6xl mx-auto px-4 py-24 md:py-32">
+        <div className="flex flex-col md:flex-row items-center gap-16 md:gap-24">
+          <div className="w-full md:w-1/2">
+            <h2 className="text-3xl md:text-5xl font-serif text-[var(--color-primary)] mb-10 leading-tight">
+              A Legacy of <br /><span className="italic text-[var(--color-secondary)]">Timeless Craftsmanship</span>
+            </h2>
+            <p className="text-[var(--color-text-muted)] font-sans text-sm md:text-[15px] leading-loose mb-8">
+              <span className="float-left text-7xl font-serif text-[var(--color-primary)] leading-[0.8] mr-3 mt-1">A</span>
+              t {BRAND.name}, we believe that every meal deserves a beautiful setting. Inspired by timeless craftsmanship and refined living, we curate premium porcelain dinnerware, tea sets, and luxury gifting collections designed to elevate everyday experiences.
+            </p>
+            <p className="text-[var(--color-text-muted)] font-sans text-sm md:text-[15px] leading-loose">
+              Our collections combine elegance, functionality, and enduring quality, making every gathering feel special—from intimate family dinners to grand celebrations. Every piece is carefully selected to reflect sophistication and a passion for exceptional table aesthetics.
+            </p>
+          </div>
+          <div className="w-full md:w-1/2 relative h-[500px] md:h-[700px]">
+            <Image src="/images/teaset.webp" alt="Craftsmanship" fill className="object-cover" />
+            <div className="absolute -bottom-8 -left-8 w-3/4 h-3/4 border border-[var(--color-secondary)] z-[-1] hidden md:block"></div>
+          </div>
+        </div>
+      </section>
+
+      {/* The Promise Section */}
+      <section className="bg-[var(--color-accent-light)] py-24 border-y-[0.5px] border-[var(--color-border)]">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-primary)] mb-16 tracking-wide">The Siphora Promise</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left max-w-2xl mx-auto">
+            <div className="flex gap-4">
+              <span className="text-[var(--color-secondary)] text-xl">✓</span>
+              <div>
+                <h3 className="font-serif text-[var(--color-primary)] text-lg mb-2">Premium Materials</h3>
+                <p className="text-[var(--color-text-muted)] font-sans text-xs uppercase tracking-widest leading-loose">Finest porcelain and bone ash.</p>
+              </div>
+            </div>
+            <div className="flex gap-4">
+              <span className="text-[var(--color-secondary)] text-xl">✓</span>
+              <div>
+                <h3 className="font-serif text-[var(--color-primary)] text-lg mb-2">Secure Packaging</h3>
+                <p className="text-[var(--color-text-muted)] font-sans text-xs uppercase tracking-widest leading-loose">Guaranteed safe transit.</p>
+              </div>
+            </div>
+            <div className="flex gap-4">
+              <span className="text-[var(--color-secondary)] text-xl">✓</span>
+              <div>
+                <h3 className="font-serif text-[var(--color-primary)] text-lg mb-2">Timeless Design</h3>
+                <p className="text-[var(--color-text-muted)] font-sans text-xs uppercase tracking-widest leading-loose">Heritage meets modern luxury.</p>
+              </div>
+            </div>
+            <div className="flex gap-4">
+              <span className="text-[var(--color-secondary)] text-xl">✓</span>
+              <div>
+                <h3 className="font-serif text-[var(--color-primary)] text-lg mb-2">Nationwide Delivery</h3>
+                <p className="text-[var(--color-text-muted)] font-sans text-xs uppercase tracking-widest leading-loose">Fast shipping across India.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-20">
+            <Link href="/products" className="inline-block border-[0.5px] border-[var(--color-primary)] text-[var(--color-primary)] px-12 py-5 text-[10px] font-sans tracking-[0.2em] uppercase hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-500">
+              Explore Collections
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
