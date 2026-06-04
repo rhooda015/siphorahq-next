@@ -174,9 +174,9 @@ export default function AccountDashboardPage() {
             <div>
               <h3 className="text-lg font-serif text-[#1a1612] mb-6">Account Settings</h3>
               <ul className="space-y-4">
-                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Default Purchase Settings</Link></li>
-                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Communication Preferences</Link></li>
-                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Language & Region</Link></li>
+                <li><Link href="/account/purchase-settings" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors block py-1">Default Purchase Settings</Link></li>
+                <li><Link href="/account/communication-preferences" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors block py-1">Communication Preferences</Link></li>
+                <li><Link href="/account/language-region" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors block py-1">Language & Region</Link></li>
               </ul>
             </div>
 
@@ -184,9 +184,9 @@ export default function AccountDashboardPage() {
             <div>
               <h3 className="text-lg font-serif text-[#1a1612] mb-6">Email & Alerts</h3>
               <ul className="space-y-4">
-                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Promotional Emails</Link></li>
-                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Order Notifications (SMS)</Link></li>
-                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Message Center</Link></li>
+                <li><Link href="/account/promotional-emails" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors block py-1">Promotional Emails</Link></li>
+                <li><Link href="/account/order-notifications" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors block py-1">Order Notifications (SMS)</Link></li>
+                <li><Link href="/account/message-center" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors block py-1">Message Center</Link></li>
               </ul>
             </div>
 
@@ -194,9 +194,9 @@ export default function AccountDashboardPage() {
             <div>
               <h3 className="text-lg font-serif text-[#1a1612] mb-6">Siphora Exclusives</h3>
               <ul className="space-y-4">
-                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">My Membership Benefits</Link></li>
-                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Corporate Gifting History</Link></li>
-                <li><Link href="#" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors">Redeem Gift Cards</Link></li>
+                <li><Link href="/account/membership-benefits" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors block py-1">My Membership Benefits</Link></li>
+                <li><Link href="/account/corporate-gifting-history" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors block py-1">Corporate Gifting History</Link></li>
+                <li><Link href="/account/redeem-gift-cards" className="text-xs tracking-[0.1em] uppercase font-sans text-[#1a1612]/60 hover:text-[#8b6914] transition-colors block py-1">Redeem Gift Cards</Link></li>
               </ul>
             </div>
 
