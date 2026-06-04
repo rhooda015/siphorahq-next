@@ -7,7 +7,7 @@ export default function Page() {
       <h1 className="font-serif text-4xl mb-12 text-[var(--color-primary)] text-center">Our Story</h1>
       <div className="text-[var(--color-text-muted)] leading-relaxed text-lg">
         <p className="mb-4">Crafting Elegant Moments, One Table at a Time</p>
-        <p className="mb-4">At SIPORAHQ, we believe that every meal deserves a beautiful setting. Inspired by timeless craftsmanship and refined living, we curate premium <Link href="/products?category=dinner-set" className="text-[var(--color-primary)] underline hover:text-[var(--color-secondary)]">porcelain dinnerware</Link>, <Link href="/products?category=tea-set" className="text-[var(--color-primary)] underline hover:text-[var(--color-secondary)]">tea sets</Link>, <Link href="/products?category=serveware" className="text-[var(--color-primary)] underline hover:text-[var(--color-secondary)]">serveware</Link>, and <Link href="/gifting" className="text-[var(--color-primary)] underline hover:text-[var(--color-secondary)]">luxury gifting collections</Link> designed to elevate everyday experiences.</p>
+        <p className="mb-4">At SIPHORAHQ, we believe that every meal deserves a beautiful setting. Inspired by timeless craftsmanship and refined living, we curate premium <Link href="/products?category=dinner-set" className="text-[var(--color-primary)] underline hover:text-[var(--color-secondary)]">porcelain dinnerware</Link>, <Link href="/products?category=tea-set" className="text-[var(--color-primary)] underline hover:text-[var(--color-secondary)]">tea sets</Link>, <Link href="/products?category=serveware" className="text-[var(--color-primary)] underline hover:text-[var(--color-secondary)]">serveware</Link>, and <Link href="/gifting" className="text-[var(--color-primary)] underline hover:text-[var(--color-secondary)]">luxury gifting collections</Link> designed to elevate everyday experiences.</p>
         <p className="mb-4">Our collections combine elegance, functionality, and enduring quality, making every gathering feel special—from intimate family dinners to grand celebrations.</p>
         <p className="mb-4">Every piece is carefully selected to reflect sophistication, attention to detail, and a passion for exceptional table aesthetics.</p>
         <div className="mb-4">
@@ -23,7 +23,7 @@ export default function Page() {
             Explore All Collections
           </Link>
         </div>
-        <p className="mb-4 mt-12">SIPORAHQ is more than dinnerware—it’s about creating memorable moments around the table.</p>
+        <p className="mb-4 mt-12">SIPHORAHQ is more than dinnerware—it’s about creating memorable moments around the table.</p>
       </div>
     </div>
   );

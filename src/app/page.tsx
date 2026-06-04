@@ -168,12 +168,12 @@ export default function HomePage() {
         <SectionHeading title="Shop Gifts by Price" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { title: "Under ₹999", img: "/images/gifting.webp" },
-            { title: "Under ₹2000", img: "/images/serveware.webp" },
-            { title: "Under ₹5000", img: "/images/dinnerware.webp" },
-            { title: "Under ₹10000", img: "/images/teaset.webp" },
+            { title: "Under ₹999", img: "/images/gifting.webp", maxPrice: 999 },
+            { title: "Under ₹2000", img: "/images/serveware.webp", maxPrice: 2000 },
+            { title: "Under ₹5000", img: "/images/dinnerware.webp", maxPrice: 5000 },
+            { title: "Under ₹10000", img: "/images/teaset.webp", maxPrice: 10000 },
           ].map((item, idx) => (
-            <Link href="/products" key={idx} className="group flex flex-col relative aspect-[4/5] bg-[var(--color-accent-light)] overflow-hidden">
+            <Link href={`/products?maxPrice=${item.maxPrice}`} key={idx} className="group flex flex-col relative aspect-[4/5] bg-[var(--color-accent-light)] overflow-hidden">
               <Image src={item.img} alt={item.title} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
               {/* Overlay with Text */}
               <div className="absolute inset-0 bg-black/20 flex flex-col items-center justify-start pt-8">
@@ -190,14 +190,14 @@ export default function HomePage() {
         <SectionHeading title="Collections" />
         <div className="grid grid-cols-3 md:grid-cols-6 gap-4 text-center">
           {[
-            { title: "Cups and Kettle Set", img: "/images/teaset.webp" },
-            { title: "Dinner Set of 6", img: "/images/dinnerware_var2.webp" },
-            { title: "Dinner Set Serve For 8", img: "/images/dinnerware.webp" },
-            { title: "Cutlery", img: "/images/cat_plates.webp" },
-            { title: "Drinkware", img: "/images/cat_mugs.webp" },
-            { title: "Platter", img: "/images/serveware_var2.webp" },
+            { title: "Cups and Kettle Set", img: "/images/teaset.webp", cat: "tea-set" },
+            { title: "Dinner Set of 6", img: "/images/dinnerware_var2.webp", cat: "dinner-set" },
+            { title: "Dinner Set Serve For 8", img: "/images/dinnerware.webp", cat: "dinner-set" },
+            { title: "Cutlery", img: "/images/cat_plates.webp", cat: "cutlery" },
+            { title: "Drinkware", img: "/images/cat_mugs.webp", cat: "mugs" },
+            { title: "Platter", img: "/images/serveware_var2.webp", cat: "serveware" },
           ].map((item, idx) => (
-            <Link href="/products" key={idx} className="group">
+            <Link href={`/products?category=${item.cat}`} key={idx} className="group">
               <div className="aspect-square rounded-full md:rounded-none overflow-hidden relative mb-2 bg-[var(--color-accent-light)]">
                 <Image src={item.img} alt={item.title} fill sizes="(max-width: 768px) 33vw, 16vw" className="object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>

@@ -54,8 +54,13 @@ export default function ProductClientActions({ product }: { product: any }) {
       </div>
 
       {/* Actions (Sticky on Mobile) */}
-      <div className="fixed md:relative bottom-[60px] md:bottom-0 left-0 w-full md:w-auto bg-white md:bg-transparent p-4 md:p-0 border-t border-[var(--color-border)] md:border-none z-30 flex flex-col gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] md:shadow-none">
-        <div className="flex flex-col md:flex-row gap-3 md:gap-4 h-auto md:h-14">
+      <div className="fixed md:relative bottom-[60px] md:bottom-0 left-0 w-full md:w-auto bg-white md:bg-transparent p-3 md:p-0 border-t border-[var(--color-border)] md:border-none z-30 flex flex-col gap-2 md:gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] md:shadow-none">
+        {/* Mobile Product Info (Only visible when sticky) */}
+        <div className="md:hidden flex justify-between items-center mb-1 px-1">
+          <span className="font-serif text-[13px] font-medium truncate pr-4 text-[var(--color-primary)]">{product.name}</span>
+          <span className="font-sans text-xs text-[var(--color-text-muted)] font-medium">₹{(product.salePrice || product.price).toLocaleString('en-IN')}</span>
+        </div>
+        <div className="flex flex-col md:flex-row gap-2 md:gap-4 h-auto md:h-14">
           <div className="hidden md:flex border border-[var(--color-border)] items-center bg-white flex-shrink-0">
             <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="px-4 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] h-full"><Minus className="w-4 h-4" /></button>
             <span className="w-8 text-center font-sans text-sm">{quantity}</span>

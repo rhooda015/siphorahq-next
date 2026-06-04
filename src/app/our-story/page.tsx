@@ -13,7 +13,7 @@ export default function Page() {
           Our Story
         </h1>
         <div className="prose prose-lg mx-auto text-[var(--color-text-muted)] font-sans whitespace-pre-wrap leading-relaxed">
-          Crafting Elegant Moments, One Table at a Time.\n\nAt SIPORAHQ, we believe that every meal deserves a beautiful setting. Inspired by timeless craftsmanship and refined living, we curate premium porcelain dinnerware, tea sets, serveware, and luxury gifting collections designed to elevate everyday experiences.
+          Crafting Elegant Moments, One Table at a Time.\n\nAt SIPHORAHQ, we believe that every meal deserves a beautiful setting. Inspired by timeless craftsmanship and refined living, we curate premium porcelain dinnerware, tea sets, serveware, and luxury gifting collections designed to elevate everyday experiences.
         </div>
       </div>
     </div>

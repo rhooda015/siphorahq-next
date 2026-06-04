@@ -5,25 +5,39 @@ import { ChevronRight } from 'lucide-react';
 export default function JournalPage() {
   const articles = [
     {
-      id: 'hosting-perfect-dinner',
-      title: 'The Art of Hosting: Setting the Perfect Dinner Table',
-      category: 'Lifestyle',
-      date: 'November 12, 2025',
+      id: 'best-porcelain-dinner-set-gifting-india',
+      title: 'Best Porcelain Dinner Set for Gifting in India',
+      category: 'Gifting',
+      date: 'December 1, 2025',
       link: '/products?category=dinner-set'
     },
     {
-      id: 'porcelain-care-guide',
-      title: 'How to Care for Your Luxury Porcelain Dinnerware',
-      category: 'Care Guide',
-      date: 'October 15, 2025',
+      id: 'choose-perfect-luxury-tea-set',
+      title: 'How to Choose the Perfect Luxury Tea Set',
+      category: 'Guide',
+      date: 'November 20, 2025',
+      link: '/products?category=tea-set'
+    },
+    {
+      id: 'premium-corporate-gifting-guide',
+      title: 'The Ultimate Guide to Premium Corporate Gifting',
+      category: 'Corporate',
+      date: 'November 5, 2025',
+      link: '/corporate-gifting'
+    },
+    {
+      id: 'why-fine-porcelain',
+      title: 'Why Fine Porcelain is the Best Material for Dinnerware',
+      category: 'Education',
+      date: 'October 25, 2025',
       link: '/products'
     },
     {
-      id: 'luxury-gifting-guide',
-      title: 'A Guide to Luxury Corporate & Wedding Gifting',
-      category: 'Gifting',
-      date: 'September 15, 2025',
-      link: '/gifting'
+      id: 'elevate-dining-table-aesthetics',
+      title: '5 Ways to Elevate Your Dining Table Aesthetics',
+      category: 'Lifestyle',
+      date: 'October 10, 2025',
+      link: '/products'
     }
   ];
 
