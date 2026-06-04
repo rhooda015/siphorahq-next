@@ -18,6 +18,7 @@ export interface IUser extends Document {
   image?: string;
   createdAt: Date;
   addresses: IAddress[];
+  wishlist: string[];
 }
 
 const AddressSchema = new Schema<IAddress>({
@@ -37,7 +38,8 @@ const UserSchema = new Schema<IUser>({
   provider:  { type: String, default: 'credentials' },
   image:     { type: String },
   createdAt: { type: Date, default: Date.now },
-  addresses: [AddressSchema]
+  addresses: [AddressSchema],
+  wishlist:  [{ type: String }]
 });
 
 export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
