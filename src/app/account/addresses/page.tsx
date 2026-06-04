@@ -25,6 +25,7 @@ export default function AddressesPage() {
   // Modal & Form States
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
     mobile: '',
@@ -37,6 +38,7 @@ export default function AddressesPage() {
   });
 
   const autocompleteInputRef = useRef<HTMLInputElement>(null);
+  const autocompleteInstanceRef = useRef<any>(null);
 
   const fetchAddresses = async () => {
     try {
@@ -62,40 +64,51 @@ export default function AddressesPage() {
     fetchAddresses();
   }, [status, session]);
 
-  // Google Maps Autocomplete Initialization
-  const handleScriptLoad = () => {
-    if (!(window as any).google || !autocompleteInputRef.current) return;
-    
-    const autocomplete = new (window as any).google.maps.places.Autocomplete(autocompleteInputRef.current, {
-      types: ['geocode'],
-      componentRestrictions: { country: 'in' },
-      fields: ['address_components', 'geometry', 'formatted_address']
-    });
+  // Google Maps Autocomplete Initialization & Cleanup
+  useEffect(() => {
+    if (isModalOpen && scriptLoaded && (window as any).google && autocompleteInputRef.current) {
+      try {
+        autocompleteInstanceRef.current = new (window as any).google.maps.places.Autocomplete(autocompleteInputRef.current, {
+          types: ['geocode'],
+          componentRestrictions: { country: 'in' },
+          fields: ['address_components', 'geometry', 'formatted_address']
+        });
 
-    autocomplete.addListener('place_changed', () => {
-      const place = autocomplete.getPlace();
-      if (!place.address_components) return;
+        autocompleteInstanceRef.current.addListener('place_changed', () => {
+          const place = autocompleteInstanceRef.current.getPlace();
+          if (!place.address_components) return;
 
-      let city = '';
-      let state = '';
-      let pincode = '';
+          let city = '';
+          let state = '';
+          let pincode = '';
 
-      for (const component of place.address_components) {
-        const type = component.types[0];
-        if (type === 'locality' || type === 'administrative_area_level_2') city = component.long_name;
-        if (type === 'administrative_area_level_1') state = component.long_name;
-        if (type === 'postal_code') pincode = component.long_name;
+          for (const component of place.address_components) {
+            const type = component.types[0];
+            if (type === 'locality' || type === 'administrative_area_level_2') city = component.long_name;
+            if (type === 'administrative_area_level_1') state = component.long_name;
+            if (type === 'postal_code') pincode = component.long_name;
+          }
+
+          setFormData(prev => ({
+            ...prev,
+            area: place.formatted_address || prev.area,
+            city: city || prev.city,
+            state: state || prev.state,
+            pincode: pincode || prev.pincode
+          }));
+        });
+      } catch (error) {
+        console.warn("Google Maps Autocomplete initialization bypassed. InvalidKey or network failure caught silently.", error);
       }
+    }
 
-      setFormData(prev => ({
-        ...prev,
-        area: place.formatted_address || prev.area,
-        city: city || prev.city,
-        state: state || prev.state,
-        pincode: pincode || prev.pincode
-      }));
-    });
-  };
+    return () => {
+      // Client State Integrity: Cleanup
+      if (autocompleteInstanceRef.current && (window as any).google) {
+        (window as any).google.maps.event.clearInstanceListeners(autocompleteInstanceRef.current);
+      }
+    };
+  }, [isModalOpen, scriptLoaded]);
 
   // HTML5 Geolocation API
   const handleGeolocation = () => {
@@ -110,7 +123,7 @@ export default function AddressesPage() {
         try {
           const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
           if (!apiKey) {
-            alert("Google Maps API Key is missing. Please add it to your environment variables.");
+            alert("Google Maps API Key is missing. Reverse geocoding cannot proceed.");
             return;
           }
           
@@ -137,6 +150,8 @@ export default function AddressesPage() {
               state,
               pincode
             }));
+          } else {
+            console.warn("Reverse geocoding returned no valid results.");
           }
         } catch (error) {
           console.error("Geocoding error", error);
@@ -161,7 +176,6 @@ export default function AddressesPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validations
     if (formData.mobile.replace(/\D/g, '').length !== 10) {
       alert("Please enter a valid 10-digit mobile number.");
       return;
@@ -191,7 +205,6 @@ export default function AddressesPage() {
         setIsModalOpen(false);
         setFormData({ fullName: '', mobile: '', street: '', area: '', city: '', state: '', pincode: '', isDefault: false });
         await fetchAddresses(); // Silent refresh
-        // You would ideally use a toast library here instead of alert
         alert("Address added successfully");
       } else {
         const errorData = await res.json();
@@ -207,11 +220,15 @@ export default function AddressesPage() {
 
   return (
     <>
-      <Script 
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`} 
-        strategy="lazyOnload" 
-        onLoad={handleScriptLoad}
-      />
+      {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY && (
+        <Script 
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`} 
+          strategy="lazyOnload" 
+          async
+          defer
+          onLoad={() => setScriptLoaded(true)}
+        />
+      )}
 
       <div className="min-h-screen bg-[#fdfbf9] py-12 md:py-20 px-4 md:px-8">
         <div className="max-w-4xl mx-auto">
