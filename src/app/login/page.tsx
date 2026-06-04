@@ -107,7 +107,7 @@ export default function LoginPage() {
                 <div className="flex-1 h-[1px] bg-gray-200" />
               </div>
               <div className="grid grid-cols-3 gap-3">
-                <button onClick={() => signIn('google', { callbackUrl: '/' })} className="flex items-center justify-center gap-2 border-[0.5px] border-gray-300 py-3 rounded-[2px] hover:bg-gray-50 transition-colors">
+                <button onClick={() => signIn('google', { callbackUrl: '/account' })} className="flex items-center justify-center gap-2 border-[0.5px] border-gray-300 py-3 rounded-[2px] hover:bg-gray-50 transition-colors">
                   <span className="font-bold font-sans text-lg leading-none">G</span>
                   <span className="font-sans text-[10px] tracking-widest uppercase">Google</span>
                 </button>
@@ -272,9 +272,8 @@ function OtpLoginForm({ inputBaseStyle, btnBaseStyle, showToast, router }: any) 
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      showToast("Successfully verified.", "success");
-      router.push('/account');
-    }, 1500);
+      showToast("OTP login coming soon.", "error");
+    }, 500);
   };
 
   return (
@@ -339,7 +338,7 @@ function OtpLoginForm({ inputBaseStyle, btnBaseStyle, showToast, router }: any) 
           <div className="flex-1 h-[1px] bg-gray-200" />
         </div>
         <div className="flex gap-3">
-           <button type="button" onClick={() => signIn('google', { callbackUrl: '/' })} className="flex-1 flex items-center justify-center gap-2 border-[0.5px] border-gray-300 py-3 rounded-[2px] hover:bg-gray-50 transition-colors">
+           <button type="button" onClick={() => signIn('google', { callbackUrl: '/account' })} className="flex-1 flex items-center justify-center gap-2 border-[0.5px] border-gray-300 py-3 rounded-[2px] hover:bg-gray-50 transition-colors">
             <span className="font-sans text-[10px] tracking-widest uppercase">Google</span>
           </button>
           <button type="button" onClick={() => showToast('Connecting to Facebook...', 'success')} className="flex-1 flex items-center justify-center gap-2 border-[0.5px] border-gray-300 py-3 rounded-[2px] hover:bg-gray-50 transition-colors">
