@@ -192,9 +192,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 <ChevronRight className="w-5 h-5 transform rotate-90" />
               </span>
             </summary>
-            <div className="mt-4 text-sm font-sans text-[var(--color-text-muted)] leading-relaxed">
-              {product.description || 'Crafted from the finest bone china porcelain, perfectly balancing aesthetic appeal with exceptional durability, making it ideal for both everyday dining and festive occasions.'}
-            </div>
+            <div 
+              className="mt-4 text-sm font-sans text-[var(--color-text-muted)] leading-relaxed prose prose-sm max-w-none prose-p:mb-3 prose-h3:font-semibold prose-h3:text-[var(--color-primary)] prose-h3:mt-4 prose-ul:list-disc prose-ul:pl-5 prose-li:mb-1"
+              dangerouslySetInnerHTML={{ 
+                __html: product.description || 'Crafted from the finest bone china porcelain, perfectly balancing aesthetic appeal with exceptional durability, making it ideal for both everyday dining and festive occasions.'
+              }}
+            />
           </details>
           <details className="group border-b border-[var(--color-border)] py-4 cursor-pointer">
             <summary className="flex justify-between items-center font-serif text-lg font-medium outline-none text-[var(--color-primary)]">
