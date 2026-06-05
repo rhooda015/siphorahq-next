@@ -5,6 +5,7 @@ import {
   Search, Bell, Plus, Download, X, Copy, Check, TrendingUp, AlertCircle, Edit, Trash2,
   Image as ImageIcon, UploadCloud, ChevronLeft
 } from 'lucide-react';
+import ProductEditor from '@/components/admin/ProductEditor';
 
 const SAMPLE_ORDERS = [
   { id: 'ORD-8901', customer: 'Rahul Sharma', city: 'Mumbai', product: 'Ceramic Tea Cup Set', amount: 399, payment: 'Razorpay', courier: 'Delhivery', awb: 'DEL123456789', status: 'Pending', expected: '12 Jun 2026' },
@@ -47,27 +48,16 @@ export default function AdminSPA() {
     }
   }, [activeTab, productEditor]);
 
-  const handleSaveProduct = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const isEdit = !!productEditor._id;
-    const url = isEdit ? `/api/products/${productEditor._id}` : '/api/products';
+  const handleSaveProduct = async (productData: any) => {
+    const isEdit = !!productData._id;
+    const url = isEdit ? `/api/products/${productData._id}` : '/api/products';
     const method = isEdit ? 'PUT' : 'POST';
 
     try {
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: productEditor.title,
-          handle: productEditor.handle || productEditor.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-          price: Number(productEditor.price) || 0,
-          inventoryCount: Number(productEditor.inventoryCount) || 0,
-          category: productEditor.category || 'General',
-          description: productEditor.description || '',
-          images: productEditor.images || [],
-          sizes: typeof productEditor.sizes === 'string' ? productEditor.sizes.split(',').map((s:any)=>s.trim()) : (productEditor.sizes || []),
-          colors: typeof productEditor.colors === 'string' ? productEditor.colors.split(',').map((c:any)=>c.trim()) : (productEditor.colors || [])
-        })
+        body: JSON.stringify(productData)
       });
 
       if (res.ok) {
@@ -98,20 +88,7 @@ export default function AdminSPA() {
     }
   };
 
-  const addImageUrl = () => {
-    if (!imageUrlInput.trim()) return;
-    setProductEditor({
-      ...productEditor, 
-      images: [...(productEditor.images || []), { url: imageUrlInput, altText: productEditor.title || '' }]
-    });
-    setImageUrlInput('');
-  };
-
-  const removeImage = (index: number) => {
-    const newImages = [...(productEditor.images || [])];
-    newImages.splice(index, 1);
-    setProductEditor({ ...productEditor, images: newImages });
-  };
+  // Image handlers moved to ProductEditor
 
   const NavItem = ({ icon: Icon, label, tab }: any) => {
     const isActive = activeTab === tab;
@@ -176,170 +153,49 @@ export default function AdminSPA() {
       {/* MAIN CONTENT */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden relative">
         
-        {/* TOPBAR */}
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 flex-shrink-0">
-          {productEditor ? (
-            <div className="flex items-center gap-4">
-              <button onClick={() => setProductEditor(null)} className="text-gray-500 hover:text-[#0C1929] p-1.5 rounded-md hover:bg-gray-100 transition-colors">
-                <ChevronLeft size={20} />
-              </button>
-              <h1 className="text-xl font-semibold text-[#0C1929]">
-                {productEditor._id ? 'Edit Product' : 'Add New Product'}
-              </h1>
-            </div>
-          ) : (
-            <h1 className="text-xl font-semibold text-[#0C1929]">{activeTab}</h1>
-          )}
-          
-          {!productEditor && (
-            <div className="flex items-center gap-6">
-              <div className="relative hidden md:block">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                <input 
-                  type="text" 
-                  placeholder="Search..." 
-                  className="pl-9 pr-12 py-1.5 bg-gray-100 border-none rounded-md text-sm focus:ring-2 focus:ring-[#D4A853] outline-none w-64"
-                />
-                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 border border-gray-300 rounded px-1.5 py-0.5">⌘K</span>
-              </div>
-              <button className="relative text-gray-500 hover:text-[#0C1929]">
-                <Bell size={20} />
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-              </button>
-              {activeTab === 'Products' && (
-                <button onClick={() => setProductEditor({ images: [] })} className="flex items-center gap-2 bg-[#0C1929] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">
-                  <Plus size={16} /> Add Product
-                </button>
-              )}
-              {activeTab === 'Orders' && (
-                <button className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
-                  <Download size={16} /> Export CSV
-                </button>
-              )}
-            </div>
-          )}
-          
-          {productEditor && (
-             <div className="flex items-center gap-3">
-               <button onClick={() => setProductEditor(null)} className="px-4 py-1.5 bg-white border border-gray-300 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">Discard</button>
-               <button onClick={handleSaveProduct} className="px-5 py-1.5 bg-[#0C1929] text-white rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">Save Product</button>
-             </div>
-          )}
-        </header>
-
-        {/* PAGE CONTENT */}
-        <div className="flex-1 overflow-auto p-8 bg-gray-50/50">
-          
-          {/* PROFESSIONAL PRODUCT EDITOR */}
-          {productEditor && (
-            <div className="max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-300">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                
-                {/* Main Details */}
-                <div className="lg:col-span-2 space-y-6">
-                  {/* Title & Description */}
-                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                        <input required type="text" placeholder="Short Sleeve T-Shirt" value={productEditor.title || ''} onChange={e => setProductEditor({...productEditor, title: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                        <textarea rows={5} placeholder="Describe the product..." value={productEditor.description || ''} onChange={e => setProductEditor({...productEditor, description: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 resize-y" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Media */}
-                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-                    <h3 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2"><ImageIcon size={18}/> Media Images</h3>
-                    
-                    {/* Existing Images Grid */}
-                    {productEditor.images && productEditor.images.length > 0 && (
-                      <div className="grid grid-cols-4 gap-4 mb-6">
-                        {productEditor.images.map((img: any, i: number) => (
-                          <div key={i} className="relative group rounded-lg overflow-hidden border border-gray-200 aspect-square">
-                            <img src={img.url} alt="Product" className="w-full h-full object-cover" />
-                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                              <button onClick={() => removeImage(i)} type="button" className="p-1.5 bg-white text-red-600 rounded-md shadow-sm hover:bg-red-50"><Trash2 size={16}/></button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Add Image URL */}
-                    <div className="flex items-end gap-3 border-t border-dashed border-gray-300 pt-6">
-                      <div className="flex-1">
-                        <label className="block text-xs font-medium text-gray-500 mb-1">Add Image URL (https://...)</label>
-                        <input type="url" value={imageUrlInput} onChange={e => setImageUrlInput(e.target.value)} placeholder="https://example.com/image.jpg" className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
-                      </div>
-                      <button type="button" onClick={addImageUrl} className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 flex items-center gap-2 transition-colors">
-                        <UploadCloud size={16}/> Add
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Variants */}
-                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-                    <h3 className="text-base font-semibold text-gray-900 mb-4">Variants</h3>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Sizes (comma separated)</label>
-                        <input type="text" placeholder="S, M, L, XL" value={typeof productEditor.sizes === 'object' ? productEditor.sizes.join(', ') : (productEditor.sizes || '')} onChange={e => setProductEditor({...productEditor, sizes: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Colors (comma separated)</label>
-                        <input type="text" placeholder="Red, Blue, Gold" value={typeof productEditor.colors === 'object' ? productEditor.colors.join(', ') : (productEditor.colors || '')} onChange={e => setProductEditor({...productEditor, colors: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
-                      </div>
-                    </div>
-                  </div>
+        {productEditor ? (
+          <div className="flex-1 overflow-auto p-8 bg-gray-50/50">
+            <ProductEditor 
+              initialData={productEditor} 
+              onClose={() => setProductEditor(null)} 
+              onSave={handleSaveProduct} 
+            />
+          </div>
+        ) : (
+          <>
+            {/* TOPBAR */}
+            <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 flex-shrink-0">
+              <h1 className="text-xl font-semibold text-[#0C1929]">{activeTab}</h1>
+              
+              <div className="flex items-center gap-6">
+                <div className="relative hidden md:block">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                  <input 
+                    type="text" 
+                    placeholder="Search..." 
+                    className="pl-9 pr-12 py-1.5 bg-gray-100 border-none rounded-md text-sm focus:ring-2 focus:ring-[#D4A853] outline-none w-64"
+                  />
+                  <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 border border-gray-300 rounded px-1.5 py-0.5">⌘K</span>
                 </div>
-
-                {/* Sidebar Details */}
-                <div className="space-y-6">
-                  {/* Pricing */}
-                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-                    <h3 className="text-base font-semibold text-gray-900 mb-4">Pricing</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Price (₹)</label>
-                        <input required type="number" min="0" value={productEditor.price || ''} onChange={e => setProductEditor({...productEditor, price: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Inventory */}
-                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-                    <h3 className="text-base font-semibold text-gray-900 mb-4">Inventory</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Stock Quantity</label>
-                        <input required type="number" min="0" value={productEditor.inventoryCount || ''} onChange={e => setProductEditor({...productEditor, inventoryCount: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Organization */}
-                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-                    <h3 className="text-base font-semibold text-gray-900 mb-4">Organization</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Product Category</label>
-                        <input type="text" placeholder="Dinnerware" value={productEditor.category || ''} onChange={e => setProductEditor({...productEditor, category: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">URL Handle / Slug</label>
-                        <input type="text" placeholder="ceramic-tea-cup" value={productEditor.handle || ''} onChange={e => setProductEditor({...productEditor, handle: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 bg-gray-50" />
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
+                <button className="relative text-gray-500 hover:text-[#0C1929]">
+                  <Bell size={20} />
+                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                </button>
+                {activeTab === 'Products' && (
+                  <button onClick={() => setProductEditor({ images: [] })} className="flex items-center gap-2 bg-[#0C1929] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">
+                    <Plus size={16} /> Add Product
+                  </button>
+                )}
+                {activeTab === 'Orders' && (
+                  <button className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
+                    <Download size={16} /> Export CSV
+                  </button>
+                )}
               </div>
-            </div>
-          )}
+            </header>
+
+            {/* PAGE CONTENT */}
+            <div className="flex-1 overflow-auto p-8 bg-gray-50/50">
 
           {/* OVERVIEW TAB */}
           {!productEditor && activeTab === 'Overview' && (
@@ -592,7 +448,9 @@ export default function AdminSPA() {
             </div>
           )}
 
-        </div>
+            </div>
+          </>
+        )}
       </main>
 
       {/* TRACKING MODAL */}

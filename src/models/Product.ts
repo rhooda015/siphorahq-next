@@ -28,7 +28,13 @@ const ProductSchema = new mongoose.Schema({
   inventoryCount: {
     type: Number,
     default: 0
-  }
+  },
+  variants: [{
+    title: String,
+    sku: String,
+    price: Number,
+    inventoryCount: Number
+  }]
 }, {
   timestamps: true,
 });
