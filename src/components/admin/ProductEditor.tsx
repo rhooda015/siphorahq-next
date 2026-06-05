@@ -116,13 +116,44 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
     }
   }, [sizes, colors, price, handle]);
 
-  // Dropzone for Images
+  // Dropzone for Images (with Compression & Base64 encoding)
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    const newImages = acceptedFiles.map(file => ({
-      url: URL.createObjectURL(file), // Mocking upload for now
-      altText: file.name
-    }));
-    setImages(prev => [...prev, ...newImages]);
+    acceptedFiles.forEach(file => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new window.Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 1000;
+          const MAX_HEIGHT = 1000;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          // Compress to JPEG with 80% quality to save DB space
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          
+          setImages(prev => [...prev, { url: dataUrl, altText: file.name }]);
+        };
+      };
+    });
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: {'image/*': []} });
 
