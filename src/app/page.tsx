@@ -5,6 +5,10 @@ import Image from 'next/image';
 import { STATIC_PRODUCTS } from '@/data/products';
 import HeroCarousel from '@/components/HeroCarousel';
 import ProductCard from '@/components/ProductCard';
+import dbConnect from '@/lib/db';
+import Product from '@/models/Product';
+
+export const revalidate = 0; // Disable caching to always show live products
 
 // --- Reusable Components for exact Swasha UI ---
 
@@ -24,11 +28,27 @@ const ViewAllButton = ({ href }: { href: string }) => (
 
 // --- Main Page Component ---
 
-export default function HomePage() {
-  // Centralized Data Source
-  const productsNew = STATIC_PRODUCTS.slice(0, 4);
-  const productsServeFor6 = STATIC_PRODUCTS.filter(p => p.category === 'dinner-set').slice(0, 4);
-  const productsBowls = STATIC_PRODUCTS.filter(p => p.category === 'serveware').slice(0, 4);
+export default async function HomePage() {
+  await dbConnect();
+  
+  // Fetch live products from DB
+  const dbProducts = await Product.find({ status: 'Live' }).sort({ createdAt: -1 }).lean();
+  
+  const mappedProducts = dbProducts.map((p: any) => ({
+    id: p.handle || p._id.toString(),
+    name: p.title,
+    price: p.price,
+    salePrice: p.price, // Add logic if you add sale price to DB
+    category: p.category,
+    image: p.images?.[0]?.url || '/images/teaset.webp',
+  }));
+
+  // Centralized Data Source (fallback to static if DB is completely empty)
+  const allProducts = mappedProducts.length > 0 ? mappedProducts : STATIC_PRODUCTS;
+
+  const productsNew = allProducts.slice(0, 4);
+  const productsServeFor6 = allProducts.filter((p: any) => p.category === 'dinner-set' || p.category === 'Dinnerware').slice(0, 4);
+  const productsBowls = allProducts.filter((p: any) => p.category === 'serveware' || p.category === 'Serveware').slice(0, 4);
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)] pb-20">

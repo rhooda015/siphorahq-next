@@ -35,7 +35,7 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
   const [title, setTitle] = useState(initialData?.title || '');
   const [description, setDescription] = useState(initialData?.description || '');
   const [category, setCategory] = useState(initialData?.category || '');
-  const [status, setStatus] = useState('Draft'); // Mock status
+  const [status, setStatus] = useState(initialData?.status || 'Draft');
 
   // Pricing
   const [price, setPrice] = useState(initialData?.price || 0);
@@ -136,6 +136,7 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
       price: Number(price),
       inventoryCount: Number(inventoryCount),
       category,
+      status,
       images,
       sizes: sizes.split(',').map((s: string) => s.trim()).filter(Boolean),
       colors: colors.split(',').map((c: string) => c.trim()).filter(Boolean),

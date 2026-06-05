@@ -35,6 +35,11 @@ const ProductSchema = new mongoose.Schema({
     price: Number,
     inventoryCount: Number
   }],
+  status: {
+    type: String,
+    enum: ['Draft', 'Live'],
+    default: 'Live'
+  },
   metaTitle: String,
   metaDescription: String
 }, {
