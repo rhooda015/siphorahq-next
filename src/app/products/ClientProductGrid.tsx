@@ -5,8 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 
-import { STATIC_PRODUCTS } from '@/data/products';
-
 const CATEGORIES = [
   { label: 'All',             value: 'all' },
   { label: 'Dinner Sets',     value: 'dinner-set' },
@@ -28,7 +26,7 @@ function formatPrice(price: number) {
   return `₹${price.toLocaleString('en-IN')}`;
 }
 
-export default function ClientProductGrid() {
+export default function ClientProductGrid({ products }: { products: any[] }) {
   const searchParams = useSearchParams();
   const queryCategory = searchParams.get('category');
   const queryMaxPrice = searchParams.get('maxPrice');
@@ -46,7 +44,7 @@ export default function ClientProductGrid() {
   }, [queryCategory]);
 
   // Filter
-  const filtered = STATIC_PRODUCTS.filter(p => {
+  const filtered = products.filter(p => {
     let match = true;
     
     if (activeCategory !== 'all') {
