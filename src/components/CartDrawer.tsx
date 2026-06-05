@@ -7,9 +7,11 @@ import { X, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { useCart } from '@/store/useCart';
 import { BRAND } from '@/config/brand';
 import { trackBeginCheckout } from '@/lib/analytics';
+import { useSession } from 'next-auth/react';
 
 export default function CartDrawer() {
   const { items, isDrawerOpen, closeDrawer, removeItem, updateQuantity, cartTotal } = useCart();
+  const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -21,6 +23,9 @@ export default function CartDrawer() {
   const total = cartTotal();
   const remainingForFreeShipping = Math.max(BRAND.freeShippingThreshold - total, 0);
   const progressToFreeShipping = Math.min((total / BRAND.freeShippingThreshold) * 100, 100);
+
+  const firstName = session?.user?.name ? session.user.name.split(' ')[0] : null;
+  const cartTitle = firstName ? `${firstName}'s Cart` : 'Your Cart';
 
   return (
     <>
@@ -41,7 +46,7 @@ export default function CartDrawer() {
         <div className="flex items-center justify-between p-4 border-b border-[var(--color-border)]">
           <h2 className="font-serif text-xl flex items-center gap-2">
             <ShoppingBag className="w-5 h-5" />
-            Your Cart
+            {cartTitle}
           </h2>
           <button onClick={closeDrawer} className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
             <X className="w-5 h-5" />

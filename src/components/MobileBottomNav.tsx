@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/store/useCart';
 import { Home, Grid, Search, ShoppingCart } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 const NAV_ITEMS = [
   { label: 'Home',        href: '/',        icon: Home },
@@ -15,8 +16,8 @@ const NAV_ITEMS = [
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
-
   const { openDrawer } = useCart();
+  const { data: session } = useSession();
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#E8E0D5] md:hidden">
@@ -26,16 +27,18 @@ export default function MobileBottomNav() {
           const isActive = pathname === item.href;
           
           if (item.label === 'Cart') {
+            const firstName = session?.user?.name ? session.user.name.split(' ')[0] : null;
+            const cartLabel = firstName ? `${firstName}'s Cart` : 'Cart';
             return (
               <button
                 key={item.label}
                 onClick={openDrawer}
-                className="flex-1 flex flex-col items-center justify-center gap-1 transition-colors text-[#6B6560] hover:text-[#1A1A1A]"
+                className="flex-1 flex flex-col items-center justify-center gap-1 transition-colors text-[#6B6560] hover:text-[#1A1A1A] max-w-[25vw] px-1"
                 aria-label="Open Cart"
               >
-                <Icon className="w-5 h-5" strokeWidth={1.5} />
-                <span className="text-[10px] font-sans uppercase tracking-widest">
-                  Cart
+                <Icon className="w-5 h-5 flex-shrink-0" strokeWidth={1.5} />
+                <span className="text-[10px] font-sans uppercase tracking-widest whitespace-nowrap overflow-hidden text-ellipsis w-full text-center">
+                  {cartLabel}
                 </span>
               </button>
             );
