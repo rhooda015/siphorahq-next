@@ -48,7 +48,7 @@ export default function AddressPage() {
       .then(data => {
         if (data.addresses && data.addresses.length > 0) {
           setSavedAddresses(data.addresses);
-          const def = data.addresses.find((a) => a.isDefault) || data.addresses[0];
+          const def = data.addresses.find((a: any) => a.isDefault) || data.addresses[0];
           if (def) { applyAddress(def); setSelectedAddressId(def._id); }
         }
       })
