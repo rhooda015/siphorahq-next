@@ -11,6 +11,10 @@ import ProductClientActions from './ProductClientActions';
 import DeliveryChecker from './DeliveryChecker';
 import FrequentlyBoughtTogether from './FrequentlyBoughtTogether';
 import ImageGallery from './ImageGallery';
+import dbConnect from '@/lib/db';
+import Product from '@/models/Product';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
   return STATIC_PRODUCTS.map((product) => ({
@@ -18,14 +22,43 @@ export async function generateStaticParams() {
   }));
 }
 
+// Helper: fetch product from DB (by handle or _id) and normalize to common shape
+async function getDbProduct(id: string) {
+  try {
+    await dbConnect();
+    const p = await Product.findOne({ $or: [{ handle: id }, { _id: id.length === 24 ? id : null }] }).lean() as any;
+    if (!p) return null;
+    return {
+      id: p.handle || p._id.toString(),
+      name: p.title,
+      price: p.price,
+      salePrice: p.price,
+      category: p.category || '',
+      image: p.images?.[0]?.url || null,
+      images: p.images || [],
+      badge: '',
+      reviews: 4.8,
+      reviewCount: 0,
+      description: p.description || '',
+      care: '',
+      metaTitle: p.metaTitle || p.title,
+      metaDescription: p.metaDescription || p.description || '',
+      inventoryCount: p.inventoryCount || 0,
+      variants: p.variants || [],
+    };
+  } catch {
+    return null;
+  }
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
-  const product = getProductById(resolvedParams.id);
+  const product = getProductById(resolvedParams.id) || await getDbProduct(resolvedParams.id);
   if (!product) return { title: 'Product Not Found' };
 
   return {
-    title: `${product.name} | ${BRAND.name}`,
-    description: product.description,
+    title: `${(product as any).metaTitle || product.name} | ${BRAND.name}`,
+    description: (product as any).metaDescription || product.description,
     alternates: { canonical: `https://siphorahq.in/products/${product.id}` },
     openGraph: {
       title: product.name,
@@ -41,7 +74,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
-  const product = getProductById(resolvedParams.id);
+  // First try static data, then fall back to MongoDB (for admin-created products)
+  const product = getProductById(resolvedParams.id) || await getDbProduct(resolvedParams.id);
 
   if (!product) {
     notFound();
@@ -52,7 +86,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     '@type': 'Product',
     name: product.name,
     description: product.description,
-    image: `https://siphorahq.in${product.image}`,
+    image: product.image?.startsWith('http') || product.image?.startsWith('data:') 
+      ? product.image 
+      : `https://siphorahq.in${product.image}`,
     brand: {
       '@type': 'Brand',
       name: BRAND.name
@@ -104,11 +140,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
         <ImageGallery 
           productName={product.name}
-          images={[
-            product.image || '/images/dinnerware.webp',
-            '/images/serveware.webp',
-            '/images/gifting.webp'
-          ]} 
+          images={(
+            (product as any).images?.length > 0
+              ? (product as any).images.map((img: any) => img.url)
+              : [product.image || '/images/dinnerware.webp', '/images/serveware.webp', '/images/gifting.webp']
+          )} 
         />
       </div>
 
@@ -121,7 +157,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         <div className="flex items-center gap-2 mt-4">
           <div className="flex text-[#EED202]">
             {[1,2,3,4,5].map((star) => (
-              <Star key={star} className={`w-4 h-4 ${star === 5 && product.reviews < 5 ? 'fill-transparent' : 'fill-current'}`} />
+              <Star key={star} className={`w-4 h-4 ${star === 5 && (product as any).reviews != null && (product as any).reviews < 5 ? 'fill-transparent' : 'fill-current'}`} />
             ))}
           </div>
           <span className="text-sm font-sans text-[var(--color-text-muted)]">({product.reviewCount || 10} Reviews)</span>
