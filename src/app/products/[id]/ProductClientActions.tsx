@@ -54,7 +54,7 @@ export default function ProductClientActions({ product }: { product: any }) {
       </div>
 
       {/* Actions (Sticky on Mobile) */}
-      <div className="fixed md:relative bottom-[60px] md:bottom-0 left-0 w-full md:w-auto bg-white md:bg-transparent p-3 md:p-0 border-t border-[var(--color-border)] md:border-none z-30 flex flex-col gap-2 md:gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] md:shadow-none">
+      <div className="fixed md:relative bottom-[60px] md:bottom-0 left-0 w-full md:w-auto bg-white md:bg-transparent p-3 md:p-0 border-t border-[var(--color-border)] md:border-none z-50 flex flex-col gap-2 md:gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] md:shadow-none">
         {/* Mobile Product Info (Only visible when sticky) */}
         <div className="md:hidden flex justify-between items-center mb-1 px-1">
           <span className="font-serif text-[13px] font-medium truncate pr-4 text-[var(--color-primary)]">{product.name}</span>
