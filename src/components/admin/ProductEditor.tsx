@@ -35,7 +35,7 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
   const [title, setTitle] = useState(initialData?.title || '');
   const [description, setDescription] = useState(initialData?.description || '');
   const [category, setCategory] = useState(initialData?.category || '');
-  const [status, setStatus] = useState(initialData?.status || 'Draft');
+  const [status, setStatus] = useState(initialData?.status || 'Live');
 
   // Pricing
   const [price, setPrice] = useState(initialData?.price || 0);
