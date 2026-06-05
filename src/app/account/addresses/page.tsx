@@ -17,10 +17,28 @@ interface Address {
   isDefault?: boolean;
 }
 
+// Toast Component
+const Toast = ({ message, type, onClose }: { message: string; type: 'success' | 'error'; onClose: () => void }) => {
+  useEffect(() => {
+    const timer = setTimeout(onClose, 3000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  return (
+    <div className={`fixed top-4 right-4 z-[200] px-6 py-3 shadow-lg flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300 ${type === 'success' ? 'bg-[#1a1612] text-white' : 'bg-red-900 text-white'}`}>
+      <span className="font-sans text-[10px] tracking-widest uppercase">{message}</span>
+      <button onClick={onClose} className="hover:opacity-70 transition-opacity"><X className="w-3.5 h-3.5" /></button>
+    </div>
+  );
+};
+
 export default function AddressesPage() {
   const { data: session, status } = useSession();
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'error') => setToast({ message, type });
   
   // Modal & Form States
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -113,7 +131,7 @@ export default function AddressesPage() {
   // HTML5 Geolocation API
   const handleGeolocation = () => {
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported by your browser.");
+      showToast("Geolocation is not supported by your browser.", "error");
       return;
     }
 
@@ -123,7 +141,7 @@ export default function AddressesPage() {
         try {
           const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
           if (!apiKey) {
-            alert("Google Maps API Key is missing. Reverse geocoding cannot proceed.");
+            showToast("Google Maps API Key is missing. Reverse geocoding cannot proceed.", "error");
             return;
           }
           
@@ -155,12 +173,12 @@ export default function AddressesPage() {
           }
         } catch (error) {
           console.error("Geocoding error", error);
-          alert("Failed to retrieve location details.");
+          showToast("Failed to retrieve location details.", "error");
         }
       },
       (error) => {
         console.warn("Geolocation warning:", error.message);
-        alert("Could not detect location. Please ensure location permissions are granted.");
+        showToast("Could not detect location. Please ensure location permissions are granted.", "error");
       }
     );
   };
@@ -177,7 +195,7 @@ export default function AddressesPage() {
     e.preventDefault();
     
     if (formData.mobile.replace(/\D/g, '').length !== 10) {
-      alert("Please enter a valid 10-digit mobile number.");
+      showToast("Please enter a valid 10-digit mobile number.", "error");
       return;
     }
 
@@ -205,14 +223,14 @@ export default function AddressesPage() {
         setIsModalOpen(false);
         setFormData({ fullName: '', mobile: '', street: '', area: '', city: '', state: '', pincode: '', isDefault: false });
         await fetchAddresses(); // Silent refresh
-        alert("Address added successfully");
+        showToast("Address added successfully", "success");
       } else {
         const errorData = await res.json();
-        alert(errorData.error || "Failed to add address");
+        showToast(errorData.error || "Failed to add address", "error");
       }
     } catch (error) {
       console.error(error);
-      alert("Network error occurred.");
+      showToast("Network error occurred.", "error");
     } finally {
       setIsSubmitting(false);
     }
@@ -220,6 +238,8 @@ export default function AddressesPage() {
 
   return (
     <>
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+      
       {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY && (
         <Script 
           src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`} 
