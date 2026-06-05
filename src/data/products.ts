@@ -102,7 +102,7 @@ export const STATIC_PRODUCTS = [
     name: 'Luxury White & Gold Floral Coffee Mugs',
     price: 2500,
     salePrice: 1800,
-    category: 'mugs',
+    category: 'drinkware',
     tag: '',
     image: '/images/cat_mugs.webp',
     badge: '',

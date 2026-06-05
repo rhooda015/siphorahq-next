@@ -13,7 +13,8 @@ const CATEGORIES = [
   { label: 'Plates',          value: 'plates' },
   { label: 'Serveware',       value: 'serveware' },
   { label: 'Tea & Coffee',    value: 'tea-set' },
-  { label: 'Mugs',            value: 'mugs' },
+  { label: 'Cutlery',         value: 'cutlery' },
+  { label: 'Drinkware',       value: 'drinkware' },
   { label: 'Gifting',         value: 'gifting' },
 ];
 

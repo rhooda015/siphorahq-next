@@ -17,11 +17,11 @@ const cormorant = Cormorant_Garamond({ subsets: ['latin'], weight: ['300', '400'
 const jost = Jost({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-sans' });
 
 export const metadata = {
-  title: `${BRAND.name} | Premium Porcelain & Luxury Home Decor`,
+  title: "Premium Porcelain Dinnerware & Tea Sets India | SiphoraHQ",
   description: 'Elevate your dining experience with luxury porcelain dinnerware, aesthetic serveware, and premium home decor collections.',
   metadataBase: new URL('https://siphorahq.in'),
   openGraph: {
-    title: `${BRAND.name} | Premium Porcelain & Luxury Home Decor`,
+    title: "Premium Porcelain Dinnerware & Tea Sets India | SiphoraHQ",
     description: 'Elevate your dining experience with luxury porcelain dinnerware, aesthetic serveware, and premium home decor collections.',
     url: 'https://siphorahq.in',
     siteName: BRAND.name,
@@ -38,7 +38,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${BRAND.name} | Premium Porcelain & Luxury Home Decor`,
+    title: "Premium Porcelain Dinnerware & Tea Sets India | SiphoraHQ",
     description: 'Elevate your dining experience with luxury porcelain dinnerware, aesthetic serveware, and premium home decor collections.',
     images: ['/images/og-banner.png'],
   },

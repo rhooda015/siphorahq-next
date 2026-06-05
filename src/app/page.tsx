@@ -195,7 +195,7 @@ export default function HomePage() {
             { title: "Dinner Set of 6", img: "/images/dinnerware_var2.webp", cat: "dinner-set" },
             { title: "Dinner Set Serve For 8", img: "/images/dinnerware.webp", cat: "dinner-set" },
             { title: "Cutlery", img: "/images/cat_plates.webp", cat: "cutlery" },
-            { title: "Drinkware", img: "/images/cat_mugs.webp", cat: "mugs" },
+            { title: "Drinkware", img: "/images/cat_mugs.webp", cat: "drinkware" },
             { title: "Platter", img: "/images/serveware_var2.webp", cat: "serveware" },
           ].map((item, idx) => (
             <Link href={`/products?category=${item.cat}`} key={idx} className="group">
@@ -270,9 +270,9 @@ export default function HomePage() {
       </section>
 
       {/* SEO Content Block */}
-      <section className="max-w-4xl mx-auto px-4 pb-12 text-center">
-        <h1 className="text-xl font-serif text-[var(--color-primary)] mb-4">Luxury Porcelain Tableware in India</h1>
-        <p className="text-xs md:text-sm text-[var(--color-text-muted)] font-sans leading-relaxed text-justify md:text-center">
+      <section className="bg-[var(--color-accent-light)] border-t border-[var(--color-border)] py-16 text-center px-4">
+        <h1 className="text-xl font-serif text-[var(--color-primary)] mb-4">Premium Porcelain Dinnerware & Tea Sets India | SiphoraHQ</h1>
+        <p className="text-[var(--color-text-muted)] font-sans text-sm max-w-2xl mx-auto leading-relaxed">
           Siphorahq is India's premier destination for luxury porcelain tableware, premium dinner sets, and aesthetic home decor. We specialize in curating exquisite, handcrafted pieces that bring timeless elegance to your dining experience. Whether you are hosting a formal dinner party, looking for the perfect wedding gift, or upgrading your everyday serveware, our exclusive collections are designed to impress. Explore our wide range of premium dinnerware, luxury tea cup sets, elegant platters, and sophisticated serving bowls. With our commitment to unparalleled quality, secure packaging, and fast Pan-India shipping, Siphorahq ensures that luxury is delivered safely to your doorstep. Transform your dining space into a masterpiece with Siphorahq—where poetry meets porcelain.
         </p>
       </section>
