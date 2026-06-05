@@ -176,7 +176,7 @@ export default function PaymentPage() {
               </div>
 
               <div className="space-y-4">
-                <Link href="/collections" className="block w-full bg-[#1a1612] text-white text-center py-4 text-[10px] font-sans tracking-[0.2em] uppercase hover:bg-[#8b6914] transition-colors duration-300">
+                <Link href="/products" className="block w-full bg-[#1a1612] text-white text-center py-4 text-[10px] font-sans tracking-[0.2em] uppercase hover:bg-[#8b6914] transition-colors duration-300">
                   Continue Shopping
                 </Link>
                 <Link href="/account/orders" className="block w-full bg-transparent border-[0.5px] border-[#1a1612] text-[#1a1612] text-center py-4 text-[10px] font-sans tracking-[0.2em] uppercase hover:bg-white transition-colors duration-300">
