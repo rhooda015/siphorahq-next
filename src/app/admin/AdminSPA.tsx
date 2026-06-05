@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, ShoppingBag, Package, Users, Archive, BarChart2, Settings as SettingsIcon, 
-  Search, Bell, Plus, Download, X, Copy, Check, TrendingUp, AlertCircle, Edit, Trash2
+  Search, Bell, Plus, Download, X, Copy, Check, TrendingUp, AlertCircle, Edit, Trash2,
+  Image as ImageIcon, UploadCloud, ChevronLeft
 } from 'lucide-react';
 
 const SAMPLE_ORDERS = [
@@ -10,12 +11,6 @@ const SAMPLE_ORDERS = [
   { id: 'ORD-8902', customer: 'Sneha Gupta', city: 'Delhi', product: 'Porcelain Dinner Set', amount: 899, payment: 'COD', courier: 'BlueDart', awb: 'BLU987654321', status: 'Processing', expected: '13 Jun 2026' },
   { id: 'ORD-8903', customer: 'Vikram Singh', city: 'Bangalore', product: 'Mug Gift Set', amount: 399, payment: 'Razorpay', courier: 'XpressBees', awb: 'XPR555666777', status: 'Shipped', expected: '11 Jun 2026' },
   { id: 'ORD-8904', customer: 'Priya Patel', city: 'Ahmedabad', product: 'Ceramic Tea Cup Set', amount: 399, payment: 'Razorpay', courier: 'EcomExpress', awb: 'ECO111222333', status: 'Delivered', expected: '10 Jun 2026' },
-];
-
-const SAMPLE_CUSTOMERS = [
-  { initials: 'RS', color: 'bg-blue-100 text-blue-700', name: 'Rahul Sharma', orders: 6, spent: 4500, lastOrder: '10 Jun 2026', city: 'Mumbai' },
-  { initials: 'SG', color: 'bg-purple-100 text-purple-700', name: 'Sneha Gupta', orders: 2, spent: 1800, lastOrder: '09 Jun 2026', city: 'Delhi' },
-  { initials: 'VS', color: 'bg-amber-100 text-amber-700', name: 'Vikram Singh', orders: 1, spent: 399, lastOrder: '08 Jun 2026', city: 'Bangalore' },
 ];
 
 export default function AdminSPA() {
@@ -26,7 +21,8 @@ export default function AdminSPA() {
   // Live Products State
   const [products, setProducts] = useState<any[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
-  const [productModal, setProductModal] = useState<any>(null); // null = closed, {} = new, {id} = edit
+  const [productEditor, setProductEditor] = useState<any>(null); // null = closed, {} = new, {id} = edit
+  const [imageUrlInput, setImageUrlInput] = useState('');
 
   const showToast = (message: string, type: 'success'|'error' = 'success') => {
     setToast({ message, type });
@@ -46,15 +42,15 @@ export default function AdminSPA() {
   };
 
   useEffect(() => {
-    if (activeTab === 'Products' && products.length === 0) {
+    if (activeTab === 'Products' && products.length === 0 && !productEditor) {
       fetchProducts();
     }
-  }, [activeTab]);
+  }, [activeTab, productEditor]);
 
   const handleSaveProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-    const isEdit = !!productModal._id;
-    const url = isEdit ? `/api/products/${productModal._id}` : '/api/products';
+    const isEdit = !!productEditor._id;
+    const url = isEdit ? `/api/products/${productEditor._id}` : '/api/products';
     const method = isEdit ? 'PUT' : 'POST';
 
     try {
@@ -62,20 +58,22 @@ export default function AdminSPA() {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          title: productModal.title,
-          handle: productModal.handle || productModal.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-          price: Number(productModal.price),
-          inventoryCount: Number(productModal.inventoryCount),
-          category: productModal.category || 'General',
-          description: productModal.description || 'Premium Quality Product',
-          images: productModal.images || []
+          title: productEditor.title,
+          handle: productEditor.handle || productEditor.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          price: Number(productEditor.price) || 0,
+          inventoryCount: Number(productEditor.inventoryCount) || 0,
+          category: productEditor.category || 'General',
+          description: productEditor.description || '',
+          images: productEditor.images || [],
+          sizes: typeof productEditor.sizes === 'string' ? productEditor.sizes.split(',').map((s:any)=>s.trim()) : (productEditor.sizes || []),
+          colors: typeof productEditor.colors === 'string' ? productEditor.colors.split(',').map((c:any)=>c.trim()) : (productEditor.colors || [])
         })
       });
 
       if (res.ok) {
         showToast(`Product ${isEdit ? 'updated' : 'added'} successfully!`);
-        setProductModal(null);
-        fetchProducts(); // Refresh list
+        setProductEditor(null);
+        fetchProducts();
       } else {
         const err = await res.json();
         showToast(err.error || 'Failed to save product', 'error');
@@ -100,11 +98,26 @@ export default function AdminSPA() {
     }
   };
 
+  const addImageUrl = () => {
+    if (!imageUrlInput.trim()) return;
+    setProductEditor({
+      ...productEditor, 
+      images: [...(productEditor.images || []), { url: imageUrlInput, altText: productEditor.title || '' }]
+    });
+    setImageUrlInput('');
+  };
+
+  const removeImage = (index: number) => {
+    const newImages = [...(productEditor.images || [])];
+    newImages.splice(index, 1);
+    setProductEditor({ ...productEditor, images: newImages });
+  };
+
   const NavItem = ({ icon: Icon, label, tab }: any) => {
     const isActive = activeTab === tab;
     return (
       <button 
-        onClick={() => setActiveTab(tab)}
+        onClick={() => { setActiveTab(tab); setProductEditor(null); }}
         className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-200 border-l-4 ${
           isActive 
             ? 'border-[#D4A853] text-[#D4A853] bg-[#D4A853]/10' 
@@ -165,39 +178,171 @@ export default function AdminSPA() {
         
         {/* TOPBAR */}
         <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 flex-shrink-0">
-          <h1 className="text-xl font-semibold text-[#0C1929]">{activeTab}</h1>
-          <div className="flex items-center gap-6">
-            <div className="relative hidden md:block">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-              <input 
-                type="text" 
-                placeholder="Search..." 
-                className="pl-9 pr-12 py-1.5 bg-gray-100 border-none rounded-md text-sm focus:ring-2 focus:ring-[#D4A853] outline-none w-64"
-              />
-              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 border border-gray-300 rounded px-1.5 py-0.5">⌘K</span>
+          {productEditor ? (
+            <div className="flex items-center gap-4">
+              <button onClick={() => setProductEditor(null)} className="text-gray-500 hover:text-[#0C1929] p-1.5 rounded-md hover:bg-gray-100 transition-colors">
+                <ChevronLeft size={20} />
+              </button>
+              <h1 className="text-xl font-semibold text-[#0C1929]">
+                {productEditor._id ? 'Edit Product' : 'Add New Product'}
+              </h1>
             </div>
-            <button className="relative text-gray-500 hover:text-[#0C1929]">
-              <Bell size={20} />
-              <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-            {activeTab === 'Products' && (
-              <button onClick={() => setProductModal({})} className="flex items-center gap-2 bg-[#0C1929] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">
-                <Plus size={16} /> Add Product
+          ) : (
+            <h1 className="text-xl font-semibold text-[#0C1929]">{activeTab}</h1>
+          )}
+          
+          {!productEditor && (
+            <div className="flex items-center gap-6">
+              <div className="relative hidden md:block">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                <input 
+                  type="text" 
+                  placeholder="Search..." 
+                  className="pl-9 pr-12 py-1.5 bg-gray-100 border-none rounded-md text-sm focus:ring-2 focus:ring-[#D4A853] outline-none w-64"
+                />
+                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 border border-gray-300 rounded px-1.5 py-0.5">⌘K</span>
+              </div>
+              <button className="relative text-gray-500 hover:text-[#0C1929]">
+                <Bell size={20} />
+                <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
               </button>
-            )}
-            {activeTab === 'Orders' && (
-              <button className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
-                <Download size={16} /> Export CSV
-              </button>
-            )}
-          </div>
+              {activeTab === 'Products' && (
+                <button onClick={() => setProductEditor({ images: [] })} className="flex items-center gap-2 bg-[#0C1929] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">
+                  <Plus size={16} /> Add Product
+                </button>
+              )}
+              {activeTab === 'Orders' && (
+                <button className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
+                  <Download size={16} /> Export CSV
+                </button>
+              )}
+            </div>
+          )}
+          
+          {productEditor && (
+             <div className="flex items-center gap-3">
+               <button onClick={() => setProductEditor(null)} className="px-4 py-1.5 bg-white border border-gray-300 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">Discard</button>
+               <button onClick={handleSaveProduct} className="px-5 py-1.5 bg-[#0C1929] text-white rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">Save Product</button>
+             </div>
+          )}
         </header>
 
         {/* PAGE CONTENT */}
         <div className="flex-1 overflow-auto p-8 bg-gray-50/50">
           
+          {/* PROFESSIONAL PRODUCT EDITOR */}
+          {productEditor && (
+            <div className="max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-300">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                {/* Main Details */}
+                <div className="lg:col-span-2 space-y-6">
+                  {/* Title & Description */}
+                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                        <input required type="text" placeholder="Short Sleeve T-Shirt" value={productEditor.title || ''} onChange={e => setProductEditor({...productEditor, title: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea rows={5} placeholder="Describe the product..." value={productEditor.description || ''} onChange={e => setProductEditor({...productEditor, description: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 resize-y" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Media */}
+                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                    <h3 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2"><ImageIcon size={18}/> Media Images</h3>
+                    
+                    {/* Existing Images Grid */}
+                    {productEditor.images && productEditor.images.length > 0 && (
+                      <div className="grid grid-cols-4 gap-4 mb-6">
+                        {productEditor.images.map((img: any, i: number) => (
+                          <div key={i} className="relative group rounded-lg overflow-hidden border border-gray-200 aspect-square">
+                            <img src={img.url} alt="Product" className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                              <button onClick={() => removeImage(i)} type="button" className="p-1.5 bg-white text-red-600 rounded-md shadow-sm hover:bg-red-50"><Trash2 size={16}/></button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Add Image URL */}
+                    <div className="flex items-end gap-3 border-t border-dashed border-gray-300 pt-6">
+                      <div className="flex-1">
+                        <label className="block text-xs font-medium text-gray-500 mb-1">Add Image URL (https://...)</label>
+                        <input type="url" value={imageUrlInput} onChange={e => setImageUrlInput(e.target.value)} placeholder="https://example.com/image.jpg" className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
+                      </div>
+                      <button type="button" onClick={addImageUrl} className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 flex items-center gap-2 transition-colors">
+                        <UploadCloud size={16}/> Add
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Variants */}
+                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                    <h3 className="text-base font-semibold text-gray-900 mb-4">Variants</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Sizes (comma separated)</label>
+                        <input type="text" placeholder="S, M, L, XL" value={typeof productEditor.sizes === 'object' ? productEditor.sizes.join(', ') : (productEditor.sizes || '')} onChange={e => setProductEditor({...productEditor, sizes: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Colors (comma separated)</label>
+                        <input type="text" placeholder="Red, Blue, Gold" value={typeof productEditor.colors === 'object' ? productEditor.colors.join(', ') : (productEditor.colors || '')} onChange={e => setProductEditor({...productEditor, colors: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Sidebar Details */}
+                <div className="space-y-6">
+                  {/* Pricing */}
+                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                    <h3 className="text-base font-semibold text-gray-900 mb-4">Pricing</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Price (₹)</label>
+                        <input required type="number" min="0" value={productEditor.price || ''} onChange={e => setProductEditor({...productEditor, price: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Inventory */}
+                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                    <h3 className="text-base font-semibold text-gray-900 mb-4">Inventory</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Stock Quantity</label>
+                        <input required type="number" min="0" value={productEditor.inventoryCount || ''} onChange={e => setProductEditor({...productEditor, inventoryCount: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Organization */}
+                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                    <h3 className="text-base font-semibold text-gray-900 mb-4">Organization</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Product Category</label>
+                        <input type="text" placeholder="Dinnerware" value={productEditor.category || ''} onChange={e => setProductEditor({...productEditor, category: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3" />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">URL Handle / Slug</label>
+                        <input type="text" placeholder="ceramic-tea-cup" value={productEditor.handle || ''} onChange={e => setProductEditor({...productEditor, handle: e.target.value})} className="w-full border border-gray-300 rounded-lg shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 bg-gray-50" />
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* OVERVIEW TAB */}
-          {activeTab === 'Overview' && (
+          {!productEditor && activeTab === 'Overview' && (
             <div className="space-y-6 max-w-6xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
               {/* KPIs */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -259,7 +404,7 @@ export default function AdminSPA() {
           )}
 
           {/* ORDERS TAB */}
-          {activeTab === 'Orders' && (
+          {!productEditor && activeTab === 'Orders' && (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="flex gap-4 mb-6">
                 {['All', 'Pending', 'Processing', 'Shipped', 'Out for Delivery', 'Delivered', 'Cancelled'].map(status => (
@@ -317,8 +462,8 @@ export default function AdminSPA() {
             </div>
           )}
 
-          {/* PRODUCTS TAB - CONNECTED TO LIVE DATABASE */}
-          {activeTab === 'Products' && (
+          {/* PRODUCTS LISTING TAB */}
+          {!productEditor && activeTab === 'Products' && (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
               {loadingProducts ? (
                 <div className="flex items-center justify-center h-64 text-gray-400">
@@ -328,18 +473,18 @@ export default function AdminSPA() {
                 <div className="flex flex-col items-center justify-center h-64 text-gray-500 bg-white rounded-xl border border-gray-200">
                   <Package size={48} className="mb-4 opacity-20" />
                   <p>No products found in the database.</p>
-                  <button onClick={() => setProductModal({})} className="mt-4 bg-[#0C1929] text-white px-4 py-2 rounded-md text-sm font-medium">Add First Product</button>
+                  <button onClick={() => setProductEditor({ images: [] })} className="mt-4 bg-[#0C1929] text-white px-4 py-2 rounded-md text-sm font-medium">Add First Product</button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {products.map((product, i) => (
                     <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden group relative">
                       <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-                        <button onClick={() => setProductModal(product)} className="p-1.5 bg-white text-gray-600 rounded-md shadow-sm border border-gray-200 hover:text-blue-600"><Edit size={14}/></button>
+                        <button onClick={() => setProductEditor(product)} className="p-1.5 bg-white text-gray-600 rounded-md shadow-sm border border-gray-200 hover:text-blue-600"><Edit size={14}/></button>
                         <button onClick={() => handleDeleteProduct(product._id)} className="p-1.5 bg-white text-gray-600 rounded-md shadow-sm border border-gray-200 hover:text-red-600"><Trash2 size={14}/></button>
                       </div>
                       <div className="h-48 bg-gray-100 flex items-center justify-center text-4xl group-hover:bg-gray-200 transition-colors">
-                        {product.images && product.images[0] ? <img src={product.images[0].url} className="w-full h-full object-cover" /> : '📦'}
+                        {product.images && product.images[0] ? <img src={product.images[0].url} className="w-full h-full object-cover" /> : <ImageIcon size={32} className="text-gray-300" />}
                       </div>
                       <div className="p-5">
                         <div className="flex justify-between items-start mb-2">
@@ -364,7 +509,7 @@ export default function AdminSPA() {
           )}
 
           {/* SETTINGS TAB */}
-          {activeTab === 'Settings' && (
+          {!productEditor && activeTab === 'Settings' && (
             <div className="max-w-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-6">
                 <h2 className="text-lg font-semibold text-gray-900 border-b pb-4">Store Configuration</h2>
@@ -440,7 +585,7 @@ export default function AdminSPA() {
           )}
 
           {/* PLACEHOLDER FOR OTHER TABS */}
-          {['Customers', 'Inventory', 'Analytics'].includes(activeTab) && (
+          {!productEditor && ['Customers', 'Inventory', 'Analytics'].includes(activeTab) && (
             <div className="flex flex-col items-center justify-center h-64 text-gray-400">
               <BarChart2 size={48} className="mb-4 opacity-20" />
               <p>The {activeTab} module is fully designed in code but hidden for brevity in this preview.</p>
@@ -449,44 +594,6 @@ export default function AdminSPA() {
 
         </div>
       </main>
-
-      {/* EDIT PRODUCT MODAL */}
-      {productModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0C1929]/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <form onSubmit={handleSaveProduct} className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
-              <h2 className="text-lg font-bold text-[#0C1929]">{productModal._id ? 'Edit Product' : 'Add New Product'}</h2>
-              <button type="button" onClick={() => setProductModal(null)} className="text-gray-400 hover:text-gray-700 bg-white p-1 rounded-full shadow-sm"><X size={20} /></button>
-            </div>
-            
-            <div className="p-6 overflow-y-auto flex-1 space-y-4">
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-gray-700">Product Title *</label>
-                <input required type="text" value={productModal.title || ''} onChange={e => setProductModal({...productModal, title: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-gray-700">Price (₹) *</label>
-                  <input required type="number" value={productModal.price || ''} onChange={e => setProductModal({...productModal, price: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border" />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-sm font-medium text-gray-700">Stock Quantity *</label>
-                  <input required type="number" value={productModal.inventoryCount || ''} onChange={e => setProductModal({...productModal, inventoryCount: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border" />
-                </div>
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-gray-700">Category</label>
-                <input type="text" value={productModal.category || ''} onChange={e => setProductModal({...productModal, category: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border" />
-              </div>
-            </div>
-
-            <div className="p-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
-              <button type="button" onClick={() => setProductModal(null)} className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50">Cancel</button>
-              <button type="submit" className="px-6 py-2 bg-[#0C1929] text-white rounded-md text-sm font-medium hover:bg-gray-800">Save Product</button>
-            </div>
-          </form>
-        </div>
-      )}
 
       {/* TRACKING MODAL */}
       {trackingModalOrder && (
