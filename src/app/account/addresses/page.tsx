@@ -18,14 +18,14 @@ interface Address {
 }
 
 // Toast Component
-const Toast = ({ message, type, onClose }: { message: string; type: 'success' | 'error'; onClose: () => void }) => {
+const Toast = ({ message, type, onClose }: { message: string; type: 'success' | 'error' | 'info'; onClose: () => void }) => {
   useEffect(() => {
     const timer = setTimeout(onClose, 3000);
     return () => clearTimeout(timer);
   }, [onClose]);
 
   return (
-    <div className={`fixed top-4 right-4 z-[200] px-6 py-3 shadow-lg flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300 ${type === 'success' ? 'bg-[#1a1612] text-white' : 'bg-red-900 text-white'}`}>
+    <div className={`fixed top-4 right-4 z-[200] px-6 py-3 shadow-lg flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300 ${type === 'success' ? 'bg-[#1a1612] text-white' : type === 'info' ? 'bg-zinc-800 text-white' : 'bg-red-900 text-white'}`}>
       <span className="font-sans text-[10px] tracking-widest uppercase">{message}</span>
       <button onClick={onClose} className="hover:opacity-70 transition-opacity"><X className="w-3.5 h-3.5" /></button>
     </div>
@@ -36,9 +36,9 @@ export default function AddressesPage() {
   const { data: session, status } = useSession();
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(true);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
 
-  const showToast = (message: string, type: 'success' | 'error') => setToast({ message, type });
+  const showToast = (message: string, type: 'success' | 'error' | 'info') => setToast({ message, type });
   
   // Modal & Form States
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -178,7 +178,11 @@ export default function AddressesPage() {
       },
       (error) => {
         console.warn("Geolocation warning:", error.message);
-        showToast("Could not detect location. Please ensure location permissions are granted.", "error");
+        if (error.code === error.PERMISSION_DENIED || error.code === 1) {
+          showToast("Location access is disabled in your browser settings. Please enter your address details manually.", "info");
+        } else {
+          showToast("Could not detect location. Please ensure location permissions are granted.", "error");
+        }
       }
     );
   };
