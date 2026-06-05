@@ -1,5 +1,7 @@
 import { MetadataRoute } from 'next'
 
+export const revalidate = 86400 // Cache for 24 hours (86400 seconds)
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: 'https://siphorahq.in', lastModified: new Date(), changeFrequency: 'daily', priority: 1 },

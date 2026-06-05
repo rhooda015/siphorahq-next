@@ -7,6 +7,19 @@ const nextConfig = {
   productionBrowserSourceMaps: true, // Enable for bundle analysis
   experimental: {
     optimizePackageImports: ['lucide-react'],
+  },
+  async headers() {
+    return [
+      {
+        source: '/sitemap.xml',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 's-maxage=86400, stale-while-revalidate',
+          },
+        ],
+      },
+    ];
   }
 };
 
