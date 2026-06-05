@@ -35,7 +35,7 @@ export default function HomePage() {
       
       {/* Top Announcement Bar */}
       <div className="bg-[var(--color-primary)] text-white text-center py-2 text-sm tracking-wide">
-        Free Shipping on Orders Over Rs. 999
+        Free Shipping on Orders Over ₹999
       </div>
 
       <HeroCarousel />

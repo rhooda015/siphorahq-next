@@ -30,6 +30,8 @@ function formatPrice(price: number) {
 export default function ClientProductGrid() {
   const searchParams = useSearchParams();
   const queryCategory = searchParams.get('category');
+  const queryMaxPrice = searchParams.get('maxPrice');
+  const querySearch = searchParams.get('search');
 
   const [activeCategory, setActiveCategory] = useState('all');
   const [sortBy, setSortBy]       = useState('featured');
@@ -44,8 +46,27 @@ export default function ClientProductGrid() {
 
   // Filter
   const filtered = STATIC_PRODUCTS.filter(p => {
-    if (activeCategory === 'all')   return true;
-    return p.category === activeCategory || p.tag === activeCategory;
+    let match = true;
+    
+    if (activeCategory !== 'all') {
+      match = match && (p.category === activeCategory || p.tag === activeCategory);
+    }
+
+    if (queryMaxPrice) {
+      const max = parseInt(queryMaxPrice, 10);
+      if (!isNaN(max)) {
+        const pPrice = p.salePrice || p.price;
+        match = match && (pPrice <= max);
+      }
+    }
+
+    if (querySearch) {
+      const s = querySearch.toLowerCase();
+      const hasMatch = p.name.toLowerCase().includes(s) || (p.description ? p.description.toLowerCase().includes(s) : false);
+      match = match && hasMatch;
+    }
+
+    return match;
   });
 
   // Sort

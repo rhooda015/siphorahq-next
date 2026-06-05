@@ -9,7 +9,7 @@ export const BRAND = {
     whatsappNumber: "919540027978",
     email: "concierge@siphorahq.in"
   },
-  freeShippingThreshold: 1999,
+  freeShippingThreshold: 999,
   shippingCost: 500,
 };
 
