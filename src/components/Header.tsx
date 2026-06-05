@@ -93,18 +93,16 @@ export default function Header() {
           {/* Left: Mobile Menu & Search */}
           <div className="flex items-center flex-1 relative z-50 pointer-events-auto">
             <button 
-              className="md:hidden p-2 text-[var(--color-primary)] relative z-50 cursor-pointer pointer-events-auto"
+              className="md:hidden p-2 text-[var(--color-primary)] hover:bg-[#fdfbf9] rounded-full relative z-50 cursor-pointer pointer-events-auto transition-all"
               onClick={() => setIsMobileMenuOpen(true)}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+              <Menu className="h-6 w-6 stroke-[1.5]" />
             </button>
             <button 
-              className="hidden md:block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer pointer-events-auto"
+              className="hidden md:block p-2 text-[var(--color-primary)] hover:bg-[#fdfbf9] rounded-full hover:text-[var(--color-secondary)] transition-all relative z-50 cursor-pointer pointer-events-auto"
               onClick={() => setIsSearchOpen(!isSearchOpen)}
             >
-              <Search className="h-5 w-5" />
+              <Search className="h-5 w-5 stroke-[1.5]" />
             </button>
           </div>
 
@@ -117,11 +115,11 @@ export default function Header() {
 
           {/* Right: Account & Cart */}
           <div className="flex items-center justify-end flex-1 gap-2 relative z-50 pointer-events-auto">
-            <Link href={session ? "/account" : "/login"} className="block p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
-              <User className="h-5 w-5" />
+            <Link href={session ? "/account" : "/login"} className="block p-2 text-[var(--color-primary)] hover:bg-[#fdfbf9] rounded-full hover:text-[var(--color-secondary)] transition-all relative z-50 cursor-pointer">
+              <User className="h-5 w-5 stroke-[1.5]" />
             </Link>
-            <button onClick={openDrawer} className="p-2 text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors relative z-50 cursor-pointer">
-              <ShoppingBag className="h-5 w-5" />
+            <button onClick={openDrawer} className="p-2 text-[var(--color-primary)] hover:bg-[#fdfbf9] rounded-full hover:text-[var(--color-secondary)] transition-all relative z-50 cursor-pointer">
+              <ShoppingBag className="h-5 w-5 stroke-[1.5]" />
               <span className={`absolute top-0 right-0 bg-[var(--color-primary)] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center transition-all duration-300 ${mounted && items.length > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
                 {mounted ? items.length : 0}
               </span>

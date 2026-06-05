@@ -149,8 +149,8 @@ export default function AccountDashboardPage() {
                 className="group block bg-white p-8 border-[0.5px] border-[#1a1612]/20 rounded-[3px] hover:border-[#8b6914] transition-colors duration-300"
               >
                 <div className="flex items-start gap-5">
-                  <div className="text-[#1a1612] group-hover:text-[#8b6914] transition-colors duration-300">
-                    <Icon className="w-6 h-6 stroke-[1]" />
+                  <div className="flex-shrink-0 w-14 h-14 flex items-center justify-center rounded-full bg-[#fdfbf9] border border-[#e8e0d5] text-[#1a1612] group-hover:bg-[#8b6914] group-hover:text-white group-hover:border-[#8b6914] transition-all duration-500 shadow-sm group-hover:shadow-md transform group-hover:scale-105">
+                    <Icon className="w-6 h-6 stroke-[1.5]" />
                   </div>
                   <div>
                     <h2 className="text-xl font-serif text-[#1a1612] mb-2 group-hover:text-[#8b6914] transition-colors">

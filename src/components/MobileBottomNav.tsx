@@ -33,10 +33,10 @@ export default function MobileBottomNav() {
               <button
                 key={item.label}
                 onClick={openDrawer}
-                className="flex-1 flex flex-col items-center justify-center gap-1 transition-colors text-[#6B6560] hover:text-[#1A1A1A] max-w-[25vw] px-1"
+                className="flex-1 flex flex-col items-center justify-center gap-1 transition-all duration-300 text-[#6B6560] hover:text-[#1a1612] max-w-[25vw] px-1 group relative pt-1"
                 aria-label="Open Cart"
               >
-                <Icon className="w-5 h-5 flex-shrink-0" strokeWidth={1.5} />
+                <Icon className="w-6 h-6 flex-shrink-0 group-hover:-translate-y-0.5 transition-transform" strokeWidth={1.5} />
                 <span className="text-[10px] font-sans uppercase tracking-widest whitespace-nowrap overflow-hidden text-ellipsis w-full text-center">
                   {cartLabel}
                 </span>
@@ -48,14 +48,17 @@ export default function MobileBottomNav() {
             <Link
               key={item.href + item.label}
               href={item.href}
-              className={`flex-1 flex flex-col items-center justify-center gap-1 transition-colors ${
+              className={`flex-1 flex flex-col items-center justify-center gap-1 transition-all duration-300 relative pt-1 group ${
                 isActive
-                  ? 'text-[#C9A84C]'
-                  : 'text-[#6B6560] hover:text-[#1A1A1A]'
+                  ? 'text-[#8b6914]'
+                  : 'text-[#6B6560] hover:text-[#1a1612]'
               }`}
               aria-label={item.label}
             >
-              <Icon className="w-5 h-5" strokeWidth={1.5} />
+              {isActive && (
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-[#8b6914] rounded-b-md" />
+              )}
+              <Icon className={`w-6 h-6 group-hover:-translate-y-0.5 transition-transform ${isActive ? 'stroke-[2]' : 'stroke-[1.5]'}`} />
               <span className="text-[10px] font-sans uppercase tracking-widest">
                 {item.label}
               </span>
