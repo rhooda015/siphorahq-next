@@ -53,12 +53,12 @@ export default function ImageGallery({ images, productName }: { images: string[]
                   : 'border-transparent opacity-55 hover:opacity-90'
               }`}
             >
-              <div className="relative w-full h-full bg-[var(--color-accent-light)]">
+              <div className="relative w-full h-full bg-white">
                 <Image
                   src={img}
                   alt={`${productName} view ${idx + 1}`}
                   fill
-                  className="object-cover"
+                  className="object-contain p-1"
                   unoptimized={img.startsWith('data:')}
                 />
               </div>
@@ -90,7 +90,7 @@ export default function ImageGallery({ images, productName }: { images: string[]
 
         {/* Main image */}
         <div
-          className="aspect-square md:aspect-[4/5] max-h-[480px] md:max-h-[560px] bg-[var(--color-accent-light)] overflow-hidden relative cursor-zoom-in"
+          className="aspect-square md:aspect-[4/5] max-h-[480px] md:max-h-[560px] bg-white overflow-hidden relative cursor-zoom-in border border-[var(--color-border)]"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           onTouchStart={handleTouchStart}
@@ -99,7 +99,7 @@ export default function ImageGallery({ images, productName }: { images: string[]
           <Image
             src={activeImage}
             fill
-            className="object-cover transition-transform duration-200"
+            className="object-contain transition-transform duration-200 p-4"
             style={zoomStyle}
             alt={productName}
             unoptimized={activeImage.startsWith('data:')}

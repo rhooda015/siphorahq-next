@@ -119,35 +119,28 @@ export default function ProductClientActions({ product }: { product: any }) {
         </div>
         <div className="flex justify-center items-center gap-3 flex-wrap">
           {/* Visa */}
-          <div className="h-8 px-3 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm">
-            <svg viewBox="0 0 80 26" className="h-4 w-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M35.5 2L28.3 24H22.2L29.4 2H35.5Z" fill="#1434CB"/>
-              <path d="M58.2 2.6C56.8 2.1 54.6 1.5 52 1.5C46 1.5 41.7 4.6 41.7 9C41.7 12.2 44.6 14 46.8 15.1C49 16.2 49.8 17 49.8 18C49.8 19.5 47.9 20.3 46.2 20.3C43.8 20.3 42.5 19.9 40.4 19L39.6 18.6L38.7 23.7C40.4 24.4 43.4 25 46.6 25C53 25 57.2 21.9 57.2 17.1C57.2 13.5 54.9 11.7 51.1 10C49.2 9.1 48 8.4 48 7.3C48 6.3 49.1 5.3 51.4 5.3C53.4 5.3 54.8 5.7 56 6.2L56.6 6.5L58.2 2.6Z" fill="#1434CB"/>
-              <path d="M68.5 2H63.7C62.3 2 61.2 2.4 60.6 3.8L51.8 24H58.2C58.2 24 59.2 21.3 59.5 20.5H67.4C67.6 21.5 68.3 24 68.3 24H74L68.5 2ZM61.4 15.9C61.8 14.9 64.1 8.8 64.1 8.8C64.1 8.8 64.7 7.2 65.1 6.2L65.6 8.6C65.6 8.6 67 14.8 67.3 15.9H61.4Z" fill="#1434CB"/>
-              <path d="M6 2L0 24H6.1L12 2H6Z" fill="#1434CB"/>
-              <path d="M11.3 2L5.3 17.5L4.6 14.1C3.4 10.3 0 6.2 0 6.2L5.5 24H12L21 2H11.3Z" fill="#1434CB"/>
-            </svg>
+          <div className="h-8 px-3 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm min-w-[52px]">
+            <span className="font-bold italic text-[15px] tracking-tight" style={{color:'#1434CB', fontFamily:'serif'}}>VISA</span>
           </div>
           {/* Mastercard */}
-          <div className="h-8 px-3 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm">
+          <div className="h-8 px-2 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm">
             <svg viewBox="0 0 38 24" className="h-6 w-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="38" height="24" rx="4" fill="white"/>
-              <circle cx="15" cy="12" r="7" fill="#EB001B"/>
-              <circle cx="23" cy="12" r="7" fill="#F79E1B"/>
-              <path d="M19 17.2C20.5 15.9 21.5 14.1 21.5 12C21.5 9.9 20.5 8.1 19 6.8C17.5 8.1 16.5 9.9 16.5 12C16.5 14.1 17.5 15.9 19 17.2Z" fill="#FF5F00"/>
+              <circle cx="14" cy="12" r="8" fill="#EB001B"/>
+              <circle cx="24" cy="12" r="8" fill="#F79E1B"/>
+              <path d="M19 18.3C20.7 16.8 21.8 14.5 21.8 12C21.8 9.5 20.7 7.2 19 5.7C17.3 7.2 16.2 9.5 16.2 12C16.2 14.5 17.3 16.8 19 18.3Z" fill="#FF5F00"/>
             </svg>
           </div>
           {/* RuPay */}
           <div className="h-8 px-3 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm">
-            <span className="font-sans font-bold text-[11px] tracking-wider" style={{color:'#1a6eb5'}}>RuPay</span>
+            <span className="font-bold text-[11px] tracking-wide" style={{color:'#1a6eb5'}}>RuPay</span>
           </div>
           {/* UPI */}
           <div className="h-8 px-3 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm">
-            <span className="font-sans font-bold text-[11px] tracking-wider" style={{color:'#5f259f'}}>UPI</span>
+            <span className="font-bold text-[11px] tracking-wide" style={{color:'#5f259f'}}>UPI</span>
           </div>
           {/* COD */}
           <div className="h-8 px-3 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm">
-            <span className="font-sans font-bold text-[11px] tracking-wider text-green-700">COD</span>
+            <span className="font-bold text-[11px] tracking-wide text-green-700">COD</span>
           </div>
         </div>
       </div>

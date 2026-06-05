@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   LayoutDashboard, ShoppingBag, Package, Users, Archive, BarChart2, Settings as SettingsIcon, 
   Search, Bell, Plus, Download, X, Copy, Check, TrendingUp, AlertCircle, Edit, Trash2,
-  Image as ImageIcon, RefreshCcw, Tag
+  Image as ImageIcon, RefreshCcw, Tag, Save
 } from 'lucide-react';
 import ProductEditor from '@/components/admin/ProductEditor';
 
@@ -13,35 +13,22 @@ declare global {
   }
 }
 
-const SAMPLE_ORDERS = [
-  { id: 'ORD-8901', customer: 'Rahul Sharma', city: 'Mumbai', product: 'Ceramic Tea Cup Set', amount: 399, payment: 'Razorpay', courier: 'Delhivery', awb: 'DEL123456789', status: 'Pending', expected: '12 Jun 2026' },
-  { id: 'ORD-8902', customer: 'Sneha Gupta', city: 'Delhi', product: 'Porcelain Dinner Set', amount: 899, payment: 'COD', courier: 'BlueDart', awb: 'BLU987654321', status: 'Processing', expected: '13 Jun 2026' },
-  { id: 'ORD-8903', customer: 'Vikram Singh', city: 'Bangalore', product: 'Mug Gift Set', amount: 399, payment: 'Razorpay', courier: 'XpressBees', awb: 'XPR555666777', status: 'Shipped', expected: '11 Jun 2026' },
-  { id: 'ORD-8904', customer: 'Priya Patel', city: 'Ahmedabad', product: 'Ceramic Tea Cup Set', amount: 399, payment: 'Razorpay', courier: 'EcomExpress', awb: 'ECO111222333', status: 'Delivered', expected: '10 Jun 2026' },
-];
-
-const SAMPLE_RETURNS = [
-  { id: '#ORD-2891', product: 'Ceramic Tea Cup x2', reason: 'Breakage', status: 'Pending' },
-  { id: '#ORD-2847', product: 'Dinner Set', reason: 'Wrong item', status: 'Approved' },
-  { id: '#ORD-2831', product: 'Mug Gift Set', reason: 'Changed mind', status: 'Rejected' },
-  { id: '#ORD-2819', product: 'Serving Bowl', reason: 'Defective', status: 'Pending' },
-];
-
-const SAMPLE_COUPONS = [
-  { code: 'SIPHORA10', desc: '10% off, no expiry', uses: 142, saved: '5,680' },
-  { code: 'FIRST200', desc: '₹200 off first order', uses: 89, saved: '17,800' },
-  { code: 'MONSOON25', desc: '25% off, expires Jul 31', uses: 34, saved: '8,420' },
-];
-
 export default function AdminSPA() {
   const [activeTab, setActiveTab] = useState('Overview');
   const [toast, setToast] = useState<{message: string, type: 'success'|'error'} | null>(null);
-  const [trackingModalOrder, setTrackingModalOrder] = useState<any>(null);
-
-  // Live Products State
+  
+  // States for DB data
+  const [stats, setStats] = useState<any>(null);
+  const [orders, setOrders] = useState<any[]>([]);
+  const [returns, setReturns] = useState<any[]>([]);
+  const [coupons, setCoupons] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
-  const [loadingProducts, setLoadingProducts] = useState(false);
+  
+  const [loading, setLoading] = useState(false);
   const [productEditor, setProductEditor] = useState<any>(null);
+  const [trackingModalOrder, setTrackingModalOrder] = useState<any>(null);
+  const [couponModal, setCouponModal] = useState<boolean>(false);
+  const [newCoupon, setNewCoupon] = useState({ code: '', desc: '', discountValue: 0, discountType: 'percentage', uses: 0, saved: 0 });
 
   const chartRef = useRef<HTMLCanvasElement>(null);
   const chartInstance = useRef<any>(null);
@@ -51,27 +38,38 @@ export default function AdminSPA() {
     setTimeout(() => setToast(null), 3000);
   };
 
-  const fetchProducts = async () => {
-    setLoadingProducts(true);
+  const fetchTabData = async (tab: string) => {
+    setLoading(true);
     try {
-      const res = await fetch('/api/products');
-      const data = await res.json();
-      setProducts(Array.isArray(data) ? data : []);
+      if (tab === 'Overview') {
+        const res = await fetch('/api/admin/stats');
+        setStats(await res.json());
+      } else if (tab === 'Orders') {
+        const res = await fetch('/api/admin/orders');
+        setOrders(await res.json());
+      } else if (tab === 'Products') {
+        const res = await fetch('/api/products');
+        setProducts(await res.json());
+      } else if (tab === 'Returns') {
+        const res = await fetch('/api/admin/returns');
+        setReturns(await res.json());
+      } else if (tab === 'Coupons') {
+        const res = await fetch('/api/admin/coupons');
+        setCoupons(await res.json());
+      }
     } catch (e) {
-      showToast('Failed to load products', 'error');
+      showToast(`Failed to load ${tab}`, 'error');
     }
-    setLoadingProducts(false);
+    setLoading(false);
   };
 
   useEffect(() => {
-    if (activeTab === 'Products' && products.length === 0 && !productEditor) {
-      fetchProducts();
-    }
-  }, [activeTab, productEditor]);
+    fetchTabData(activeTab);
+  }, [activeTab]);
 
   // Load Chart.js for Overview
   useEffect(() => {
-    if (activeTab === 'Overview' && chartRef.current) {
+    if (activeTab === 'Overview' && stats && chartRef.current) {
       const initChart = () => {
         if (!window.Chart) return;
         if (chartInstance.current) {
@@ -83,9 +81,9 @@ export default function AdminSPA() {
         chartInstance.current = new window.Chart(ctx, {
           type: 'bar',
           data: {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            labels: ['Day 6', 'Day 5', 'Day 4', 'Day 3', 'Day 2', 'Day 1', 'Today'],
             datasets: [{
-              data: [4200, 5800, 4900, 6200, 7100, 5800, 4400],
+              data: stats.chartData || [0,0,0,0,0,0,0],
               backgroundColor: ['#e5e7eb', '#e5e7eb', '#e5e7eb', '#e5e7eb', '#D4A853', '#e5e7eb', '#e5e7eb'],
               borderRadius: 4,
             }]
@@ -104,17 +102,8 @@ export default function AdminSPA() {
               }
             },
             scales: {
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  callback: function(value: any) {
-                    return '₹' + (value / 1000) + 'k';
-                  }
-                }
-              },
-              x: {
-                grid: { display: false }
-              }
+              y: { beginAtZero: true },
+              x: { grid: { display: false } }
             }
           }
         });
@@ -129,46 +118,81 @@ export default function AdminSPA() {
         initChart();
       }
     }
-  }, [activeTab]);
+  }, [activeTab, stats]);
 
+  // Handlers
   const handleSaveProduct = async (productData: any) => {
     const isEdit = !!productData._id;
     const url = isEdit ? `/api/products/${productData._id}` : '/api/products';
     const method = isEdit ? 'PUT' : 'POST';
-
     try {
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(productData)
       });
-
       if (res.ok) {
-        showToast(`Product ${isEdit ? 'updated' : 'added'} successfully!`);
+        showToast(`Product saved`);
         setProductEditor(null);
-        fetchProducts();
+        fetchTabData('Products');
       } else {
-        const err = await res.json();
-        showToast(err.error || 'Failed to save product', 'error');
+        showToast('Failed to save product', 'error');
       }
     } catch (error) {
-      showToast('Error saving product', 'error');
+      showToast('Error saving', 'error');
     }
   };
 
   const handleDeleteProduct = async (id: string) => {
     if (!confirm('Are you sure you want to delete this product?')) return;
-    try {
-      const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
-      if (res.ok) {
-        showToast('Product deleted', 'success');
-        fetchProducts();
-      } else {
-        showToast('Failed to delete', 'error');
-      }
-    } catch (error) {
-      showToast('Error deleting', 'error');
+    await fetch(`/api/products/${id}`, { method: 'DELETE' });
+    fetchTabData('Products');
+  };
+
+  const handleCreateCoupon = async () => {
+    const res = await fetch('/api/admin/coupons', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newCoupon)
+    });
+    if (res.ok) {
+      showToast('Coupon created!');
+      setCouponModal(false);
+      fetchTabData('Coupons');
+    } else {
+      showToast('Failed to create coupon', 'error');
     }
+  };
+
+  const handleDeleteCoupon = async (id: string) => {
+    if (!confirm('Delete this coupon?')) return;
+    await fetch(`/api/admin/coupons?id=${id}`, { method: 'DELETE' });
+    fetchTabData('Coupons');
+  };
+
+  const handleUpdateOrder = async (orderId: string, updates: any) => {
+    const res = await fetch('/api/admin/orders', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ orderId, ...updates })
+    });
+    if (res.ok) {
+      showToast('Order updated');
+      fetchTabData('Orders');
+      setTrackingModalOrder(null);
+    } else {
+      showToast('Failed to update', 'error');
+    }
+  };
+
+  const handleUpdateReturn = async (id: string, status: string) => {
+    await fetch('/api/admin/returns', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ _id: id, status })
+    });
+    showToast(`Return marked as ${status}`);
+    fetchTabData('Returns');
   };
 
   const NavItem = ({ icon: Icon, label, tab, badge }: any) => {
@@ -193,12 +217,12 @@ export default function AdminSPA() {
 
   const getStatusColor = (status: string) => {
     switch(status) {
-      case 'Pending': return 'bg-gray-100 text-gray-800';
-      case 'Processing': return 'bg-amber-100 text-amber-800';
+      case 'Pending': case 'pending_payment': return 'bg-gray-100 text-gray-800';
+      case 'Processing': case 'pending_confirmation': return 'bg-amber-100 text-amber-800';
       case 'Shipped': return 'bg-blue-100 text-blue-800';
       case 'Out for Delivery': return 'bg-purple-100 text-purple-800';
-      case 'Delivered': return 'bg-green-100 text-green-800';
-      case 'Cancelled': return 'bg-red-100 text-red-800';
+      case 'Delivered': case 'paid': return 'bg-green-100 text-green-800';
+      case 'Cancelled': case 'failed': return 'bg-red-100 text-red-800';
       case 'Approved': return 'bg-green-100 text-green-800';
       case 'Rejected': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
@@ -219,7 +243,7 @@ export default function AdminSPA() {
         
         <nav className="flex-1 py-6 flex flex-col gap-1 overflow-y-auto">
           <NavItem icon={LayoutDashboard} label="Overview" tab="Overview" />
-          <NavItem icon={ShoppingBag} label="Orders" tab="Orders" badge="7" />
+          <NavItem icon={ShoppingBag} label="Orders" tab="Orders" badge={stats?.pendingDispatch > 0 ? stats.pendingDispatch : null} />
           <NavItem icon={Package} label="Products" tab="Products" />
           <NavItem icon={Users} label="Customers" tab="Customers" />
           <NavItem icon={Archive} label="Inventory" tab="Inventory" />
@@ -237,7 +261,6 @@ export default function AdminSPA() {
 
       {/* MAIN CONTENT */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden relative">
-        
         {productEditor ? (
           <div className="flex-1 overflow-auto p-8 bg-gray-50">
             <ProductEditor 
@@ -251,29 +274,19 @@ export default function AdminSPA() {
             {/* TOPBAR */}
             <header className="h-[64px] bg-white border-b border-gray-200 flex items-center justify-between px-8 flex-shrink-0">
               <h1 className="text-xl font-semibold text-[#0C1929]">{activeTab}</h1>
-              
               <div className="flex items-center gap-6">
-                <div className="relative hidden md:block">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                  <input 
-                    type="text" 
-                    placeholder="Search..." 
-                    className="pl-9 pr-12 py-1.5 bg-gray-100 border-none rounded-md text-sm focus:ring-2 focus:ring-[#D4A853] outline-none w-64"
-                  />
-                  <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-gray-400 border border-gray-300 rounded px-1.5 py-0.5">⌘K</span>
-                </div>
                 <button className="relative text-gray-500 hover:text-[#0C1929]">
                   <Bell size={20} />
-                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                  {stats?.pendingDispatch > 0 && <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>}
                 </button>
                 {activeTab === 'Products' && (
                   <button onClick={() => setProductEditor({ images: [] })} className="flex items-center gap-2 bg-[#0C1929] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">
                     <Plus size={16} /> Add Product
                   </button>
                 )}
-                {activeTab === 'Orders' && (
-                  <button className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors">
-                    <Download size={16} /> Export CSV
+                {activeTab === 'Coupons' && (
+                  <button onClick={() => setCouponModal(true)} className="flex items-center gap-2 bg-[#0C1929] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">
+                    <Plus size={16} /> Add Coupon
                   </button>
                 )}
               </div>
@@ -281,309 +294,178 @@ export default function AdminSPA() {
 
             {/* PAGE CONTENT */}
             <div className="flex-1 overflow-auto p-8 bg-gray-50">
-
-              {/* OVERVIEW TAB */}
-              {activeTab === 'Overview' && (
-                <div className="space-y-6 max-w-6xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  {/* KPIs */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-                      <div className="text-sm text-gray-500 mb-1 flex justify-between">Revenue (June) <span className="text-green-600 flex items-center text-xs"><TrendingUp size={12} className="mr-1"/> +18%</span></div>
-                      <div className="text-2xl font-bold text-[#0C1929] mb-3">₹1,24,800</div>
-                    </div>
-                    <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-                      <div className="text-sm text-gray-500 mb-1 flex justify-between">Orders <span className="text-green-600 text-xs">+23 today</span></div>
-                      <div className="text-2xl font-bold text-[#0C1929] mb-3">312</div>
-                    </div>
-                    <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-                      <div className="text-sm text-gray-500 mb-1 flex justify-between">Avg Order Value <span className="text-green-600 text-xs">+₹22</span></div>
-                      <div className="text-2xl font-bold text-[#0C1929] mb-3">₹400</div>
-                    </div>
-                    <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-                      <div className="text-sm text-gray-500 mb-1 flex justify-between">Pending Dispatch <span className="text-red-500 flex items-center text-xs"><AlertCircle size={12} className="mr-1"/> Action req</span></div>
-                      <div className="text-2xl font-bold text-red-600 mb-3">7</div>
-                    </div>
-                  </div>
-
-                  {/* Chart & Tables */}
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                      <h3 className="font-semibold text-gray-800 mb-6">Revenue (Last 7 Days)</h3>
-                      <div className="h-64 relative">
-                        <canvas ref={chartRef}></canvas>
+              
+              {loading && activeTab !== 'Overview' ? (
+                <div className="flex justify-center mt-20"><div className="animate-spin w-8 h-8 border-4 border-[#D4A853] border-t-transparent rounded-full"></div></div>
+              ) : (
+                <>
+                  {/* OVERVIEW TAB */}
+                  {activeTab === 'Overview' && stats && (
+                    <div className="space-y-6 max-w-6xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                          <div className="text-sm text-gray-500 mb-1 flex justify-between">Total Revenue </div>
+                          <div className="text-2xl font-bold text-[#0C1929] mb-3">₹{stats.revenue?.toLocaleString()}</div>
+                        </div>
+                        <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                          <div className="text-sm text-gray-500 mb-1 flex justify-between">Total Orders</div>
+                          <div className="text-2xl font-bold text-[#0C1929] mb-3">{stats.orders}</div>
+                        </div>
+                        <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                          <div className="text-sm text-gray-500 mb-1 flex justify-between">Avg Order Value </div>
+                          <div className="text-2xl font-bold text-[#0C1929] mb-3">₹{stats.avgOrderValue?.toLocaleString()}</div>
+                        </div>
+                        <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                          <div className="text-sm text-gray-500 mb-1 flex justify-between">Pending Dispatch <span className="text-red-500 flex items-center text-xs"><AlertCircle size={12} className="mr-1"/></span></div>
+                          <div className="text-2xl font-bold text-red-600 mb-3">{stats.pendingDispatch}</div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                      <h3 className="font-semibold text-gray-800 mb-4">Top Products</h3>
-                      <div className="space-y-4">
-                        {[
-                          {name: 'Ceramic Tea Cup', sku: 'SHQ-001', sales: 48},
-                          {name: 'Dinner Set', sku: 'SHQ-002', sales: 32},
-                          {name: 'Mug Gift Set', sku: 'SHQ-003', sales: 24},
-                          {name: 'Serving Bowl', sku: 'SHQ-004', sales: 18},
-                        ].map((p, i) => (
-                          <div key={i} className="flex items-center justify-between">
-                            <div>
-                              <div className="text-sm font-medium text-gray-900">{p.name}</div>
-                              <div className="text-xs text-gray-500">{p.sku}</div>
-                            </div>
-                            <div className="text-sm font-semibold text-[#0C1929]">{p.sales} units</div>
+
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                          <h3 className="font-semibold text-gray-800 mb-6">Revenue (Last 7 Days)</h3>
+                          <div className="h-64 relative"><canvas ref={chartRef}></canvas></div>
+                        </div>
+                        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                          <h3 className="font-semibold text-gray-800 mb-4">Quick Actions</h3>
+                          <div className="space-y-4">
+                            <button onClick={() => {setActiveTab('Products'); setProductEditor({images:[]});}} className="w-full text-left p-3 rounded bg-gray-50 hover:bg-gray-100 font-medium text-sm flex justify-between">
+                              Add New Product <Plus size={16}/>
+                            </button>
+                            <button onClick={() => {setActiveTab('Coupons'); setCouponModal(true);}} className="w-full text-left p-3 rounded bg-gray-50 hover:bg-gray-100 font-medium text-sm flex justify-between">
+                              Create Coupon <Tag size={16}/>
+                            </button>
+                            <button onClick={() => setActiveTab('Orders')} className="w-full text-left p-3 rounded bg-gray-50 hover:bg-gray-100 font-medium text-sm flex justify-between">
+                              View Pending Orders <ShoppingBag size={16}/>
+                            </button>
                           </div>
-                        ))}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              )}
+                  )}
 
-              {/* ORDERS TAB */}
-              {activeTab === 'Orders' && (
-                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  <div className="flex gap-4 mb-6 overflow-x-auto pb-2">
-                    {['All', 'Pending', 'Processing', 'Shipped', 'Out for Delivery', 'Delivered', 'Cancelled'].map(status => (
-                      <button key={status} className={`whitespace-nowrap px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${status === 'All' ? 'bg-[#0C1929] text-white' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
-                        {status}
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                    <table className="w-full text-sm text-left">
-                      <thead className="bg-gray-50 text-gray-500 text-xs uppercase font-medium border-b border-gray-200">
-                        <tr>
-                          <th className="px-6 py-4">Order ID</th>
-                          <th className="px-6 py-4">Customer</th>
-                          <th className="px-6 py-4">Amount & Payment</th>
-                          <th className="px-6 py-4">Status</th>
-                          <th className="px-6 py-4">Courier & AWB</th>
-                          <th className="px-6 py-4 text-right">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200">
-                        {SAMPLE_ORDERS.map((order, i) => (
-                          <tr key={i} className="hover:bg-gray-50/50 transition-colors">
-                            <td className="px-6 py-4 font-medium text-[#0C1929]">{order.id}</td>
-                            <td className="px-6 py-4">
-                              <div className="text-gray-900">{order.customer}</div>
-                              <div className="text-xs text-gray-500">{order.city}</div>
-                            </td>
-                            <td className="px-6 py-4">
-                              <div className="font-medium text-gray-900">₹{order.amount}</div>
-                              <div className="text-xs text-gray-500">{order.payment}</div>
-                            </td>
-                            <td className="px-6 py-4">
-                              <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                                {order.status}
-                              </span>
-                            </td>
-                            <td className="px-6 py-4">
-                              <div className="text-gray-900">{order.courier}</div>
-                              <div className="text-xs text-gray-500">{order.awb}</div>
-                            </td>
-                            <td className="px-6 py-4 text-right">
-                              <button 
-                                onClick={() => setTrackingModalOrder(order)}
-                                className="text-[#D4A853] hover:text-[#0C1929] font-medium transition-colors"
-                              >
-                                Track
-                              </button>
-                            </td>
+                  {/* ORDERS TAB */}
+                  {activeTab === 'Orders' && (
+                    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                      <table className="w-full text-sm text-left">
+                        <thead className="bg-gray-50 text-gray-500 text-xs uppercase font-medium border-b border-gray-200">
+                          <tr>
+                            <th className="px-6 py-4">Order ID</th>
+                            <th className="px-6 py-4">Customer</th>
+                            <th className="px-6 py-4">Amount</th>
+                            <th className="px-6 py-4">Status</th>
+                            <th className="px-6 py-4">Tracking</th>
+                            <th className="px-6 py-4 text-right">Action</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              )}
+                        </thead>
+                        <tbody className="divide-y divide-gray-200">
+                          {orders.map((order, i) => (
+                            <tr key={i} className="hover:bg-gray-50/50">
+                              <td className="px-6 py-4 font-medium">{order.orderId}</td>
+                              <td className="px-6 py-4">
+                                <div>{order.customerDetails?.firstName || order.customerEmail}</div>
+                              </td>
+                              <td className="px-6 py-4 font-medium">₹{order.amount}</td>
+                              <td className="px-6 py-4"><span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>{order.status}</span></td>
+                              <td className="px-6 py-4 text-xs text-gray-500">
+                                <div>{order.courier || 'Pending'}</div>
+                                <div>{order.awb || ''}</div>
+                              </td>
+                              <td className="px-6 py-4 text-right">
+                                <button onClick={() => setTrackingModalOrder(order)} className="text-[#D4A853] hover:underline">Manage</button>
+                              </td>
+                            </tr>
+                          ))}
+                          {orders.length === 0 && <tr><td colSpan={6} className="text-center py-8 text-gray-500">No orders found.</td></tr>}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
 
-              {/* PRODUCTS TAB */}
-              {activeTab === 'Products' && (
-                <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  {loadingProducts ? (
-                    <div className="flex items-center justify-center h-64 text-gray-400">
-                      <div className="w-8 h-8 border-4 border-[#D4A853] border-t-transparent rounded-full animate-spin"></div>
-                    </div>
-                  ) : products.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-64 text-gray-500 bg-white rounded-xl border border-gray-200">
-                      <Package size={48} className="mb-4 opacity-20" />
-                      <p>No products found in the database.</p>
-                      <button onClick={() => setProductEditor({ images: [] })} className="mt-4 bg-[#0C1929] text-white px-4 py-2 rounded-md text-sm font-medium">Add First Product</button>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* PRODUCTS TAB */}
+                  {activeTab === 'Products' && (
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                       {products.map((product, i) => (
                         <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden group relative">
                           <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-                            <button onClick={() => setProductEditor(product)} className="p-1.5 bg-white text-gray-600 rounded-md shadow-sm border border-gray-200 hover:text-blue-600"><Edit size={14}/></button>
-                            <button onClick={() => handleDeleteProduct(product._id)} className="p-1.5 bg-white text-gray-600 rounded-md shadow-sm border border-gray-200 hover:text-red-600"><Trash2 size={14}/></button>
+                            <button onClick={() => setProductEditor(product)} className="p-1.5 bg-white rounded-md shadow-sm border border-gray-200 text-blue-600"><Edit size={14}/></button>
+                            <button onClick={() => handleDeleteProduct(product._id)} className="p-1.5 bg-white rounded-md shadow-sm border border-gray-200 text-red-600"><Trash2 size={14}/></button>
                           </div>
-                          <div className="h-48 bg-gray-100 flex items-center justify-center text-4xl group-hover:bg-gray-200 transition-colors">
-                            {product.images && product.images[0] ? <img src={product.images[0].url} className="w-full h-full object-cover" /> : <ImageIcon size={32} className="text-gray-300" />}
+                          <div className="h-40 bg-gray-100 flex items-center justify-center">
+                            {product.images?.[0] ? <img src={product.images[0].url} className="w-full h-full object-cover" /> : <ImageIcon className="text-gray-300" />}
                           </div>
-                          <div className="p-5">
-                            <div className="flex justify-between items-start mb-2">
-                              <div>
-                                <h3 className="font-semibold text-gray-900 truncate max-w-[150px]" title={product.title}>{product.title}</h3>
-                                <p className="text-xs text-gray-500">{product.handle}</p>
-                              </div>
-                              <span className={`text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wider ${product.inventoryCount > 10 ? 'bg-green-100 text-green-700' : product.inventoryCount > 0 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'}`}>
-                                {product.inventoryCount > 10 ? 'In Stock' : product.inventoryCount > 0 ? 'Low Stock' : 'Out of Stock'}
-                              </span>
-                            </div>
-                            <div className="mt-4 flex items-end justify-between">
-                              <div className="text-xl font-bold text-[#0C1929]">₹{product.price}</div>
-                              <div className="text-sm text-gray-500">{product.inventoryCount} units left</div>
+                          <div className="p-4">
+                            <h3 className="font-semibold text-sm truncate">{product.title}</h3>
+                            <div className="mt-2 flex justify-between items-end">
+                              <span className="font-bold">₹{product.price}</span>
+                              <span className="text-xs text-gray-500">{product.inventoryCount} left</span>
                             </div>
                           </div>
                         </div>
                       ))}
                     </div>
                   )}
-                </div>
-              )}
 
-              {/* RETURNS TAB */}
-              {activeTab === 'Returns' && (
-                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                    <table className="w-full text-sm text-left">
-                      <thead className="bg-gray-50 text-gray-500 text-xs uppercase font-medium border-b border-gray-200">
-                        <tr>
-                          <th className="px-6 py-4">Order ID</th>
-                          <th className="px-6 py-4">Product</th>
-                          <th className="px-6 py-4">Reason</th>
-                          <th className="px-6 py-4">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200">
-                        {SAMPLE_RETURNS.map((rtn, i) => (
-                          <tr key={i} className="hover:bg-gray-50/50 transition-colors">
-                            <td className="px-6 py-4 font-medium text-[#0C1929]">{rtn.id}</td>
-                            <td className="px-6 py-4 text-gray-900">{rtn.product}</td>
-                            <td className="px-6 py-4 text-gray-500">{rtn.reason}</td>
-                            <td className="px-6 py-4">
-                              <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${getStatusColor(rtn.status)}`}>
-                                {rtn.status}
-                              </span>
-                            </td>
+                  {/* RETURNS TAB */}
+                  {activeTab === 'Returns' && (
+                    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                      <table className="w-full text-sm text-left">
+                        <thead className="bg-gray-50 text-gray-500 text-xs uppercase font-medium border-b border-gray-200">
+                          <tr>
+                            <th className="px-6 py-4">Order ID</th>
+                            <th className="px-6 py-4">Product</th>
+                            <th className="px-6 py-4">Reason</th>
+                            <th className="px-6 py-4">Status</th>
+                            <th className="px-6 py-4 text-right">Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              )}
+                        </thead>
+                        <tbody className="divide-y divide-gray-200">
+                          {returns.map((rtn, i) => (
+                            <tr key={i}>
+                              <td className="px-6 py-4">{rtn.orderId}</td>
+                              <td className="px-6 py-4">{rtn.productName}</td>
+                              <td className="px-6 py-4">{rtn.reason}</td>
+                              <td className="px-6 py-4"><span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(rtn.status)}`}>{rtn.status}</span></td>
+                              <td className="px-6 py-4 text-right space-x-2">
+                                {rtn.status === 'Pending' && (
+                                  <>
+                                    <button onClick={() => handleUpdateReturn(rtn._id, 'Approved')} className="text-green-600 hover:underline">Approve</button>
+                                    <button onClick={() => handleUpdateReturn(rtn._id, 'Rejected')} className="text-red-600 hover:underline">Reject</button>
+                                  </>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                          {returns.length === 0 && <tr><td colSpan={5} className="text-center py-8 text-gray-500">No return requests.</td></tr>}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
 
-              {/* COUPONS TAB */}
-              {activeTab === 'Coupons' && (
-                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-4xl mx-auto">
-                  <div className="grid grid-cols-1 gap-4">
-                    {SAMPLE_COUPONS.map((coupon, i) => (
-                      <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex items-center justify-between">
-                        <div className="flex flex-col gap-1">
-                          <div className="flex items-center gap-3">
-                            <span className="bg-gray-100 text-gray-800 font-mono text-sm px-3 py-1 rounded border border-gray-200 font-semibold">{coupon.code}</span>
-                            <span className="text-sm text-gray-600">{coupon.desc}</span>
+                  {/* COUPONS TAB */}
+                  {activeTab === 'Coupons' && (
+                    <div className="max-w-4xl grid gap-4">
+                      {coupons.map((c, i) => (
+                        <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex items-center justify-between">
+                          <div>
+                            <div className="font-mono font-bold text-lg">{c.code}</div>
+                            <div className="text-sm text-gray-500">{c.desc} • {c.discountValue}{c.discountType==='percentage'?'%':'₹'} OFF</div>
                           </div>
-                          <span className="text-xs text-gray-500">{coupon.uses} uses</span>
+                          <div className="flex items-center gap-6">
+                            <div className="text-right">
+                              <div className="text-xs text-gray-400 uppercase">Uses</div>
+                              <div className="font-bold">{c.uses}</div>
+                            </div>
+                            <button onClick={() => handleDeleteCoupon(c._id)} className="text-red-500 p-2 hover:bg-red-50 rounded"><Trash2 size={18}/></button>
+                          </div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Total Savings</div>
-                          <div className="text-lg font-bold text-green-600">₹{coupon.saved}</div>
-                        </div>
-                      </div>
-                    ))}
-                    <button className="w-full py-4 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 font-medium hover:border-[#D4A853] hover:text-[#D4A853] hover:bg-[#D4A853]/5 transition-colors flex items-center justify-center gap-2">
-                      <Plus size={18} /> Add Coupon
-                    </button>
-                  </div>
-                </div>
+                      ))}
+                      {coupons.length === 0 && <div className="text-center py-10 text-gray-500">No coupons active.</div>}
+                    </div>
+                  )}
+
+                </>
               )}
-
-              {/* SETTINGS TAB */}
-              {activeTab === 'Settings' && (
-                <div className="max-w-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-6">
-                    <h2 className="text-lg font-semibold text-gray-900 border-b pb-4">Store Configuration</h2>
-                    
-                    <div className="grid grid-cols-2 gap-6">
-                      <div className="space-y-1.5">
-                        <label className="text-sm font-medium text-gray-700">Store Name</label>
-                        <input type="text" defaultValue="SiphoraHQ" className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border" />
-                      </div>
-                      <div className="space-y-1.5">
-                        <label className="text-sm font-medium text-gray-700">GST Number</label>
-                        <input type="text" placeholder="27XXXXX..." className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border" />
-                      </div>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label className="text-sm font-medium text-gray-700">Razorpay Key ID</label>
-                      <input type="text" defaultValue="rzp_live_••••••••" className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border font-mono" />
-                    </div>
-
-                    <div className="pt-4 border-t border-gray-100 space-y-6">
-                      <h3 className="text-md font-semibold text-gray-800">WooCommerce Integration</h3>
-                      <div className="space-y-1.5">
-                        <label className="text-sm font-medium text-gray-700">Site URL</label>
-                        <input type="text" defaultValue="https://siphorahq.in" className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border" id="wc-url" />
-                      </div>
-                      <div className="grid grid-cols-2 gap-6">
-                        <div className="space-y-1.5">
-                          <label className="text-sm font-medium text-gray-700">Consumer Key</label>
-                          <input type="password" id="wc-key" className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border" />
-                        </div>
-                        <div className="space-y-1.5">
-                          <label className="text-sm font-medium text-gray-700">Consumer Secret</label>
-                          <input type="password" id="wc-secret" className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="pt-6 flex gap-4">
-                      <button 
-                        onClick={async () => {
-                          const url = (document.getElementById('wc-url') as HTMLInputElement).value;
-                          const key = (document.getElementById('wc-key') as HTMLInputElement).value;
-                          const secret = (document.getElementById('wc-secret') as HTMLInputElement).value;
-                          if(!key || !secret) {
-                            showToast('Please enter WooCommerce keys first', 'error');
-                            return;
-                          }
-                          try {
-                            showToast('Testing connection...', 'success');
-                            const res = await fetch(`${url}/wp-json/wc/v3/orders?per_page=1`, {
-                              headers: { 'Authorization': 'Basic ' + btoa(key + ':' + secret) }
-                            });
-                            if(res.ok) showToast('WooCommerce Connected Successfully!', 'success');
-                            else showToast('Connection failed: Invalid keys', 'error');
-                          } catch (e) {
-                            showToast('Connection failed. Check URL or CORS', 'error');
-                          }
-                        }}
-                        className="px-4 py-2 bg-white border border-[#0C1929] text-[#0C1929] text-sm font-medium rounded-md hover:bg-gray-50 transition-colors"
-                      >
-                        Test Connection
-                      </button>
-                      <button 
-                        onClick={() => showToast('Settings Saved successfully', 'success')}
-                        className="px-6 py-2 bg-[#D4A853] text-[#0C1929] text-sm font-bold rounded-md hover:bg-[#c29845] transition-colors"
-                      >
-                        Save Changes
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* PLACEHOLDER FOR OTHER TABS */}
-              {['Customers', 'Inventory', 'Analytics'].includes(activeTab) && (
-                <div className="flex flex-col items-center justify-center h-64 text-gray-400">
-                  <BarChart2 size={48} className="mb-4 opacity-20" />
-                  <p>Module coming soon</p>
-                </div>
-              )}
-
             </div>
           </>
         )}
@@ -592,86 +474,80 @@ export default function AdminSPA() {
       {/* TRACKING MODAL */}
       {trackingModalOrder && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[#0C1929]/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
-            {/* Header */}
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col">
             <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+              <h2 className="text-lg font-bold text-[#0C1929]">Manage Order {trackingModalOrder.orderId}</h2>
+              <button onClick={() => setTrackingModalOrder(null)} className="text-gray-400 hover:text-gray-700 bg-white p-1 rounded-full"><X size={20} /></button>
+            </div>
+            
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const fd = new FormData(e.currentTarget);
+              handleUpdateOrder(trackingModalOrder.orderId, {
+                status: fd.get('status'),
+                courier: fd.get('courier'),
+                awb: fd.get('awb'),
+                expectedDelivery: fd.get('expected')
+              });
+            }} className="p-6 space-y-4">
               <div>
-                <h2 className="text-lg font-bold text-[#0C1929]">{trackingModalOrder.id}</h2>
-                <p className="text-xs text-gray-500">{trackingModalOrder.customer} • {trackingModalOrder.payment}</p>
+                <label className="text-xs font-medium text-gray-500">Status</label>
+                <select name="status" defaultValue={trackingModalOrder.status} className="w-full mt-1 border border-gray-300 rounded p-2 text-sm">
+                  <option value="pending_payment">Pending Payment</option>
+                  <option value="pending_confirmation">Pending Confirmation</option>
+                  <option value="Processing">Processing</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Out for Delivery">Out for Delivery</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
               </div>
-              <button onClick={() => setTrackingModalOrder(null)} className="text-gray-400 hover:text-gray-700 bg-white p-1 rounded-full shadow-sm"><X size={20} /></button>
-            </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs font-medium text-gray-500">Courier Partner</label>
+                  <input name="courier" defaultValue={trackingModalOrder.courier} placeholder="e.g. Delhivery" className="w-full mt-1 border border-gray-300 rounded p-2 text-sm" />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-500">Tracking AWB</label>
+                  <input name="awb" defaultValue={trackingModalOrder.awb} placeholder="Tracking Number" className="w-full mt-1 border border-gray-300 rounded p-2 text-sm font-mono" />
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-gray-500">Expected Delivery Date</label>
+                <input name="expected" defaultValue={trackingModalOrder.expectedDelivery} placeholder="e.g. 15 Jun 2026" className="w-full mt-1 border border-gray-300 rounded p-2 text-sm" />
+              </div>
+              <div className="pt-4 flex gap-3">
+                <button type="submit" className="w-full bg-[#0C1929] text-white py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 flex items-center justify-center gap-2">
+                  <Save size={16}/> Save Updates
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
-            {/* Info Grid */}
-            <div className="grid grid-cols-2 gap-px bg-gray-100 border-b border-gray-100">
-              <div className="bg-white p-4">
-                <div className="text-[10px] uppercase tracking-wider text-gray-400 mb-1">Courier</div>
-                <div className="font-medium text-sm text-gray-900">{trackingModalOrder.courier}</div>
-              </div>
-              <div className="bg-white p-4">
-                <div className="text-[10px] uppercase tracking-wider text-gray-400 mb-1 flex items-center gap-1">AWB <button onClick={() => showToast('Copied!')} className="hover:text-[#D4A853]"><Copy size={10}/></button></div>
-                <div className="font-mono text-sm text-gray-900">{trackingModalOrder.awb}</div>
-              </div>
-              <div className="bg-white p-4">
-                <div className="text-[10px] uppercase tracking-wider text-gray-400 mb-1">Expected</div>
-                <div className="font-medium text-sm text-[#D4A853]">{trackingModalOrder.expected}</div>
-              </div>
-              <div className="bg-white p-4">
-                <div className="text-[10px] uppercase tracking-wider text-gray-400 mb-1">Status</div>
-                <div className="font-medium text-sm text-gray-900">{trackingModalOrder.status}</div>
-              </div>
+      {/* CREATE COUPON MODAL */}
+      {couponModal && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[#0C1929]/40 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden flex flex-col p-6 space-y-4">
+            <h2 className="font-bold text-lg">Create New Coupon</h2>
+            <input type="text" placeholder="Coupon Code (e.g. DIWALI20)" value={newCoupon.code} onChange={e=>setNewCoupon({...newCoupon, code:e.target.value.toUpperCase()})} className="border p-2 rounded text-sm w-full font-mono uppercase" />
+            <input type="text" placeholder="Description" value={newCoupon.desc} onChange={e=>setNewCoupon({...newCoupon, desc:e.target.value})} className="border p-2 rounded text-sm w-full" />
+            <div className="flex gap-2">
+              <input type="number" placeholder="Value" value={newCoupon.discountValue || ''} onChange={e=>setNewCoupon({...newCoupon, discountValue:Number(e.target.value)})} className="border p-2 rounded text-sm w-2/3" />
+              <select value={newCoupon.discountType} onChange={e=>setNewCoupon({...newCoupon, discountType:e.target.value})} className="border p-2 rounded text-sm w-1/3">
+                <option value="percentage">%</option>
+                <option value="fixed">₹</option>
+              </select>
             </div>
-
-            {/* Timeline Stepper */}
-            <div className="p-8 overflow-y-auto flex-1">
-              <div className="relative space-y-8 before:absolute before:inset-0 before:ml-[11px] before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-200 before:to-transparent">
-                {[
-                  { title: 'Order Placed', status: 'done' },
-                  { title: 'Order Confirmed', status: 'done' },
-                  { title: 'Packed & Ready', status: 'done' },
-                  { title: 'Picked Up by Courier', status: trackingModalOrder.status !== 'Pending' && trackingModalOrder.status !== 'Processing' ? 'done' : 'pending' },
-                  { title: 'In Transit', status: trackingModalOrder.status === 'Shipped' ? 'active' : (trackingModalOrder.status === 'Out for Delivery' || trackingModalOrder.status === 'Delivered' ? 'done' : 'pending') },
-                  { title: 'Out for Delivery', status: trackingModalOrder.status === 'Out for Delivery' ? 'active' : (trackingModalOrder.status === 'Delivered' ? 'done' : 'pending') },
-                  { title: 'Delivered', status: trackingModalOrder.status === 'Delivered' ? 'done' : 'pending' },
-                ].map((step, idx) => (
-                  <div key={idx} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                    <div className={`flex items-center justify-center w-6 h-6 rounded-full border-2 bg-white z-10 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-sm
-                      ${step.status === 'done' ? 'border-[#D4A853] bg-[#D4A853]' : step.status === 'active' ? 'border-blue-500 shadow-[0_0_0_4px_rgba(59,130,246,0.2)] animate-pulse' : 'border-gray-300'}`}>
-                      {step.status === 'done' && <Check size={12} className="text-white" />}
-                      {step.status === 'active' && <div className="w-2 h-2 bg-blue-500 rounded-full" />}
-                    </div>
-                    <div className="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] bg-white p-3 rounded shadow-sm border border-gray-100">
-                      <div className={`text-sm font-semibold ${step.status === 'active' ? 'text-blue-600' : 'text-gray-900'}`}>{step.title}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Bottom Section */}
-            <div className="p-6 bg-gray-50 border-t border-gray-100">
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-500">{trackingModalOrder.product} (x1)</span>
-                <span className="font-medium">₹{trackingModalOrder.amount}</span>
-              </div>
-              <div className="flex justify-between text-sm mb-2">
-                <span className="text-gray-500">Shipping</span>
-                <span className="font-medium text-green-600">Free</span>
-              </div>
-              <div className="flex justify-between text-lg font-bold border-t border-gray-200 pt-2 mt-2 text-[#0C1929]">
-                <span>Total Paid</span>
-                <span>₹{trackingModalOrder.amount}</span>
-              </div>
-              <div className="mt-6 flex gap-3">
-                <button className="flex-1 bg-white border border-gray-300 text-gray-700 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">Print Invoice</button>
-                <button onClick={() => setTrackingModalOrder(null)} className="flex-1 bg-[#0C1929] text-white py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">Close</button>
-              </div>
+            <div className="flex gap-3 pt-4">
+              <button onClick={()=>setCouponModal(false)} className="flex-1 border py-2 rounded text-sm">Cancel</button>
+              <button onClick={handleCreateCoupon} className="flex-1 bg-[#D4A853] text-[#0C1929] font-bold py-2 rounded text-sm">Create</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* TOAST NOTIFICATION */}
       {toast && (
         <div className={`fixed top-6 right-6 z-[70] px-4 py-3 rounded-lg shadow-xl text-sm font-medium animate-in slide-in-from-right-8 duration-300 flex items-center gap-2 ${toast.type === 'success' ? 'bg-[#0C1929] text-white border-l-4 border-[#D4A853]' : 'bg-red-500 text-white'}`}>
           {toast.type === 'success' ? <Check size={16} className="text-[#D4A853]" /> : <AlertCircle size={16} />}

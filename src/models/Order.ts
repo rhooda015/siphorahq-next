@@ -15,7 +15,7 @@ const OrderSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending_payment', 'paid', 'failed', 'shipped', 'delivered', 'pending_confirmation'],
+    enum: ['pending_payment', 'paid', 'failed', 'Processing', 'Shipped', 'Out for Delivery', 'Delivered', 'Cancelled', 'pending_confirmation'],
     default: 'pending_payment'
   },
   paymentMethod: {
@@ -42,7 +42,11 @@ const OrderSchema = new mongoose.Schema({
   }],
   items: {
     type: [mongoose.Schema.Types.Mixed]
-  }
+  },
+  // Shipping tracking
+  courier: { type: String, default: 'Pending' },
+  awb: { type: String, default: 'Pending' },
+  expectedDelivery: { type: String, default: 'TBD' }
 }, {
   timestamps: true,
 });
