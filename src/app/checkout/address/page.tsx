@@ -144,19 +144,41 @@ export default function AddressPage() {
                 <h3 className="font-sans font-medium uppercase tracking-widest text-xs text-text border-b border-zinc-200 pb-2 mb-4">Saved Addresses</h3>
                 <div className="flex flex-col gap-3">
                   {savedAddresses.map((addr: any) => (
-                    <div 
+                    <label 
                       key={addr._id} 
-                      onClick={() => { applyAddress(addr); setSelectedAddressId(addr._id); }} 
-                      className={`p-4 border-[0.5px] cursor-pointer rounded-none text-sm transition-colors ${selectedAddressId === addr._id ? "border-black bg-zinc-50" : "border-zinc-200 hover:border-black"}`}
+                      onClick={(e) => { 
+                        e.preventDefault(); // prevent double triggering from label wrapping
+                        applyAddress(addr); 
+                        setSelectedAddressId(addr._id); 
+                      }} 
+                      className={`relative p-4 border cursor-pointer rounded-none flex items-start gap-4 transition-all ${selectedAddressId === addr._id ? "border-black border-[1.5px] bg-zinc-50" : "border-zinc-200 border-[1px] hover:border-zinc-300 bg-white"}`}
                     >
-                      <div className="font-medium font-sans tracking-widest uppercase text-xs">{addr.fullName}</div>
-                      <div className="text-zinc-500 font-sans tracking-widest text-[11px] mt-1 uppercase">
-                        {addr.street}, {addr.city}, {addr.state} - {addr.pincode}
+                      <div className="pt-0.5">
+                        <input 
+                          type="radio" 
+                          name="saved_address" 
+                          checked={selectedAddressId === addr._id} 
+                          readOnly
+                          className="w-4 h-4 accent-black cursor-pointer"
+                        />
                       </div>
-                      <div className="text-zinc-500 font-sans tracking-widest text-[11px] mt-1 uppercase">
-                        {addr.mobile}
+                      <div className="flex-1">
+                        <div className="font-semibold font-sans tracking-widest uppercase text-[11px] text-black flex items-center flex-wrap gap-2">
+                          {addr.fullName}
+                          {addr.isDefault && (
+                            <span className="bg-zinc-200 text-black px-1.5 py-0.5 text-[8px] rounded-none whitespace-nowrap">
+                              DEFAULT
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-zinc-600 font-sans tracking-widest text-[10px] mt-1.5 uppercase leading-relaxed">
+                          {addr.street}, {addr.city}, <br/> {addr.state} - {addr.pincode}
+                        </div>
+                        <div className="text-zinc-600 font-sans tracking-widest text-[10px] mt-1 uppercase">
+                          Phone: {addr.mobile}
+                        </div>
                       </div>
-                    </div>
+                    </label>
                   ))}
                 </div>
                 <div className="mt-6 mb-4 flex items-center">
