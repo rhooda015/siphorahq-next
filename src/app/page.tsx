@@ -120,34 +120,40 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Product Row 2: Serve for 6 */}
+      {/* Product Row 2: Dinner Sets */}
       <section className="max-w-7xl mx-auto px-4 mb-20">
-        <SectionHeading title="Serve for 6" />
+        <SectionHeading title="Dinner Sets" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
           {productsServeFor6.map((product) => <ProductCard key={product.id} product={product} />)}
         </div>
-        <ViewAllButton href="/products" />
+        <ViewAllButton href="/products?category=dinner-set" />
       </section>
 
-      {/* Image Collage 1 */}
+      {/* Image Collage 1 — clean 5-column grid */}
       <section className="max-w-5xl mx-auto px-4 mb-20">
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-2">
-          {/* Aesthetic grid matching Swasha's mosaic */}
-          <div className="col-span-2 aspect-square relative bg-gray-100"><Image src="/images/hero.webp" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" alt="Collage 1" /></div>
-          <div className="col-span-1 aspect-square relative bg-gray-200"><Image src="/images/teaset.webp" fill sizes="(max-width: 768px) 50vw, 16vw" className="object-cover" alt="Collage 2" /></div>
-          <div className="col-span-1 aspect-square relative bg-gray-300"><Image src="/images/dinnerware.webp" fill sizes="(max-width: 768px) 50vw, 16vw" className="object-cover" alt="Collage 3" /></div>
-          <div className="col-span-1 aspect-square relative bg-gray-100"><Image src="/images/serveware.webp" fill sizes="(max-width: 768px) 50vw, 16vw" className="object-cover" alt="Collage 4" /></div>
-          <div className="col-span-1 aspect-square relative bg-gray-200"><Image src="/images/gifting.webp" fill sizes="(max-width: 768px) 50vw, 16vw" className="object-cover" alt="Collage 5" /></div>
+        <div className="grid grid-cols-5 gap-2">
+          <div className="col-span-2 row-span-1 aspect-[3/2] relative bg-gray-100 overflow-hidden">
+            <Image src="/images/hero.webp" fill sizes="40vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Dining" />
+          </div>
+          <div className="col-span-1 aspect-square relative bg-gray-200 overflow-hidden">
+            <Image src="/images/teaset.webp" fill sizes="20vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Tea Set" />
+          </div>
+          <div className="col-span-1 aspect-square relative bg-gray-300 overflow-hidden">
+            <Image src="/images/dinnerware.webp" fill sizes="20vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Dinnerware" />
+          </div>
+          <div className="col-span-1 aspect-square relative bg-gray-100 overflow-hidden">
+            <Image src="/images/gifting.webp" fill sizes="20vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Gifting" />
+          </div>
         </div>
       </section>
 
-      {/* Product Row 3: Serving Bowl */}
+      {/* Product Row 3: Serveware */}
       <section className="max-w-7xl mx-auto px-4 mb-20">
-        <SectionHeading title="Serving Bowl" />
+        <SectionHeading title="Serveware" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
           {productsBowls.map((product) => <ProductCard key={product.id} product={product} />)}
         </div>
-        <ViewAllButton href="/products" />
+        <ViewAllButton href="/products?category=serveware" />
       </section>
 
       {/* Brand Story */}
