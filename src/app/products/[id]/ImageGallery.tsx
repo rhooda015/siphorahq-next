@@ -42,7 +42,7 @@ export default function ImageGallery({ images, productName }: { images: string[]
       
       {/* ── Thumbnail Strip — DESKTOP ONLY (vertical, left side) ── */}
       {validImages.length > 1 && (
-        <div className="hidden md:flex flex-col gap-2 overflow-y-auto max-h-[600px] w-20 flex-shrink-0">
+        <div className="hidden md:flex flex-col gap-2 overflow-y-auto max-h-[560px] w-20 flex-shrink-0">
           {validImages.map((img, idx) => (
             <button
               key={idx}
@@ -90,7 +90,7 @@ export default function ImageGallery({ images, productName }: { images: string[]
 
         {/* Main image */}
         <div
-          className="aspect-[4/5] bg-[var(--color-accent-light)] overflow-hidden relative cursor-zoom-in"
+          className="aspect-square md:aspect-[4/5] max-h-[480px] md:max-h-[560px] bg-[var(--color-accent-light)] overflow-hidden relative cursor-zoom-in"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           onTouchStart={handleTouchStart}
