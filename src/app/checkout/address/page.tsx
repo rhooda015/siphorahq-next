@@ -23,13 +23,37 @@ export default function AddressPage() {
   const [state, setState] = useState(customerDetails?.state || '');
   const [pincodeStatus, setPincodeStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [mounted, setMounted] = useState(false);
+  const [savedAddresses, setSavedAddresses] = useState<any[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
+
+  const applyAddress = (addr: any) => {
+    const parts = (addr.fullName || '').split(' ');
+    setFirstName(parts[0] || '');
+    setLastName(parts.slice(1).join(' ') || '');
+    setAddressLine1(addr.street || '');
+    setPincode(addr.pincode || '');
+    setCity(addr.city || '');
+    setState(addr.state || '');
+    if (addr.mobile) setPhone(addr.mobile);
+    if (addr.pincode?.length === 6) setPincodeStatus('success');
+  };
 
   useEffect(() => {
     setMounted(true);
     if (customerDetails?.pincode && customerDetails.pincode.length === 6 && customerDetails.city) {
       setPincodeStatus('success');
     }
-  }, [customerDetails]);
+    fetch('/api/user/addresses')
+      .then(r => r.json())
+      .then(data => {
+        if (data.addresses && data.addresses.length > 0) {
+          setSavedAddresses(data.addresses);
+          const def = data.addresses.find((a) => a.isDefault) || data.addresses[0];
+          if (def) { applyAddress(def); setSelectedAddressId(def._id); }
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const total = mounted ? cartTotal() : 0;
   const finalAmount = total + (total >= BRAND.freeShippingThreshold || total === 0 ? 0 : BRAND.shippingCost);
@@ -88,6 +112,7 @@ export default function AddressPage() {
           <h1 className="text-3xl font-serif font-light mb-8 lg:mb-12">Shipping Details</h1>
 
         <div className="bg-bg border border-border p-6 md:p-8">
+          {savedAddresses.length > 0 && (<div className="mb-6"><h3 className="font-sans font-medium uppercase tracking-widest text-sm text-text border-b border-border pb-2 mb-3">Saved Addresses</h3><div className="flex flex-col gap-2">{savedAddresses.map((addr: any) => (<div key={addr._id} onClick={() => { applyAddress(addr); setSelectedAddressId(addr._id); }} className={`p-3 border cursor-pointer rounded-sm text-sm transition-colors ${selectedAddressId === addr._id ? "border-black bg-gray-50" : "border-border hover:border-gray-400"}`}><div className="font-medium">{addr.fullName}</div><div className="text-text-muted">{addr.street}, {addr.city}, {addr.state} - {addr.pincode}</div><div className="text-text-muted">{addr.mobile}</div></div>))}</div><div className="mt-3 mb-4 flex items-center"><div className="flex-1 border-t border-border"></div><span className="px-4 text-xs font-sans text-text-muted uppercase tracking-widest">OR ENTER NEW ADDRESS</span><div className="flex-1 border-t border-border"></div></div></div>)}
           {/* Express Checkout Section */}
           <div className="mb-8">
             <h3 className="text-center font-sans font-medium text-xs text-text-muted uppercase tracking-widest mb-4">Express Checkout</h3>
