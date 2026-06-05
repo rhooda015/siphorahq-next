@@ -7,7 +7,7 @@ export default function FooterWrapper({ children }: { children: React.ReactNode 
   const pathname = usePathname();
   const isCheckout = pathname.startsWith('/checkout') && pathname !== '/checkout/cart';
 
-  if (pathname === '/login' || pathname.startsWith('/account')) {
+  if (pathname === '/login' || pathname.startsWith('/account') || pathname.startsWith('/admin')) {
     return null;
   }
 

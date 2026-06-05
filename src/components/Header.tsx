@@ -37,7 +37,7 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (pathname === '/login' || pathname.startsWith('/account')) {
+  if (pathname === '/login' || pathname.startsWith('/account') || pathname.startsWith('/admin')) {
     return null;
   }
 

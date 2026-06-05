@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   LayoutDashboard, ShoppingBag, Package, Users, Archive, BarChart2, Settings as SettingsIcon, 
-  Search, Bell, Plus, Download, X, Copy, Check, TrendingUp, AlertCircle
+  Search, Bell, Plus, Download, X, Copy, Check, TrendingUp, AlertCircle, Edit, Trash2
 } from 'lucide-react';
 
 const SAMPLE_ORDERS = [
@@ -10,12 +10,6 @@ const SAMPLE_ORDERS = [
   { id: 'ORD-8902', customer: 'Sneha Gupta', city: 'Delhi', product: 'Porcelain Dinner Set', amount: 899, payment: 'COD', courier: 'BlueDart', awb: 'BLU987654321', status: 'Processing', expected: '13 Jun 2026' },
   { id: 'ORD-8903', customer: 'Vikram Singh', city: 'Bangalore', product: 'Mug Gift Set', amount: 399, payment: 'Razorpay', courier: 'XpressBees', awb: 'XPR555666777', status: 'Shipped', expected: '11 Jun 2026' },
   { id: 'ORD-8904', customer: 'Priya Patel', city: 'Ahmedabad', product: 'Ceramic Tea Cup Set', amount: 399, payment: 'Razorpay', courier: 'EcomExpress', awb: 'ECO111222333', status: 'Delivered', expected: '10 Jun 2026' },
-];
-
-const SAMPLE_PRODUCTS = [
-  { id: 'SHQ-001', name: 'Ceramic Tea Cup Set', sku: 'SHQ-001', hsn: '6911', price: 399, stock: 48, status: 'In Stock' },
-  { id: 'SHQ-002', name: 'Porcelain Dinner Set', sku: 'SHQ-002', hsn: '6911', price: 899, stock: 6, status: 'Low Stock' },
-  { id: 'SHQ-003', name: 'Mug Gift Set', sku: 'SHQ-003', hsn: '6911', price: 399, stock: 31, status: 'In Stock' },
 ];
 
 const SAMPLE_CUSTOMERS = [
@@ -29,9 +23,81 @@ export default function AdminSPA() {
   const [toast, setToast] = useState<{message: string, type: 'success'|'error'} | null>(null);
   const [trackingModalOrder, setTrackingModalOrder] = useState<any>(null);
 
+  // Live Products State
+  const [products, setProducts] = useState<any[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(false);
+  const [productModal, setProductModal] = useState<any>(null); // null = closed, {} = new, {id} = edit
+
   const showToast = (message: string, type: 'success'|'error' = 'success') => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 3000);
+  };
+
+  const fetchProducts = async () => {
+    setLoadingProducts(true);
+    try {
+      const res = await fetch('/api/products');
+      const data = await res.json();
+      setProducts(Array.isArray(data) ? data : []);
+    } catch (e) {
+      showToast('Failed to load products', 'error');
+    }
+    setLoadingProducts(false);
+  };
+
+  useEffect(() => {
+    if (activeTab === 'Products' && products.length === 0) {
+      fetchProducts();
+    }
+  }, [activeTab]);
+
+  const handleSaveProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const isEdit = !!productModal._id;
+    const url = isEdit ? `/api/products/${productModal._id}` : '/api/products';
+    const method = isEdit ? 'PUT' : 'POST';
+
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: productModal.title,
+          handle: productModal.handle || productModal.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          price: Number(productModal.price),
+          inventoryCount: Number(productModal.inventoryCount),
+          category: productModal.category || 'General',
+          description: productModal.description || 'Premium Quality Product',
+          images: productModal.images || []
+        })
+      });
+
+      if (res.ok) {
+        showToast(`Product ${isEdit ? 'updated' : 'added'} successfully!`);
+        setProductModal(null);
+        fetchProducts(); // Refresh list
+      } else {
+        const err = await res.json();
+        showToast(err.error || 'Failed to save product', 'error');
+      }
+    } catch (error) {
+      showToast('Error saving product', 'error');
+    }
+  };
+
+  const handleDeleteProduct = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this product?')) return;
+    try {
+      const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        showToast('Product deleted', 'success');
+        fetchProducts();
+      } else {
+        showToast('Failed to delete', 'error');
+      }
+    } catch (error) {
+      showToast('Error deleting', 'error');
+    }
   };
 
   const NavItem = ({ icon: Icon, label, tab }: any) => {
@@ -115,7 +181,7 @@ export default function AdminSPA() {
               <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
             {activeTab === 'Products' && (
-              <button className="flex items-center gap-2 bg-[#0C1929] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">
+              <button onClick={() => setProductModal({})} className="flex items-center gap-2 bg-[#0C1929] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">
                 <Plus size={16} /> Add Product
               </button>
             )}
@@ -251,31 +317,49 @@ export default function AdminSPA() {
             </div>
           )}
 
-          {/* PRODUCTS TAB */}
+          {/* PRODUCTS TAB - CONNECTED TO LIVE DATABASE */}
           {activeTab === 'Products' && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              {SAMPLE_PRODUCTS.map((product, i) => (
-                <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden group">
-                  <div className="h-48 bg-gray-100 flex items-center justify-center text-4xl group-hover:bg-gray-200 transition-colors">
-                    📦
-                  </div>
-                  <div className="p-5">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h3 className="font-semibold text-gray-900">{product.name}</h3>
-                        <p className="text-xs text-gray-500">{product.sku} • HSN {product.hsn}</p>
-                      </div>
-                      <span className={`text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wider ${product.status === 'In Stock' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                        {product.status}
-                      </span>
-                    </div>
-                    <div className="mt-4 flex items-end justify-between">
-                      <div className="text-xl font-bold text-[#0C1929]">₹{product.price}</div>
-                      <div className="text-sm text-gray-500">{product.stock} units left</div>
-                    </div>
-                  </div>
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              {loadingProducts ? (
+                <div className="flex items-center justify-center h-64 text-gray-400">
+                  <div className="w-8 h-8 border-4 border-[#D4A853] border-t-transparent rounded-full animate-spin"></div>
                 </div>
-              ))}
+              ) : products.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-64 text-gray-500 bg-white rounded-xl border border-gray-200">
+                  <Package size={48} className="mb-4 opacity-20" />
+                  <p>No products found in the database.</p>
+                  <button onClick={() => setProductModal({})} className="mt-4 bg-[#0C1929] text-white px-4 py-2 rounded-md text-sm font-medium">Add First Product</button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {products.map((product, i) => (
+                    <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden group relative">
+                      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                        <button onClick={() => setProductModal(product)} className="p-1.5 bg-white text-gray-600 rounded-md shadow-sm border border-gray-200 hover:text-blue-600"><Edit size={14}/></button>
+                        <button onClick={() => handleDeleteProduct(product._id)} className="p-1.5 bg-white text-gray-600 rounded-md shadow-sm border border-gray-200 hover:text-red-600"><Trash2 size={14}/></button>
+                      </div>
+                      <div className="h-48 bg-gray-100 flex items-center justify-center text-4xl group-hover:bg-gray-200 transition-colors">
+                        {product.images && product.images[0] ? <img src={product.images[0].url} className="w-full h-full object-cover" /> : '📦'}
+                      </div>
+                      <div className="p-5">
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                            <h3 className="font-semibold text-gray-900 truncate max-w-[150px]" title={product.title}>{product.title}</h3>
+                            <p className="text-xs text-gray-500">{product.handle}</p>
+                          </div>
+                          <span className={`text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wider ${product.inventoryCount > 10 ? 'bg-green-100 text-green-700' : product.inventoryCount > 0 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'}`}>
+                            {product.inventoryCount > 10 ? 'In Stock' : product.inventoryCount > 0 ? 'Low Stock' : 'Out of Stock'}
+                          </span>
+                        </div>
+                        <div className="mt-4 flex items-end justify-between">
+                          <div className="text-xl font-bold text-[#0C1929]">₹{product.price}</div>
+                          <div className="text-sm text-gray-500">{product.inventoryCount} units left</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 
@@ -366,9 +450,47 @@ export default function AdminSPA() {
         </div>
       </main>
 
+      {/* EDIT PRODUCT MODAL */}
+      {productModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0C1929]/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <form onSubmit={handleSaveProduct} className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+              <h2 className="text-lg font-bold text-[#0C1929]">{productModal._id ? 'Edit Product' : 'Add New Product'}</h2>
+              <button type="button" onClick={() => setProductModal(null)} className="text-gray-400 hover:text-gray-700 bg-white p-1 rounded-full shadow-sm"><X size={20} /></button>
+            </div>
+            
+            <div className="p-6 overflow-y-auto flex-1 space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-gray-700">Product Title *</label>
+                <input required type="text" value={productModal.title || ''} onChange={e => setProductModal({...productModal, title: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-gray-700">Price (₹) *</label>
+                  <input required type="number" value={productModal.price || ''} onChange={e => setProductModal({...productModal, price: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border" />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-gray-700">Stock Quantity *</label>
+                  <input required type="number" value={productModal.inventoryCount || ''} onChange={e => setProductModal({...productModal, inventoryCount: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border" />
+                </div>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium text-gray-700">Category</label>
+                <input type="text" value={productModal.category || ''} onChange={e => setProductModal({...productModal, category: e.target.value})} className="w-full border-gray-300 rounded-md shadow-sm focus:border-[#D4A853] focus:ring-[#D4A853] text-sm py-2 px-3 border" />
+              </div>
+            </div>
+
+            <div className="p-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
+              <button type="button" onClick={() => setProductModal(null)} className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-50">Cancel</button>
+              <button type="submit" className="px-6 py-2 bg-[#0C1929] text-white rounded-md text-sm font-medium hover:bg-gray-800">Save Product</button>
+            </div>
+          </form>
+        </div>
+      )}
+
       {/* TRACKING MODAL */}
       {trackingModalOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0C1929]/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[#0C1929]/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
             {/* Header */}
             <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
@@ -451,7 +573,7 @@ export default function AdminSPA() {
 
       {/* TOAST NOTIFICATION */}
       {toast && (
-        <div className={`fixed top-6 right-6 z-[60] px-4 py-3 rounded-lg shadow-xl text-sm font-medium animate-in slide-in-from-right-8 duration-300 flex items-center gap-2 ${toast.type === 'success' ? 'bg-[#0C1929] text-white border-l-4 border-[#D4A853]' : 'bg-red-500 text-white'}`}>
+        <div className={`fixed top-6 right-6 z-[70] px-4 py-3 rounded-lg shadow-xl text-sm font-medium animate-in slide-in-from-right-8 duration-300 flex items-center gap-2 ${toast.type === 'success' ? 'bg-[#0C1929] text-white border-l-4 border-[#D4A853]' : 'bg-red-500 text-white'}`}>
           {toast.type === 'success' ? <Check size={16} className="text-[#D4A853]" /> : <AlertCircle size={16} />}
           {toast.message}
         </div>
