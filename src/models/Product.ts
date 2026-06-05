@@ -34,7 +34,9 @@ const ProductSchema = new mongoose.Schema({
     sku: String,
     price: Number,
     inventoryCount: Number
-  }]
+  }],
+  metaTitle: String,
+  metaDescription: String
 }, {
   timestamps: true,
 });
