@@ -56,19 +56,35 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const product = getProductById(resolvedParams.id) || await getDbProduct(resolvedParams.id);
   if (!product) return { title: 'Product Not Found' };
 
+  const productImage = (product as any).image?.startsWith('http')
+    ? (product as any).image
+    : `https://siphorahq.in${(product as any).image || '/images/dinnerware.webp'}`;
+
   return {
     title: `${(product as any).metaTitle || product.name} | ${BRAND.name}`,
     description: (product as any).metaDescription || product.description,
     alternates: { canonical: `https://siphorahq.in/products/${product.id}` },
     openGraph: {
+      type: 'website',
       title: product.name,
-      description: product.description,
+      description: (product as any).metaDescription || product.description,
+      url: `https://siphorahq.in/products/${product.id}`,
+      siteName: BRAND.name,
+      images: [
+        {
+          url: productImage,
+          width: 1200,
+          height: 1200,
+          alt: product.name,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: product.name,
-      description: product.description,
-    }
+      description: (product as any).metaDescription || product.description,
+      images: [productImage],
+    },
   };
 }
 
