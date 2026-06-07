@@ -10,9 +10,13 @@ export default function ProductCard({ product }: { product: any }) {
       <div className="aspect-[4/5] bg-[var(--color-accent-light)] relative mb-4 overflow-hidden">
         <Image 
           src={
-            (product.image || product.img || '').includes('/assets/siphorahq/')
-              ? (product.image || product.img || '').replace('/assets/siphorahq/', '/images/').replace('catTeacup', 'teaset').replace('catDinner', 'dinnerware').replace('catBowls', 'serveware').replace('catMug', 'cat_mugs').replace('catPlatter', 'cat_plates').replace('cardTeasets', 'teaset').replace('catSnack', 'cat_snacks').replace('catGift', 'gifting').replace('hero1', 'hero').replace('hero2', 'dinnerware').replace('hero3', 'serveware')
-              : (product.image || product.img || '/images/dinnerware.webp')
+            (() => {
+              const img = product.image || product.img || '';
+              if (!img) return '/images/dinnerware.webp';
+              if (img.startsWith('data:') || img.startsWith('/9j/') || img.length > 500) return `data:image/jpeg;base64,${img.startsWith('data:') ? img.split(',')[1] : img}`;
+              if (img.includes('/assets/siphorahq/')) return img.replace('/assets/siphorahq/', '/images/').replace('catTeacup', 'teaset').replace('catDinner', 'dinnerware').replace('catBowls', 'serveware').replace('catMug', 'cat_mugs').replace('catPlatter', 'cat_plates').replace('cardTeasets', 'teaset');
+              return img;
+            })()
           }
           alt={product.name}
           fill
