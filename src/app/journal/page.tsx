@@ -1,13 +1,9 @@
-export { journalMetadata as metadata } from '@/lib/metadata';
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight } from 'lucide-react';
 import { BRAND } from '@/config/brand';
-
-export const metadata = {
-  title: `Journal | ${BRAND.name}`,
-};
 
 export default function JournalPage() {
   const articles = [
