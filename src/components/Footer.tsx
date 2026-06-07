@@ -35,16 +35,16 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Customer Care */}
-          <div className="col-span-1">
-            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">Customer Care</h2>
-            <ul className="space-y-4">
-              <li><Link href="/shipping-returns" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Shipping Policy</Link></li>
-              <li><Link href="/refund-policy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Returns & Refunds</Link></li>
-              <li><Link href="/privacy-policy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Privacy Policy</Link></li>
-              <li><Link href="/terms-of-service" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Terms & Conditions</Link></li>
-            </ul>
-          </div>
+         {/* Column 3: Customer Care */}
+<div className="col-span-1">
+  <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">Customer Care</h2>
+  <ul className="space-y-4">
+    <li><Link href="/shipping-policy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Shipping Policy</Link></li>
+    <li><Link href="/refund-policy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Returns & Refunds</Link></li>
+    <li><Link href="/privacy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Privacy Policy</Link></li>
+    <li><Link href="/terms" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Terms & Conditions</Link></li>
+  </ul>
+</div>
 
           {/* Column 4: Contact & Newsletter */}
           <div className="col-span-1">
