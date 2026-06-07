@@ -46,7 +46,9 @@ const OrderSchema = new mongoose.Schema({
   // Shipping tracking
   courier: { type: String, default: 'Pending' },
   awb: { type: String, default: 'Pending' },
-  expectedDelivery: { type: String, default: 'TBD' }
+  expectedDelivery: { type: String, default: 'TBD' },
+  shiprocketOrderId: { type: String },
+  shiprocketShipmentId: { type: String }
 }, {
   timestamps: true,
 });
