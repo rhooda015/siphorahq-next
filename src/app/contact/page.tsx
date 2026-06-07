@@ -2,9 +2,7 @@ import React from 'react';
 import { BRAND } from '@/config/brand';
 import ContactForm from '@/components/ContactForm';
 
-export const metadata = {
-  title: `Contact & Concierge | ${BRAND.name}`,
-};
+export { contactMetadata as metadata } from '@/lib/metadata';
 
 export default function ContactPage() {
   return (

@@ -1,9 +1,6 @@
+export { corporateGiftingMetadata as metadata } from '@/lib/metadata';
 import React from "react";
 import { BRAND } from "@/config/brand";
-
-export const metadata = {
-  title: `Corporate Gifting | ${BRAND.name}`,
-};
 
 export default function Page() {
   return (

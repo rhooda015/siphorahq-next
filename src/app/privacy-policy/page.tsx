@@ -1,9 +1,4 @@
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Privacy Policy | SiphoraHQ',
-  description: 'Learn how SiphoraHQ collects, uses and protects your personal information when you shop with us.',
-};
+export { privacyMetadata as metadata } from '@/lib/metadata';
 
 const sections = [
   {

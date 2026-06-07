@@ -1,3 +1,4 @@
+export { productsMetadata as metadata } from '@/lib/metadata';
 import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';

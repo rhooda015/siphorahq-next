@@ -1,3 +1,4 @@
+export { homeMetadata as metadata } from '@/lib/metadata';
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';

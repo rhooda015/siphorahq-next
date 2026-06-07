@@ -1,9 +1,4 @@
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Refund & Return Policy | SiphoraHQ',
-  description: 'SiphoraHQ\'s complete return and refund policy. Learn how to return products, get refunds, and resolve order issues.',
-};
+export { refundMetadata as metadata } from '@/lib/metadata';
 
 const highlights = [
   { icon: '7', label: 'Day Return Window', sub: 'From delivery date' },

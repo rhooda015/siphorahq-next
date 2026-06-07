@@ -1,9 +1,7 @@
 import React from "react";
 import { BRAND } from "@/config/brand";
 
-export const metadata = {
-  title: `Our Story | ${BRAND.name}`,
-};
+export { ourStoryMetadata as metadata } from '@/lib/metadata';
 
 export default function Page() {
   return (

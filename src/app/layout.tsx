@@ -16,33 +16,7 @@ import CartSync from '@/components/CartSync';
 const cormorant = Cormorant_Garamond({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-serif', style: ['normal', 'italic'] });
 const jost = Jost({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-sans' });
 
-export const metadata = {
-  title: "Premium Porcelain Dinnerware & Tea Sets India | SiphoraHQ",
-  description: 'Elevate your dining experience with luxury porcelain dinnerware, aesthetic serveware, and premium home decor collections.',
-  metadataBase: new URL('https://siphorahq.in'),
-  openGraph: {
-    title: "Premium Porcelain Dinnerware & Tea Sets India | SiphoraHQ",
-    description: 'Elevate your dining experience with luxury porcelain dinnerware, aesthetic serveware, and premium home decor collections.',
-    url: 'https://siphorahq.in',
-    siteName: BRAND.name,
-    images: [
-      {
-        url: '/images/og-banner.png',
-        width: 1200,
-        height: 630,
-        alt: `${BRAND.name} Luxury Dinnerware`,
-      },
-    ],
-    locale: 'en_IN',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: "Premium Porcelain Dinnerware & Tea Sets India | SiphoraHQ",
-    description: 'Elevate your dining experience with luxury porcelain dinnerware, aesthetic serveware, and premium home decor collections.',
-    images: ['/images/og-banner.png'],
-  },
-};
+export { rootMetadata as metadata } from '@/lib/metadata';
 
 export default function RootLayout({
   children,
@@ -58,36 +32,24 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@graph": [
-                {
-                  "@type": "Organization",
-                  "@id": `${BRAND.domain}/#organization`,
-                  "name": BRAND.name,
-                  "url": BRAND.domain,
-                  "description": `Luxury home decor and premium tableware. ${BRAND.name} specializes in high-end porcelain dinner sets, serveware, and aesthetic gifting.`,
-                  "knowsAbout": [
-                    "Luxury Home Decor",
-                    "Premium Dinnerware",
-                    "Porcelain Tea Sets",
-                    "Aesthetic Serveware",
-                    "Luxury Gifting"
-                  ],
-                  "sameAs": [
-                    BRAND.social.instagram,
-                    BRAND.social.pinterest
-                  ]
-                },
-                {
-                  "@type": "WebSite",
-                  "@id": `${BRAND.domain}/#website`,
-                  "url": BRAND.domain,
-                  "name": `${BRAND.name} Luxury Fashion`,
-                  "publisher": {
-                    "@id": `${BRAND.domain}/#organization`
-                  }
-                }
-              ]
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'SiphoraHQ',
+              url: 'https://www.siphorahq.in',
+              logo: 'https://www.siphorahq.in/images/logo.png',
+              contactPoint: {
+                '@type': 'ContactPoint',
+                email: 'concierge@siphorahq.in',
+                contactType: 'customer service',
+              },
+              address: {
+                '@type': 'PostalAddress',
+                addressLocality: 'Faridabad',
+                addressRegion: 'Haryana',
+                postalCode: '121001',
+                addressCountry: 'IN',
+              },
+              sameAs: ['https://www.instagram.com/siphorahq'],
             }),
           }}
         />

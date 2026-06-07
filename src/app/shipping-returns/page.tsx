@@ -1,9 +1,4 @@
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Shipping Policy | SiphoraHQ',
-  description: 'SiphoraHQ shipping information — delivery timelines, free shipping, tracking, and international orders.',
-};
+export { shippingMetadata as metadata } from '@/lib/metadata';
 
 const shippingZones = [
   { zone: 'Metro Cities', cities: 'Delhi, Mumbai, Bangalore, Chennai, Hyderabad, Kolkata', days: '3–5 days' },
