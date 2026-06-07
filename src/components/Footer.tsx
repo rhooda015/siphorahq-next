@@ -41,8 +41,8 @@ export default function Footer() {
   <ul className="space-y-4">
     <li><Link href="/shipping-policy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Shipping Policy</Link></li>
     <li><Link href="/refund-policy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Returns & Refunds</Link></li>
-    <li><Link href="/privacy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Privacy Policy</Link></li>
-    <li><Link href="/terms" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Terms & Conditions</Link></li>
+    <li><Link href="/privacy-policy" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Privacy Policy</Link></li>
+    <li><Link href="/terms-of-service" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Terms & Conditions</Link></li>
   </ul>
 </div>
 
