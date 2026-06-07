@@ -1,309 +1,105 @@
-export { homeMetadata as metadata } from '@/lib/metadata';
 import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import { BRAND } from '@/config/brand';
 
-import { STATIC_PRODUCTS } from '@/data/products';
-import HeroCarousel from '@/components/HeroCarousel';
-import ProductCard from '@/components/ProductCard';
-import dbConnect from '@/lib/db';
-import Product from '@/models/Product';
+export const metadata = {
+  title: 'Shipping Policy | Siphorahq',
+  description: 'Learn about Siphorahq shipping timelines, free shipping thresholds, and delivery partners across India.',
+  alternates: {
+    canonical: '/shipping',
+  },
+  openGraph: {
+    title: 'Shipping Policy | Siphorahq',
+    description: 'Learn about Siphorahq shipping timelines, free shipping thresholds, and delivery partners across India.',
+    url: `${BRAND.domain}/shipping`,
+    siteName: BRAND.name,
+    type: 'website',
+  },
+};
 
-export const revalidate = 0; // Disable caching to always show live products
-
-// --- Reusable Components for exact Swasha UI ---
-
-const SectionHeading = ({ title }: { title: string }) => (
-  <h2 className="text-3xl md:text-5xl font-serif text-[var(--color-primary)] text-center mb-12 tracking-wide">
-    {title}
-  </h2>
-);
-
-const ViewAllButton = ({ href }: { href: string }) => (
-  <div className="flex justify-center mt-12">
-    <Link href={href} className="border-[0.5px] border-[var(--color-primary)] text-[var(--color-primary)] px-10 py-4 text-xs font-sans tracking-[0.2em] uppercase hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-500">
-      View all
-    </Link>
-  </div>
-);
-
-// --- Main Page Component ---
-
-export default async function HomePage() {
-  await dbConnect();
-  
-  // Fetch live products from DB
-  const dbProducts = await Product.find({ status: 'Live' }).sort({ createdAt: -1 }).lean();
-  
-  const mappedProducts = dbProducts.map((p: any) => ({
-    id: p.handle || p._id.toString(),
-    name: p.title,
-    price: p.price,
-    salePrice: p.price, // Add logic if you add sale price to DB
-    category: p.category,
-    image: p.images?.[0]?.url || '/images/teaset.webp',
-  }));
-
-  // Centralized Data Source (fallback to static if DB is completely empty)
-  const allProducts = mappedProducts.length > 0 ? mappedProducts : STATIC_PRODUCTS;
-
-  const productsNew = allProducts.slice(0, 4);
-  const productsServeFor6 = allProducts.filter((p: any) => p.category === 'dinner-set' || p.category === 'Dinnerware').slice(0, 4);
-  const productsBowls = allProducts.filter((p: any) => p.category === 'serveware' || p.category === 'Serveware').slice(0, 4);
-
+export default function ShippingPage() {
   return (
-    <div className="min-h-screen bg-[var(--color-bg)] pb-20">
-      
-      {/* Top Announcement Bar */}
-      <div className="bg-[var(--color-primary)] text-white text-center py-2 text-sm tracking-wide">
-        Free Shipping on Orders Over ₹999
+    <div className="min-h-screen bg-[#FDFBF7]">
+      {/* Hero */}
+      <div className="bg-[#1A1A1A] text-white py-16 text-center px-4">
+        <p className="text-[#C9A84C] uppercase tracking-widest text-xs font-semibold mb-3">Policies</p>
+        <h1 className="text-4xl font-serif font-light tracking-wide">Shipping Policy</h1>
+        <p className="text-neutral-400 text-sm mt-3 font-sans">Last updated: June 2025</p>
       </div>
 
-      <HeroCarousel />
+      {/* Content */}
+      <div className="max-w-3xl mx-auto px-4 py-16 font-sans text-[#1A1A1A]">
 
-      {/* Circular Categories List */}
-      <section className="py-20 px-4 max-w-7xl mx-auto border-b-[0.5px] border-[var(--color-border)] mb-24">
-        <div className="flex justify-start overflow-x-auto gap-6 md:gap-8 lg:gap-10 pb-4 hide-scrollbar">
-          {[
-            { name: "Dinner Set", img: "/images/dinnerware_var1.webp", cat: "dinner-set" },
-            { name: "Platter", img: "/images/serveware_var1.webp", cat: "serveware" },
-            { name: "Plates", img: "/images/cat_plates.webp", cat: "plates" },
-            { name: "Snacks Set", img: "/images/cat_snacks.webp", cat: "serveware" },
-            { name: "Coffee Mug Set", img: "/images/cat_mugs.webp", cat: "mugs" },
-            { name: "Tea Cup Set", img: "/images/teaset.webp", cat: "tea-set" },
-            { name: "Cake Stands", img: "/images/cat_cakestand.webp", cat: "serveware" },
-            { name: "Opal Glass", img: "/images/cat_opalglass.webp", cat: "dinner-set" },
-          ].map((cat, idx) => (
-            <Link href={`/products?category=${cat.cat}`} key={idx} className="flex flex-col items-center group min-w-[100px] md:min-w-[110px]">
-              <div className="w-[100px] h-[100px] md:w-[110px] md:h-[110px] rounded-full overflow-hidden mb-4 relative bg-[var(--color-accent-light)] transition-all duration-700 opacity-90 grayscale-[30%] group-hover:grayscale-0 group-hover:opacity-100">
-                <Image src={cat.img} alt={cat.name} fill sizes="(max-width: 768px) 100px, 110px" priority={idx < 4} className="object-cover group-hover:scale-105 transition-transform duration-1000" />
-              </div>
-              <span className="text-[10px] md:text-[11px] text-[var(--color-primary)] font-sans tracking-[0.2em] uppercase text-center transition-all max-w-[120px] leading-relaxed">{cat.name}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Why Siphorahq Trust Signals */}
-      <section className="bg-[#FAF9F7] py-24 mb-24 border-y-[0.5px] border-[var(--color-border)]">
-        <div className="max-w-7xl mx-auto px-4">
-          <SectionHeading title="The Siphorahq Promise" />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center mt-16">
-            <div className="flex flex-col items-center">
-              <svg className="w-8 h-8 text-[var(--color-secondary)] mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M5 13l4 4L19 7"></path></svg>
-              <h3 className="font-serif text-[var(--color-primary)] text-xl mb-3 tracking-wide">Handcrafted Porcelain</h3>
-              <p className="font-sans text-[11px] uppercase tracking-[0.15em] text-[var(--color-text-muted)] leading-loose">Artisan-crafted for timeless elegance.</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <svg className="w-8 h-8 text-[var(--color-secondary)] mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-              <h3 className="font-serif text-[var(--color-primary)] text-xl mb-3 tracking-wide">Premium Packaging</h3>
-              <p className="font-sans text-[11px] uppercase tracking-[0.15em] text-[var(--color-text-muted)] leading-loose">Luxury unboxing experience guaranteed.</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <svg className="w-8 h-8 text-[var(--color-secondary)] mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-              <h3 className="font-serif text-[var(--color-primary)] text-xl mb-3 tracking-wide">Pan India Shipping</h3>
-              <p className="font-sans text-[11px] uppercase tracking-[0.15em] text-[var(--color-text-muted)] leading-loose">Securely delivered to your doorstep.</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <svg className="w-8 h-8 text-[var(--color-secondary)] mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7a4 4 0 00-8 0v4h8z"></path></svg>
-              <h3 className="font-serif text-[var(--color-primary)] text-xl mb-3 tracking-wide">Secure Payments</h3>
-              <p className="font-sans text-[11px] uppercase tracking-[0.15em] text-[var(--color-text-muted)] leading-loose">100% safe and encrypted checkout.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Product Row 1: New Arrivals */}
-      <section className="max-w-7xl mx-auto px-4 mb-20">
-        <SectionHeading title="New In Siphorahq" />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
-          {productsNew.map((product) => <ProductCard key={product.id} product={product} />)}
-        </div>
-      </section>
-
-      {/* Product Row 2: Dinner Sets */}
-      <section className="max-w-7xl mx-auto px-4 mb-20">
-        <SectionHeading title="Dinner Sets" />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
-          {productsServeFor6.map((product) => <ProductCard key={product.id} product={product} />)}
-        </div>
-        <ViewAllButton href="/products?category=dinner-set" />
-      </section>
-
-      {/* Image Collage 1 — clean 5-column grid */}
-      <section className="max-w-5xl mx-auto px-4 mb-20">
-        <div className="grid grid-cols-5 gap-2">
-          <div className="col-span-2 row-span-1 aspect-[3/2] relative bg-gray-100 overflow-hidden">
-            <Image src="/images/hero.webp" fill sizes="40vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Dining" />
-          </div>
-          <div className="col-span-1 aspect-square relative bg-gray-200 overflow-hidden">
-            <Image src="/images/teaset.webp" fill sizes="20vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Tea Set" />
-          </div>
-          <div className="col-span-1 aspect-square relative bg-gray-300 overflow-hidden">
-            <Image src="/images/dinnerware.webp" fill sizes="20vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Dinnerware" />
-          </div>
-          <div className="col-span-1 aspect-square relative bg-gray-100 overflow-hidden">
-            <Image src="/images/gifting.webp" fill sizes="20vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Gifting" />
-          </div>
-        </div>
-      </section>
-
-      {/* Product Row 3: Serveware */}
-      <section className="max-w-7xl mx-auto px-4 mb-20">
-        <SectionHeading title="Serveware" />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
-          {productsBowls.map((product) => <ProductCard key={product.id} product={product} />)}
-        </div>
-        <ViewAllButton href="/products?category=serveware" />
-      </section>
-
-      {/* Brand Story */}
-      <section className="max-w-7xl mx-auto px-4 mb-32">
-        <div className="flex flex-col md:flex-row items-stretch bg-white border-[0.5px] border-[var(--color-border)] shadow-sm">
-          <div className="w-full md:w-1/2 p-12 md:p-20 flex flex-col justify-center text-center md:text-left relative">
-            <div className="absolute top-8 left-8 text-8xl font-serif text-[var(--color-primary)] opacity-5">S</div>
-            <h2 className="text-3xl md:text-5xl font-serif text-[var(--color-primary)] mb-8 tracking-wide relative z-10">Our Story</h2>
-            <p className="text-[var(--color-text-muted)] font-sans text-sm md:text-[15px] leading-loose mb-6 relative z-10">
-              <span className="font-serif italic text-2xl text-[var(--color-primary)] mr-2">S</span>iphorahq was created to bring timeless elegance to modern homes. We believe that every meal is a meaningful moment, and the tableware you use should reflect the beauty of those shared experiences. 
-            </p>
-            <p className="text-[var(--color-text-muted)] font-sans text-sm md:text-[15px] leading-loose mb-12 relative z-10">
-              From our handcrafted porcelain to our meticulous detailing, every piece is designed to be cherished for generations, elevating your everyday dining into a luxury experience.
-            </p>
-            <Link href="/about" className="inline-block border-[0.5px] border-[var(--color-primary)] text-[var(--color-primary)] px-10 py-4 text-[10px] font-sans tracking-[0.2em] uppercase hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-500 self-start mx-auto md:mx-0 relative z-10">
-              Discover More
-            </Link>
-          </div>
-          <div className="w-full md:w-1/2 relative min-h-[500px]">
-            <Image src="/images/hero.webp" alt="Siphorahq Story" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
-          </div>
-        </div>
-      </section>
-
-      {/* Image Collage 2 */}
-      <section className="max-w-3xl mx-auto px-4 mb-20">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-          <div className="aspect-square relative bg-gray-100"><Image src="/images/gifting.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Collage 6" /></div>
-          <div className="aspect-square relative bg-gray-200"><Image src="/images/serveware.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Collage 7" /></div>
-          <div className="aspect-square relative bg-gray-300"><Image src="/images/teaset.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Collage 8" /></div>
-          <div className="aspect-square relative bg-gray-200"><Image src="/images/dinnerware.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Collage 9" /></div>
-          <div className="aspect-square relative bg-gray-100"><Image src="/images/hero.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Collage 10" /></div>
-          <div className="aspect-square relative bg-gray-200"><Image src="/images/teaset.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Collage 11" /></div>
-        </div>
-      </section>
-
-      {/* Shop Gifts by Price */}
-      <section className="max-w-7xl mx-auto px-4 mb-20">
-        <SectionHeading title="Shop Gifts by Price" />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { title: "Under ₹999", img: "/images/gifting.webp", maxPrice: 999 },
-            { title: "Under ₹2000", img: "/images/serveware.webp", maxPrice: 2000 },
-            { title: "Under ₹5000", img: "/images/dinnerware.webp", maxPrice: 5000 },
-            { title: "Under ₹10000", img: "/images/teaset.webp", maxPrice: 10000 },
-          ].map((item, idx) => (
-            <Link href={`/products?maxPrice=${item.maxPrice}`} key={idx} className="group flex flex-col relative aspect-[4/5] bg-[var(--color-accent-light)] overflow-hidden">
-              <Image src={item.img} alt={item.title} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-              {/* Overlay with Text */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-transparent flex flex-col items-center justify-start pt-8">
-                <span className="text-[var(--color-gold-light)] font-serif italic text-sm mb-1 drop-shadow-md">Gifts</span>
-                <span className="text-white font-sans font-bold tracking-widest uppercase text-xl border-b-2 border-white pb-1 drop-shadow-md">{item.title}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Collections Row */}
-      <section className="max-w-5xl mx-auto px-4 mb-20">
-        <SectionHeading title="Collections" />
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-4 text-center">
-          {[
-            { title: "Cups and Kettle Set", img: "/images/teaset.webp", cat: "tea-set" },
-            { title: "Dinner Set of 6", img: "/images/dinnerware_var2.webp", cat: "dinner-set" },
-            { title: "Dinner Set Serve For 8", img: "/images/dinnerware.webp", cat: "dinner-set" },
-            { title: "Cutlery", img: "/images/cat_plates.webp", cat: "cutlery" },
-            { title: "Drinkware", img: "/images/cat_mugs.webp", cat: "drinkware" },
-            { title: "Platter", img: "/images/serveware_var2.webp", cat: "serveware" },
-          ].map((item, idx) => (
-            <Link href={`/products?category=${item.cat}`} key={idx} className="group">
-              <div className="aspect-square rounded-full md:rounded-none overflow-hidden relative mb-2 bg-[var(--color-accent-light)]">
-                <Image src={item.img} alt={item.title} fill sizes="(max-width: 768px) 33vw, 16vw" className="object-cover group-hover:scale-110 transition-transform duration-500" />
-              </div>
-              <p className="text-[11px] md:text-sm font-sans text-[var(--color-primary)]">{item.title}</p>
-            </Link>
-          ))}
-        </div>
-        <ViewAllButton href="/products" />
-      </section>
-
-      {/* Social Proof / Reviews */}
-      <section className="bg-[#F9F8F6] py-16 mb-20 border-y border-[var(--color-border)] text-center">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="flex justify-center gap-1 mb-4 text-[#EED202]">
-            {[1,2,3,4,5].map(i => (
-              <svg key={i} className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-            ))}
-          </div>
-          <h2 className="text-2xl md:text-3xl font-serif text-[var(--color-primary)] mb-4">4.8/5 Stars — Trusted by 2,500+ Homes</h2>
-          <p className="text-[var(--color-text-muted)] font-serif italic text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto">
-            "The quality of the porcelain is absolutely breathtaking. It completely transformed our dinner parties. Siphorahq truly understands luxury."
+        <section className="mb-10">
+          <h2 className="text-xl font-serif mb-4">Free Shipping</h2>
+          <p className="text-[#6B6560] leading-relaxed text-sm">
+            We offer <strong>free standard shipping on all orders above ₹999</strong> across India. Orders below ₹999 attract a flat shipping fee of ₹79.
           </p>
-          <p className="mt-6 text-sm font-sans tracking-widest uppercase text-[var(--color-primary)]">— Anjali M., Verified Buyer</p>
-        </div>
-      </section>
+        </section>
 
-      {/* Featured Showcase Banner (Like the Blue Vintage Tea Set in Swasha) */}
-      <section className="max-w-7xl mx-auto px-4 mb-20">
-        <div className="flex flex-col md:flex-row bg-[var(--color-accent-light)] min-h-[400px]">
-          {/* Image Side */}
-          <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-full">
-            <Image src="/images/teaset.webp" alt="Featured Set" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+        <section className="mb-10">
+          <h2 className="text-xl font-serif mb-4">Processing Time</h2>
+          <p className="text-[#6B6560] leading-relaxed text-sm">
+            All orders are processed within <strong>1–2 business days</strong> after payment confirmation. Orders placed on weekends or public holidays are processed the next working day.
+          </p>
+        </section>
+
+        <section className="mb-10">
+          <h2 className="text-xl font-serif mb-4">Delivery Timeline</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border border-[#E8E0D5]">
+              <thead className="bg-[#F5F0E8]">
+                <tr>
+                  <th className="text-left px-4 py-3 font-medium uppercase tracking-widest text-xs">Zone</th>
+                  <th className="text-left px-4 py-3 font-medium uppercase tracking-widest text-xs">Estimated Delivery</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ['Metro Cities (Delhi, Mumbai, Bangalore, Chennai)', '2–4 business days'],
+                  ['Tier 2 Cities', '4–6 business days'],
+                  ['Tier 3 & Remote Areas', '6–9 business days'],
+                ].map(([zone, time]) => (
+                  <tr key={zone} className="border-t border-[#E8E0D5]">
+                    <td className="px-4 py-3 text-[#6B6560]">{zone}</td>
+                    <td className="px-4 py-3 text-[#1A1A1A] font-medium">{time}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          {/* Content Side */}
-          <div className="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center bg-[#F8F9FA]">
-            <h2 className="text-2xl md:text-3xl font-serif text-[var(--color-primary)] mb-4 leading-tight">
-              Siphorahq Blue Rose Tea Set of 17 Pcs - Premium Vintage Porcelain Tea Set For Home & Gifting
-            </h2>
-            <p className="text-[var(--color-text-muted)] font-sans text-sm md:text-base leading-relaxed mb-8">
-              Add timeless charm to your tea moments with our <strong>17-Piece Tea Set</strong>, designed in an elegant <strong>vintage porcelain style</strong>. This complete set includes cups, saucers, a kettle, milk pot, sugar pot—perfect for home use, tea parties, or gifting.
-            </p>
-            <Link href="/products" className="bg-[var(--color-primary)] text-white px-8 py-3 text-sm font-sans tracking-widest uppercase hover:bg-[var(--color-secondary)] transition-colors self-start">
-              Shop Now
-            </Link>
-          </div>
+        </section>
+
+        <section className="mb-10">
+          <h2 className="text-xl font-serif mb-4">Order Tracking</h2>
+          <p className="text-[#6B6560] leading-relaxed text-sm">
+            Once your order is dispatched, you will receive a tracking link via WhatsApp and email. You can also reach us at{' '}
+            <a href="https://wa.me/919540027978" className="text-[#C9A84C] hover:underline" target="_blank" rel="noopener noreferrer">
+              WhatsApp
+            </a>{' '}
+            for order updates.
+          </p>
+        </section>
+
+        <section className="mb-10">
+          <h2 className="text-xl font-serif mb-4">Damaged in Transit</h2>
+          <p className="text-[#6B6560] leading-relaxed text-sm">
+            All Siphorahq pieces are carefully packed with protective cushioning. In the rare event that your order arrives damaged, please photograph the package and product within <strong>24 hours of delivery</strong> and contact us via WhatsApp or email. We will arrange a replacement or full refund at no cost.
+          </p>
+        </section>
+
+        <div className="mt-12 border-t border-[#E8E0D5] pt-8 text-center">
+          <p className="text-[#6B6560] text-sm font-sans">
+            Questions? Reach us at{' '}
+            <a href="https://wa.me/919540027978" className="text-[#C9A84C] hover:underline" target="_blank" rel="noopener noreferrer">
+              WhatsApp
+            </a>{' '}
+            or{' '}
+            <a href="mailto:hello@siphorahq.in" className="text-[#C9A84C] hover:underline">
+              hello@siphorahq.in
+            </a>
+          </p>
         </div>
-      </section>
-
-      {/* Corporate Gifting Banner */}
-      <section className="relative w-full py-32 mb-20 bg-[var(--color-primary)] flex items-center justify-center border-y-[12px] border-[var(--color-accent-light)] overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image src="/images/gifting.webp" alt="Corporate Gifting" fill sizes="100vw" className="object-cover object-center opacity-30 mix-blend-overlay scale-105" />
-        </div>
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <h2 className="text-[var(--color-gold-light)] font-sans tracking-[0.3em] uppercase text-xs mb-6">Elevate Your Gifting</h2>
-          <h3 className="text-white text-5xl md:text-7xl font-serif mb-10 drop-shadow-lg tracking-wide">Luxury Corporate Gifting</h3>
-          
-          <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-12 text-white/90 font-serif italic text-xl md:text-2xl">
-            <span className="tracking-wide">For Hotels</span> <span className="text-[var(--color-gold-light)] opacity-50">•</span>
-            <span className="tracking-wide">For Weddings</span> <span className="text-[var(--color-gold-light)] opacity-50">•</span>
-            <span className="tracking-wide">For Clients</span> <span className="text-[var(--color-gold-light)] opacity-50">•</span>
-            <span className="tracking-wide">For Employees</span>
-          </div>
-
-          <Link href="/gifting" className="inline-block bg-transparent border border-white text-white px-12 py-5 text-[11px] font-sans tracking-[0.2em] uppercase hover:bg-white hover:text-[var(--color-primary)] transition-colors duration-500">
-            Explore Gifting Menu
-          </Link>
-        </div>
-      </section>
-
-      {/* SEO Content Block */}
-      <section className="bg-[var(--color-accent-light)] border-t border-[var(--color-border)] py-16 text-center px-4">
-        <h1 className="text-xl font-serif text-[var(--color-primary)] mb-4">Premium Porcelain Dinnerware & Tea Sets India | SiphoraHQ</h1>
-        <p className="text-[var(--color-text-muted)] font-sans text-sm max-w-2xl mx-auto leading-relaxed">
-          Siphorahq is India's premier destination for luxury porcelain tableware, premium dinner sets, and aesthetic home decor. We specialize in curating exquisite, handcrafted pieces that bring timeless elegance to your dining experience. Whether you are hosting a formal dinner party, looking for the perfect wedding gift, or upgrading your everyday serveware, our exclusive collections are designed to impress. Explore our wide range of premium dinnerware, luxury tea cup sets, elegant platters, and sophisticated serving bowls. With our commitment to unparalleled quality, secure packaging, and fast Pan-India shipping, Siphorahq ensures that luxury is delivered safely to your doorstep. Transform your dining space into a masterpiece with Siphorahq—where poetry meets porcelain.
-        </p>
-      </section>
-
+      </div>
     </div>
   );
 }
