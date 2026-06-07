@@ -99,7 +99,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       priceCurrency: 'INR',
       price: product.salePrice || product.price,
       availability: 'https://schema.org/InStock',
-      itemCondition: 'https://schema.org/NewCondition'
+      itemCondition: 'https://schema.org/NewCondition',
+      priceValidUntil: '2026-12-31',
+      seller: { '@type': 'Organization', name: 'SiphoraHQ' }
     },
     aggregateRating: {
       '@type': 'AggregateRating',
