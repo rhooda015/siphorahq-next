@@ -13,7 +13,7 @@ const FALLBACK_PRODUCTS = [
     price: 2800,
     category: 'cups',
     tag: '',
-    image: '/assets/siphorahq/catTeacup.webp',
+    image: '/images/teaset.webp',
     badge: 'Bestseller',
   },
   {
@@ -22,7 +22,7 @@ const FALLBACK_PRODUCTS = [
     price: 8500,
     category: 'cups',
     tag: 'gifts',
-    image: '/assets/siphorahq/cardTeasets.webp',
+    image: '/images/teaset.webp',
     badge: 'New',
   },
   {
@@ -31,7 +31,7 @@ const FALLBACK_PRODUCTS = [
     price: 14500,
     category: 'dinner',
     tag: 'gifts',
-    image: '/assets/siphorahq/catDinner.webp',
+    image: '/images/dinnerware.webp',
     badge: '',
   },
   {
@@ -40,7 +40,7 @@ const FALLBACK_PRODUCTS = [
     price: 5200,
     category: 'platters',
     tag: '',
-    image: '/assets/siphorahq/catPlatter.webp',
+    image: '/images/cat_plates.webp',
     badge: '',
   },
   {
@@ -49,7 +49,7 @@ const FALLBACK_PRODUCTS = [
     price: 1800,
     category: 'mugs',
     tag: '',
-    image: '/assets/siphorahq/catMug.webp',
+    image: '/images/cat_mugs.webp',
     badge: 'Popular',
   },
   {
@@ -58,7 +58,7 @@ const FALLBACK_PRODUCTS = [
     price: 6400,
     category: 'platters',
     tag: 'gifts',
-    image: '/assets/siphorahq/catBowls.webp',
+    image: '/images/serveware.webp',
     badge: '',
   },
 ];
