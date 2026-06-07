@@ -9,7 +9,11 @@ export default function ProductCard({ product }: { product: any }) {
       {/* Image Container */}
       <div className="aspect-[4/5] bg-[var(--color-accent-light)] relative mb-4 overflow-hidden">
         <Image 
-          src={product.image || product.img} 
+          src={
+            (product.image || product.img || '').includes('/assets/siphorahq/')
+              ? (product.image || product.img || '').replace('/assets/siphorahq/', '/images/').replace('catTeacup', 'teaset').replace('catDinner', 'dinnerware').replace('catBowls', 'serveware').replace('catMug', 'cat_mugs').replace('catPlatter', 'cat_plates').replace('cardTeasets', 'teaset').replace('catSnack', 'cat_snacks').replace('catGift', 'gifting').replace('hero1', 'hero').replace('hero2', 'dinnerware').replace('hero3', 'serveware')
+              : (product.image || product.img || '/images/dinnerware.webp')
+          }
           alt={product.name}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"
