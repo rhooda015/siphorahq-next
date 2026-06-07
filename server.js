@@ -8,7 +8,12 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.use(cors());
+app.use(cors({
+  origin: ['https://siphorahq.in', 'https://www.siphorahq.in', 'http://localhost:3000', 'http://localhost:3002'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
