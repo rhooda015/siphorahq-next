@@ -3,6 +3,20 @@ const nextConfig = {
   images: {
     unoptimized: true,
     formats: ['image/avif', 'image/webp'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'siphorahq.in',
+      },
+      {
+        protocol: 'https',
+        hostname: 'siporahq-backend.onrender.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'siphorahq-backend-production.up.railway.app',
+      },
+    ],
   },
   productionBrowserSourceMaps: true,
   experimental: {
