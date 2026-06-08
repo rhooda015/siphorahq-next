@@ -194,7 +194,7 @@ export default function ProductsPage() {
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-              {sorted.map(product => (
+              {sorted.map((product: any) => (
                 <Link
                   href={`/products/${product.id}`}
                   key={product.id}
