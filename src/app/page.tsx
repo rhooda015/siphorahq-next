@@ -61,7 +61,7 @@ export default async function HomePage() {
       <HeroCarousel />
 
       {/* Circular Categories List */}
-      <section className="py-20 px-4 max-w-7xl mx-auto border-b-[0.5px] border-[var(--color-border)] mb-24">
+      <section className="py-16 px-4 max-w-7xl mx-auto border-b-[0.5px] border-[var(--color-border)] mb-12">
         <div className="flex justify-start overflow-x-auto gap-6 md:gap-8 lg:gap-10 pb-4 hide-scrollbar">
           {[
             { name: "Dinner Set", img: "/images/dinnerware_var1.webp", cat: "dinner-set" },
@@ -84,7 +84,7 @@ export default async function HomePage() {
       </section>
 
       {/* Why Siphorahq Trust Signals */}
-      <section className="bg-[#FAF9F7] py-24 mb-24 border-y-[0.5px] border-[var(--color-border)]">
+      <section className="bg-[#FAF9F7] py-16 mb-16 border-y-[0.5px] border-[var(--color-border)]">
         <div className="max-w-7xl mx-auto px-4">
           <SectionHeading title="The Siphorahq Promise" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center mt-16">
