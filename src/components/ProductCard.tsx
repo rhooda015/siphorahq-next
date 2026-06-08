@@ -8,20 +8,10 @@ export default function ProductCard({ product }: { product: any }) {
     <Link href={`/products/${product.id}`} className="group flex flex-col relative">
       {/* Image Container */}
       <div className="aspect-[4/5] bg-[var(--color-accent-light)] relative mb-4 overflow-hidden">
-        <Image 
-src={(() => {
-              const rawImg = (product.images?.[0]?.url) || product.image || product.img || '';
-              if (!rawImg) return '/images/dinnerware.webp';
-              if (rawImg.startsWith('http')) return rawImg;
-              if (rawImg.startsWith('/images/') || rawImg.startsWith('/assets/')) return rawImg;
-              if (rawImg.length > 100) return `data:image/jpeg;base64,${rawImg}`;
-              return '/images/dinnerware.webp';
-            })()}
+        <img
+          src={(product.images?.[0]?.url) || product.image || product.img || '/images/dinnerware.webp'}
           alt={product.name}
-          fill
-          sizes="(max-width: 768px) 50vw, 25vw"
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
-          unoptimized
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         {/* Badges Container */}
         <div className="absolute top-2 left-2 flex flex-col gap-1.5 z-10 items-start">
