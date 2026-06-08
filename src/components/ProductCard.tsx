@@ -11,11 +11,12 @@ export default function ProductCard({ product }: { product: any }) {
         <Image 
           src={
             (() => {
-              const img = product.image || product.img || '';
-              if (!img) return '/images/dinnerware.webp';
-              if (img.startsWith('data:') || img.startsWith('/9j/') || img.length > 500) return `data:image/jpeg;base64,${img.startsWith('data:') ? img.split(',')[1] : img}`;
-              if (img.includes('/assets/siphorahq/')) return img.replace('/assets/siphorahq/', '/images/').replace('catTeacup', 'teaset').replace('catDinner', 'dinnerware').replace('catBowls', 'serveware').replace('catMug', 'cat_mugs').replace('catPlatter', 'cat_plates').replace('cardTeasets', 'teaset');
-              return img;
+              const rawImg = (product.images?.[0]?.url) || product.image || product.img || '';
+              if (!rawImg) return '/images/dinnerware.webp';
+              if (rawImg.startsWith('http')) return rawImg;
+              if (rawImg.startsWith('/images/') || rawImg.startsWith('/assets/')) return rawImg;
+              if (rawImg.length > 100) return `data:image/jpeg;base64,${rawImg}`;
+              return '/images/dinnerware.webp';
             })()
           }
           alt={product.name}
