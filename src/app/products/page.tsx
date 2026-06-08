@@ -202,21 +202,22 @@ export default function ProductsPage() {
                 >
                   {/* Image */}
                   <div className="relative aspect-square bg-[#F5F0E8] overflow-hidden mb-4">
-                    {product.image ? (
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-xs text-[#6B6560] font-sans tracking-widest uppercase">
-                          Image Soon
-                        </span>
-                      </div>
-                    )}
+                    {(() => {
+                      const src = (product.images?.[0]?.url) || product.image || product.img || '';
+                      return src ? (
+                        <img
+                          src={src}
+                          alt={product.name}
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-xs text-[#6B6560] font-sans tracking-widest uppercase">
+                            Image Soon
+                          </span>
+                        </div>
+                      );
+                    })()}
 
                     {/* Badge */}
                     {product.badge && (
