@@ -92,7 +92,7 @@ export default function ProductsPage() {
   // Try live backend — fall back to local catalog silently
   useEffect(() => {
     setLoading(true);
-    fetch('https://siporahq-backend.onrender.com/api/products')
+    fetch('/api/products')
       .then(res => { if (!res.ok) throw new Error('unavailable'); return res.json(); })
       .then(data => { if (Array.isArray(data) && data.length > 0) setProducts(data); })
       .catch(() => { /* silently use fallback */ })
