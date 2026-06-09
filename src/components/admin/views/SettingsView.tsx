@@ -165,14 +165,7 @@ export default function SettingsView() {
                       </div>
                     </div>
                     <div className="p-5 border-t border-zinc-200 bg-white space-y-4">
-                      <div>
-                        <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">Key ID</label>
-                        <input type="text" name="razorpayKeyId" value={settings.razorpayKeyId} onChange={handleChange} placeholder="rzp_live_xxxxxxxxxxx" className="w-full border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#18181b]/10 outline-none" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">Key Secret</label>
-                        <input type="password" name="razorpayKeySecret" value={settings.razorpayKeySecret} onChange={handleChange} placeholder="xxxxxxxxxxxxxxxxxxxx" className="w-full border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#18181b]/10 outline-none" />
-                      </div>
+                      <p className="text-sm text-zinc-500">Razorpay keys are managed via environment variables in Vercel for security. Contact your developer to update them.</p>
                     </div>
                   </div>
                 </div>
