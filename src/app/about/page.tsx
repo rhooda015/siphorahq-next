@@ -50,7 +50,7 @@ export default function AboutPage() {
       {/* The Promise Section */}
       <section className="bg-[var(--color-accent-light)] py-24 border-y-[0.5px] border-[var(--color-border)]">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-primary)] mb-16 tracking-wide">The Siphora Promise</h2>
+          <h2 className="text-3xl md:text-4xl font-serif text-[var(--color-primary)] mb-16 tracking-wide">The Siphorahq Promise</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left max-w-2xl mx-auto">
             <div className="flex gap-4">
