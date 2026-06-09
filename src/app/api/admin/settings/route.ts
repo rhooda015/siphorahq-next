@@ -1,8 +1,12 @@
+import { verifyAdminRequest } from '@/lib/adminAuth';
+import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import StoreSettings from '@/models/StoreSettings';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const authError = await verifyAdminRequest(req);
+  if (authError) return authError.error;
   try {
     await dbConnect();
     let settings = await StoreSettings.findOne();

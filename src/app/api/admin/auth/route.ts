@@ -1,8 +1,14 @@
+import { NextRequest } from 'next/server';
+import { checkRateLimit, resetRateLimit } from '@/lib/rateLimit';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { SignJWT } from 'jose';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+  if (!checkRateLimit(ip)) {
+    return NextResponse.json({ error: 'Too many attempts. Try again in 15 minutes.' }, { status: 429 });
+  }
   try {
     const { username, password } = await request.json();
 
@@ -36,6 +42,7 @@ export async function POST(request: Request) {
       maxAge: 60 * 60 * 8,
     });
 
+    resetRateLimit(ip);
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
