@@ -10,8 +10,13 @@ import ProductsTableView from '@/components/admin/views/ProductsTableView';
 import OrdersTableView from '@/components/admin/views/OrdersTableView';
 import AnalyticsView from '@/components/admin/views/AnalyticsView';
 import SettingsView from '@/components/admin/views/SettingsView';
-import PlaceholderView from '@/components/admin/views/PlaceholderView';
-
+import CollectionsView from '@/components/admin/views/CollectionsView';
+import CustomersView from '@/components/admin/views/CustomersView';
+import HomepageBuilderView from '@/components/admin/views/HomepageBuilderView';
+import MediaLibraryView from '@/components/admin/views/MediaLibraryView';
+import CouponsView from '@/components/admin/views/CouponsView';
+import ReviewsView from '@/components/admin/views/ReviewsView';
+import SEOView from '@/components/admin/views/SEOView';
 export default function AdminSPA() {
   const [activeTab, setActiveTab] = useState('Overview');
   const [toast, setToast] = useState<{message: string, type: 'success'|'error'} | null>(null);
@@ -169,14 +174,14 @@ export default function AdminSPA() {
               {activeTab === 'Analytics' && <AnalyticsView stats={stats} />}
               {activeTab === 'Settings' && <SettingsView />}
               
-              {/* Missing Features Mocks */}
-              {activeTab === 'Collections' && <PlaceholderView title="Collections Manager" desc="Organize products into automated or manual collections. Feature rolling out in Q4." />}
-              {activeTab === 'Homepage' && <PlaceholderView title="Homepage Builder" desc="Drag and drop UI components to customize the storefront hero, featured categories, and layout." />}
-              {activeTab === 'Media' && <PlaceholderView title="Media Library" desc="Centralized storage for all high-resolution images, videos, and 3D models." />}
-              {activeTab === 'Coupons' && <PlaceholderView title="Discount Engine" desc="Advanced promotional rules, BOGO offers, and automated discount generation." />}
-              {activeTab === 'Customers' && <PlaceholderView title="Customer CRM" desc="Detailed customer profiles, purchase history, and segmentation tools." />}
-              {activeTab === 'Reviews' && <PlaceholderView title="Review Moderation" desc="Approve, reject, and reply to customer product reviews." />}
-              {activeTab === 'SEO' && <PlaceholderView title="SEO Center" desc="Global meta configurations, canonical tags, and 301 redirect management." />}
+              {/* New Premium UIs (Mock Data) */}
+              {activeTab === 'Collections' && <CollectionsView />}
+              {activeTab === 'Homepage' && <HomepageBuilderView />}
+              {activeTab === 'Media' && <MediaLibraryView />}
+              {activeTab === 'Coupons' && <CouponsView />}
+              {activeTab === 'Customers' && <CustomersView />}
+              {activeTab === 'Reviews' && <ReviewsView />}
+              {activeTab === 'SEO' && <SEOView />}
             </>
           )}
 
