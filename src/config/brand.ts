@@ -10,7 +10,7 @@ export const BRAND = {
     email: "concierge@siphorahq.in"
   },
   freeShippingThreshold: 999,
-  shippingCost: 500,
+  shippingCost: 99,
 };
 
 /**
