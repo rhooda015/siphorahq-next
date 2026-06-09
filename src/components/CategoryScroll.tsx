@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -16,6 +16,7 @@ const categories = [
 
 export default function CategoryScroll() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -25,39 +26,103 @@ export default function CategoryScroll() {
     }
   };
 
+  // Update active dot based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        const maxScroll = scrollWidth - clientWidth;
+        const index = Math.round((scrollLeft / maxScroll) * 2); // Map to 3 dots (0, 1, 2)
+        setActiveIndex(Math.min(Math.max(index, 0), 2));
+      }
+    };
+    
+    const refCurrent = scrollRef.current;
+    if (refCurrent) {
+      refCurrent.addEventListener('scroll', handleScroll);
+      return () => refCurrent.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
   return (
-    <section className="py-6 px-4 max-w-7xl mx-auto border-b-[0.5px] border-[var(--color-border)] mb-8 relative group">
-      {/* Left Button */}
+    <section className="py-8 px-4 max-w-7xl mx-auto mb-8 relative group">
+      
+      {/* Luxury Left Button */}
       <button 
         onClick={() => scroll('left')} 
-        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/90 p-1.5 md:p-2 rounded-full shadow-md opacity-80 hover:opacity-100 transition-opacity"
+        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full border border-[#D4AF37]/50 bg-white/20 backdrop-blur-md text-[#D4AF37] flex justify-center items-center cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.1),_0_2px_10px_rgba(212,175,55,0.12)] transition-all duration-400 hover:bg-[#D4AF37] hover:border-[#D4AF37] hover:text-white hover:shadow-[0_6px_25px_rgba(212,175,55,0.4)] opacity-0 group-hover:opacity-100 disabled:opacity-0 hidden md:flex"
         aria-label="Scroll left"
       >
-        <svg className="w-5 h-5 md:w-6 md:h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 19l-7-7 7-7"></path></svg>
+        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current transition-transform duration-300 group-hover:-translate-x-0.5"><path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z"/></svg>
       </button>
 
+      {/* Carousel Container with Edge Fading */}
       <div 
-        ref={scrollRef}
-        className="flex justify-start overflow-x-auto gap-6 md:gap-8 lg:gap-10 pb-4 hide-scrollbar snap-x snap-mandatory px-6 md:px-10"
+        className="relative w-full overflow-hidden"
+        style={{
+          WebkitMaskImage: 'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)',
+          maskImage: 'linear-gradient(to right, transparent, #000 8%, #000 92%, transparent)'
+        }}
       >
-        {categories.map((cat, idx) => (
-          <Link href={`/products?category=${cat.cat}`} key={idx} className="flex flex-col items-center group/item min-w-[100px] md:min-w-[110px] snap-start">
-            <div className="w-[100px] h-[100px] md:w-[110px] md:h-[110px] rounded-full overflow-hidden mb-4 relative bg-[var(--color-accent-light)] transition-all duration-700 opacity-90 grayscale-[30%] group-hover/item:grayscale-0 group-hover/item:opacity-100">
-              <Image src={cat.img} alt={cat.name} fill sizes="(max-width: 768px) 100px, 110px" priority={idx < 4} className="object-cover group-hover/item:scale-105 transition-transform duration-1000" />
-            </div>
-            <span className="text-[10px] md:text-[11px] text-[var(--color-primary)] font-sans tracking-[0.2em] uppercase text-center transition-all max-w-[120px] leading-relaxed">{cat.name}</span>
-          </Link>
-        ))}
+        <div 
+          ref={scrollRef}
+          className="flex justify-start overflow-x-auto gap-6 md:gap-10 pb-8 pt-4 hide-scrollbar snap-x snap-mandatory px-[8%]"
+        >
+          {categories.map((cat, idx) => (
+            <Link href={`/products?category=${cat.cat}`} key={idx} className="flex flex-col items-center group/card min-w-[110px] md:min-w-[130px] snap-center cursor-pointer">
+              
+              {/* Image Wrapper with Luxury Double Ring */}
+              <div className="relative w-[110px] h-[110px] md:w-[130px] md:h-[130px] rounded-full p-[5px] border-[1.5px] border-[#D4AF37] bg-[var(--color-bg)] overflow-visible mb-5 transition-all duration-400 group-hover/card:border-white group-hover/card:shadow-[0_0_20px_rgba(212,175,55,0.4)] flex justify-center items-center">
+                
+                {/* Inner Image */}
+                <div className="w-full h-full rounded-full overflow-hidden relative">
+                   <Image 
+                     src={cat.img} 
+                     alt={cat.name} 
+                     fill 
+                     sizes="(max-width: 768px) 110px, 130px" 
+                     priority={idx < 5} 
+                     className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover/card:scale-110" 
+                   />
+                </div>
+              </div>
+
+              <span className="text-[11px] md:text-sm text-[var(--color-primary)] font-serif tracking-[0.1em] uppercase text-center transition-colors duration-300 group-hover/card:text-[#D4AF37] max-w-[130px] leading-relaxed">
+                {cat.name}
+              </span>
+            </Link>
+          ))}
+        </div>
       </div>
 
-      {/* Right Button */}
+      {/* Luxury Right Button */}
       <button 
         onClick={() => scroll('right')} 
-        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/90 p-1.5 md:p-2 rounded-full shadow-md opacity-80 hover:opacity-100 transition-opacity"
+        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full border border-[#D4AF37]/50 bg-white/20 backdrop-blur-md text-[#D4AF37] flex justify-center items-center cursor-pointer shadow-[0_4px_20px_rgba(0,0,0,0.1),_0_2px_10px_rgba(212,175,55,0.12)] transition-all duration-400 hover:bg-[#D4AF37] hover:border-[#D4AF37] hover:text-white hover:shadow-[0_6px_25px_rgba(212,175,55,0.4)] opacity-0 group-hover:opacity-100 hidden md:flex"
         aria-label="Scroll right"
       >
-        <svg className="w-5 h-5 md:w-6 md:h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5l7 7-7 7"></path></svg>
+        <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current transition-transform duration-300 group-hover:translate-x-0.5"><path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z"/></svg>
       </button>
+
+      {/* Luxury Pill Pagination */}
+      <div className="flex justify-center items-center gap-3 mt-4">
+        {[0, 1, 2].map((i) => (
+          <div 
+            key={i} 
+            className={`h-2 rounded-full transition-all duration-400 ease-[cubic-bezier(0.25,1,0.5,1)] cursor-pointer ${
+              activeIndex === i 
+                ? 'w-7 bg-[#D4AF37] shadow-[0_0_10px_rgba(212,175,55,0.4)]' 
+                : 'w-2 bg-[#D4AF37]/20'
+            }`}
+            onClick={() => {
+              if (scrollRef.current) {
+                const maxScroll = scrollRef.current.scrollWidth - scrollRef.current.clientWidth;
+                scrollRef.current.scrollTo({ left: (maxScroll / 2) * i, behavior: 'smooth' });
+              }
+            }}
+          />
+        ))}
+      </div>
     </section>
   );
 }
