@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Bell, Check, AlertCircle, Search, Menu, Plus, LogOut } from 'lucide-react';
 import ProductEditor from '@/components/admin/ProductEditor';
 
