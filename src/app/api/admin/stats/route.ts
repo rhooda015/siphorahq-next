@@ -35,12 +35,28 @@ export async function GET() {
       }
     });
 
+    // Top products from orders
+    const productSales: Record<string, {name: string, sales: number, rev: number}> = {};
+    orders.forEach(order => {
+      (order.items || order.lineItems || []).forEach((item: any) => {
+        const name = item.productName || item.title || 'Unknown';
+        if (!productSales[name]) productSales[name] = { name, sales: 0, rev: 0 };
+        productSales[name].sales += item.quantity || 1;
+        productSales[name].rev += (item.price || 0) * (item.quantity || 1);
+      });
+    });
+    const topProducts = Object.values(productSales)
+      .sort((a, b) => b.sales - a.sales)
+      .slice(0, 3)
+      .map(p => ({ ...p, rev: '₹' + p.rev.toLocaleString() }));
+
     return NextResponse.json({
       revenue: totalRevenue,
       orders: totalOrders,
       avgOrderValue,
       pendingDispatch,
-      chartData
+      chartData,
+      topProducts
     });
 
   } catch (error) {

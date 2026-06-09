@@ -14,8 +14,7 @@ export default function SettingsView() {
     storePhone: '',
     freeShippingThreshold: 999,
     flatShippingRate: 100,
-    razorpayKeyId: '',
-    razorpayKeySecret: '',
+
   });
 
   const tabs = [
@@ -43,8 +42,7 @@ export default function SettingsView() {
           storePhone: data.storePhone || '',
           freeShippingThreshold: data.freeShippingThreshold || 999,
           flatShippingRate: data.flatShippingRate || 100,
-          razorpayKeyId: data.razorpayKeyId || '',
-          razorpayKeySecret: data.razorpayKeySecret || '',
+
         });
       }
     } catch (error) {
