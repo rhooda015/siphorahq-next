@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import ProductCard from '@/components/ProductCard';
 
 // ── LOCAL FALLBACK CATALOG ─────────────────────────────────────────────────
 // Used when backend is unavailable. Replace with real API data when ready.
@@ -94,7 +95,18 @@ export default function ProductsPage() {
     setLoading(true);
     fetch('/api/products')
       .then(res => { if (!res.ok) throw new Error('unavailable'); return res.json(); })
-      .then(data => { if (Array.isArray(data) && data.length > 0) setProducts(data); })
+      .then(data => { 
+        if (Array.isArray(data) && data.length > 0) {
+          const mapped = data.map(p => ({
+            ...p,
+            id: p.handle || p._id?.toString() || p.id,
+            name: p.title || p.name,
+            image: p.images?.[0]?.url || p.image,
+            price: p.price || 0
+          }));
+          setProducts(mapped);
+        }
+      })
       .catch(() => { /* silently use fallback */ })
       .finally(() => setLoading(false));
   }, []);
@@ -195,53 +207,7 @@ export default function ProductsPage() {
 
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
               {sorted.map((product: any) => (
-                <Link
-                  href={`/products/${product.id}`}
-                  key={product.id}
-                  className="group cursor-pointer"
-                >
-                  {/* Image */}
-                  <div className="relative aspect-square bg-[#F5F0E8] overflow-hidden mb-4">
-                    {(() => {
-                      const src = (product.images?.[0]?.url) || product.image || product.img || '';
-                      return src ? (
-                        <img
-                          src={src}
-                          alt={product.name}
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-xs text-[#6B6560] font-sans tracking-widest uppercase">
-                            Image Soon
-                          </span>
-                        </div>
-                      );
-                    })()}
-
-                    {/* Badge */}
-                    {product.badge && (
-                      <span className="absolute top-3 left-3 bg-[#C9A84C] text-white text-[10px] font-sans uppercase tracking-widest px-2 py-1">
-                        {product.badge}
-                      </span>
-                    )}
-
-                    {/* Quick Add overlay */}
-                    <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                      <button className="w-full bg-white/90 backdrop-blur-sm text-black py-3 text-xs uppercase tracking-widest font-medium hover:bg-[#1A1A1A] hover:text-white transition-colors">
-                        Quick View
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Details */}
-                  <h3 className="text-sm md:text-base font-serif text-[#1A1A1A] mb-1 group-hover:text-[#C9A84C] transition-colors leading-snug">
-                    {product.name}
-                  </h3>
-                  <p className="text-sm text-[#6B6560] font-sans">
-                    {formatPrice(product.price)}
-                  </p>
-                </Link>
+                <ProductCard key={product.id || product._id || Math.random()} product={product} />
               ))}
             </div>
           </>

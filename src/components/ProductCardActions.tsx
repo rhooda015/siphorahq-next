@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { trackAddToCart } from '@/lib/analytics';
 import { useCart } from '@/store/useCart';
 import { useWishlist } from '@/store/useWishlist';
 import { useSession } from 'next-auth/react';
 
 export default function ProductCardActions({ product }: { product: any }) {
+  const [showQuickView, setShowQuickView] = useState(false);
   const addItem = useCart((state) => state.addItem);
   const { data: session } = useSession();
   const { items, addItem: addWishlist, removeItem: removeWishlist, hasItem, setItems } = useWishlist();
@@ -40,7 +41,8 @@ export default function ProductCardActions({ product }: { product: any }) {
         <button 
           onClick={(e) => {
             e.preventDefault();
-            window.location.href = `/products/${product.id || product.slug || '1'}`;
+            e.stopPropagation();
+            setShowQuickView(true);
           }}
           className="w-full bg-white/95 backdrop-blur-sm text-[var(--color-text-muted)] uppercase tracking-widest text-[10px] font-medium py-2 border-b border-[var(--color-border)] hover:bg-neutral-50 transition-colors"
         >
@@ -49,6 +51,7 @@ export default function ProductCardActions({ product }: { product: any }) {
         <button 
           onClick={(e) => {
             e.preventDefault();
+            e.stopPropagation();
             addItem(product, 1);
             trackAddToCart(product, 1);
             alert(`${product.name} added to cart!`);
@@ -68,6 +71,66 @@ export default function ProductCardActions({ product }: { product: any }) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
         </svg>
       </button>
+
+      {/* Quick View Modal */}
+      {showQuickView && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm cursor-default" 
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowQuickView(false); }}
+        >
+          <div 
+            className="bg-[#FAF9F7] p-6 max-w-3xl w-full flex flex-col md:flex-row gap-8 relative shadow-2xl overflow-hidden" 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+          >
+            <button 
+              className="absolute top-4 right-4 text-gray-500 hover:text-black z-10" 
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowQuickView(false); }}
+            >
+              ✕
+            </button>
+            <div className="w-full md:w-1/2 aspect-square relative bg-white border border-[var(--color-border)]">
+               <img 
+                 src={(product.images?.[0]?.url) || product.image || product.img || '/images/dinnerware.webp'} 
+                 alt={product.name} 
+                 className="absolute inset-0 w-full h-full object-cover" 
+               />
+            </div>
+            <div className="w-full md:w-1/2 flex flex-col justify-center">
+               <h2 className="text-3xl font-serif text-[var(--color-primary)] mb-3 leading-tight">{product.name}</h2>
+               <p className="text-xl font-sans text-[var(--color-primary)] mb-6">
+                 ₹{(product.salePrice || product.price).toLocaleString('en-IN')}
+               </p>
+               <p className="text-sm font-sans text-[var(--color-text-muted)] mb-8 leading-relaxed line-clamp-4">
+                 {product.description || 'Elevate your everyday dining with this premium handcrafted porcelain piece. Designed for timeless elegance and luxury.'}
+               </p>
+               
+               <button 
+                 onClick={(e) => {
+                   e.preventDefault();
+                   e.stopPropagation();
+                   addItem(product, 1);
+                   trackAddToCart(product, 1);
+                   setShowQuickView(false);
+                   alert(`${product.name} added to cart!`);
+                 }}
+                 className="w-full bg-[var(--color-primary)] text-white uppercase tracking-widest text-xs font-medium py-4 hover:bg-[var(--color-secondary)] transition-colors mb-3 shadow-md"
+               >
+                 Add to Cart
+               </button>
+               <button 
+                 onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = `/products/${product.id || product.slug || '1'}`;
+                 }}
+                 className="w-full bg-transparent text-[var(--color-primary)] border border-[var(--color-primary)] uppercase tracking-widest text-xs font-medium py-4 hover:bg-[var(--color-primary)] hover:text-white transition-colors"
+               >
+                 View Full Details
+               </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
