@@ -8,7 +8,7 @@ import CategoryScroll from '@/components/CategoryScroll';
 import ProductCard from '@/components/ProductCard';
 import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
-
+import StoreSettings from '@/models/StoreSettings';
 export const revalidate = 0; // Disable caching to always show live products
 
 // --- Reusable Components for exact Swasha UI ---
@@ -35,6 +35,14 @@ export default async function HomePage() {
   // Fetch live products from DB
   const dbProducts = await Product.find({ status: 'Live' }).sort({ createdAt: -1 }).lean();
   
+  // Fetch homepage settings
+  const settings = await StoreSettings.findOne().lean() || {
+    heroTitle: 'Handcrafted Porcelain for Timeless Gatherings',
+    heroButtonText: 'Shop Now',
+    heroButtonLink: '/products',
+    heroSlides: ['/images/hero.webp', '/images/serveware.webp', '/images/gifting.webp'],
+  };
+  
   const mappedProducts = dbProducts.map((p: any) => ({
     id: p.handle || p._id.toString(),
     name: p.title,
@@ -59,7 +67,12 @@ export default async function HomePage() {
         Free Shipping on Orders Over ₹999
       </div>
 
-      <HeroCarousel />
+      <HeroCarousel 
+        slides={settings.heroSlides}
+        title={settings.heroTitle}
+        buttonText={settings.heroButtonText}
+        buttonLink={settings.heroButtonLink}
+      />
 
       <CategoryScroll />
 

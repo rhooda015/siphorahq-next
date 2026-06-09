@@ -3,14 +3,24 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-export default function HeroCarousel() {
+interface HeroCarouselProps {
+  slides: string[];
+  title: string;
+  buttonText: string;
+  buttonLink: string;
+}
+
+export default function HeroCarousel({ slides, title, buttonText, buttonLink }: HeroCarouselProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const heroSlides = [
-    { id: 1, img: "/images/hero.webp" },
-    { id: 2, img: "/images/serveware.webp" },
-    { id: 3, img: "/images/gifting.webp" },
-  ];
+  // Fallback to default slides if none provided
+  const heroSlides = slides && slides.length > 0 
+    ? slides.map((img, id) => ({ id, img }))
+    : [
+        { id: 1, img: "/images/hero.webp" },
+        { id: 2, img: "/images/serveware.webp" },
+        { id: 3, img: "/images/gifting.webp" },
+      ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -41,13 +51,13 @@ export default function HeroCarousel() {
       
       <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none px-4">
         <h2 className="text-white text-4xl md:text-6xl font-serif mb-6 text-center shadow-sm drop-shadow-lg tracking-wide max-w-4xl leading-tight">
-          Handcrafted Porcelain for Timeless Gatherings
+          {title || 'Handcrafted Porcelain for Timeless Gatherings'}
         </h2>
         <a 
-          href="/products" 
+          href={buttonLink || '/products'} 
           className="pointer-events-auto bg-white text-[var(--color-primary)] px-8 py-3 uppercase tracking-widest text-sm font-medium hover:bg-gray-100 transition-colors shadow-lg"
         >
-          Shop Now
+          {buttonText || 'Shop Now'}
         </a>
       </div>
       
