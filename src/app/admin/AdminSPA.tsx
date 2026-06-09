@@ -151,7 +151,7 @@ export default function AdminSPA() {
                 <p className="text-[11px] font-medium text-zinc-500">Store Owner</p>
               </div>
             </div>
-            <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-zinc-500 hover:text-red-600 transition-colors ml-2 border border-zinc-200 rounded-lg px-3 py-1.5">
+            <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-zinc-500 hover:text-red-600 transition-colors ml-2 border border-zinc-200 rounded-lg px-3 py-1.5 relative z-50 cursor-pointer">
               <LogOut size={15} />
               <span className="hidden md:block">Logout</span>
             </button>
