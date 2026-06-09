@@ -5,6 +5,17 @@ export interface IStoreSettings extends Document {
   heroButtonText: string;
   heroButtonLink: string;
   heroSlides: string[];
+  // Settings
+  storeName: string;
+  storeEmail: string;
+  storePhone: string;
+  freeShippingThreshold: number;
+  flatShippingRate: number;
+  razorpayKeyId: string;
+  razorpayKeySecret: string;
+  // SEO
+  seoTitle: string;
+  seoDescription: string;
 }
 
 const StoreSettingsSchema = new mongoose.Schema(
@@ -16,6 +27,19 @@ const StoreSettingsSchema = new mongoose.Schema(
       type: [String], 
       default: ['/images/hero.webp', '/images/serveware.webp', '/images/gifting.webp'] 
     },
+    
+    // Settings
+    storeName: { type: String, default: 'Siphorahq' },
+    storeEmail: { type: String, default: 'support@siphorahq.in' },
+    storePhone: { type: String, default: '+91 9876543210' },
+    freeShippingThreshold: { type: Number, default: 999 },
+    flatShippingRate: { type: Number, default: 100 },
+    razorpayKeyId: { type: String, default: '' },
+    razorpayKeySecret: { type: String, default: '' },
+
+    // SEO
+    seoTitle: { type: String, default: 'Siphorahq — Luxury Porcelain Dinnerware India' },
+    seoDescription: { type: String, default: 'Shop artisan-made porcelain tea cup sets, luxury dinnerware, and handcrafted gifting collections — designed in India, delivered nationwide.' },
   },
   { timestamps: true }
 );

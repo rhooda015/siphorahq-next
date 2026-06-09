@@ -1,13 +1,58 @@
-import React from 'react';
-import { Search, Link as LinkIcon, Globe, Save } from 'lucide-react';
+'use client';
+import React, { useState, useEffect } from 'react';
+import { Search, Link as LinkIcon, Globe, Save, Loader2 } from 'lucide-react';
 
 export default function SEOView() {
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [seoTitle, setSeoTitle] = useState('');
+  const [seoDescription, setSeoDescription] = useState('');
+
   const pages = [
-    { id: 1, path: '/', title: 'Siphorahq — Luxury Porcelain Dinnerware India', status: 'Optimized' },
+    { id: 1, path: '/', title: seoTitle || 'Siphorahq — Luxury Porcelain Dinnerware India', status: 'Optimized' },
     { id: 2, path: '/products', title: 'All Collections | Siphorahq Dinnerware', status: 'Optimized' },
     { id: 3, path: '/our-story', title: 'Our Story & Craftsmanship | Siphorahq', status: 'Needs Improvement' },
     { id: 4, path: '/contact', title: 'Contact Support', status: 'Draft' },
   ];
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const res = await fetch('/api/admin/settings');
+      if (res.ok) {
+        const data = await res.json();
+        setSeoTitle(data.seoTitle || 'Siphorahq — Luxury Porcelain Dinnerware India');
+        setSeoDescription(data.seoDescription || 'Shop artisan-made porcelain tea cup sets, luxury dinnerware, and handcrafted gifting collections.');
+      }
+    } catch (error) {
+      console.error('Failed to fetch SEO settings', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seoTitle, seoDescription }),
+      });
+      alert('SEO Settings saved successfully!');
+    } catch (error) {
+      console.error('Failed to save SEO settings', error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return <div className="p-12 text-center text-zinc-500"><Loader2 className="animate-spin mx-auto mb-4"/> Loading SEO Center...</div>;
+  }
 
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
@@ -18,8 +63,9 @@ export default function SEOView() {
           <h1 className="text-2xl font-bold text-[#18181b]">SEO Center</h1>
           <p className="text-zinc-500 text-sm mt-1">Manage global meta configurations, canonical tags, and 301 redirects.</p>
         </div>
-        <button className="bg-[#18181b] text-white px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-black transition-colors flex items-center gap-2">
-          <Save size={16} /> Save Changes
+        <button onClick={handleSave} disabled={saving} className="bg-[#18181b] text-white px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-black transition-colors flex items-center gap-2 disabled:opacity-70">
+          {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
+          {saving ? 'Saving...' : 'Save Changes'}
         </button>
       </div>
 
@@ -59,17 +105,27 @@ export default function SEOView() {
             <div>
               <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2 flex justify-between">
                 <span>Page Title</span>
-                <span className="text-zinc-400 font-normal">51 / 60 chars</span>
+                <span className={`font-normal ${seoTitle.length > 60 ? 'text-red-500' : 'text-zinc-400'}`}>{seoTitle.length} / 60 chars</span>
               </label>
-              <input type="text" defaultValue="Siphorahq — Luxury Porcelain Dinnerware India" className="w-full border border-zinc-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-[#18181b]/10 outline-none font-medium" />
+              <input 
+                type="text" 
+                value={seoTitle}
+                onChange={(e) => setSeoTitle(e.target.value)}
+                className="w-full border border-zinc-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-[#18181b]/10 outline-none font-medium" 
+              />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2 flex justify-between">
                 <span>Meta Description</span>
-                <span className="text-zinc-400 font-normal">142 / 160 chars</span>
+                <span className={`font-normal ${seoDescription.length > 160 ? 'text-red-500' : 'text-zinc-400'}`}>{seoDescription.length} / 160 chars</span>
               </label>
-              <textarea rows={4} defaultValue="Shop artisan-made porcelain tea cup sets, luxury dinnerware, and handcrafted gifting collections — designed in India, delivered nationwide." className="w-full border border-zinc-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-[#18181b]/10 outline-none leading-relaxed" />
+              <textarea 
+                rows={4} 
+                value={seoDescription}
+                onChange={(e) => setSeoDescription(e.target.value)}
+                className="w-full border border-zinc-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-[#18181b]/10 outline-none leading-relaxed" 
+              />
             </div>
             
             <div className="pt-4 border-t border-zinc-100">
@@ -79,8 +135,8 @@ export default function SEOView() {
                   <div className="w-4 h-4 bg-zinc-200 rounded-full flex items-center justify-center text-[8px] font-bold">S</div>
                   <div className="text-xs text-[#202124]">siphorahq.in <span className="text-zinc-400">›</span></div>
                 </div>
-                <div className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer">Siphorahq — Luxury Porcelain Dinnerware India</div>
-                <div className="text-[13px] text-[#4d5156] leading-snug">Shop artisan-made porcelain tea cup sets, luxury dinnerware, and handcrafted gifting collections — designed in India, delivered nationwide.</div>
+                <div className="text-[18px] text-[#1a0dab] hover:underline cursor-pointer">{seoTitle}</div>
+                <div className="text-[13px] text-[#4d5156] leading-snug">{seoDescription}</div>
               </div>
             </div>
 

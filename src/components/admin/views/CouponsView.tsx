@@ -1,13 +1,86 @@
-import React from 'react';
-import { Plus, Search, MoreHorizontal, Copy, Calendar } from 'lucide-react';
+'use client';
+import React, { useState, useEffect } from 'react';
+import { Plus, Search, MoreHorizontal, Copy, Calendar, Loader2, X, Trash2 } from 'lucide-react';
 
 export default function CouponsView() {
-  const coupons = [
-    { id: 1, code: 'WELCOME10', type: 'Percentage', value: '10%', usage: '145 / ∞', status: 'Active', expiry: 'Never' },
-    { id: 2, code: 'FESTIVE500', type: 'Fixed Amount', value: '₹500', usage: '42 / 100', status: 'Active', expiry: 'Oct 31, 2026' },
-    { id: 3, code: 'FREESHIP', type: 'Free Shipping', value: 'Free', usage: '890 / ∞', status: 'Active', expiry: 'Never' },
-    { id: 4, code: 'FLASH20', type: 'Percentage', value: '20%', usage: '500 / 500', status: 'Expired', expiry: 'Jan 1, 2026' },
-  ];
+  const [coupons, setCoupons] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  
+  // Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
+  
+  // Form State
+  const [code, setCode] = useState('');
+  const [desc, setDesc] = useState('');
+  const [discountValue, setDiscountValue] = useState('');
+  const [discountType, setDiscountType] = useState('percentage');
+  const [maxUses, setMaxUses] = useState('');
+  
+  useEffect(() => {
+    fetchCoupons();
+  }, []);
+
+  const fetchCoupons = async () => {
+    try {
+      const res = await fetch('/api/admin/coupons');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setCoupons(data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch coupons', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreate = async () => {
+    if (!code || !discountValue || !desc) return alert('Please fill all required fields');
+    setSaving(true);
+    try {
+      const res = await fetch('/api/admin/coupons', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code,
+          desc,
+          discountValue: Number(discountValue),
+          discountType,
+          maxUses: maxUses ? Number(maxUses) : null,
+        }),
+      });
+      if (res.ok) {
+        setIsModalOpen(false);
+        setCode(''); setDesc(''); setDiscountValue(''); setMaxUses('');
+        fetchCoupons();
+      } else {
+        const error = await res.json();
+        alert(error.error || 'Failed to create coupon');
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this coupon?')) return;
+    try {
+      await fetch(`/api/admin/coupons?id=${id}`, { method: 'DELETE' });
+      fetchCoupons();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const filteredCoupons = coupons.filter(c => c.code.toLowerCase().includes(search.toLowerCase()));
+
+  if (loading) {
+    return <div className="p-12 text-center text-zinc-500"><Loader2 className="animate-spin mx-auto mb-4"/> Loading Coupons...</div>;
+  }
 
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
@@ -18,7 +91,7 @@ export default function CouponsView() {
           <h1 className="text-2xl font-bold text-[#18181b]">Discount Engine</h1>
           <p className="text-zinc-500 text-sm mt-1">Create promotional codes, BOGO offers, and automated discounts.</p>
         </div>
-        <button className="bg-[#18181b] text-white px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-black transition-colors flex items-center gap-2">
+        <button onClick={() => setIsModalOpen(true)} className="bg-[#18181b] text-white px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-black transition-colors flex items-center gap-2">
           <Plus size={16} /> Create Coupon
         </button>
       </div>
@@ -27,7 +100,13 @@ export default function CouponsView() {
       <div className="flex gap-4">
         <div className="relative flex-1 bg-white border border-zinc-200 rounded-lg overflow-hidden shadow-sm">
           <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
-          <input type="text" placeholder="Search coupons by code..." className="w-full bg-transparent border-none pl-11 pr-4 py-3 text-sm focus:ring-0 outline-none" />
+          <input 
+            type="text" 
+            placeholder="Search coupons by code..." 
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full bg-transparent border-none pl-11 pr-4 py-3 text-sm focus:ring-0 outline-none" 
+          />
         </div>
       </div>
 
@@ -38,36 +117,36 @@ export default function CouponsView() {
             <tr>
               <th className="px-6 py-4">Coupon Code</th>
               <th className="px-6 py-4">Status</th>
-              <th className="px-6 py-4">Discount Type</th>
-              <th className="px-6 py-4">Value</th>
+              <th className="px-6 py-4">Discount</th>
               <th className="px-6 py-4">Usage Limits</th>
-              <th className="px-6 py-4">Expiry Date</th>
               <th className="px-6 py-4 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-100">
-            {coupons.map((c) => (
-              <tr key={c.id} className="hover:bg-zinc-50 transition-colors group cursor-pointer">
+            {filteredCoupons.length === 0 ? (
+              <tr><td colSpan={5} className="p-8 text-center text-zinc-500">No coupons found.</td></tr>
+            ) : filteredCoupons.map((c) => (
+              <tr key={c._id} className="hover:bg-zinc-50 transition-colors group">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2 font-mono font-bold text-[#18181b] bg-zinc-100 px-3 py-1.5 rounded-md w-fit">
                     {c.code}
-                    <Copy size={12} className="text-zinc-400 hover:text-[#18181b]" />
                   </div>
+                  <div className="text-xs text-zinc-500 mt-1">{c.desc}</div>
                 </td>
                 <td className="px-6 py-4">
-                  <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md ${c.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
-                    {c.status}
+                  <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md ${c.isActive ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
+                    {c.isActive ? 'Active' : 'Disabled'}
                   </span>
                 </td>
-                <td className="px-6 py-4 font-medium text-zinc-600">{c.type}</td>
-                <td className="px-6 py-4 font-bold text-[#18181b]">{c.value}</td>
-                <td className="px-6 py-4 text-zinc-500">{c.usage}</td>
-                <td className="px-6 py-4 text-zinc-500 flex items-center gap-1.5">
-                  <Calendar size={14} className="text-zinc-400"/> {c.expiry}
+                <td className="px-6 py-4 font-bold text-[#18181b]">
+                  {c.discountType === 'percentage' ? `${c.discountValue}%` : `₹${c.discountValue}`} OFF
+                </td>
+                <td className="px-6 py-4 text-zinc-500">
+                  {c.uses} / {c.maxUses ? c.maxUses : '∞'}
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <button className="text-zinc-400 hover:text-[#18181b] p-1 rounded-md hover:bg-zinc-100 transition-colors">
-                    <MoreHorizontal size={18} />
+                  <button onClick={() => handleDelete(c._id)} className="text-red-400 hover:text-red-600 p-1 rounded-md hover:bg-red-50 transition-colors">
+                    <Trash2 size={16} />
                   </button>
                 </td>
               </tr>
@@ -75,6 +154,55 @@ export default function CouponsView() {
           </tbody>
         </table>
       </div>
+
+      {/* Create Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden flex flex-col">
+            <div className="flex justify-between items-center p-6 border-b border-zinc-100">
+              <h2 className="font-bold text-lg text-[#18181b]">Create New Coupon</h2>
+              <button onClick={() => setIsModalOpen(false)} className="text-zinc-400 hover:text-black">
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Coupon Code *</label>
+                <input type="text" value={code} onChange={e => setCode(e.target.value.toUpperCase())} placeholder="e.g. SUMMER20" className="w-full border border-zinc-300 rounded-lg p-3 text-sm font-mono uppercase" />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Internal Description *</label>
+                <input type="text" value={desc} onChange={e => setDesc(e.target.value)} placeholder="Summer Sale 20% off" className="w-full border border-zinc-300 rounded-lg p-3 text-sm" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Discount Type</label>
+                  <select value={discountType} onChange={e => setDiscountType(e.target.value)} className="w-full border border-zinc-300 rounded-lg p-3 text-sm">
+                    <option value="percentage">Percentage (%)</option>
+                    <option value="fixed">Fixed Amount (₹)</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Value *</label>
+                  <input type="number" value={discountValue} onChange={e => setDiscountValue(e.target.value)} placeholder="20" className="w-full border border-zinc-300 rounded-lg p-3 text-sm" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Max Uses (Optional)</label>
+                <input type="number" value={maxUses} onChange={e => setMaxUses(e.target.value)} placeholder="Leave blank for unlimited" className="w-full border border-zinc-300 rounded-lg p-3 text-sm" />
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-zinc-100 bg-zinc-50 flex justify-end gap-3">
+              <button onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 bg-white border border-zinc-200 rounded-lg font-bold text-sm hover:bg-zinc-100">Cancel</button>
+              <button onClick={handleCreate} disabled={saving} className="px-5 py-2.5 bg-[#18181b] text-white rounded-lg font-bold text-sm hover:bg-black">
+                {saving ? 'Saving...' : 'Create Coupon'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

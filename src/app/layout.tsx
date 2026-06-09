@@ -7,6 +7,8 @@ import Footer from '@/components/Footer';
 import MobileBottomNav from '@/components/MobileBottomNav';
 import CartDrawer from '@/components/CartDrawer';
 import SessionWrapper from '@/components/SessionWrapper';
+import dbConnect from '@/lib/db';
+import StoreSettings from '@/models/StoreSettings';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -22,28 +24,33 @@ const dmSans = DM_Sans({
   display: 'swap',
 });
 
-export const metadata = {
-  title: `${BRAND.name} — Handcrafted Porcelain Dinnerware & Tea Sets | India`,
-  description:
-    'Shop artisan-made porcelain tea cup sets, luxury dinnerware, and handcrafted gifting collections — designed in India, delivered nationwide.',
-  openGraph: {
-    title: `${BRAND.name} — Handcrafted Porcelain Dinnerware & Tea Sets | India`,
-    description:
-      'Shop artisan-made porcelain tea cup sets, luxury dinnerware, and handcrafted gifting collections — designed in India, delivered nationwide.',
-    url: BRAND.domain,
-    siteName: BRAND.name,
-    images: [{ url: `${BRAND.domain}/og-banner.png` }],
-    locale: 'en_IN',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: `${BRAND.name} — Handcrafted Porcelain Dinnerware & Tea Sets | India`,
-    description:
-      'Shop artisan-made porcelain tea cup sets, luxury dinnerware, and handcrafted gifting collections — designed in India, delivered nationwide.',
-    images: [`${BRAND.domain}/og-banner.png`],
-  },
-};
+export async function generateMetadata() {
+  await dbConnect();
+  const settings = await StoreSettings.findOne().lean() || {
+    seoTitle: `${BRAND.name} — Handcrafted Porcelain Dinnerware & Tea Sets | India`,
+    seoDescription: 'Shop artisan-made porcelain tea cup sets, luxury dinnerware, and handcrafted gifting collections — designed in India, delivered nationwide.',
+  };
+
+  return {
+    title: settings.seoTitle,
+    description: settings.seoDescription,
+    openGraph: {
+      title: settings.seoTitle,
+      description: settings.seoDescription,
+      url: BRAND.domain,
+      siteName: BRAND.name,
+      images: [{ url: `${BRAND.domain}/og-banner.png` }],
+      locale: 'en_IN',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: settings.seoTitle,
+      description: settings.seoDescription,
+      images: [`${BRAND.domain}/og-banner.png`],
+    },
+  };
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const schemaOrg = {
