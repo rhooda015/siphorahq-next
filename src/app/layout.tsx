@@ -5,6 +5,7 @@ import { BRAND, getWhatsAppLink } from '@/config/brand';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileBottomNav from '@/components/MobileBottomNav';
+import CartDrawer from '@/components/CartDrawer';
 import SessionWrapper from '@/components/SessionWrapper';
 
 const cormorant = Cormorant_Garamond({
@@ -106,6 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="min-h-screen">{children}</main>
           <Footer />
           <MobileBottomNav />
+          <CartDrawer />
         </SessionWrapper>
       </body>
     </html>

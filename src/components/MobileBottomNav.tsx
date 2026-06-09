@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, Grid, Search, ShoppingCart } from 'lucide-react';
+import { useCart } from '@/store/useCart';
 
 const NAV_ITEMS = [
   { label: 'Home',        href: '/',        icon: Home },
@@ -21,6 +22,26 @@ export default function MobileBottomNav() {
         {NAV_ITEMS.map(item => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
+          
+          if (item.label === 'Cart') {
+            return (
+              <button
+                key={item.label}
+                onClick={() => useCart.getState().openDrawer()}
+                className={`flex-1 flex flex-col items-center justify-center gap-1 transition-colors text-[#6B6560] hover:text-[#1A1A1A]`}
+                aria-label={item.label}
+              >
+                <div className="relative">
+                  <Icon className="w-5 h-5" strokeWidth={1.5} />
+                  {/* Optional: Add badge here if needed */}
+                </div>
+                <span className="text-[10px] font-sans uppercase tracking-widest">
+                  {item.label}
+                </span>
+              </button>
+            );
+          }
+
           return (
             <Link
               key={item.href + item.label}

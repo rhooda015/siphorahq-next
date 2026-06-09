@@ -8,6 +8,25 @@ import { BRAND } from '@/config/brand';
 import { useCart } from '@/store/useCart';
 import { useSession } from 'next-auth/react';
 
+const DESKTOP_NAV_ITEMS = [
+  { label: 'Collections', href: '/products' },
+  { label: 'Tea Sets', href: '/products?category=cups' },
+  { label: 'Dinner Sets', href: '/products?category=dinner' },
+  { label: 'Gifting', href: '/products?tag=gifts' },
+  { label: 'Our Story', href: '/our-story' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const MOBILE_NAV_ITEMS = [
+  { label: 'All Collections', href: '/products' },
+  { label: 'Tea Sets', href: '/products?category=cups' },
+  { label: 'Dinner Sets', href: '/products?category=dinner' },
+  { label: 'Platters & Bowls', href: '/products?category=platters' },
+  { label: 'Gifting', href: '/products?tag=gifts' },
+  { label: 'Our Story', href: '/our-story' },
+  { label: 'Contact', href: '/contact' },
+];
+
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -130,24 +149,15 @@ export default function Header() {
 
         {/* Bottom Header Area: Navigation (Desktop Only) */}
         <nav className="hidden md:flex justify-center items-center pb-4 space-x-8 relative z-50 pointer-events-auto">
-          <Link href="/products" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50">
-            Collections
-          </Link>
-          <Link href="/products?category=cups" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50">
-            Tea Sets
-          </Link>
-          <Link href="/products?category=dinner" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50">
-            Dinner Sets
-          </Link>
-          <Link href="/products?tag=gifts" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50">
-            Gifting
-          </Link>
-          <Link href="/our-story" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50">
-            Our Story
-          </Link>
-          <Link href="/contact" className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50">
-            Contact
-          </Link>
+          {DESKTOP_NAV_ITEMS.map((item) => (
+            <Link 
+              key={item.label}
+              href={item.href} 
+              className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50"
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
         {/* Desktop Search Dropdown */}
@@ -186,13 +196,16 @@ export default function Header() {
           </button>
         </div>
         <div className="flex flex-col p-6 space-y-6 overflow-y-auto">
-          <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">All Collections</Link>
-          <Link href="/products?category=cups" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Tea Sets</Link>
-          <Link href="/products?category=dinner" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Dinner Sets</Link>
-          <Link href="/products?category=platters" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Platters & Bowls</Link>
-          <Link href="/products?tag=gifts" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Gifting</Link>
-          <Link href="/our-story" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Our Story</Link>
-          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4">Contact</Link>
+          {MOBILE_NAV_ITEMS.map((item) => (
+            <Link 
+              key={item.label}
+              href={item.href} 
+              onClick={() => setIsMobileMenuOpen(false)} 
+              className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4"
+            >
+              {item.label}
+            </Link>
+          ))}
           <Link href={session ? "/account" : "/login"} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] pt-4">
             {session ? session.user?.name || "My Account" : "Sign In"}
           </Link>
