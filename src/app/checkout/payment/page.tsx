@@ -82,8 +82,26 @@ export default function PaymentPage() {
         name: "Siphorahq",
         description: "Luxury Indian Fashion",
         order_id: order.id,
-        handler: function (response: any) {
-          console.log(response);
+        handler: async function (response: any) {
+          try {
+            // Verify payment signature
+            const verifyRes = await fetch('/api/razorpay/verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+              })
+            });
+            const verifyData = await verifyRes.json();
+            if (!verifyData.success) {
+              alert('Payment verification failed. Please contact support.');
+              return;
+            }
+          } catch (e) {
+            console.error('Verification error:', e);
+          }
           trackPurchase(response.razorpay_payment_id || `RZP-${order.id}`, finalAmount, items);
           setOrderDetails({
             id: response.razorpay_payment_id || `RZP-${order.id}`,
