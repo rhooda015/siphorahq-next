@@ -153,8 +153,7 @@ export default function AdminSPA() {
             <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-zinc-500 hover:text-red-600 transition-colors ml-2 border border-zinc-200 rounded-lg px-3 py-1.5">
               <LogOut size={15} />
               <span className="hidden md:block">Logout</span>
-              </div>
-            </div>
+            </button>
           </div>
         </header>
 
