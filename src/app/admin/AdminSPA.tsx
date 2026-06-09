@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Bell, Check, AlertCircle, Search, Menu, Plus } from 'lucide-react';
+import { Bell, Check, AlertCircle, Search, Menu, Plus, LogOut } from 'lucide-react';
 import ProductEditor from '@/components/admin/ProductEditor';
 
 // Import Views
@@ -18,6 +18,8 @@ import CouponsView from '@/components/admin/views/CouponsView';
 import ReviewsView from '@/components/admin/views/ReviewsView';
 import SEOView from '@/components/admin/views/SEOView';
 export default function AdminSPA() {
+  const router = useRouter();
+  const handleLogout = async () => { await fetch('/api/admin/auth', { method: 'DELETE' }); router.push('/admin/login'); };
   const [activeTab, setActiveTab] = useState('Overview');
   const [toast, setToast] = useState<{message: string, type: 'success'|'error'} | null>(null);
   
@@ -146,6 +148,11 @@ export default function AdminSPA() {
               <div className="hidden md:block">
                 <p className="text-sm font-bold text-[#18181b] leading-tight">Admin User</p>
                 <p className="text-[11px] font-medium text-zinc-500">Store Owner</p>
+              </div>
+            </div>
+            <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-zinc-500 hover:text-red-600 transition-colors ml-2 border border-zinc-200 rounded-lg px-3 py-1.5">
+              <LogOut size={15} />
+              <span className="hidden md:block">Logout</span>
               </div>
             </div>
           </div>
