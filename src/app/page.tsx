@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 import { STATIC_PRODUCTS } from '@/data/products';
 import HeroCarousel from '@/components/HeroCarousel';
+import CategoryScroll from '@/components/CategoryScroll';
 import ProductCard from '@/components/ProductCard';
 import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
@@ -60,31 +61,10 @@ export default async function HomePage() {
 
       <HeroCarousel />
 
-      {/* Circular Categories List */}
-      <section className="py-16 px-4 max-w-7xl mx-auto border-b-[0.5px] border-[var(--color-border)] mb-12">
-        <div className="flex justify-start overflow-x-auto gap-6 md:gap-8 lg:gap-10 pb-4 hide-scrollbar">
-          {[
-            { name: "Dinner Set", img: "/images/dinnerware_var1.webp", cat: "dinner-set" },
-            { name: "Platter", img: "/images/serveware_var1.webp", cat: "serveware" },
-            { name: "Plates", img: "/images/cat_plates.webp", cat: "plates" },
-            { name: "Snacks Set", img: "/images/cat_snacks.webp", cat: "serveware" },
-            { name: "Coffee Mug Set", img: "/images/cat_mugs.webp", cat: "mugs" },
-            { name: "Tea Cup Set", img: "/images/teaset.webp", cat: "tea-set" },
-            { name: "Cake Stands", img: "/images/cat_cakestand.webp", cat: "serveware" },
-            { name: "Opal Glass", img: "/images/cat_opalglass.webp", cat: "dinner-set" },
-          ].map((cat, idx) => (
-            <Link href={`/products?category=${cat.cat}`} key={idx} className="flex flex-col items-center group min-w-[100px] md:min-w-[110px]">
-              <div className="w-[100px] h-[100px] md:w-[110px] md:h-[110px] rounded-full overflow-hidden mb-4 relative bg-[var(--color-accent-light)] transition-all duration-700 opacity-90 grayscale-[30%] group-hover:grayscale-0 group-hover:opacity-100">
-                <Image src={cat.img} alt={cat.name} fill sizes="(max-width: 768px) 100px, 110px" priority={idx < 4} className="object-cover group-hover:scale-105 transition-transform duration-1000" />
-              </div>
-              <span className="text-[10px] md:text-[11px] text-[var(--color-primary)] font-sans tracking-[0.2em] uppercase text-center transition-all max-w-[120px] leading-relaxed">{cat.name}</span>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <CategoryScroll />
 
       {/* Why Siphorahq Trust Signals */}
-      <section className="bg-[#FAF9F7] py-16 mb-16 border-y-[0.5px] border-[var(--color-border)]">
+      <section className="bg-[#FAF9F7] py-8 mb-16 border-y-[0.5px] border-[var(--color-border)]">
         <div className="max-w-7xl mx-auto px-4">
           <SectionHeading title="The Siphorahq Promise" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center mt-16">
