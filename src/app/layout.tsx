@@ -102,6 +102,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
       <head>
         <meta name="theme-color" content="#1A1A1A" />
+        <link rel="preload" as="image" href="/images/hero.webp" />
         <link rel="canonical" href={BRAND.domain} />
         <script
           type="application/ld+json"
