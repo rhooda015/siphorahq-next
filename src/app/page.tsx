@@ -40,7 +40,7 @@ export default async function HomePage() {
     heroTitle: 'Handcrafted Porcelain for Timeless Gatherings',
     heroButtonText: 'Shop Now',
     heroButtonLink: '/products',
-    heroSlides: ['/images/hero.webp', '/images/serveware.webp', '/images/gifting.webp'],
+    heroSlides: ['/images/gifting_siporahq.webp', '/images/lifestyle_1.webp', '/images/lifestyle_4.webp'],
   };
   
   const mappedProducts = dbProducts.map((p: any) => ({
@@ -126,16 +126,16 @@ export default async function HomePage() {
       <section className="max-w-5xl mx-auto px-4 mb-20">
         <div className="grid grid-cols-5 gap-2">
           <div className="col-span-2 row-span-1 aspect-[3/2] relative bg-gray-100 overflow-hidden">
-            <Image src="/images/hero.webp" fill sizes="40vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Dining" />
+            <Image src="/images/lifestyle_1.webp" fill sizes="40vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Dining" />
           </div>
           <div className="col-span-1 aspect-square relative bg-gray-200 overflow-hidden">
-            <Image src="/images/teaset.webp" fill sizes="20vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Tea Set" />
+            <Image src="/images/lifestyle_4.webp" fill sizes="20vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Tea Set" />
           </div>
           <div className="col-span-1 aspect-square relative bg-gray-300 overflow-hidden">
-            <Image src="/images/dinnerware.webp" fill sizes="20vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Dinnerware" />
+            <Image src="/images/lifestyle_3.webp" fill sizes="20vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Dinnerware" />
           </div>
           <div className="col-span-1 aspect-square relative bg-gray-100 overflow-hidden">
-            <Image src="/images/gifting.webp" fill sizes="20vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Gifting" />
+            <Image src="/images/gifting_siporahq.webp" fill sizes="20vw" className="object-cover hover:scale-105 transition-transform duration-700" alt="Gifting" />
           </div>
         </div>
       </section>
@@ -166,7 +166,7 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="w-full md:w-1/2 relative min-h-[500px]">
-            <Image src="/images/hero.webp" alt="Siphorahq Story" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+            <Image src="/images/lifestyle_2.webp" alt="Siphorahq Story" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
           </div>
         </div>
       </section>
@@ -174,12 +174,12 @@ export default async function HomePage() {
       {/* Image Collage 2 */}
       <section className="max-w-3xl mx-auto px-4 mb-20">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-          <div className="aspect-square relative bg-gray-100"><Image src="/images/gifting.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Collage 6" /></div>
-          <div className="aspect-square relative bg-gray-200"><Image src="/images/serveware.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Collage 7" /></div>
-          <div className="aspect-square relative bg-gray-300"><Image src="/images/teaset.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Collage 8" /></div>
-          <div className="aspect-square relative bg-gray-200"><Image src="/images/dinnerware.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Collage 9" /></div>
-          <div className="aspect-square relative bg-gray-100"><Image src="/images/hero.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Collage 10" /></div>
-          <div className="aspect-square relative bg-gray-200"><Image src="/images/teaset.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Collage 11" /></div>
+          <div className="aspect-square relative bg-gray-100"><Image src="/images/gifting_siporahq.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Gifting" /></div>
+          <div className="aspect-square relative bg-gray-200"><Image src="/images/lifestyle_3.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Serveware" /></div>
+          <div className="aspect-square relative bg-gray-300"><Image src="/images/lifestyle_4.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Tea Set" /></div>
+          <div className="aspect-square relative bg-gray-200"><Image src="/images/lifestyle_1.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Dinnerware" /></div>
+          <div className="aspect-square relative bg-gray-100"><Image src="/images/lifestyle_2.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Lifestyle" /></div>
+          <div className="aspect-square relative bg-gray-200"><Image src="/images/gifting_siporahq_8k_1780322633512.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Gift Box" /></div>
         </div>
       </section>
 
@@ -249,7 +249,7 @@ export default async function HomePage() {
         <div className="flex flex-col md:flex-row bg-[var(--color-accent-light)] min-h-[400px]">
           {/* Image Side */}
           <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-full">
-            <Image src="/images/teaset.webp" alt="Featured Set" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+            <Image src="/images/gifting_siporahq.webp" alt="Featured Set" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
           </div>
           {/* Content Side */}
           <div className="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center bg-[#F8F9FA]">
@@ -269,7 +269,7 @@ export default async function HomePage() {
       {/* Corporate Gifting Banner */}
       <section className="relative w-full py-32 mb-20 bg-[var(--color-primary)] flex items-center justify-center border-y-[12px] border-[var(--color-accent-light)] overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <Image src="/images/gifting.webp" alt="Corporate Gifting" fill sizes="100vw" className="object-cover object-center opacity-30 mix-blend-overlay scale-105" />
+          <Image src="/images/gifting_siporahq_8k_1780322633512.webp" alt="Corporate Gifting" fill sizes="100vw" className="object-cover object-center opacity-30 mix-blend-overlay scale-105" />
         </div>
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <h2 className="text-[var(--color-gold-light)] font-sans tracking-[0.3em] uppercase text-xs mb-6">Elevate Your Gifting</h2>
