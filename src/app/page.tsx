@@ -51,17 +51,19 @@ export default async function HomePage() {
   const allProducts = mappedProducts.length > 0 ? mappedProducts : STATIC_PRODUCTS;
 
   // Derived collections for the homepage sections
+  // Ensure "New Arrivals" uses the latest mapped products
   const productsNew = [...mappedProducts, ...STATIC_PRODUCTS].slice(0, 4);
   
-  let productsServeFor6 = [...mappedProducts, ...STATIC_PRODUCTS].filter((p: any) => p.category?.toLowerCase().includes('dinner')).slice(0, 4);
-  if (productsServeFor6.length < 4) {
-    productsServeFor6 = [...productsServeFor6, ...STATIC_PRODUCTS.slice(0, 4 - productsServeFor6.length)];
-  }
+  // Ensure "Dinner Sets" and "Serveware" do NOT repeat "New Arrivals" if we don't have enough DB data
+  const dinnerSetProducts = mappedProducts.filter((p: any) => p.category?.toLowerCase().includes('dinner'));
+  const productsServeFor6 = dinnerSetProducts.length >= 4 
+    ? dinnerSetProducts.slice(0, 4) 
+    : [...dinnerSetProducts, ...STATIC_PRODUCTS.filter((p: any) => p.category?.toLowerCase().includes('dinner'))].slice(0, 4);
 
-  let productsBowls = [...mappedProducts, ...STATIC_PRODUCTS].filter((p: any) => p.category?.toLowerCase().includes('serveware') || p.category?.toLowerCase().includes('bowl') || p.category?.toLowerCase().includes('plates')).slice(0, 4);
-  if (productsBowls.length < 4) {
-    productsBowls = [...productsBowls, ...STATIC_PRODUCTS.slice(4, 4 + (4 - productsBowls.length))];
-  }
+  const bowlsProducts = mappedProducts.filter((p: any) => p.category?.toLowerCase().includes('serveware') || p.category?.toLowerCase().includes('bowl') || p.category?.toLowerCase().includes('plates'));
+  const productsBowls = bowlsProducts.length >= 4 
+    ? bowlsProducts.slice(0, 4) 
+    : [...bowlsProducts, ...STATIC_PRODUCTS.filter((p: any) => p.category?.toLowerCase().includes('serveware') || p.category?.toLowerCase().includes('bowl') || p.category?.toLowerCase().includes('plates'))].slice(0, 4);
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)] pb-20">
@@ -230,9 +232,9 @@ export default async function HomePage() {
       <section className="max-w-3xl mx-auto px-4 mb-20">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           <div className="aspect-square relative bg-gray-100"><Image src="/images/cat_opalglass.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Opal Glass" /></div>
-          <div className="aspect-square relative bg-gray-200"><Image src="/images/serveware.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Serveware" /></div>
-          <div className="aspect-square relative bg-gray-300"><Image src="/images/dinnerware.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Dinner Set" /></div>
-          <div className="aspect-square relative bg-gray-200"><Image src="/images/hero.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Hero Dinnerware" /></div>
+          <div className="aspect-square relative bg-gray-200"><Image src="/images/serveware_var1.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Serveware" /></div>
+          <div className="aspect-square relative bg-gray-300"><Image src="/images/dinnerware_var1.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Dinner Set" /></div>
+          <div className="aspect-square relative bg-gray-200"><Image src="/images/lifestyle_1.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Hero Dinnerware" /></div>
           <div className="aspect-square relative bg-gray-100"><Image src="/images/prod2.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Luxury Box" /></div>
           <div className="aspect-square relative bg-gray-200"><Image src="/images/gifting_siporahq.webp" fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover" alt="Gift Ribbon" /></div>
         </div>
@@ -243,10 +245,10 @@ export default async function HomePage() {
         <SectionHeading title="Shop Gifts by Price" />
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { title: "Under ₹999", img: "/images/gifting.webp", maxPrice: 999 },
-            { title: "Under ₹2000", img: "/images/serveware.webp", maxPrice: 2000 },
+            { title: "Under ₹999", img: "/images/gifting_siporahq_8k_1780322633512.webp", maxPrice: 999 },
+            { title: "Under ₹2000", img: "/images/serveware_var2.webp", maxPrice: 2000 },
             { title: "Under ₹5000", img: "/images/dinnerware.webp", maxPrice: 5000 },
-            { title: "Under ₹10000", img: "/images/teaset.webp", maxPrice: 10000 },
+            { title: "Under ₹10000", img: "/images/lifestyle_4.webp", maxPrice: 10000 },
           ].map((item, idx) => (
             <Link href={`/products?maxPrice=${item.maxPrice}`} key={idx} className="group flex flex-col relative aspect-[4/5] bg-[var(--color-accent-light)] overflow-hidden">
               <Image src={item.img} alt={item.title} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
@@ -265,13 +267,13 @@ export default async function HomePage() {
         <SectionHeading title="Collections" />
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 text-center">
           {[
-            { title: "Cups & Mugs", img: "/images/cat_mugs.webp", cat: "drinkware" },
-            { title: "Tea Collection", img: "/images/teaset.webp", cat: "tea-set" },
-            { title: "Platters", img: "/images/prod1.webp", cat: "serveware" },
-            { title: "Luxury Gifts", img: "/images/prod2.webp", cat: "gifting" },
-            { title: "Serveware", img: "/images/serveware.webp", cat: "serveware" },
-            { title: "Dinnerware", img: "/images/dinnerware.webp", cat: "dinner-set" },
-            { title: "Opal Glass", img: "/images/cat_opalglass.webp", cat: "dinner-set" },
+            { title: "Cups & Mugs", img: "/images/media__1780320817923.webp", cat: "drinkware" },
+            { title: "Tea Collection", img: "/images/media__1780326304876.webp", cat: "tea-set" },
+            { title: "Platters", img: "/images/cat_snacks.webp", cat: "serveware" },
+            { title: "Luxury Gifts", img: "/images/media__1780320363873.webp", cat: "gifting" },
+            { title: "Serveware", img: "/images/media__1780322522325.webp", cat: "serveware" },
+            { title: "Dinnerware", img: "/images/dinnerware_var2.webp", cat: "dinner-set" },
+            { title: "Opal Glass", img: "/images/media__1780320382791.webp", cat: "dinner-set" },
           ].map((item, idx) => (
             <Link href={`/products?category=${item.cat}`} key={idx} className="group">
               <div className="aspect-[3/4] rounded-sm overflow-hidden relative mb-3 bg-[var(--color-accent-light)] shadow-sm">
