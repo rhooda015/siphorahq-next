@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeroCarouselProps {
   slides: string[];
@@ -18,58 +19,85 @@ export default function HeroCarousel({ slides, title, buttonText, buttonLink }: 
     ? slides.map((img, id) => ({ id, img }))
     : [
         { id: 1, img: "/images/hero.webp" },
-        { id: 2, img: "/images/serveware.webp" },
-        { id: 3, img: "/images/gifting.webp" },
+        { id: 2, img: "/images/teaset.webp" },
       ];
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 4000);
+    }, 6000); // Slower, more editorial pacing
     return () => clearInterval(interval);
   }, [heroSlides.length]);
 
   return (
-    <section className="relative w-full h-[60vh] md:h-[70vh] bg-[var(--color-accent-light)] overflow-hidden">
-      {heroSlides.map((slide, index) => (
-        <div 
-          key={slide.id} 
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+    <section className="relative w-full h-[80vh] md:h-[90vh] bg-[#f8f7f5] overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentSlide}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+          className="absolute inset-0"
         >
-          <Image 
-            src={slide.img} 
-            alt={`Slide ${slide.id}`} 
-            fill 
-            priority={index === 0}
-            fetchPriority={index === 0 ? "high" : "auto"}
-            className="object-cover object-center" 
-            sizes="100vw" 
-          />
-          <div className="absolute inset-0 bg-black/10" />
-        </div>
-      ))}
+          {/* Subtle Slow Zoom Effect for Cinematic Feel */}
+          <motion.div
+            initial={{ scale: 1 }}
+            animate={{ scale: 1.05 }}
+            transition={{ duration: 10, ease: "linear" }}
+            className="w-full h-full relative"
+          >
+            <Image 
+              src={heroSlides[currentSlide].img} 
+              alt={`Siphorahq Luxury Collection ${currentSlide + 1}`} 
+              fill 
+              priority
+              fetchPriority="high"
+              className="object-cover object-center" 
+              sizes="100vw" 
+              quality={100}
+            />
+          </motion.div>
+          {/* Refined gradient overlay for text legibility without muddying the image */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/30" />
+        </motion.div>
+      </AnimatePresence>
       
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none px-4">
-        <h2 className="text-white text-5xl md:text-7xl font-serif mb-8 text-center drop-shadow-2xl tracking-wide max-w-5xl leading-tight">
-          {title || 'Handcrafted Porcelain for Timeless Gatherings'}
-        </h2>
-        <a 
-          href={buttonLink || '/products'} 
-          className="pointer-events-auto bg-transparent border-[0.5px] border-white text-white px-10 py-4 uppercase tracking-[0.2em] text-[11px] font-sans hover:bg-white hover:text-[var(--color-primary)] transition-all duration-500"
+      <div className="absolute inset-0 flex flex-col items-center justify-end md:justify-center z-20 pointer-events-none px-6 pb-24 md:pb-0">
+        <motion.div 
+          key={`text-${currentSlide}`}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="flex flex-col items-center text-center max-w-4xl"
         >
-          {buttonText || 'Shop Now'}
-        </a>
+          <span className="text-white/80 uppercase tracking-[0.3em] text-[10px] md:text-xs mb-4 font-sans font-light">
+            Siphorahq Heritage
+          </span>
+          <h2 className="text-white text-4xl md:text-6xl lg:text-7xl font-serif font-light mb-10 drop-shadow-lg tracking-wide leading-[1.15]">
+            {title || 'Luxury Porcelain & Fine Dining'}
+          </h2>
+          
+          <a 
+            href={buttonLink || '/products'} 
+            className="pointer-events-auto group relative flex items-center justify-center overflow-hidden border border-white/60 bg-transparent px-10 py-4 uppercase tracking-[0.25em] text-[10px] md:text-xs text-white transition-all hover:border-white hover:bg-white hover:text-black"
+          >
+            <span className="relative z-10 transition-colors duration-500">{buttonText || 'Discover the Collection'}</span>
+          </a>
+        </motion.div>
       </div>
       
-      {/* Slider Dots */}
-      <div className="absolute bottom-6 left-0 right-0 z-20 flex justify-center gap-2">
+      {/* Editorial Slider Dots */}
+      <div className="absolute bottom-8 left-0 right-0 z-20 flex justify-center gap-3">
         {heroSlides.map((_, index) => (
           <button 
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all ${index === currentSlide ? 'bg-[var(--color-primary)]' : 'bg-white/70 hover:bg-white'}`}
+            className="group py-2 px-1 flex items-center justify-center"
             aria-label={`Go to slide ${index + 1}`}
-          />
+          >
+            <span className={`h-[1px] transition-all duration-700 ease-out ${index === currentSlide ? 'w-8 bg-white' : 'w-4 bg-white/40 group-hover:bg-white/80 group-hover:w-6'}`} />
+          </button>
         ))}
       </div>
     </section>
