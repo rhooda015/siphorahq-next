@@ -259,20 +259,21 @@ export default async function HomePage() {
       {/* Collections Row */}
       <section className="max-w-5xl mx-auto px-4 mb-20">
         <SectionHeading title="Collections" />
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-4 text-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 text-center">
           {[
-            { title: "Cups and Kettle Set", img: "/images/teaset.webp", cat: "tea-set" },
-            { title: "Dinner Set of 6", img: "/images/dinnerware_var2.webp", cat: "dinner-set" },
-            { title: "Dinner Set Serve For 8", img: "/images/dinnerware.webp", cat: "dinner-set" },
-            { title: "Cutlery", img: "/images/cat_plates.webp", cat: "cutlery" },
-            { title: "Drinkware", img: "/images/cat_mugs.webp", cat: "drinkware" },
-            { title: "Platter", img: "/images/serveware_var2.webp", cat: "serveware" },
+            { title: "Cups & Mugs", img: "/images/banner_cups.webp", cat: "drinkware" },
+            { title: "Tea Collection", img: "/images/banner_tea.webp", cat: "tea-set" },
+            { title: "Coffee Collection", img: "/images/banner_coffee.webp", cat: "drinkware" },
+            { title: "Luxury Gift Sets", img: "/images/banner_gift-sets.webp", cat: "gifting" },
+            { title: "Kitchenware", img: "/images/banner_kitchenware.webp", cat: "serveware" },
+            { title: "Dinnerware", img: "/images/banner_dinnerware.webp", cat: "dinner-set" },
+            { title: "Fine Dining", img: "/images/banner_fine-dining.webp", cat: "dinner-set" },
           ].map((item, idx) => (
             <Link href={`/products?category=${item.cat}`} key={idx} className="group">
-              <div className="aspect-square rounded-full md:rounded-none overflow-hidden relative mb-2 bg-[var(--color-accent-light)]">
-                <Image src={item.img} alt={item.title} fill sizes="(max-width: 768px) 33vw, 16vw" className="object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div className="aspect-[3/4] rounded-sm overflow-hidden relative mb-3 bg-[var(--color-accent-light)] shadow-sm">
+                <Image src={item.img} alt={item.title} fill sizes="(max-width: 768px) 50vw, 15vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
               </div>
-              <p className="text-[11px] md:text-sm font-sans text-[var(--color-primary)]">{item.title}</p>
+              <p className="text-[11px] font-sans tracking-widest uppercase text-[var(--color-primary)]">{item.title}</p>
             </Link>
           ))}
         </div>

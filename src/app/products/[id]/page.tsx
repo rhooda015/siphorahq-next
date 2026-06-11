@@ -22,6 +22,17 @@ export async function generateStaticParams() {
   }));
 }
 
+function getPlaceholderImages(id: string) {
+  const flagships = ['premium-dinner-set-46', 'premium-tea-set-17', 'designer-gift-box', 'luxury-bowl-set', 'opal-glass-dinner-set'];
+  const isFlagship = flagships.includes(id);
+  
+  const suffixes10 = ['hero', 'lifestyle', 'editorial', 'macro', 'gifting', 'packaging', 'dining', 'feature', 'size', 'mood'];
+  const suffixes3 = ['hero', 'lifestyle', '45deg'];
+  
+  const suffixes = isFlagship ? suffixes10 : suffixes3;
+  return suffixes.map(suffix => `/images/products/${id}/${id}_${suffix}.webp`);
+}
+
 // Helper: fetch product from DB (by handle or _id) and normalize to common shape
 async function getDbProduct(id: string) {
   try {
@@ -196,7 +207,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           images={(
             (product as any).images?.length > 0
               ? (product as any).images.map((img: any) => img.url)
-              : [product.image || '/images/dinnerware.webp', '/images/serveware.webp', '/images/gifting.webp']
+              : getPlaceholderImages(product.id)
           )} 
         />
       </div>
