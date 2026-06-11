@@ -12,6 +12,7 @@ import StoreSettings from '@/models/StoreSettings';
 import ThemeSettings from '@/models/ThemeSettings';
 import SettingsProvider from '@/providers/SettingsProvider';
 import ThemeInjector from '@/components/ThemeInjector';
+import { Toaster } from 'react-hot-toast';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -131,6 +132,23 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Footer />
             <MobileBottomNav />
             <CartDrawer />
+            <Toaster 
+              position="bottom-center"
+              toastOptions={{
+                duration: 3000,
+                style: {
+                  background: '#1A1A1A',
+                  color: '#fff',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '12px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
+                  borderRadius: '0px',
+                  padding: '16px 24px',
+                  border: '1px solid #D4AF37',
+                },
+              }}
+            />
           </SessionWrapper>
         </SettingsProvider>
       </body>

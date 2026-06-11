@@ -5,6 +5,8 @@ import { trackAddToCart } from '@/lib/analytics';
 import { useCart } from '@/store/useCart';
 import { useWishlist } from '@/store/useWishlist';
 import { useSession } from 'next-auth/react';
+import toast from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ProductCardActions({ product }: { product: any }) {
   const [showQuickView, setShowQuickView] = useState(false);
@@ -54,9 +56,9 @@ export default function ProductCardActions({ product }: { product: any }) {
             e.stopPropagation();
             addItem(product, 1);
             trackAddToCart(product, 1);
-            alert(`${product.name} added to cart!`);
+            toast.success(`${product.name} added to cart`);
           }}
-          className="w-full bg-[var(--color-primary)] text-white uppercase tracking-widest text-xs font-medium py-3 hover:bg-[#1a2520] transition-colors shadow-lg"
+          className="w-full bg-[var(--color-primary)] text-white uppercase tracking-widest text-xs font-medium py-3 hover:bg-[#1a2520] transition-colors shadow-sm"
         >
           Add to Cart
         </button>
@@ -73,64 +75,74 @@ export default function ProductCardActions({ product }: { product: any }) {
       </button>
 
       {/* Quick View Modal */}
-      {showQuickView && (
-        <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm cursor-default" 
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowQuickView(false); }}
-        >
-          <div 
-            className="bg-[#FAF9F7] p-6 max-w-3xl w-full flex flex-col md:flex-row gap-8 relative shadow-2xl overflow-hidden" 
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+      <AnimatePresence>
+        {showQuickView && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm cursor-default" 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowQuickView(false); }}
           >
-            <button 
-              className="absolute top-4 right-4 text-gray-500 hover:text-black z-10" 
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowQuickView(false); }}
+            <motion.div 
+              initial={{ opacity: 0, y: 16, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 16, scale: 0.98 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="bg-[#FAF9F7] p-6 max-w-3xl w-full flex flex-col md:flex-row gap-8 relative shadow-2xl overflow-hidden" 
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
             >
-              ✕
-            </button>
-            <div className="w-full md:w-1/2 aspect-square relative bg-white border border-[var(--color-border)]">
-               <img 
-                 src={(product.images?.[0]?.url) || product.image || product.img || '/images/dinnerware.webp'} 
-                 alt={product.name} 
-                 className="absolute inset-0 w-full h-full object-cover" 
-               />
-            </div>
-            <div className="w-full md:w-1/2 flex flex-col justify-center">
-               <h2 className="text-3xl font-serif text-[var(--color-primary)] mb-3 leading-tight">{product.name}</h2>
-               <p className="text-xl font-sans text-[var(--color-primary)] mb-6">
-                 ₹{(product.salePrice || product.price).toLocaleString('en-IN')}
-               </p>
-               <p className="text-sm font-sans text-[var(--color-text-muted)] mb-8 leading-relaxed line-clamp-4">
-                 {product.description || 'Elevate your everyday dining with this premium handcrafted porcelain piece. Designed for timeless elegance and luxury.'}
-               </p>
-               
-               <button 
-                 onClick={(e) => {
-                   e.preventDefault();
-                   e.stopPropagation();
-                   addItem(product, 1);
-                   trackAddToCart(product, 1);
-                   setShowQuickView(false);
-                   alert(`${product.name} added to cart!`);
-                 }}
-                 className="w-full bg-[var(--color-primary)] text-white uppercase tracking-widest text-xs font-medium py-4 hover:bg-[var(--color-secondary)] transition-colors mb-3 shadow-md"
-               >
-                 Add to Cart
-               </button>
-               <button 
-                 onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    window.location.href = `/products/${product.id || product.slug || '1'}`;
-                 }}
-                 className="w-full bg-transparent text-[var(--color-primary)] border border-[var(--color-primary)] uppercase tracking-widest text-xs font-medium py-4 hover:bg-[var(--color-primary)] hover:text-white transition-colors"
-               >
-                 View Full Details
-               </button>
-            </div>
-          </div>
-        </div>
-      )}
+              <button 
+                className="absolute top-4 right-4 text-gray-400 hover:text-black z-10 transition-colors" 
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowQuickView(false); }}
+              >
+                ✕
+              </button>
+              <div className="w-full md:w-1/2 aspect-square relative bg-white border border-[#EAE3D8]">
+                 <img 
+                   src={(product.images?.[0]?.url) || product.image || product.img || '/images/dinnerware.webp'} 
+                   alt={product.name} 
+                   className="absolute inset-0 w-full h-full object-cover" 
+                 />
+              </div>
+              <div className="w-full md:w-1/2 flex flex-col justify-center">
+                 <h2 className="text-3xl font-serif text-[var(--color-primary)] mb-3 leading-tight">{product.name}</h2>
+                 <p className="text-xl font-sans text-[var(--color-primary)] mb-6">
+                   ₹{(product.salePrice || product.price).toLocaleString('en-IN')}
+                 </p>
+                 <p className="text-sm font-sans text-[var(--color-text-muted)] mb-8 leading-relaxed line-clamp-4">
+                   {product.description || 'Elevate your everyday dining with this premium handcrafted porcelain piece. Designed for timeless elegance and luxury.'}
+                 </p>
+                 
+                 <button 
+                   onClick={(e) => {
+                     e.preventDefault();
+                     e.stopPropagation();
+                     addItem(product, 1);
+                     trackAddToCart(product, 1);
+                     setShowQuickView(false);
+                     toast.success(`${product.name} added to cart`);
+                   }}
+                   className="w-full bg-[var(--color-primary)] text-white uppercase tracking-widest text-xs font-medium py-4 hover:bg-[#1a2520] transition-colors mb-3 shadow-sm"
+                 >
+                   Add to Cart
+                 </button>
+                 <button 
+                   onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      window.location.href = `/products/${product.id || product.slug || '1'}`;
+                   }}
+                   className="w-full bg-transparent text-[var(--color-primary)] border border-[var(--color-primary)] uppercase tracking-widest text-xs font-medium py-4 hover:bg-[var(--color-primary)] hover:text-white transition-colors"
+                 >
+                   View Full Details
+                 </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

@@ -66,28 +66,28 @@ export default function CategoryScroll() {
       >
         <div 
           ref={scrollRef}
-          className="flex justify-start overflow-x-auto gap-6 md:gap-10 pb-8 pt-4 hide-scrollbar snap-x snap-mandatory px-[8%]"
+          className="flex justify-start overflow-x-auto gap-8 md:gap-12 pb-10 pt-6 hide-scrollbar snap-x snap-mandatory px-[8%]"
         >
           {categories.map((cat, idx) => (
-            <Link href={`/products?category=${cat.cat}`} key={idx} className="flex flex-col items-center group/card min-w-[110px] md:min-w-[130px] snap-center cursor-pointer">
+            <Link href={`/products?category=${cat.cat}`} key={idx} className="flex flex-col items-center group/card min-w-[125px] md:min-w-[150px] snap-center cursor-pointer">
               
               {/* Image Wrapper with Luxury Double Ring */}
-              <div className="relative w-[110px] h-[110px] md:w-[130px] md:h-[130px] rounded-full p-[5px] border-[1.5px] border-[#D4AF37] bg-[var(--color-bg)] overflow-visible mb-5 transition-all duration-400 group-hover/card:border-white group-hover/card:shadow-[0_0_20px_rgba(212,175,55,0.4)] flex justify-center items-center">
+              <div className="relative w-[125px] h-[125px] md:w-[150px] md:h-[150px] rounded-full p-[4px] border border-transparent bg-transparent overflow-visible mb-6 transition-all duration-500 ease-out group-hover/card:border-[#D4AF37]/40 group-hover/card:bg-[#FAF9F7] flex justify-center items-center group-hover/card:shadow-[0_0_30px_rgba(212,175,55,0.15)] group-hover/card:-translate-y-1">
                 
                 {/* Inner Image */}
-                <div className="w-full h-full rounded-full overflow-hidden relative">
+                <div className="w-full h-full rounded-full overflow-hidden relative border border-[#EAE3D8] group-hover/card:border-[#D4AF37]/60 transition-colors duration-500">
                    <Image 
                      src={cat.img} 
                      alt={cat.name} 
                      fill 
-                     sizes="(max-width: 768px) 110px, 130px" 
+                     sizes="(max-width: 768px) 125px, 150px" 
                      priority={idx < 5} 
-                     className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] group-hover/card:scale-110" 
+                     className="object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover/card:scale-105" 
                    />
                 </div>
               </div>
 
-              <span className="text-[11px] md:text-sm text-[var(--color-primary)] font-serif tracking-[0.1em] uppercase text-center transition-colors duration-300 group-hover/card:text-[#D4AF37] max-w-[130px] leading-relaxed">
+              <span className="text-[11px] md:text-sm text-[#1A1A1A] font-serif tracking-[0.1em] uppercase text-center transition-colors duration-500 group-hover/card:text-[#D4AF37] max-w-[140px] leading-relaxed">
                 {cat.name}
               </span>
             </Link>

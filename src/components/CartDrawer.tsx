@@ -8,6 +8,7 @@ import { useCart } from '@/store/useCart';
 import { BRAND } from '@/config/brand';
 import { trackBeginCheckout } from '@/lib/analytics';
 import { useSession } from 'next-auth/react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function CartDrawer() {
   const { items, isDrawerOpen, closeDrawer, removeItem, updateQuantity, cartTotal } = useCart();
@@ -29,20 +30,25 @@ export default function CartDrawer() {
 
   return (
     <>
-      {/* Overlay */}
-      {isDrawerOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-[100] transition-opacity"
-          onClick={closeDrawer}
-        />
-      )}
-
-      {/* Drawer */}
-      <div 
-        className={`fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white z-[110] shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col ${
-          isDrawerOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
+      {/* Overlay & Drawer */}
+      <AnimatePresence>
+        {isDrawerOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="fixed inset-0 bg-black/50 z-[100]"
+              onClick={closeDrawer}
+            />
+            <motion.div 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ duration: 0.5, ease: [0.25, 1, 0.5, 1] }}
+              className="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white z-[110] shadow-2xl flex flex-col"
+            >
         <div className="flex items-center justify-between p-4 border-b border-[var(--color-border)]">
           <h2 className="font-serif text-xl flex items-center gap-2">
             <ShoppingBag className="w-5 h-5" />
@@ -150,7 +156,10 @@ export default function CartDrawer() {
             </Link>
           </div>
         )}
-      </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }
