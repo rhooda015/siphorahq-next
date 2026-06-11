@@ -14,14 +14,14 @@ export const revalidate = 0; // Disable caching to always show live products
 // --- Reusable Components for exact Swasha UI ---
 
 const SectionHeading = ({ title }: { title: string }) => (
-  <h2 className="text-3xl md:text-5xl font-serif text-[var(--color-primary)] text-center mb-12 tracking-wide">
+  <h2 className="text-3xl md:text-5xl font-serif text-[var(--color-primary)] text-center mb-16 tracking-wide">
     {title}
   </h2>
 );
 
 const ViewAllButton = ({ href }: { href: string }) => (
   <div className="flex justify-center mt-12">
-    <Link href={href} className="border-[0.5px] border-[var(--color-primary)] text-[var(--color-primary)] px-10 py-4 text-xs font-sans tracking-[0.2em] uppercase hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-500">
+    <Link href={href} className="border-[0.5px] border-[var(--color-primary)] text-[var(--color-primary)] px-10 py-4 text-[11px] font-sans tracking-[0.2em] uppercase hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-500">
       View all
     </Link>
   </div>
@@ -120,7 +120,7 @@ export default async function HomePage() {
         <>
           <HeroCarousel 
             slides={['/images/hero.webp', '/images/serveware.webp', '/images/gifting.webp']}
-            title="Handcrafted Porcelain for Timeless Gatherings"
+            title="Luxury Porcelain & Fine Dining"
             buttonText="Shop Now"
             buttonLink="/products"
           />

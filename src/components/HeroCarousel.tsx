@@ -50,12 +50,12 @@ export default function HeroCarousel({ slides, title, buttonText, buttonLink }: 
       ))}
       
       <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none px-4">
-        <h2 className="text-white text-4xl md:text-6xl font-serif mb-6 text-center shadow-sm drop-shadow-lg tracking-wide max-w-4xl leading-tight">
+        <h2 className="text-white text-5xl md:text-7xl font-serif mb-8 text-center drop-shadow-2xl tracking-wide max-w-5xl leading-tight">
           {title || 'Handcrafted Porcelain for Timeless Gatherings'}
         </h2>
         <a 
           href={buttonLink || '/products'} 
-          className="pointer-events-auto bg-white text-[var(--color-primary)] px-8 py-3 uppercase tracking-widest text-sm font-medium hover:bg-gray-100 transition-colors shadow-lg"
+          className="pointer-events-auto bg-transparent border-[0.5px] border-white text-white px-10 py-4 uppercase tracking-[0.2em] text-[11px] font-sans hover:bg-white hover:text-[var(--color-primary)] transition-all duration-500"
         >
           {buttonText || 'Shop Now'}
         </a>

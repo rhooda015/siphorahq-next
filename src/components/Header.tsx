@@ -119,7 +119,7 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-50">
         
         {/* Top Header Area: Icons & Logo */}
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-24">
           
           {/* Left: Mobile Menu & Search */}
           <div className="flex items-center flex-1 relative z-50 pointer-events-auto">
@@ -160,12 +160,12 @@ export default function Header() {
         </div>
 
         {/* Bottom Header Area: Navigation (Desktop Only) */}
-        <nav className="hidden md:flex justify-center items-center pb-4 space-x-8 relative z-50 pointer-events-auto">
+        <nav className="hidden md:flex justify-center items-center pb-6 space-x-12 relative z-50 pointer-events-auto">
           {desktopNav.map((item) => (
             <Link 
               key={item.label}
               href={item.url} 
-              className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50"
+              className="text-[var(--color-primary)] hover:text-[#C9A84C] transition-all font-sans text-[11px] tracking-[0.2em] uppercase relative z-50"
             >
               {item.label}
             </Link>
