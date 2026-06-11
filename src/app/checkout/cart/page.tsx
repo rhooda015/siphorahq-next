@@ -9,6 +9,7 @@ import { STATIC_PRODUCTS } from '@/data/products';
 import { trackBeginCheckout } from '@/lib/analytics';
 import ProductCard from '@/components/ProductCard';
 import { useCart } from '@/store/useCart';
+import { useStoreSettings } from '@/providers/SettingsProvider';
 
 export default function CartPage() {
   const { items, cartTotal, removeItem, updateQuantity } = useCart();
@@ -19,9 +20,11 @@ export default function CartPage() {
     setMounted(true);
   }, []);
 
+  const { shippingCost, freeShippingThreshold } = useStoreSettings();
+
   const total = mounted ? cartTotal() : 0;
-  const progressToFreeShipping = Math.min((total / BRAND.freeShippingThreshold) * 100, 100);
-  const remainingForFreeShipping = Math.max(BRAND.freeShippingThreshold - total, 0);
+  const progressToFreeShipping = Math.min((total / freeShippingThreshold) * 100, 100);
+  const remainingForFreeShipping = Math.max(freeShippingThreshold - total, 0);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 pb-32">
@@ -103,12 +106,12 @@ export default function CartPage() {
             </div>
             <div className="flex justify-between py-3 text-sm font-sans text-text-muted border-b border-border">
               <span>Shipping</span>
-              <span className="text-gold font-medium">{total >= BRAND.freeShippingThreshold ? 'Free' : `₹${BRAND.shippingCost.toLocaleString('en-IN')}`}</span>
+              <span className="text-gold font-medium">{total >= freeShippingThreshold ? 'Free' : `₹${shippingCost.toLocaleString('en-IN')}`}</span>
             </div>
             
             <div className="flex justify-between py-4 font-serif text-xl border-b border-border">
               <span>Total</span>
-              <span>₹{(total + (total >= BRAND.freeShippingThreshold || total === 0 ? 0 : BRAND.shippingCost)).toLocaleString('en-IN')}</span>
+              <span>₹{(total + (total >= freeShippingThreshold || total === 0 ? 0 : shippingCost)).toLocaleString('en-IN')}</span>
             </div>
 
             <div className="mt-8 border-t border-[var(--color-border)] pt-5">

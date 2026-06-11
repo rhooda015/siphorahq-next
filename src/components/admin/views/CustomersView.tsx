@@ -6,6 +6,7 @@ export default function CustomersView() {
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [segmentFilter, setSegmentFilter] = useState('All');
 
   useEffect(() => {
     fetchCustomers();
@@ -25,10 +26,21 @@ export default function CustomersView() {
     }
   };
 
-  const filteredCustomers = customers.filter(c => 
-    c.name?.toLowerCase().includes(search.toLowerCase()) || 
-    c.email?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredCustomers = customers.filter(c => {
+    const matchesSearch = c.name?.toLowerCase().includes(search.toLowerCase()) || c.email?.toLowerCase().includes(search.toLowerCase());
+    if (!matchesSearch) return false;
+    
+    // Mock Segment Filtering logic based on LTV / Orders
+    // In a real app, c.totalSpent and c.orderCount would be computed from the Orders collection
+    const ltv = c.totalSpent || 0;
+    const orderCount = c.orderCount || 0;
+    
+    if (segmentFilter === 'VIP') return ltv > 10000 || orderCount >= 5;
+    if (segmentFilter === 'New') return orderCount === 0;
+    if (segmentFilter === 'At Risk') return orderCount > 0 && ltv < 500;
+    
+    return true;
+  });
 
   if (loading) {
     return <div className="p-12 text-center text-zinc-500"><Loader2 className="animate-spin mx-auto mb-4"/> Loading CRM Data...</div>;
@@ -51,8 +63,8 @@ export default function CustomersView() {
       </div>
 
       {/* Toolbar */}
-      <div className="flex gap-4">
-        <div className="relative flex-1 bg-white border border-zinc-200 rounded-lg overflow-hidden shadow-sm">
+      <div className="flex flex-col md:flex-row gap-4 justify-between">
+        <div className="relative flex-1 max-w-md bg-white border border-zinc-200 rounded-lg overflow-hidden shadow-sm">
           <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
           <input 
             type="text" 
@@ -61,6 +73,15 @@ export default function CustomersView() {
             onChange={(e) => setSearch(e.target.value)}
             className="w-full bg-transparent border-none pl-11 pr-4 py-3 text-sm focus:ring-0 outline-none" 
           />
+        </div>
+        <div className="flex items-center gap-2 bg-white border border-zinc-200 rounded-lg px-3 py-2 shadow-sm">
+          <span className="text-xs font-semibold text-zinc-500 uppercase tracking-widest">Segment:</span>
+          <select value={segmentFilter} onChange={e => setSegmentFilter(e.target.value)} className="bg-transparent border-none text-sm font-medium focus:ring-0 outline-none text-[#18181b]">
+            <option value="All">All Customers</option>
+            <option value="VIP">VIP (High LTV)</option>
+            <option value="New">New (0 Orders)</option>
+            <option value="At Risk">At Risk</option>
+          </select>
         </div>
       </div>
 
@@ -71,6 +92,8 @@ export default function CustomersView() {
             <tr>
               <th className="px-6 py-4">Customer</th>
               <th className="px-6 py-4">Status</th>
+              <th className="px-6 py-4">Orders</th>
+              <th className="px-6 py-4">Lifetime Value (LTV)</th>
               <th className="px-6 py-4">Joined On</th>
             </tr>
           </thead>
@@ -94,6 +117,12 @@ export default function CustomersView() {
                   <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md ${c.role === 'admin' ? 'bg-[#D4AF37]/20 text-[#9c8128]' : 'bg-emerald-100 text-emerald-700'}`}>
                     {c.role === 'admin' ? 'Admin' : 'Active'}
                   </span>
+                </td>
+                <td className="px-6 py-4 font-medium text-zinc-900">
+                  {c.orderCount || 0}
+                </td>
+                <td className="px-6 py-4 font-bold text-[#18181b]">
+                  ₹{(c.totalSpent || 0).toLocaleString()}
                 </td>
                 <td className="px-6 py-4 text-zinc-500">
                   {new Date(c.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' })}

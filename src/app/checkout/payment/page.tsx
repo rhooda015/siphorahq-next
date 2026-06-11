@@ -9,6 +9,7 @@ import { trackPurchase } from '@/lib/analytics';
 import { useCart } from '@/store/useCart';
 import CheckoutProgress from '@/components/CheckoutProgress';
 import CheckoutOrderSummary from '@/components/CheckoutOrderSummary';
+import { useStoreSettings } from '@/providers/SettingsProvider';
 
 export default function PaymentPage() {
   const [method, setMethod] = useState('razorpay');
@@ -23,8 +24,10 @@ export default function PaymentPage() {
     setMounted(true);
   }, []);
 
+  const { shippingCost, freeShippingThreshold } = useStoreSettings();
+
   const total = mounted ? cartTotal() : 0;
-  const finalAmount = total + (total >= BRAND.freeShippingThreshold || total === 0 ? 0 : BRAND.shippingCost);
+  const finalAmount = total + (total >= freeShippingThreshold || total === 0 ? 0 : shippingCost);
 
   const handlePayment = async () => {
     if (method === 'cod') {
@@ -47,7 +50,7 @@ export default function PaymentPage() {
           id: orderData.id || `COD-${Math.floor(100000 + Math.random() * 900000)}`,
           amount: finalAmount,
           items: [...items],
-          shippingCost: total >= BRAND.freeShippingThreshold ? 0 : BRAND.shippingCost,
+          shippingCost: total >= freeShippingThreshold ? 0 : shippingCost,
           subtotal: total
         });
         setSuccess(true);
@@ -89,7 +92,7 @@ export default function PaymentPage() {
             id: response.razorpay_payment_id || `RZP-${order.id}`,
             amount: finalAmount,
             items: [...items],
-            shippingCost: total >= BRAND.freeShippingThreshold ? 0 : BRAND.shippingCost,
+            shippingCost: total >= freeShippingThreshold ? 0 : shippingCost,
             subtotal: total
           });
           setSuccess(true);
@@ -266,8 +269,8 @@ export default function PaymentPage() {
           <CheckoutOrderSummary 
             items={items}
             total={total}
-            shippingCost={BRAND.shippingCost}
-            freeShippingThreshold={BRAND.freeShippingThreshold}
+            shippingCost={shippingCost}
+            freeShippingThreshold={freeShippingThreshold}
             finalAmount={finalAmount}
             isPaymentPage={true}
           />

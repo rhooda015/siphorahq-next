@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { ChevronRight, CreditCard, ShieldCheck, Truck, Lock, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/store/useCart';
-import { BRAND } from '@/config/brand';
 import CheckoutProgress from '@/components/CheckoutProgress';
 import CheckoutOrderSummary from '@/components/CheckoutOrderSummary';
+import { useStoreSettings } from '@/providers/SettingsProvider';
 import { useSession } from 'next-auth/react';
 
 export default function AddressPage() {
@@ -80,8 +80,10 @@ export default function AddressPage() {
       .catch(() => {});
   }, [session]);
 
+  const { shippingCost, freeShippingThreshold } = useStoreSettings();
+
   const total = mounted ? cartTotal() : 0;
-  const finalAmount = total + (total >= BRAND.freeShippingThreshold || total === 0 ? 0 : BRAND.shippingCost);
+  const finalAmount = total + (total >= freeShippingThreshold || total === 0 ? 0 : shippingCost);
 
   const handlePincodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value.replace(/\D/g, '').slice(0, 6);
@@ -327,8 +329,8 @@ export default function AddressPage() {
           <CheckoutOrderSummary 
             items={items}
             total={total}
-            shippingCost={BRAND.shippingCost}
-            freeShippingThreshold={BRAND.freeShippingThreshold}
+            shippingCost={shippingCost}
+            freeShippingThreshold={freeShippingThreshold}
             finalAmount={finalAmount}
           />
         )}

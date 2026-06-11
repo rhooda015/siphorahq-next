@@ -6,6 +6,7 @@ export default function ProductsTableView({ products, onEdit, onDelete }: { prod
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const filteredProducts = products.filter(p => {
     if (searchTerm && !p.title.toLowerCase().includes(searchTerm.toLowerCase())) return false;
@@ -42,6 +43,22 @@ export default function ProductsTableView({ products, onEdit, onDelete }: { prod
         </div>
         
         <div className="flex items-center gap-3 w-full md:w-auto">
+          {selectedIds.length > 0 && (
+            <div className="flex items-center gap-2 mr-2">
+              <span className="text-sm text-zinc-500 font-medium">{selectedIds.length} selected</span>
+              <button 
+                onClick={() => {
+                  if (confirm(`Delete ${selectedIds.length} products?`)) {
+                    selectedIds.forEach(id => onDelete(id));
+                    setSelectedIds([]);
+                  }
+                }}
+                className="text-sm bg-red-50 text-red-600 px-3 py-2 rounded-lg font-medium hover:bg-red-100 transition-colors"
+              >
+                Delete Selected
+              </button>
+            </div>
+          )}
           <div className="flex items-center gap-2 text-sm text-zinc-600 border border-zinc-300 rounded-lg px-3 py-2 bg-zinc-50">
             <Filter size={16} />
             <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)} className="bg-transparent outline-none font-medium text-[#18181b]">
@@ -68,6 +85,17 @@ export default function ProductsTableView({ products, onEdit, onDelete }: { prod
           <table className="w-full text-sm text-left whitespace-nowrap">
             <thead className="bg-zinc-50/80 text-zinc-500 text-[11px] font-bold uppercase tracking-wider border-b border-zinc-200">
               <tr>
+                <th className="px-6 py-4 w-10">
+                  <input 
+                    type="checkbox" 
+                    checked={filteredProducts.length > 0 && selectedIds.length === filteredProducts.length}
+                    onChange={(e) => {
+                      if (e.target.checked) setSelectedIds(filteredProducts.map(p => p._id));
+                      else setSelectedIds([]);
+                    }}
+                    className="rounded border-zinc-300 text-[#18181b] focus:ring-[#18181b]"
+                  />
+                </th>
                 <th className="px-6 py-4">Product</th>
                 <th className="px-6 py-4">Status</th>
                 <th className="px-6 py-4">Inventory</th>
@@ -78,7 +106,18 @@ export default function ProductsTableView({ products, onEdit, onDelete }: { prod
             </thead>
             <tbody className="divide-y divide-zinc-200">
               {filteredProducts.map((product, i) => (
-                <tr key={i} className="hover:bg-zinc-50/50 transition-colors group">
+                <tr key={i} className={`hover:bg-zinc-50/50 transition-colors group ${selectedIds.includes(product._id) ? 'bg-zinc-50' : ''}`}>
+                  <td className="px-6 py-4">
+                    <input 
+                      type="checkbox" 
+                      checked={selectedIds.includes(product._id)}
+                      onChange={(e) => {
+                        if (e.target.checked) setSelectedIds([...selectedIds, product._id]);
+                        else setSelectedIds(selectedIds.filter(id => id !== product._id));
+                      }}
+                      className="rounded border-zinc-300 text-[#18181b] focus:ring-[#18181b]"
+                    />
+                  </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-lg bg-zinc-100 flex items-center justify-center border border-zinc-200 overflow-hidden flex-shrink-0">
@@ -132,7 +171,7 @@ export default function ProductsTableView({ products, onEdit, onDelete }: { prod
               ))}
               {filteredProducts.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-zinc-500">
+                  <td colSpan={7} className="px-6 py-12 text-center text-zinc-500">
                     No products found matching your filters.
                   </td>
                 </tr>

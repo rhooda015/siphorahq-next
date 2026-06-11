@@ -9,6 +9,9 @@ import CartDrawer from '@/components/CartDrawer';
 import SessionWrapper from '@/components/SessionWrapper';
 import dbConnect from '@/lib/db';
 import StoreSettings from '@/models/StoreSettings';
+import ThemeSettings from '@/models/ThemeSettings';
+import SettingsProvider from '@/providers/SettingsProvider';
+import ThemeInjector from '@/components/ThemeInjector';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -24,6 +27,12 @@ const dmSans = DM_Sans({
   display: 'swap',
 });
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#1A1A1A',
+};
+
 export async function generateMetadata() {
   await dbConnect();
   const settings = await StoreSettings.findOne().lean() || {
@@ -32,6 +41,7 @@ export async function generateMetadata() {
   };
 
   return {
+    metadataBase: new URL(BRAND.domain),
     title: settings.seoTitle,
     description: settings.seoDescription,
     openGraph: {
@@ -52,7 +62,11 @@ export async function generateMetadata() {
   };
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  await dbConnect();
+  const settings = await StoreSettings.findOne().lean();
+  const theme = await ThemeSettings.findOne().lean();
+
   const schemaOrg = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -101,7 +115,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
       <head>
-        <meta name="theme-color" content="#1A1A1A" />
         <link rel="canonical" href={BRAND.domain} />
         <script
           type="application/ld+json"
@@ -109,13 +122,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="pb-[64px] md:pb-0">
-        <SessionWrapper>
-          <Header />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-          <MobileBottomNav />
-          <CartDrawer />
-        </SessionWrapper>
+        <ThemeInjector theme={theme} />
+        <SettingsProvider initialSettings={JSON.parse(JSON.stringify(settings))}>
+          <SessionWrapper>
+            <Header />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+            <MobileBottomNav />
+            <CartDrawer />
+          </SessionWrapper>
+        </SettingsProvider>
       </body>
     </html>
   );

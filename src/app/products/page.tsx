@@ -125,9 +125,34 @@ export default function ProductsPage() {
     return 0;
   });
 
+  // Build ItemList schema
+  const itemListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: sorted.map((p, idx) => ({
+      '@type': 'ListItem',
+      position: idx + 1,
+      item: {
+        '@type': 'Product',
+        name: p.name,
+        url: `https://siphorahq.in/products/${p.id}`,
+        image: p.image?.startsWith('http') ? p.image : `https://siphorahq.in${p.image}`,
+        offers: {
+          '@type': 'Offer',
+          priceCurrency: 'INR',
+          price: p.price,
+          availability: 'https://schema.org/InStock'
+        }
+      }
+    }))
+  };
+
   return (
     <div className="min-h-screen bg-[#FDFBF7]">
-
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
       {/* ── PAGE HEADER ── */}
       <section className="bg-[#F5F0E8] border-b border-[#E8E0D5] py-14 text-center">
         <p className="section-label">The Collection</p>

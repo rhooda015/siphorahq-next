@@ -3,7 +3,7 @@ import React from 'react';
 import { 
   LayoutDashboard, ShoppingBag, Package, Users, BarChart2, 
   Settings as SettingsIcon, Tag, Star, LayoutTemplate, 
-  Search as SearchIcon, Image as ImageIcon, Folders
+  Search as SearchIcon, Image as ImageIcon, Folders, FileText, Menu as MenuIcon, Palette, ListTree
 } from 'lucide-react';
 
 export default function AdminSidebar({ activeTab, setActiveTab, pendingDispatch }: { activeTab: string, setActiveTab: (t: string) => void, pendingDispatch: number }) {
@@ -60,8 +60,11 @@ export default function AdminSidebar({ activeTab, setActiveTab, pendingDispatch 
         {/* Content */}
         <div className="space-y-1">
           <p className="px-3 text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-3">Content</p>
+          <NavItem icon={ListTree} label="Categories" />
           <NavItem icon={Folders} label="Collections" />
           <NavItem icon={LayoutTemplate} label="Homepage" />
+          <NavItem icon={FileText} label="Pages" />
+          <NavItem icon={MenuIcon} label="Navigation" />
           <NavItem icon={ImageIcon} label="Media" />
         </div>
 
@@ -78,6 +81,7 @@ export default function AdminSidebar({ activeTab, setActiveTab, pendingDispatch 
 
       {/* Footer Settings */}
       <div className="p-4 border-t border-zinc-200 bg-white flex-shrink-0 space-y-2">
+        <NavItem icon={Palette} label="Theme" />
         <NavItem icon={SettingsIcon} label="Settings" />
         <div className="flex items-center gap-2 px-3 py-2 text-xs text-zinc-500 font-medium">
           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse ring-4 ring-emerald-500/20"></div>

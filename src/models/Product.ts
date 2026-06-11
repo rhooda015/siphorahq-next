@@ -40,8 +40,14 @@ const ProductSchema = new mongoose.Schema({
     enum: ['Draft', 'Live'],
     default: 'Live'
   },
+  isVisible: {
+    type: Boolean,
+    default: true
+  },
   metaTitle: String,
-  metaDescription: String
+  metaDescription: String,
+  seoTitle: String,
+  seoDescription: String
 }, {
   timestamps: true,
 });

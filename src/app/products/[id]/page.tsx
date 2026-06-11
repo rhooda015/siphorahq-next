@@ -63,12 +63,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return {
     title: `${(product as any).metaTitle || product.name} | ${BRAND.name}`,
     description: (product as any).metaDescription || product.description,
-    alternates: { canonical: `https://siphorahq.in/products/${product.id}` },
+    alternates: { canonical: `${BRAND.domain}/products/${product.id}` },
     openGraph: {
       type: 'website',
       title: product.name,
       description: (product as any).metaDescription || product.description,
-      url: `https://siphorahq.in/products/${product.id}`,
+      url: `${BRAND.domain}/products/${product.id}`,
       siteName: BRAND.name,
       images: [
         {
@@ -105,44 +105,50 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://siphorahq.in',
+        item: BRAND.domain,
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Collections',
-        item: 'https://siphorahq.in/products',
+        item: `${BRAND.domain}/products`,
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: product.name,
-        item: `https://siphorahq.in/products/${product.id}`,
+        item: `${BRAND.domain}/products/${product.id}`,
       },
     ],
   };
+
+  const nextYear = new Date();
+  nextYear.setFullYear(nextYear.getFullYear() + 1);
+  const priceValidUntil = nextYear.toISOString().split('T')[0];
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
     description: product.description,
+    sku: product.id,
+    url: `${BRAND.domain}/products/${product.id}`,
     image: product.image?.startsWith('http') || product.image?.startsWith('data:') 
       ? product.image 
-      : `https://siphorahq.in${product.image}`,
+      : `${BRAND.domain}${product.image}`,
     brand: {
       '@type': 'Brand',
       name: BRAND.name
     },
     offers: {
       '@type': 'Offer',
-      url: `https://siphorahq.in/products/${product.id}`,
+      url: `${BRAND.domain}/products/${product.id}`,
       priceCurrency: 'INR',
       price: product.salePrice || product.price,
       availability: 'https://schema.org/InStock',
       itemCondition: 'https://schema.org/NewCondition',
-      priceValidUntil: '2026-12-31',
-      seller: { '@type': 'Organization', name: 'SiphoraHQ' }
+      priceValidUntil: priceValidUntil,
+      seller: { '@type': 'Organization', name: BRAND.name }
     },
     aggregateRating: {
       '@type': 'AggregateRating',

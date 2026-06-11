@@ -17,6 +17,11 @@ import MediaLibraryView from '@/components/admin/views/MediaLibraryView';
 import CouponsView from '@/components/admin/views/CouponsView';
 import ReviewsView from '@/components/admin/views/ReviewsView';
 import SEOView from '@/components/admin/views/SEOView';
+import ThemeEditorView from '@/components/admin/views/ThemeEditorView';
+import NavigationBuilderView from '@/components/admin/views/NavigationBuilderView';
+import CMSPagesView from '@/components/admin/views/CMSPagesView';
+import CategoriesView from '@/components/admin/views/CategoriesView';
+
 export default function AdminSPA() {
   const [activeTab, setActiveTab] = useState('Overview');
   const [toast, setToast] = useState<{message: string, type: 'success'|'error'} | null>(null);
@@ -182,6 +187,10 @@ export default function AdminSPA() {
               {activeTab === 'Customers' && <CustomersView />}
               {activeTab === 'Reviews' && <ReviewsView />}
               {activeTab === 'SEO' && <SEOView />}
+              {activeTab === 'Theme' && <ThemeEditorView />}
+              {activeTab === 'Navigation' && <NavigationBuilderView />}
+              {activeTab === 'Pages' && <CMSPagesView />}
+              {activeTab === 'Categories' && <CategoriesView />}
             </>
           )}
 
@@ -209,7 +218,8 @@ export default function AdminSPA() {
                 status: fd.get('status'),
                 courier: fd.get('courier'),
                 awb: fd.get('awb'),
-                expectedDelivery: fd.get('expected')
+                expectedDelivery: fd.get('expected'),
+                internalNotes: fd.get('internalNotes')
               });
             }} className="p-6 space-y-5">
               
@@ -250,6 +260,10 @@ export default function AdminSPA() {
                   <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Tracking AWB</label>
                   <input name="awb" defaultValue={trackingModalOrder.awb} placeholder="Tracking Number" className="w-full border border-zinc-300 rounded-lg p-2.5 text-sm font-mono focus:ring-2 focus:ring-[#18181b]/10 outline-none" />
                 </div>
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-zinc-500 uppercase tracking-widest mb-2">Internal Notes</label>
+                <textarea name="internalNotes" defaultValue={trackingModalOrder.internalNotes} placeholder="Add notes for staff (not visible to customer)..." className="w-full border border-zinc-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-[#18181b]/10 outline-none h-20 resize-none" />
               </div>
               <div className="pt-4 flex gap-3">
                 <button type="button" onClick={() => setTrackingModalOrder(null)} className="flex-1 bg-white border border-zinc-300 text-[#18181b] py-2.5 rounded-lg text-sm font-bold hover:bg-zinc-50 transition-colors">

@@ -8,7 +8,7 @@ import CategoryScroll from '@/components/CategoryScroll';
 import ProductCard from '@/components/ProductCard';
 import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
-import StoreSettings from '@/models/StoreSettings';
+import Homepage from '@/models/Homepage';
 export const revalidate = 0; // Disable caching to always show live products
 
 // --- Reusable Components for exact Swasha UI ---
@@ -35,29 +35,20 @@ export default async function HomePage() {
   // Fetch live products from DB
   const dbProducts = await Product.find({ status: 'Live' }).sort({ createdAt: -1 }).lean();
   
-  // Fetch homepage settings
-  const settings = await StoreSettings.findOne().lean() || {
-    heroTitle: 'Handcrafted Porcelain for Timeless Gatherings',
-    heroButtonText: 'Shop Now',
-    heroButtonLink: '/products',
-    heroSlides: ['/images/hero.webp', '/images/serveware.webp', '/images/gifting.webp'],
-  };
+  // Fetch homepage layout
+  let homepage = await Homepage.findOne({ version: 'draft' }).lean();
   
   const mappedProducts = dbProducts.map((p: any) => ({
     id: p.handle || p._id.toString(),
     name: p.title,
     price: p.price,
-    salePrice: p.price, // Add logic if you add sale price to DB
+    salePrice: p.price, 
     category: p.category,
     image: p.images?.[0]?.url || '/images/teaset.webp',
   }));
 
-  // Centralized Data Source (fallback to static if DB is completely empty)
+  // Centralized Data Source
   const allProducts = mappedProducts.length > 0 ? mappedProducts : STATIC_PRODUCTS;
-
-  const productsNew = allProducts.slice(0, 4);
-  const productsServeFor6 = allProducts.filter((p: any) => p.category === 'dinner-set' || p.category === 'Dinnerware').slice(0, 4);
-  const productsBowls = allProducts.filter((p: any) => p.category === 'serveware' || p.category === 'Serveware').slice(0, 4);
 
   return (
     <div className="min-h-screen bg-[var(--color-bg)] pb-20">
@@ -67,12 +58,63 @@ export default async function HomePage() {
         Free Shipping on Orders Over ₹999
       </div>
 
-      <HeroCarousel 
-        slides={settings.heroSlides}
-        title={settings.heroTitle}
-        buttonText={settings.heroButtonText}
-        buttonLink={settings.heroButtonLink}
-      />
+      {homepage?.sections && homepage.sections.length > 0 ? (
+        homepage.sections.map((section: any) => {
+          if (section.type === 'hero') {
+            return (
+              <HeroCarousel 
+                key={section.id}
+                slides={section.props.image ? [section.props.image] : ['/images/hero.webp', '/images/serveware.webp', '/images/gifting.webp']}
+                title={section.props.title}
+                buttonText={section.props.buttonText}
+                buttonLink={section.props.buttonLink}
+              />
+            );
+          }
+          
+          if (section.type === 'featured_collection') {
+            const collectionProducts = allProducts.filter((p: any) => 
+              p.category?.toLowerCase() === section.props.collectionId?.toLowerCase()
+            ).slice(0, section.props.limit || 4);
+            
+            const displayProducts = collectionProducts.length > 0 ? collectionProducts : allProducts.slice(0, 4);
+            
+            return (
+              <section key={section.id} className="max-w-7xl mx-auto px-4 my-20">
+                <SectionHeading title={section.props.title || 'Featured Collection'} />
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
+                  {displayProducts.map((product: any) => <ProductCard key={product.id} product={product} />)}
+                </div>
+                {section.props.buttonText && (
+                  <ViewAllButton href={`/products?category=${section.props.collectionId}`} />
+                )}
+              </section>
+            );
+          }
+
+          if (section.type === 'text_block') {
+            return (
+              <section key={section.id} className="max-w-4xl mx-auto px-4 my-20 text-center">
+                <h2 className="text-3xl md:text-5xl font-serif text-[var(--color-primary)] mb-6 tracking-wide">
+                  {section.props.title}
+                </h2>
+                <p className="text-[var(--color-text-muted)] font-sans text-sm md:text-base leading-relaxed">
+                  {section.props.content}
+                </p>
+              </section>
+            );
+          }
+
+          return null;
+        })
+      ) : (
+        <>
+          <HeroCarousel 
+            slides={['/images/hero.webp', '/images/serveware.webp', '/images/gifting.webp']}
+            title="Handcrafted Porcelain for Timeless Gatherings"
+            buttonText="Shop Now"
+            buttonLink="/products"
+          />
 
       <CategoryScroll />
 
@@ -289,13 +331,15 @@ export default async function HomePage() {
       </section>
 
       {/* SEO Content Block */}
-      <section className="bg-[var(--color-accent-light)] border-t border-[var(--color-border)] py-16 text-center px-4">
+      <section className="bg-[var(--color-accent-light)] border-t border-[var(--color-border)] py-16 text-center px-4 mt-20">
         <h1 className="text-xl font-serif text-[var(--color-primary)] mb-4">Premium Porcelain Dinnerware & Tea Sets India | SiphoraHQ</h1>
         <p className="text-[var(--color-text-muted)] font-sans text-sm max-w-2xl mx-auto leading-relaxed">
           Siphorahq is India's premier destination for luxury porcelain tableware, premium dinner sets, and aesthetic home decor. We specialize in curating exquisite, handcrafted pieces that bring timeless elegance to your dining experience. Whether you are hosting a formal dinner party, looking for the perfect wedding gift, or upgrading your everyday serveware, our exclusive collections are designed to impress. Explore our wide range of premium dinnerware, luxury tea cup sets, elegant platters, and sophisticated serving bowls. With our commitment to unparalleled quality, secure packaging, and fast Pan-India shipping, Siphorahq ensures that luxury is delivered safely to your doorstep. Transform your dining space into a masterpiece with Siphorahq—where poetry meets porcelain.
         </p>
       </section>
 
+        </>
+      )}
     </div>
   );
 }

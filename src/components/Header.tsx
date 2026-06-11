@@ -8,24 +8,7 @@ import { BRAND } from '@/config/brand';
 import { useCart } from '@/store/useCart';
 import { useSession } from 'next-auth/react';
 
-const DESKTOP_NAV_ITEMS = [
-  { label: 'Collections', href: '/products' },
-  { label: 'Tea Sets', href: '/products?category=cups' },
-  { label: 'Dinner Sets', href: '/products?category=dinner' },
-  { label: 'Gifting', href: '/products?tag=gifts' },
-  { label: 'Our Story', href: '/our-story' },
-  { label: 'Contact', href: '/contact' },
-];
 
-const MOBILE_NAV_ITEMS = [
-  { label: 'All Collections', href: '/products' },
-  { label: 'Tea Sets', href: '/products?category=cups' },
-  { label: 'Dinner Sets', href: '/products?category=dinner' },
-  { label: 'Platters & Bowls', href: '/products?category=platters' },
-  { label: 'Gifting', href: '/products?tag=gifts' },
-  { label: 'Our Story', href: '/our-story' },
-  { label: 'Contact', href: '/contact' },
-];
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -38,6 +21,9 @@ export default function Header() {
   const isCheckout = pathname.startsWith('/checkout');
   const { items, openDrawer } = useCart();
   const { data: session } = useSession();
+  
+  const [desktopNav, setDesktopNav] = useState<any[]>([]);
+  const [mobileNav, setMobileNav] = useState<any[]>([]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +39,32 @@ export default function Header() {
       setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
+    
+    Promise.all([
+      fetch('/api/admin/navigation?menuId=main-menu').then(r => r.json()),
+      fetch('/api/admin/navigation?menuId=mobile-menu').then(r => r.json())
+    ]).then(([main, mobile]) => {
+      if (main.links && main.links.length > 0) {
+        setDesktopNav(main.links);
+      } else {
+        setDesktopNav([
+          { label: 'Collections', url: '/products' },
+          { label: 'Our Story', url: '/our-story' },
+          { label: 'Contact', url: '/contact' }
+        ]);
+      }
+      
+      if (mobile.links && mobile.links.length > 0) {
+        setMobileNav(mobile.links);
+      } else {
+        setMobileNav([
+          { label: 'All Collections', url: '/products' },
+          { label: 'Our Story', url: '/our-story' },
+          { label: 'Contact', url: '/contact' }
+        ]);
+      }
+    }).catch(e => console.error(e));
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -149,10 +161,10 @@ export default function Header() {
 
         {/* Bottom Header Area: Navigation (Desktop Only) */}
         <nav className="hidden md:flex justify-center items-center pb-4 space-x-8 relative z-50 pointer-events-auto">
-          {DESKTOP_NAV_ITEMS.map((item) => (
+          {desktopNav.map((item) => (
             <Link 
               key={item.label}
-              href={item.href} 
+              href={item.url} 
               className="text-[var(--color-text-muted)] hover:underline underline-offset-8 decoration-2 decoration-[var(--color-primary)] transition-all font-sans text-sm tracking-wide relative z-50"
             >
               {item.label}
@@ -196,10 +208,10 @@ export default function Header() {
           </button>
         </div>
         <div className="flex flex-col p-6 space-y-6 overflow-y-auto">
-          {MOBILE_NAV_ITEMS.map((item) => (
+          {mobileNav.map((item) => (
             <Link 
               key={item.label}
-              href={item.href} 
+              href={item.url} 
               onClick={() => setIsMobileMenuOpen(false)} 
               className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4"
             >

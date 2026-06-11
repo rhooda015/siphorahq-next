@@ -3,8 +3,29 @@ import Link from 'next/link';
 import { Mail, Phone, MapPin, Building2 } from 'lucide-react';
 import { BRAND } from '@/config/brand';
 import NewsletterForm from './NewsletterForm';
+import dbConnect from '@/lib/db';
+import Navigation from '@/models/Navigation';
 
-export default function Footer() {
+export default async function Footer() {
+  await dbConnect();
+  
+  let footerMenu1 = await Navigation.findOne({ menuId: 'footer-menu-1' }).lean();
+  let footerMenu2 = await Navigation.findOne({ menuId: 'footer-menu-2' }).lean();
+  
+  const menu1Links = footerMenu1?.links || [
+    { label: 'All Products', url: '/products' },
+    { label: 'Collections', url: '/products?category=dinner-set' },
+    { label: 'New Arrivals', url: '/products?category=new' },
+    { label: 'Best Sellers', url: '/products?category=best-sellers' },
+    { label: 'Corporate Gifting', url: '/gifting' }
+  ];
+
+  const menu2Links = footerMenu2?.links || [
+    { label: 'Our Story', url: '/about' },
+    { label: 'Contact', url: '/contact' },
+    { label: 'Journal', url: '/journal' },
+    { label: 'FAQ', url: '/faq' }
+  ];
   return (
     <footer className="bg-[var(--color-accent-light)] border-t border-[var(--color-border)] font-sans mt-auto">
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
@@ -12,26 +33,23 @@ export default function Footer() {
         {/* Top Footer: Grid (Links & Newsletter) */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-16">
           
-          {/* Column 1: Shop */}
+          {/* Column 1: Menu 1 */}
           <div className="col-span-1">
-            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">Shop</h2>
+            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">{footerMenu1?.name || 'Shop'}</h2>
             <ul className="space-y-4">
-              <li><Link href="/products" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">All Products</Link></li>
-              <li><Link href="/products?category=dinner-set" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Collections</Link></li>
-              <li><Link href="/products?category=new" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">New Arrivals</Link></li>
-              <li><Link href="/products?category=best-sellers" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Best Sellers</Link></li>
-              <li><Link href="/gifting" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Corporate Gifting</Link></li>
+              {menu1Links.map((link: any, idx: number) => (
+                <li key={idx}><Link href={link.url} className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">{link.label}</Link></li>
+              ))}
             </ul>
           </div>
 
-          {/* Column 2: Company */}
+          {/* Column 2: Menu 2 */}
           <div className="col-span-1">
-            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">Company</h2>
+            <h2 className="text-[var(--color-primary)] text-[15px] font-sans tracking-widest uppercase mb-6">{footerMenu2?.name || 'Company'}</h2>
             <ul className="space-y-4">
-              <li><Link href="/about" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Our Story</Link></li>
-              <li><Link href="/contact" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Contact</Link></li>
-              <li><Link href="/journal" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">Journal</Link></li>
-              <li><Link href="/faq" className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">FAQ</Link></li>
+              {menu2Links.map((link: any, idx: number) => (
+                <li key={idx}><Link href={link.url} className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors text-sm md:text-base py-1 block">{link.label}</Link></li>
+              ))}
             </ul>
           </div>
 

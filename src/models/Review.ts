@@ -7,6 +7,7 @@ export interface IReview extends Document {
   rating: number;
   comment: string;
   status: 'Pending' | 'Published' | 'Rejected';
+  isFeatured: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,6 +20,7 @@ const ReviewSchema = new mongoose.Schema(
     rating: { type: Number, required: true, min: 1, max: 5 },
     comment: { type: String, required: true },
     status: { type: String, enum: ['Pending', 'Published', 'Rejected'], default: 'Pending' },
+    isFeatured: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

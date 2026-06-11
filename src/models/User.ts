@@ -20,6 +20,8 @@ export interface IUser extends Document {
   addresses: IAddress[];
   wishlist: string[];
   cart?: any[];
+  customerTags: string[];
+  loyaltyTier: string;
 }
 
 const AddressSchema = new Schema<IAddress>({
@@ -41,7 +43,9 @@ const UserSchema = new Schema<IUser>({
   createdAt: { type: Date, default: Date.now },
   addresses: [AddressSchema],
   wishlist:  [{ type: String }],
-  cart:      { type: [mongoose.Schema.Types.Mixed], default: [] }
+  cart:      { type: [mongoose.Schema.Types.Mixed], default: [] },
+  customerTags: { type: [String], default: [] },
+  loyaltyTier: { type: String, default: 'bronze', enum: ['bronze', 'silver', 'gold', 'platinum'] }
 });
 
 export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema);

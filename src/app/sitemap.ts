@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import dbConnect from '@/lib/db'
 import Product from '@/models/Product'
+import Page from '@/models/Page'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
@@ -14,14 +15,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     await dbConnect()
-    const products = await Product.find({}, '_id handle updatedAt').lean()
+    const products = await Product.find({ status: { $ne: 'Draft' } }, '_id handle updatedAt').lean()
     const productPages: MetadataRoute.Sitemap = products.map((p: any) => ({
       url: `https://siphorahq.in/products/${p.handle || p._id}`,
       lastModified: p.updatedAt || new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     }))
-    return [...staticPages, ...productPages]
+
+    const pages = await Page.find({ isPublished: true }, 'slug updatedAt').lean()
+    const cmsPages: MetadataRoute.Sitemap = pages.map((p: any) => ({
+      url: `https://siphorahq.in/pages/${p.slug}`,
+      lastModified: p.updatedAt || new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    }))
+
+    return [...staticPages, ...productPages, ...cmsPages]
   } catch {
     return staticPages
   }

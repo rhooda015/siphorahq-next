@@ -48,7 +48,14 @@ const OrderSchema = new mongoose.Schema({
   awb: { type: String, default: 'Pending' },
   expectedDelivery: { type: String, default: 'TBD' },
   shiprocketOrderId: { type: String },
-  shiprocketShipmentId: { type: String }
+  shiprocketShipmentId: { type: String },
+  internalNotes: { type: String },
+  tags: { type: [String], default: [] },
+  timeline: [{
+    status: String,
+    message: String,
+    date: { type: Date, default: Date.now }
+  }]
 }, {
   timestamps: true,
 });

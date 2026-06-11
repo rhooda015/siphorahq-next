@@ -2,7 +2,11 @@ import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: '*', allow: '/', disallow: ['/account/', '/api/'] },
+    rules: { 
+      userAgent: '*', 
+      allow: '/', 
+      disallow: ['/account/', '/api/', '/checkout/', '/cart/', '/admin/', '/*?*'] 
+    },
     sitemap: 'https://siphorahq.in/sitemap.xml',
   }
 }
