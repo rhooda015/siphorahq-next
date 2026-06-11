@@ -115,6 +115,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
       <head>
+        <link rel="preload" as="image" href="/images/hero.webp" />
         <link rel="canonical" href={BRAND.domain} />
         <script
           type="application/ld+json"

@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Bell, Check, AlertCircle, Search, Menu, Plus } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Bell, Check, AlertCircle, Search, Menu, Plus, LogOut } from 'lucide-react';
 import ProductEditor from '@/components/admin/ProductEditor';
 
 // Import Views
@@ -23,6 +24,8 @@ import CMSPagesView from '@/components/admin/views/CMSPagesView';
 import CategoriesView from '@/components/admin/views/CategoriesView';
 
 export default function AdminSPA() {
+  const router = useRouter();
+  const handleLogout = async () => { await fetch('/api/admin/auth', { method: 'DELETE' }); router.push('/admin/login'); };
   const [activeTab, setActiveTab] = useState('Overview');
   const [toast, setToast] = useState<{message: string, type: 'success'|'error'} | null>(null);
   
@@ -49,18 +52,24 @@ export default function AdminSPA() {
     try {
       if (tab === 'Overview' || tab === 'Analytics') {
         const res = await fetch('/api/admin/stats');
+        if (res.status === 401) { router.push('/admin/login'); return; }
         setStats(await res.json());
       } else if (tab === 'Orders') {
         const res = await fetch('/api/admin/orders');
-        setOrders(await res.json());
+        if (res.status === 401) { router.push('/admin/login'); return; }
+        const data = await res.json();
+        setOrders(Array.isArray(data) ? data : []);
       } else if (tab === 'Products') {
         const res = await fetch('/api/products');
+        if (res.status === 401) { router.push('/admin/login'); return; }
         setProducts(await res.json());
       } else if (tab === 'Returns') {
         const res = await fetch('/api/admin/returns');
+        if (res.status === 401) { router.push('/admin/login'); return; }
         setReturns(await res.json());
       } else if (tab === 'Coupons') {
         const res = await fetch('/api/admin/coupons');
+        if (res.status === 401) { router.push('/admin/login'); return; }
         setCoupons(await res.json());
       }
     } catch (e) {
@@ -153,6 +162,10 @@ export default function AdminSPA() {
                 <p className="text-[11px] font-medium text-zinc-500">Store Owner</p>
               </div>
             </div>
+            <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-zinc-500 hover:text-red-600 transition-colors ml-2 border border-zinc-200 rounded-lg px-3 py-1.5 relative z-50 cursor-pointer">
+              <LogOut size={15} />
+              <span className="hidden md:block">Logout</span>
+            </button>
           </div>
         </header>
 

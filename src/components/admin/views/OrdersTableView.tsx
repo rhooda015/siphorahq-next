@@ -1,8 +1,22 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Search, Filter, Eye, Truck, CheckCircle2, Clock, XCircle, CreditCard, ChevronRight } from 'lucide-react';
 
 export default function OrdersTableView({ orders, onManage }: { orders: any[], onManage: (o: any) => void }) {
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('All');
+
+  const filtered = orders.filter(o => {
+    const matchSearch = !search || 
+      o.orderId?.toLowerCase().includes(search.toLowerCase()) ||
+      o.customerEmail?.toLowerCase().includes(search.toLowerCase()) ||
+      o.customerDetails?.firstName?.toLowerCase().includes(search.toLowerCase());
+    const matchStatus = statusFilter === 'All' || o.status === statusFilter || 
+      (statusFilter === 'Pending' && (o.status === 'pending_payment' || o.status === 'pending_confirmation')) ||
+      (statusFilter === 'Shipped' && o.status === 'Shipped') ||
+      (statusFilter === 'Delivered' && (o.status === 'Delivered' || o.status === 'paid'));
+    return matchSearch && matchStatus;
+  });
   
   const getStatusInfo = (status: string) => {
     switch(status) {
@@ -33,7 +47,7 @@ export default function OrdersTableView({ orders, onManage }: { orders: any[], o
           <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
           <input 
             type="text" 
-            placeholder="Search orders by ID, email, or customer..." 
+            placeholder="Search orders by ID, email, or customer..." value={search} onChange={(e) => setSearch(e.target.value)} 
             className="w-full pl-10 pr-4 py-2 border border-zinc-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#18181b]/10 focus:border-[#18181b]"
           />
         </div>
@@ -41,7 +55,7 @@ export default function OrdersTableView({ orders, onManage }: { orders: any[], o
         <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="flex items-center gap-2 text-sm text-zinc-600 border border-zinc-300 rounded-lg px-3 py-2 bg-zinc-50">
             <Filter size={16} />
-            <select className="bg-transparent outline-none font-medium text-[#18181b]">
+            <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="bg-transparent outline-none font-medium text-[#18181b]">
               <option value="All">All Statuses</option>
               <option value="Pending">Unfulfilled</option>
               <option value="Shipped">Shipped</option>
@@ -66,7 +80,7 @@ export default function OrdersTableView({ orders, onManage }: { orders: any[], o
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-200">
-              {orders.map((order, i) => {
+              {filtered.map((order, i) => {
                 const statusInfo = getStatusInfo(order.status);
                 const StatusIcon = statusInfo.icon;
                 return (
@@ -99,7 +113,7 @@ export default function OrdersTableView({ orders, onManage }: { orders: any[], o
                   </tr>
                 );
               })}
-              {orders.length === 0 && (
+              {filtered.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center text-zinc-500">
                     No orders found.

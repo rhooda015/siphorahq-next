@@ -66,20 +66,8 @@ export async function POST(req: Request) {
       paymentMethod: data.method || 'cod'
     });
 
-    // Push to Shiprocket
-    try {
-      const srToken = await authenticateShiprocket();
-      if (srToken) {
-        const srOrder = await createShiprocketOrder(newOrder, srToken);
-        if (srOrder && srOrder.shipment_id) {
-          newOrder.shiprocketShipmentId = srOrder.shipment_id;
-          newOrder.shiprocketOrderId = srOrder.order_id;
-          await newOrder.save();
-        }
-      }
-    } catch (srError) {
-      console.error("Failed to push to Shiprocket (non-fatal):", srError);
-    }
+    // Shiprocket push happens only after admin confirms — not automatically on COD
+    // Admin can trigger dispatch from /admin → Orders → Manage
 
     return NextResponse.json({ 
       success: true, 

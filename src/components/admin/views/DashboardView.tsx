@@ -105,10 +105,10 @@ export default function DashboardView({ stats }: { stats: any }) {
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {[
-          { label: 'Total Revenue', value: `₹${stats?.revenue?.toLocaleString() || '1,45,000'}`, trend: '+14%', up: true },
-          { label: 'Total Orders', value: stats?.orders || '124', trend: '+8%', up: true },
+          { label: 'Total Revenue', value: `₹${stats?.revenue?.toLocaleString() || '0'}`, trend: '+14%', up: true },
+          { label: 'Total Orders', value: stats?.orders || '0', trend: '+8%', up: true },
           { label: 'Conversion Rate', value: '3.2%', trend: '-1.1%', up: false },
-          { label: 'Avg Order Value', value: `₹${stats?.avgOrderValue?.toLocaleString() || '4,500'}`, trend: '+5%', up: true },
+          { label: 'Avg Order Value', value: `₹${stats?.avgOrderValue?.toLocaleString() || '0'}`, trend: '+5%', up: true },
         ].map((kpi, i) => (
           <div key={i} className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm hover:shadow-md transition-shadow">
             <p className="text-sm font-medium text-zinc-500 mb-2">{kpi.label}</p>
@@ -171,11 +171,7 @@ export default function DashboardView({ stats }: { stats: any }) {
           <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm">
              <h3 className="font-bold text-[#18181b] text-lg mb-4">Top Products</h3>
              <div className="space-y-4">
-               {[
-                 { name: 'Gold Rim Dinner Set (24 Pcs)', sales: 42, rev: '₹1,26,000' },
-                 { name: 'Vintage Blue Tea Set', sales: 28, rev: '₹42,000' },
-                 { name: 'Marble Serving Platter', sales: 15, rev: '₹12,000' }
-               ].map((p, i) => (
+               {(stats?.topProducts?.length ? stats.topProducts : []).map((p: any, i: number) => (
                  <div key={i} className="flex items-center justify-between pb-4 border-b border-zinc-100 last:border-0 last:pb-0">
                    <div className="flex items-center gap-3">
                      <div className="w-10 h-10 bg-zinc-100 rounded flex items-center justify-center text-zinc-400">
@@ -183,7 +179,7 @@ export default function DashboardView({ stats }: { stats: any }) {
                      </div>
                      <div>
                        <p className="text-sm font-semibold text-[#18181b] truncate max-w-[150px]">{p.name}</p>
-                       <p className="text-xs text-zinc-500">{p.sales} sales</p>
+                       <p className="text-xs text-zinc-500">{p.sales || 0} sales</p>
                      </div>
                    </div>
                    <div className="text-sm font-bold text-[#18181b]">{p.rev}</div>
