@@ -50,6 +50,15 @@ export default async function HomePage() {
   // Centralized Data Source
   const allProducts = mappedProducts.length > 0 ? mappedProducts : STATIC_PRODUCTS;
 
+  // Derived collections for the homepage sections
+  const productsNew = allProducts.slice(0, 4);
+  const productsServeFor6 = allProducts.filter((p: any) => p.category?.toLowerCase().includes('dinner')).slice(0, 4);
+  const productsBowls = allProducts.filter((p: any) => p.category?.toLowerCase().includes('serveware') || p.category?.toLowerCase().includes('bowl')).slice(0, 4);
+  
+  // Fallbacks
+  if (productsServeFor6.length === 0) productsServeFor6.push(...allProducts.slice(0, 4));
+  if (productsBowls.length === 0) productsBowls.push(...allProducts.slice(0, 4));
+
   return (
     <div className="min-h-screen bg-[var(--color-bg)] pb-20">
       

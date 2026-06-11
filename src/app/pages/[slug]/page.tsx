@@ -5,23 +5,25 @@ import Page from '@/models/Page';
 import { Metadata } from 'next';
 import { BRAND } from '@/config/brand';
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
   await dbConnect();
-  const page = await Page.findOne({ slug: params.slug, isPublished: true }).lean();
+  const page = await Page.findOne({ slug: resolvedParams.slug, isPublished: true }).lean();
   
   if (!page) {
     return { title: 'Page Not Found' };
   }
 
   return {
-    title: page.metaTitle || `${page.title} - ${BRAND.name}`,
-    description: page.metaDescription,
+    title: page.seoTitle || `${page.title} - ${BRAND.name}`,
+    description: page.seoDescription,
   };
 }
 
-export default async function CMSPage({ params }: { params: { slug: string } }) {
+export default async function CMSPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
   await dbConnect();
-  const page = await Page.findOne({ slug: params.slug, isPublished: true }).lean();
+  const page = await Page.findOne({ slug: resolvedParams.slug, isPublished: true }).lean();
 
   if (!page) {
     notFound();
