@@ -10,7 +10,7 @@ import RevealOnScroll from '@/components/RevealOnScroll';
 import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
 import Homepage from '@/models/Homepage';
-export const revalidate = 0; // Disable caching to always show live products
+export const revalidate = 60; // Use ISR to cache homepage and prevent 2-3 minute DB blocking
 
 // --- Reusable Components for exact Swasha UI ---
 

@@ -8,6 +8,8 @@ import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import Image from 'next/image';
+
 export default function ProductCardActions({ product }: { product: any }) {
   const [showQuickView, setShowQuickView] = useState(false);
   const addItem = useCart((state) => state.addItem);
@@ -99,11 +101,13 @@ export default function ProductCardActions({ product }: { product: any }) {
               >
                 ✕
               </button>
-              <div className="w-full md:w-1/2 aspect-square relative bg-white border border-[#EAE3D8]">
-                 <img 
+              <div className="w-full md:w-1/2 aspect-[4/5] relative bg-white border border-[#EAE3D8] overflow-hidden">
+                 <Image 
                    src={(product.images?.[0]?.url) || product.image || product.img || '/images/dinnerware.webp'} 
                    alt={product.name} 
-                   className="absolute inset-0 w-full h-full object-cover" 
+                   fill
+                   sizes="(max-width: 768px) 100vw, 50vw"
+                   className="object-cover" 
                  />
               </div>
               <div className="w-full md:w-1/2 flex flex-col justify-center">

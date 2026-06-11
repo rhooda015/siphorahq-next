@@ -8,10 +8,12 @@ export default function ProductCard({ product }: { product: any }) {
     <Link href={`/products/${product.id}`} className="group flex flex-col relative w-full h-full transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] overflow-hidden bg-white border border-[#EAE3D8]">
       {/* Image Container */}
       <div className="aspect-[4/5] bg-[#F9F8F6] relative overflow-hidden">
-        <img
+        <Image
           src={(product.images?.[0]?.url) || product.image || product.img || '/images/dinnerware.webp'}
           alt={product.name}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03] ease-out"
+          fill
+          sizes="(max-width: 768px) 50vw, 25vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.03] ease-out"
         />
         {/* Badges Container */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10 items-start">

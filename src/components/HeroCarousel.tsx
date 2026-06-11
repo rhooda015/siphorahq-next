@@ -40,13 +40,6 @@ export default function HeroCarousel({ slides, title, buttonText, buttonLink }: 
           transition={{ duration: 1.5, ease: "easeInOut" }}
           className="absolute inset-0"
         >
-          {/* Subtle Slow Zoom Effect for Cinematic Feel */}
-          <motion.div
-            initial={{ scale: 1 }}
-            animate={{ scale: 1.05 }}
-            transition={{ duration: 10, ease: "linear" }}
-            className="w-full h-full relative"
-          >
             <Image 
               src={heroSlides[currentSlide].img} 
               alt={`Siphorahq Luxury Collection ${currentSlide + 1}`} 
@@ -55,9 +48,8 @@ export default function HeroCarousel({ slides, title, buttonText, buttonLink }: 
               fetchPriority="high"
               className="object-cover object-center" 
               sizes="100vw" 
-              quality={100}
+              quality={80}
             />
-          </motion.div>
           {/* Refined gradient overlay for text legibility without muddying the image */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/30" />
         </motion.div>
