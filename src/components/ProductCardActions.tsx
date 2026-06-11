@@ -39,14 +39,14 @@ export default function ProductCardActions({ product }: { product: any }) {
 
   return (
     <>
-      <div className="absolute bottom-0 left-0 w-full flex flex-col translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20">
+      <div className="absolute inset-x-0 bottom-0 p-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20 bg-gradient-to-t from-black/60 to-transparent pb-4 pt-12">
         <button 
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
             setShowQuickView(true);
           }}
-          className="w-full bg-white/95 backdrop-blur-sm text-[var(--color-text-muted)] uppercase tracking-widest text-[10px] font-medium py-2 border-b border-[var(--color-border)] hover:bg-neutral-50 transition-colors"
+          className="w-full bg-white/95 backdrop-blur-md text-[#1A1A1A] uppercase tracking-[0.2em] text-[10px] font-medium py-3 hover:bg-white transition-colors shadow-lg"
         >
           Quick View
         </button>
@@ -58,7 +58,7 @@ export default function ProductCardActions({ product }: { product: any }) {
             trackAddToCart(product, 1);
             toast.success(`${product.name} added to cart`);
           }}
-          className="w-full bg-[var(--color-primary)] text-white uppercase tracking-widest text-xs font-medium py-3 hover:bg-[#1a2520] transition-colors shadow-sm"
+          className="w-full bg-[#1A1A1A] text-white uppercase tracking-[0.2em] text-[10px] font-medium py-3 hover:bg-[#2C2C2C] transition-colors shadow-lg"
         >
           Add to Cart
         </button>
@@ -66,7 +66,7 @@ export default function ProductCardActions({ product }: { product: any }) {
 
       <button 
         onClick={toggleWishlist}
-        className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm text-[var(--color-text-muted)] transition-colors z-10 hover:text-[var(--color-primary)]" 
+        className={`absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-sm text-[#8C8C8C] transition-all duration-500 z-10 hover:bg-white hover:text-[#1A1A1A] hover:scale-105 ${isWished ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
         aria-label={isWished ? "Remove from wishlist" : "Add to wishlist"}
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-colors" fill={isWished ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor">
