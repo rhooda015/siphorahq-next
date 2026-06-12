@@ -3,12 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { ShoppingBag, User, X, Search, Menu, Lock, Truck, ShieldCheck, Phone } from 'lucide-react';
 import { BRAND } from '@/config/brand';
 import { useCart } from '@/store/useCart';
 import { useSession } from 'next-auth/react';
-
-
+import { X, Menu } from 'lucide-react';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,9 +46,9 @@ export default function Header() {
         setDesktopNav(main.links);
       } else {
         setDesktopNav([
+          { label: 'Shop', url: '/products' },
           { label: 'Collections', url: '/products' },
-          { label: 'Our Story', url: '/our-story' },
-          { label: 'Contact', url: '/contact' }
+          { label: 'Our Story', url: '/our-story' }
         ]);
       }
       
@@ -58,9 +56,9 @@ export default function Header() {
         setMobileNav(mobile.links);
       } else {
         setMobileNav([
-          { label: 'All Collections', url: '/products' },
-          { label: 'Our Story', url: '/our-story' },
-          { label: 'Contact', url: '/contact' }
+          { label: 'Shop', url: '/products' },
+          { label: 'Collections', url: '/products' },
+          { label: 'Our Story', url: '/our-story' }
         ]);
       }
     }).catch(e => console.error(e));
@@ -74,17 +72,17 @@ export default function Header() {
 
   if (isCheckout && pathname !== '/checkout/cart') {
     return (
-      <header className="fixed w-full top-0 z-50 transition-all duration-300 bg-[var(--color-bg)] border-b border-[var(--color-border)] py-4">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center">
-          <Link href="/checkout/cart" className="text-sm font-sans text-[var(--color-text-muted)] hover:text-[var(--color-primary)]">
+      <header className="fixed w-full top-0 z-50 transition-all duration-300 bg-porcelain-white border-b border-bone-gray py-4">
+        <div className="max-w-container-max mx-auto px-4 md:px-margin-desktop flex justify-between items-center">
+          <Link href="/checkout/cart" className="text-sm font-body-md text-on-surface-variant hover:text-heritage-navy">
             Return to Cart
           </Link>
-          <Link href="/" className="font-serif text-2xl tracking-widest text-[var(--color-primary)] uppercase">
+          <Link href="/" className="font-display-lg text-headline-lg font-bold text-heritage-navy tracking-tight uppercase">
             {BRAND.name}
           </Link>
-          <div className="flex items-center gap-2 text-[var(--color-primary)]">
-            <Lock className="w-4 h-4" />
-            <span className="text-xs font-sans font-medium uppercase tracking-widest">Secure</span>
+          <div className="flex items-center gap-2 text-heritage-navy">
+            <span className="material-symbols-outlined text-[16px]">lock</span>
+            <span className="font-label-caps text-label-caps uppercase tracking-widest">Secure</span>
           </div>
         </div>
       </header>
@@ -93,117 +91,91 @@ export default function Header() {
 
   return (
     <>
-      {/* Global Trust Bar */}
-      <div className="bg-[var(--color-primary)] text-white text-xs font-sans py-2 hidden md:block">
-        <div className="max-w-7xl mx-auto px-4 flex justify-center gap-12 items-center tracking-widest uppercase">
-          <div className="flex items-center gap-2">
-            <Truck className="w-3 h-3" />
-            <span>Free Shipping Over ₹{BRAND.freeShippingThreshold.toLocaleString('en-IN')}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-3 h-3" />
-            <span>100% Secure Checkout</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Phone className="w-3 h-3" />
-            <span>Premium Support</span>
-          </div>
-        </div>
-      </div>
-      {/* Mobile Trust Bar (Single Item) */}
-      <div className="bg-[var(--color-primary)] text-white text-[10px] font-sans py-1.5 md:hidden text-center tracking-widest uppercase">
-        Free Shipping Over ₹{BRAND.freeShippingThreshold.toLocaleString('en-IN')}
-      </div>
-
-      <header className={`sticky top-0 z-40 w-full transition-all duration-300 bg-[var(--color-bg)] ${isScrolled ? 'border-b border-[var(--color-border)] shadow-sm' : 'border-b border-transparent'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-50">
-        
-        {/* Top Header Area: Icons & Logo */}
-        <div className="flex justify-between items-center h-24">
+      <nav className={`fixed top-0 w-full z-50 bg-porcelain-white/85 dark:bg-obsidian/85 backdrop-blur-md transition-all duration-300 ${isScrolled ? 'border-b border-bone-gray dark:border-on-surface-variant/20 shadow-sm dark:shadow-none' : 'border-b border-transparent'}`}>
+        <div className="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
           
-          {/* Left: Mobile Menu & Search */}
-          <div className="flex items-center flex-1 relative z-50 pointer-events-auto">
+          {/* Mobile Menu Toggle */}
+          <div className="flex items-center md:hidden">
             <button 
-              className="md:hidden p-2 text-[var(--color-primary)] hover:bg-[#fdfbf9] rounded-full relative z-50 cursor-pointer pointer-events-auto transition-all"
+              className="p-2 text-heritage-navy hover:text-champagne-gold transition-colors"
               onClick={() => setIsMobileMenuOpen(true)}
             >
               <Menu className="h-6 w-6 stroke-[1.5]" />
             </button>
+          </div>
+
+          <Link href="/" className="font-display-lg text-headline-lg font-bold text-heritage-navy dark:text-porcelain-white tracking-tight uppercase">
+            {BRAND.name}
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-10">
+            {desktopNav.map((item) => (
+              <Link 
+                key={item.label}
+                href={item.url} 
+                className="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant dark:text-on-primary-container/70 pb-1 hover:text-champagne-gold transition-colors duration-300"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-4 md:gap-6">
             <button 
-              className="hidden md:block p-2 text-[var(--color-primary)] hover:bg-[#fdfbf9] rounded-full hover:text-[var(--color-secondary)] transition-all relative z-50 cursor-pointer pointer-events-auto"
+              className="material-symbols-outlined cursor-pointer transition-opacity active:opacity-70 hover:text-champagne-gold hidden md:block"
               onClick={() => setIsSearchOpen(!isSearchOpen)}
             >
-              <Search className="h-5 w-5 stroke-[1.5]" />
+              search
             </button>
-          </div>
-
-          {/* Center: Logo */}
-          <div className="flex-shrink-0 flex justify-center text-center relative z-50 pointer-events-auto">
-            <Link href="/" className="font-serif text-3xl tracking-widest text-[var(--color-primary)] uppercase relative z-50">
-              {BRAND.name}
+            <Link href={session ? "/account" : "/login"} className="material-symbols-outlined cursor-pointer transition-opacity active:opacity-70 hover:text-champagne-gold hidden md:block">
+              person
             </Link>
-          </div>
-
-          {/* Right: Account & Cart */}
-          <div className="flex items-center justify-end flex-1 gap-2 relative z-50 pointer-events-auto">
-            <Link href={session ? "/account" : "/login"} className="block p-2 text-[var(--color-primary)] hover:bg-[#fdfbf9] rounded-full hover:text-[var(--color-secondary)] transition-all relative z-50 cursor-pointer">
-              <User className="h-5 w-5 stroke-[1.5]" />
-            </Link>
-            <button onClick={openDrawer} className="p-2 text-[var(--color-primary)] hover:bg-[#fdfbf9] rounded-full hover:text-[var(--color-secondary)] transition-all relative z-50 cursor-pointer">
-              <ShoppingBag className="h-5 w-5 stroke-[1.5]" />
-              <span className={`absolute top-0 right-0 bg-[var(--color-primary)] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center transition-all duration-300 ${mounted && items.length > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
+            <button className="material-symbols-outlined cursor-pointer transition-opacity active:opacity-70 hover:text-champagne-gold hidden md:block">
+              favorite
+            </button>
+            <button onClick={openDrawer} className="relative cursor-pointer transition-opacity active:opacity-70 group">
+              <span className="material-symbols-outlined text-heritage-navy dark:text-porcelain-white" style={{ fontVariationSettings: "'FILL' 1" }}>
+                shopping_bag
+              </span>
+              <span className={`absolute -top-1 -right-1 bg-champagne-gold text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold transition-all duration-300 ${mounted && items.length > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
                 {mounted ? items.length : 0}
               </span>
             </button>
           </div>
-
         </div>
+      </nav>
 
-        {/* Bottom Header Area: Navigation (Desktop Only) */}
-        <nav className="hidden md:flex justify-center items-center pb-6 space-x-12 relative z-50 pointer-events-auto">
-          {desktopNav.map((item) => (
-            <Link 
-              key={item.label}
-              href={item.url} 
-              className="text-[var(--color-primary)] hover:text-[#C9A84C] transition-all font-sans text-[11px] tracking-[0.2em] uppercase relative z-50"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        {/* Desktop Search Dropdown */}
-        {isSearchOpen && (
-          <div className="absolute top-full left-0 w-full bg-[var(--color-bg)] shadow-md p-6 border-t border-[var(--color-border)] z-[60] pointer-events-auto">
-            <div className="max-w-3xl mx-auto">
-              <form className="relative" onSubmit={handleSearch}>
-                <input 
-                  type="text" 
-                  placeholder="Search by style, category, occasion..." 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full border-b border-[var(--color-primary)] text-xl font-serif py-3 px-2 focus:outline-none focus:border-[var(--color-secondary)] bg-transparent text-[var(--color-primary)]"
-                  autoFocus
-                />
-                <button type="submit" className="absolute right-2 top-3 text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
-                  <Search className="w-6 h-6" />
-                </button>
-              </form>
-            </div>
+      {/* Desktop Search Dropdown */}
+      {isSearchOpen && (
+        <div className="fixed top-20 left-0 w-full bg-porcelain-white shadow-md p-6 border-b border-bone-gray z-[60] pointer-events-auto transition-all">
+          <div className="max-w-3xl mx-auto relative">
+            <form onSubmit={handleSearch}>
+              <input 
+                type="text" 
+                placeholder="Search by style, category, occasion..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full border-b border-heritage-navy text-xl font-display-lg py-3 px-2 focus:outline-none focus:border-champagne-gold bg-transparent text-heritage-navy placeholder:text-on-surface-variant/50"
+                autoFocus
+              />
+              <button type="submit" className="absolute right-2 top-3 text-on-surface-variant hover:text-heritage-navy transition-colors">
+                <span className="material-symbols-outlined text-[24px]">search</span>
+              </button>
+            </form>
           </div>
-        )}
-
-      </div>
+        </div>
+      )}
 
       {/* Mobile Menu Drawer */}
       <div 
-        className={`fixed inset-0 z-[100] bg-white flex flex-col md:hidden transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-0 z-[100] bg-porcelain-white flex flex-col md:hidden transform transition-transform duration-300 ease-in-out ${
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex justify-between items-center p-4 border-b border-[var(--color-border)] min-h-[80px]">
-          <span className="font-serif text-2xl tracking-widest text-[var(--color-primary)] uppercase">{BRAND.name}</span>
-          <button onClick={() => setIsMobileMenuOpen(false)} className="p-4 text-[var(--color-primary)]" aria-label="Close menu">
+        <div className="flex justify-between items-center p-4 border-b border-bone-gray h-20">
+          <span className="font-display-lg text-headline-md tracking-tight text-heritage-navy uppercase">{BRAND.name}</span>
+          <button onClick={() => setIsMobileMenuOpen(false)} className="p-4 text-heritage-navy" aria-label="Close menu">
             <X className="h-8 w-8" />
           </button>
         </div>
@@ -213,17 +185,16 @@ export default function Header() {
               key={item.label}
               href={item.url} 
               onClick={() => setIsMobileMenuOpen(false)} 
-              className="text-xl font-serif text-[var(--color-primary)] border-b border-[var(--color-border)] pb-4"
+              className="font-display-lg text-headline-md text-heritage-navy border-b border-bone-gray pb-4"
             >
               {item.label}
             </Link>
           ))}
-          <Link href={session ? "/account" : "/login"} onClick={() => setIsMobileMenuOpen(false)} className="text-xl font-serif text-[var(--color-primary)] pt-4">
+          <Link href={session ? "/account" : "/login"} onClick={() => setIsMobileMenuOpen(false)} className="font-display-lg text-headline-md text-heritage-navy pt-4">
             {session ? session.user?.name || "My Account" : "Sign In"}
           </Link>
         </div>
       </div>
-    </header>
     </>
   );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cormorant_Garamond, DM_Sans } from 'next/font/google';
+import { Playfair_Display, Inter } from 'next/font/google';
 import './globals.css';
 import { BRAND, getWhatsAppLink } from '@/config/brand';
 import Header from '@/components/Header';
@@ -14,17 +14,17 @@ import SettingsProvider from '@/providers/SettingsProvider';
 import ThemeInjector from '@/components/ThemeInjector';
 import { Toaster } from 'react-hot-toast';
 
-const cormorant = Cormorant_Garamond({
+const playfair = Playfair_Display({
   subsets: ['latin'],
-  weight: ['300', '400', '600'],
-  variable: '--font-cormorant',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-playfair',
   display: 'swap',
 });
 
-const dmSans = DM_Sans({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-dm-sans',
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-inter',
   display: 'swap',
 });
 
@@ -114,8 +114,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   };
 
   return (
-    <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
+    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <head>
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
         <link rel="preload" as="image" href="/images/hero.webp" />
         <link rel="canonical" href={BRAND.domain} />
         <script
@@ -123,7 +124,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
         />
       </head>
-      <body className="pb-[64px] md:pb-0">
+      <body className="bg-porcelain-white text-heritage-navy font-body-md antialiased min-h-screen pb-[64px] md:pb-0">
         <ThemeInjector theme={theme} />
         <SettingsProvider initialSettings={JSON.parse(JSON.stringify(settings))}>
           <SessionWrapper>

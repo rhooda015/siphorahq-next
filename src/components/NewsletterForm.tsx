@@ -20,30 +20,30 @@ export default function NewsletterForm() {
 
   if (subscribed) {
     return (
-      <div className="text-green-700 bg-green-50 border border-green-200 p-3 text-sm font-medium tracking-wide">
+      <div className="text-champagne-gold text-sm font-medium tracking-wide">
         Thank you for subscribing!
       </div>
     );
   }
 
   return (
-    <form className="flex flex-col gap-3" onSubmit={handleSubscribe}>
-      <div className="relative">
+    <form onSubmit={handleSubscribe}>
+      <div className="flex border-b border-heritage-navy/20 dark:border-porcelain-white/20 pb-2">
         <input 
           type="email" 
-          placeholder="Your email address" 
+          placeholder="Email address" 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full bg-white border border-[var(--color-border)] text-black px-4 py-3 focus:outline-none focus:border-[var(--color-primary)] transition-colors rounded-sm placeholder:text-gray-400"
+          className="bg-transparent border-none focus:ring-0 w-full placeholder:text-on-surface-variant/50 focus:outline-none"
           required
         />
         <button 
           type="submit" 
           disabled={loading}
-          className="absolute right-2 top-1 bottom-1 px-4 bg-[var(--color-primary)] text-white hover:bg-[var(--color-secondary)] transition-colors font-sans tracking-widest text-xs uppercase rounded-sm disabled:opacity-70 disabled:cursor-not-allowed"
+          className="material-symbols-outlined text-heritage-navy dark:text-porcelain-white disabled:opacity-50"
           aria-label="Subscribe"
         >
-          {loading ? '...' : 'Join'}
+          {loading ? 'hourglass_empty' : 'east'}
         </button>
       </div>
     </form>
