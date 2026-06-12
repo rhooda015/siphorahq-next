@@ -38,7 +38,7 @@ export default function ProductCardActions({ product }: { product: any }) {
 
   return (
     <>
-      <div className="absolute inset-x-0 bottom-0 p-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 z-20">
+      <div className="quick-add absolute bottom-0 left-0 w-full p-4 translate-y-full opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 bg-porcelain-white/90 backdrop-blur-md z-20">
         <button 
           onClick={(e) => {
             e.preventDefault();
@@ -47,9 +47,9 @@ export default function ProductCardActions({ product }: { product: any }) {
             trackAddToCart(product, 1);
             toast.success(`${product.name} added to cart`);
           }}
-          className="w-full bg-porcelain-white/90 backdrop-blur-sm text-heritage-navy py-3 font-label-caps text-label-caps uppercase tracking-widest hover:bg-heritage-navy hover:text-porcelain-white transition-colors"
+          className="w-full py-3 bg-heritage-navy text-porcelain-white font-label-caps text-label-caps uppercase tracking-widest hover:bg-champagne-gold transition-colors"
         >
-          Quick Add
+          QUICK ADD
         </button>
       </div>
 
