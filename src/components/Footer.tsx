@@ -46,7 +46,7 @@ export default function Footer() {
           <ul className="space-y-4 font-body-md text-surface-cream/80 mb-8">
             <li className="flex items-center gap-3">
               <span className="material-symbols-outlined text-burnished-gold text-[18px]">mail</span> 
-              <a className="hover:text-white transition-colors" href="mailto:hello@siphorahq.com">hello@siphorahq.com</a>
+              <a className="hover:text-white transition-colors" href="mailto:concierge@siphorahq.in">concierge@siphorahq.in</a>
             </li>
             <li className="flex items-center gap-3">
               <span className="material-symbols-outlined text-burnished-gold text-[18px]">call</span> 

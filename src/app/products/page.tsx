@@ -1,146 +1,161 @@
-"use client";
-
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import ProductListing from '@/components/ProductListing';
+import { BRAND } from '@/config/brand';
 import Link from 'next/link';
-import Image from 'next/image';
-import ProductCard from '@/components/ProductCard';
 
-// ── LOCAL FALLBACK CATALOG ─────────────────────────────────────────────────
-// Used when backend is unavailable. Replace with real API data when ready.
-const FALLBACK_PRODUCTS = [
+export const metadata = {
+  title: 'Shop Premium Porcelain Cups, Tea Sets & Dinnerware | Siphorahq',
+  description: 'Browse Siphorahq premium porcelain cups, mugs, tea sets, dinnerware, serveware, and luxury gift sets for modern Indian homes.',
+  openGraph: {
+    title: 'Shop Premium Porcelain | Siphorahq',
+    description: 'Browse Siphorahq premium porcelain cups, mugs, tea sets, dinnerware, serveware, and luxury gift sets.',
+  }
+};
+
+const PRODUCTS = [
   {
-    id: 'celadon-zen-cup',
-    name: 'Celadon Zen Cup',
-    price: 2800,
-    category: 'cups',
-    tag: '',
-    image: '/images/teaset.webp',
-    badge: 'Bestseller',
+    name: "Emerald Regent Mug",
+    slug: "emerald-regent-mug",
+    price: "₹999",
+    category: "Cups & Mugs",
+    badge: "Best Seller",
+    image: "/images/products/emerald-regent-mug.webp"
   },
   {
-    id: 'imperial-heritage-tea-set',
-    name: 'Imperial Heritage Tea Set',
-    price: 8500,
-    category: 'cups',
-    tag: 'gifts',
-    image: '/images/teaset.webp',
-    badge: 'New',
+    name: "Imperial White Porcelain Mug",
+    slug: "imperial-white-porcelain-mug",
+    price: "₹799",
+    category: "Cups & Mugs",
+    badge: "New Arrival",
+    image: "/images/products/imperial-white-mug.webp"
   },
   {
-    id: 'royal-dinner-set-6',
-    name: 'Royal Dinner Set — 6 Pieces',
-    price: 14500,
-    category: 'dinner',
-    tag: 'gifts',
-    image: '/images/dinnerware.webp',
-    badge: '',
+    name: "Moroccan Azure Tea Mug",
+    slug: "moroccan-azure-tea-mug",
+    price: "₹599",
+    category: "Cups & Mugs",
+    badge: "Popular",
+    image: "/images/products/moroccan-azure-tea-mug.webp"
   },
   {
-    id: 'artisan-platter-gold-rim',
-    name: 'Artisan Platter — Gold Rim',
-    price: 5200,
-    category: 'platters',
-    tag: '',
-    image: '/images/cat_plates.webp',
-    badge: '',
+    name: "Premium Gold Dinner Set",
+    slug: "premium-gold-dinner-set",
+    price: "₹25,500",
+    category: "Dinnerware",
+    badge: "Limited Edition",
+    image: "/images/products/premium-gold-dinner-set.webp"
   },
   {
-    id: 'handthrown-coffee-mug',
-    name: 'Hand-thrown Coffee Mug',
-    price: 1800,
-    category: 'mugs',
-    tag: '',
-    image: '/images/cat_mugs.webp',
-    badge: 'Popular',
+    name: "Blue Rose Tea Set",
+    slug: "blue-rose-tea-set",
+    price: "₹4,999",
+    category: "Tea Sets",
+    badge: "Gift Ready",
+    image: "/images/products/blue-rose-tea-set.webp"
   },
   {
-    id: 'luxury-bowl-set',
-    name: 'Luxury Bowl Set — Set of 4',
-    price: 6400,
-    category: 'platters',
-    tag: 'gifts',
-    image: '/images/serveware.webp',
-    badge: '',
+    name: "Royal Ivory Cup Set",
+    slug: "royal-ivory-cup-set",
+    price: "₹1,499",
+    category: "Cups & Mugs",
+    badge: "Gift Ready",
+    image: "/images/products/royal-ivory-cup-set.webp"
   },
+  {
+    name: "Classic White Dinner Plates",
+    slug: "classic-white-dinner-plates",
+    price: "₹2,999",
+    category: "Dinnerware",
+    badge: "Essential",
+    image: "/images/products/classic-white-dinner-plates.webp"
+  },
+  {
+    name: "Golden Rim Serving Bowl",
+    slug: "golden-rim-serving-bowl",
+    price: "₹1,899",
+    category: "Serveware",
+    badge: "New Arrival",
+    image: "/images/products/golden-rim-serving-bowl.webp"
+  },
+  {
+    name: "Luxe Wedding Gift Box",
+    slug: "luxe-wedding-gift-box",
+    price: "₹3,999",
+    category: "Gift Sets",
+    badge: "Wedding Pick",
+    image: "/images/products/luxe-wedding-gift-box.webp"
+  },
+  {
+    name: "Corporate Gift Cup Set",
+    slug: "corporate-gift-cup-set",
+    price: "₹2,499",
+    category: "Gift Sets",
+    badge: "Bulk Order",
+    image: "/images/products/corporate-gift-cup-set.webp"
+  },
+  {
+    name: "Minimalist Porcelain Tea Cups",
+    slug: "minimalist-porcelain-tea-cups",
+    price: "₹1,299",
+    category: "Tea Sets",
+    badge: "New Arrival",
+    image: "/images/products/minimalist-tea-cups.webp"
+  },
+  {
+    name: "Heritage Navy Mug Set",
+    slug: "heritage-navy-mug-set",
+    price: "₹1,999",
+    category: "Cups & Mugs",
+    badge: "Premium Pick",
+    image: "/images/products/heritage-navy-mug-set.webp"
+  }
 ];
 
-const CATEGORIES = [
-  { label: 'All',             value: 'all' },
-  { label: 'Teacups & Saucers', value: 'cups' },
-  { label: 'Dinner Sets',     value: 'dinner' },
-  { label: 'Platters & Bowls', value: 'platters' },
-  { label: 'Coffee Mugs',     value: 'mugs' },
-  { label: 'Gift Hampers',    value: 'gifts' },
-];
+export default function ShopAllPage() {
+  
+  // JSON-LD Schemas
+  const collectionPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Shop All Porcelain | Siphorahq',
+    description: metadata.description,
+    url: `${BRAND.domain}/products`
+  };
 
-const SORT_OPTIONS = [
-  { label: 'Featured',        value: 'featured' },
-  { label: 'Price: Low–High', value: 'price_asc' },
-  { label: 'Price: High–Low', value: 'price_desc' },
-  { label: 'Newest',          value: 'newest' },
-];
+  const breadcrumbListSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: BRAND.domain
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Shop All',
+        item: `${BRAND.domain}/products`
+      }
+    ]
+  };
 
-function formatPrice(price: number) {
-  return `₹${price.toLocaleString('en-IN')}`;
-}
-
-export default function ProductsPage() {
-  const [products, setProducts]   = useState(FALLBACK_PRODUCTS);
-  const [loading, setLoading]     = useState(false);
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [sortBy, setSortBy]       = useState('featured');
-
-  // Try live backend — fall back to local catalog silently
-  useEffect(() => {
-    setLoading(true);
-    fetch('/api/products')
-      .then(res => { if (!res.ok) throw new Error('unavailable'); return res.json(); })
-      .then(data => { 
-        if (Array.isArray(data) && data.length > 0) {
-          const mapped = data.map(p => ({
-            ...p,
-            id: p.handle || p._id?.toString() || p.id,
-            name: p.title || p.name,
-            image: p.images?.[0]?.url || p.image,
-            price: p.price || 0
-          }));
-          setProducts(mapped);
-        }
-      })
-      .catch(() => { /* silently use fallback */ })
-      .finally(() => setLoading(false));
-  }, []);
-
-  // Filter
-  const filtered = products.filter(p => {
-    if (activeCategory === 'all')   return true;
-    if (activeCategory === 'gifts') return p.tag === 'gifts';
-    return p.category === activeCategory;
-  });
-
-  // Sort
-  const sorted = [...filtered].sort((a, b) => {
-    if (sortBy === 'price_asc')  return a.price - b.price;
-    if (sortBy === 'price_desc') return b.price - a.price;
-    return 0;
-  });
-
-  // Build ItemList schema
   const itemListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    itemListElement: sorted.map((p, idx) => ({
+    itemListElement: PRODUCTS.map((p, idx) => ({
       '@type': 'ListItem',
       position: idx + 1,
       item: {
         '@type': 'Product',
         name: p.name,
-        url: `https://siphorahq.in/products/${p.id}`,
-        image: p.image?.startsWith('http') ? p.image : `https://siphorahq.in${p.image}`,
+        url: `${BRAND.domain}/products/${p.slug}`,
+        image: `${BRAND.domain}${p.image}`,
         offers: {
           '@type': 'Offer',
           priceCurrency: 'INR',
-          price: p.price,
+          price: p.price.replace(/[^0-9]/g, ''),
           availability: 'https://schema.org/InStock'
         }
       }
@@ -148,96 +163,55 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
-      />
-      {/* ── PAGE HEADER ── */}
-      <section className="bg-[#F5F0E8] border-b border-[#E8E0D5] py-14 text-center">
-        <p className="section-label">The Collection</p>
-        <h1 className="text-4xl md:text-5xl font-serif text-[#1A1A1A] mb-3">
-          All Collections
-        </h1>
-        <p className="text-[#6B6560] font-sans text-sm max-w-md mx-auto">
-          Handcrafted porcelain for quiet rituals — made by master artisans across India.
-        </p>
-      </section>
+    <div className="min-h-screen bg-surface-cream text-ink-charcoal font-body-md overflow-x-hidden">
+      {/* Schemas */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
 
-      <div className="max-w-7xl mx-auto px-4 py-12">
-
-        {/* ── FILTERS ROW ── */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-10">
-
-          {/* Category Tabs */}
-          <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map(cat => (
-              <button
-                key={cat.value}
-                onClick={() => setActiveCategory(cat.value)}
-                className={`px-4 py-2 text-xs font-sans uppercase tracking-widest transition-all duration-200 border ${
-                  activeCategory === cat.value
-                    ? 'bg-[#1A1A1A] text-white border-[#1A1A1A]'
-                    : 'bg-white text-[#1A1A1A] border-[#E8E0D5] hover:border-[#1A1A1A]'
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Sort */}
-          <select
-            value={sortBy}
-            onChange={e => setSortBy(e.target.value)}
-            className="border border-[#E8E0D5] bg-white text-[#1A1A1A] text-xs font-sans uppercase tracking-widest px-4 py-2 focus:outline-none focus:border-[#C9A84C] transition-colors cursor-pointer"
-          >
-            {SORT_OPTIONS.map(opt => (
-              <option key={opt.value} value={opt.value}>{opt.label}</option>
-            ))}
-          </select>
+      {/* ── HEADER BREADCRUMB & TITLE ── */}
+      <div className="bg-[#111] text-surface-cream pt-24 pb-16 px-5 md:px-margin-desktop text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "url('/images/homepage/artisanal_left.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+        <div className="relative z-10">
+          <nav className="flex justify-center items-center gap-2 font-label-caps text-[10px] uppercase tracking-widest text-surface-cream/60 mb-6">
+            <Link href="/" className="hover:text-burnished-gold transition-colors">Home</Link>
+            <span>/</span>
+            <span className="text-burnished-gold">Shop All</span>
+          </nav>
+          <h1 className="font-headline-lg text-4xl md:text-5xl italic tracking-tighter mb-4">Shop All Porcelain</h1>
+          <p className="font-body-md text-surface-cream/80 max-w-xl mx-auto">
+            Explore premium porcelain cups, tea sets, dinnerware, and gift-ready tableware crafted for elegant Indian homes.
+          </p>
         </div>
-
-        {/* ── LOADING ── */}
-        {loading && (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="spinner mb-4" />
-            <p className="text-xs font-sans uppercase tracking-widest text-[#6B6560]">
-              Curating collection...
-            </p>
-          </div>
-        )}
-
-        {/* ── EMPTY STATE ── */}
-        {!loading && sorted.length === 0 && (
-          <div className="text-center py-20 border border-dashed border-[#E8E0D5]">
-            <p className="text-[#6B6560] font-sans text-sm mb-4">
-              No pieces found in this category.
-            </p>
-            <button
-              onClick={() => setActiveCategory('all')}
-              className="btn-secondary text-xs px-6 py-2"
-            >
-              View All Collections
-            </button>
-          </div>
-        )}
-
-        {/* ── PRODUCT GRID ── */}
-        {!loading && sorted.length > 0 && (
-          <>
-            <p className="text-xs text-[#6B6560] font-sans mb-6 tracking-wide">
-              {sorted.length} {sorted.length === 1 ? 'piece' : 'pieces'}
-            </p>
-
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-              {sorted.map((product: any) => (
-                <ProductCard key={product.id || product._id || Math.random()} product={product} />
-              ))}
-            </div>
-          </>
-        )}
       </div>
+
+      {/* ── TRUST STRIP ── */}
+      <div className="bg-burnished-gold text-white py-3 border-y border-white/10">
+        <div className="max-w-container-max mx-auto px-5 flex justify-between items-center overflow-hidden">
+          <div className="flex animate-marquee md:animate-none md:justify-center md:w-full gap-8 md:gap-16 whitespace-nowrap">
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-[16px]">local_shipping</span>
+              <span className="font-label-caps text-[10px] uppercase tracking-widest">Free Shipping Pan India Above ₹999</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-[16px]">support_agent</span>
+              <span className="font-label-caps text-[10px] uppercase tracking-widest">WhatsApp Concierge: +91 9540027978</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-[16px]">verified_user</span>
+              <span className="font-label-caps text-[10px] uppercase tracking-widest">Lead-free & Food Safe</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-[16px]">replay</span>
+              <span className="font-label-caps text-[10px] uppercase tracking-widest">Damage Replacement Support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── PRODUCT LISTING (Client Component) ── */}
+      <ProductListing products={PRODUCTS} />
+      
     </div>
   );
 }

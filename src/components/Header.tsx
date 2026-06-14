@@ -48,7 +48,7 @@ export default function Header() {
         setDesktopNav([
           { label: 'Shop', url: '/products' },
           { label: 'Collections', url: '/collections' },
-          { label: 'New Arrivals', url: '/products' },
+          { label: 'New Arrivals', url: '/new-arrivals' },
           { label: 'Best Sellers', url: '/products' },
           { label: 'Gift Sets', url: '/collections/gifting' },
           { label: 'Our Story', url: '/our-story' }
@@ -61,7 +61,7 @@ export default function Header() {
         setMobileNav([
           { label: 'Shop', url: '/products' },
           { label: 'Collections', url: '/collections' },
-          { label: 'New Arrivals', url: '/products' },
+          { label: 'New Arrivals', url: '/new-arrivals' },
           { label: 'Best Sellers', url: '/products' },
           { label: 'Gift Sets', url: '/collections/gifting' },
           { label: 'Our Story', url: '/our-story' }
@@ -101,14 +101,14 @@ export default function Header() {
         {/* 1. Announcement Bar */}
         <div className="bg-ink-charcoal text-surface-cream py-3 overflow-hidden border-b border-burnished-gold/20 relative z-50">
           <div className="flex animate-marquee whitespace-nowrap gap-16 items-center">
-            <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Free Shipping Above ₹999</span>
+            <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Free Shipping Pan India Above ₹999</span>
             <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
             <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Secure Razorpay Checkout</span>
             <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
             <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Luxury Gift Packaging Included</span>
             <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
             {/* Duplicate for seamless loop */}
-            <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Free Shipping Above ₹999</span>
+            <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Free Shipping Pan India Above ₹999</span>
             <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
             <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Secure Razorpay Checkout</span>
             <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
