@@ -25,6 +25,20 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
+  async redirects() {
+    return [
+      {
+        source: '/collections',
+        destination: '/products',
+        permanent: false,
+      },
+      {
+        source: '/collections/:path*',
+        destination: '/products',
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [
       {
