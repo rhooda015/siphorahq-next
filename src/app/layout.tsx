@@ -124,7 +124,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
         />
       </head>
-      <body className="bg-porcelain-white text-heritage-navy font-body-md antialiased min-h-screen pb-[64px] md:pb-0 flex flex-col">
+      <body className="bg-surface-cream text-ink-charcoal font-body-md antialiased min-h-screen pb-[64px] md:pb-0 flex flex-col overflow-x-hidden">
         <ThemeInjector theme={theme} />
         <SettingsProvider initialSettings={JSON.parse(JSON.stringify(settings))}>
           <SessionWrapper>

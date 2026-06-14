@@ -5,26 +5,11 @@ import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
 import { STATIC_PRODUCTS } from '@/data/products';
 import NewsletterForm from '@/components/NewsletterForm';
+import AutoCarousel from '@/components/AutoCarousel';
 
 export const revalidate = 60; // Use ISR
 
 const WHATSAPP_NUMBER = "919540027978";
-
-const collections = [
-  ["Dinnerware", "/images/homepage/dinnerware-collection.webp", "/collections/dinnerware"],
-  ["Cups & Mugs", "/images/homepage/cups-mugs-collection.webp", "/collections/cups-mugs"],
-  ["Tea Sets", "/images/homepage/tea-set-collection.webp", "/collections/tea-sets"],
-  ["Luxury Gifting", "/images/homepage/luxury-gifting.webp", "/collections/gifting"],
-];
-
-const trust = [
-  "Premium Porcelain",
-  "Lead-free & Food Safe",
-  "Gift-ready Packaging",
-  "Damage Replacement Support",
-  "Secure Razorpay Checkout",
-  "Trusted by 2,500+ happy homes",
-];
 
 export default async function HomePage() {
   await dbConnect();
@@ -50,218 +35,342 @@ export default async function HomePage() {
   const displayProducts = [...mappedProducts, ...filteredStatic].slice(0, 4);
 
   return (
-    <div className="bg-[#FCF9F4] text-[#1A2A3A]">
-      <section className="relative min-h-[82svh] overflow-hidden">
-        <Image
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjKFOZSacyg5S9aewoF3p5oBtjy_Q6nHjK8fbYWNIEQ3LSTzg57OIL9Xx8kgOKA3TaHabGVUW5M7MxrG3Pa6wcW0jutvTnX9A2m0Dy_Mgnq0FH1H2YbQAJzDywwfuPRN7nCM2qoxAGBJnml4nkufhGUF0yRZjQqLwTotipfqv95Uu2K72OnDAR4D0pMGx4tR3hzakgB_9ZslgeKvzBCkeYXLKZd5IbwxK2x2TE9WDOYHDU_WMBW-Rvpn9CTc7WHhg6deAZq7lKEgM"
-          alt="Luxury Siphorahq porcelain dining table"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-[#1A2A3A]/65 sm:bg-gradient-to-r sm:from-[#1A2A3A]/85 sm:via-[#1A2A3A]/45 sm:to-transparent" />
+    <>
+      <AutoCarousel />
 
-        <div className="relative z-10 mx-auto flex min-h-[82svh] max-w-7xl items-center px-5 lg:px-10">
-          <div className="max-w-2xl text-white">
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.4em] text-[#D4AF37]">
-              Poetry in Porcelain
-            </p>
-            <h1 className="font-serif text-4xl font-semibold leading-tight sm:text-6xl lg:text-7xl">
-              Luxury Porcelain for Elegant Living
-            </h1>
-            <p className="mt-6 text-lg leading-8 text-white/85">
-              Premium porcelain cups, tea sets, dinnerware, and gift-ready tableware crafted for modern Indian homes.
-            </p>
+      {/* 4. Trust Grid */}
+      <section className="border-b border-muted-sand">
+        <div className="max-w-container-max mx-auto grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-muted-sand">
+          <div className="p-8 md:p-12 text-center group hover:bg-white transition-colors">
+            <span className="material-symbols-outlined text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform">workspace_premium</span>
+            <h3 className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal mb-2">Artisan Crafted</h3>
+            <p className="font-body-md text-on-surface-variant text-sm">Fine porcelain, fired at 1350°C</p>
+          </div>
+          <div className="p-8 md:p-12 text-center group hover:bg-white transition-colors">
+            <span className="material-symbols-outlined text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform">local_shipping</span>
+            <h3 className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal mb-2">Secure Delivery</h3>
+            <p className="font-body-md text-on-surface-variant text-sm">Damage-free guarantee across India</p>
+          </div>
+          <div className="p-8 md:p-12 text-center group hover:bg-white transition-colors">
+            <span className="material-symbols-outlined text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform">redeem</span>
+            <h3 className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal mb-2">Luxury Packaging</h3>
+            <p className="font-body-md text-on-surface-variant text-sm">Signature gifting boxes included</p>
+          </div>
+          <div className="p-8 md:p-12 text-center group hover:bg-white transition-colors">
+            <span className="material-symbols-outlined text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform">headset_mic</span>
+            <h3 className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal mb-2">Private Concierge</h3>
+            <p className="font-body-md text-on-surface-variant text-sm">Dedicated WhatsApp support</p>
+          </div>
+        </div>
+      </section>
 
-            <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-              <Link href="/collections" className="bg-white px-8 py-4 text-center text-xs font-bold uppercase tracking-[0.25em] text-[#1A2A3A] hover:bg-[#D4AF37] transition-colors">
-                Shop Collection
+      {/* 5. Shop by Category (Editorial Grid) */}
+      <section className="py-section-gap px-5 md:px-margin-desktop">
+        <div className="max-w-container-max mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal mb-4">Curated Essentials</h2>
+            <p className="font-body-md text-on-surface-variant">The foundation of a beautiful dining experience</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <Link href="/collections/dinnerware" className="md:col-span-7 group relative h-[600px] overflow-hidden">
+              <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Dinnerware Collections" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 60vw" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <div className="absolute bottom-10 left-10 text-surface-cream">
+                <h3 className="font-headline-lg text-3xl mb-2">Dinnerware Sets</h3>
+                <span className="font-label-caps text-[11px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Explore Collection</span>
+              </div>
+            </Link>
+            
+            <div className="md:col-span-5 flex flex-col gap-8">
+              <Link href="/products" className="group relative h-[284px] overflow-hidden">
+                <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Cups & Mugs" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 40vw" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                <div className="absolute bottom-8 left-8 text-surface-cream">
+                  <h3 className="font-headline-lg text-2xl mb-2">Cups &amp; Mugs</h3>
+                  <span className="font-label-caps text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
+                </div>
               </Link>
-              <Link href="/products" className="border border-white px-8 py-4 text-center text-xs font-bold uppercase tracking-[0.25em] text-white hover:bg-white hover:text-[#1A2A3A] transition-colors">
-                Explore Best Sellers
+              <Link href="/collections/tea-sets" className="group relative h-[284px] overflow-hidden">
+                <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Tea Sets" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 40vw" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                <div className="absolute bottom-8 left-8 text-surface-cream">
+                  <h3 className="font-headline-lg text-2xl mb-2">Tea Sets</h3>
+                  <span className="font-label-caps text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
+                </div>
               </Link>
             </div>
-
-            <p className="mt-5 text-sm text-white/75">
-              Free shipping above ₹999 · Damage replacement support · Gift-ready packaging
-            </p>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-5 py-10 md:grid-cols-3 lg:grid-cols-6 lg:px-10">
-        {trust.map((item) => (
-          <div key={item} className="border border-[#E5E4E2] bg-white p-5 text-center shadow-sm hover:border-[#C5A059] transition-colors cursor-default">
-            <p className="text-[#C5A059]">✦</p>
-            <h3 className="mt-2 text-[11px] font-bold uppercase tracking-[0.18em]">{item}</h3>
+      {/* 6. Best Sellers */}
+      <section className="bg-white py-section-gap px-5 md:px-margin-desktop border-y border-muted-sand">
+        <div className="max-w-container-max mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div>
+              <span className="font-label-caps text-[11px] uppercase tracking-widest text-burnished-gold mb-4 block">Iconic Pieces</span>
+              <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal">Most Loved by Modern Homes</h2>
+            </div>
+            <Link href="/products" className="font-label-caps text-[12px] uppercase tracking-widest text-ink-charcoal border-b border-ink-charcoal pb-1 hover:text-burnished-gold hover:border-burnished-gold transition-colors">
+              View All Best Sellers
+            </Link>
           </div>
-        ))}
-      </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-10">
-        <div className="mb-10 flex items-end justify-between">
-          <div>
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-[#C5A059]">Best Sellers</p>
-            <h2 className="font-serif text-4xl font-semibold">Most Loved by Modern Homes</h2>
-          </div>
-          <Link href="/products" className="hidden text-xs font-bold uppercase tracking-[0.25em] underline decoration-[#C5A059] underline-offset-8 md:block hover:text-[#C5A059] transition-colors">
-            View All
-          </Link>
-        </div>
-
-        <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
-          {displayProducts.map((p: any) => (
-            <article key={p.name} className="group flex flex-col h-full">
-              <Link href={`/products/${p.id || p.slug}`} className="flex-1">
-                <div className="relative aspect-[4/5] overflow-hidden border border-transparent bg-[#F0EDE9] transition group-hover:border-[#C5A059] group-hover:shadow-lg">
-                  <span className="absolute left-4 top-4 z-10 bg-[#1A2A3A] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
-                    {p.badge || 'Premium'}
-                  </span>
-                  <Image
-                    src={p.image || p.imageURL || '/images/dinnerware.webp'}
-                    alt={`${p.name} by Siphorahq`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                    className="object-cover transition duration-700 group-hover:scale-105 mix-blend-multiply"
-                  />
-                </div>
-
-                <div className="mt-4 flex justify-between gap-4">
-                  <div>
-                    <h3 className="font-serif text-xl line-clamp-1">{p.name}</h3>
-                    <p className="mt-1 text-xs uppercase tracking-[0.2em] text-[#C5A059]">★★★★★</p>
-                    <p className="mt-2 text-xs text-[#4A4A4A]">Gift-ready box · Safe delivery</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+            {displayProducts.map((p: any) => (
+              <div key={p.id} className="group cursor-pointer flex flex-col h-full">
+                <Link href={`/products/${p.id || p.slug}`} className="flex-1 flex flex-col">
+                  <div className="relative aspect-[4/5] mb-6 overflow-hidden bg-muted-sand">
+                    <span className="absolute top-4 left-4 z-10 bg-surface-cream px-3 py-1 font-label-caps text-[9px] uppercase tracking-widest text-ink-charcoal">Best Seller</span>
+                    <Image src={p.image || p.imageURL || '/images/dinnerware.webp'} alt={p.name} fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" />
+                    <button className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-burnished-gold hover:text-white">
+                      <span className="material-symbols-outlined text-[20px]">shopping_bag</span>
+                    </button>
                   </div>
-                  <p className="font-semibold whitespace-nowrap">₹{p.price?.toLocaleString('en-IN') || p.price}</p>
-                </div>
-              </Link>
-
-              <Link
-                href={`/products/${p.id || p.slug}`}
-                className="mt-4 block w-full border border-[#1A2A3A] py-3 text-center text-xs font-bold uppercase tracking-[0.22em] hover:bg-[#1A2A3A] hover:text-white transition-colors"
-              >
-                View Product
-              </Link>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="bg-white py-20">
-        <div className="mx-auto max-w-7xl px-5 lg:px-10">
-          <div className="mb-10 text-center">
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-[#C5A059]">Curated Collections</p>
-            <h2 className="font-serif text-4xl font-semibold">Shop by Collection</h2>
-          </div>
-
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {collections.map(([title, image, href]) => (
-              <Link key={title} href={href} className="group relative h-[380px] overflow-hidden bg-[#F0EDE9]">
-                <Image
-                  src={image}
-                  alt={`${title} collection by Siphorahq`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  className="object-cover transition duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-[#1A2A3A]/40 transition-opacity group-hover:bg-[#1A2A3A]/50" />
-                <div className="absolute bottom-6 left-6 text-white">
-                  <h3 className="font-serif text-3xl">{title}</h3>
-                  <p className="mt-2 text-xs font-bold uppercase tracking-[0.25em] text-[#D4AF37] group-hover:translate-x-2 transition-transform">
-                    Shop Now →
-                  </p>
-                </div>
-              </Link>
+                  <div className="text-center flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-headline-md text-xl text-ink-charcoal mb-2 group-hover:text-burnished-gold transition-colors line-clamp-2">{p.name}</h3>
+                      <div className="flex justify-center gap-1 mb-3">
+                        {[1,2,3,4,5].map((_, i) => (
+                          <span key={i} className="material-symbols-outlined text-[14px] text-burnished-gold" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                        ))}
+                      </div>
+                    </div>
+                    <p className="font-price-lg text-lg text-on-surface-variant mt-2">₹{p.price?.toLocaleString('en-IN') || p.price}</p>
+                  </div>
+                </Link>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-[#F0EDE9] py-20">
-        <div className="mx-auto max-w-6xl px-5 text-center">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-[#C5A059]">Shop by Occasion</p>
-          <h2 className="font-serif text-4xl font-semibold">Gifts That Feel Truly Premium</h2>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
-            {["Wedding Gifts", "Housewarming", "Corporate Gifting", "Premium Tea Moments", "Luxury Dining", "Festive Gifts"].map((item) => (
-              <Link key={item} href="/products" className="bg-white p-6 text-sm font-semibold hover:shadow-md hover:border-[#C5A059] border border-transparent transition-all">
-                {item}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-10">
-        <div className="grid items-center lg:grid-cols-2">
-          <div className="relative h-[420px] lg:h-[560px] bg-bone-white">
-            <Image
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGTKRL_5uqeS7RWQYiOnylW0z9y7YWZjRbNY5hugikp3cRrlwdcIjBcP9V6y6yy87JIlVBxutpayRPvIJjHd920zVvFiV34GwxeJIPyUuFO5zOWXdyXc2b2yWMXnyAerQquZljaOTYd9jCNuaK1R7DTPf9yfgEA_JdJGJV2E6mBPH1OAMkxH_vQi02iS82Pa50yYuU0dGe1kqhnH2ultKlTWtUqxc1IhrFEyZawWftv8zZ_iuBE9Cem3vnwTav8eS3tLKhcXfPkCg"
-              alt="Elegant fine dining experience with Siphorahq porcelain"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
+      {/* 7. Shop by Occasion */}
+      <section className="py-section-gap px-5 md:px-margin-desktop bg-surface-cream">
+        <div className="max-w-container-max mx-auto">
+          <div className="text-center mb-16">
+            <span className="font-label-caps text-[11px] uppercase tracking-widest text-burnished-gold mb-4 block">The Art of Gifting</span>
+            <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal">Gifts for Every Milestone</h2>
           </div>
 
-          <div className="bg-[#1A2A3A] p-10 text-white lg:p-16 h-full flex flex-col justify-center">
-            <p className="mb-5 text-xs font-bold uppercase tracking-[0.3em] text-[#D4AF37]">Siphorahq Philosophy</p>
-            <h2 className="font-serif text-4xl font-semibold">More Than Utensils — A Dining Experience</h2>
-            <p className="mt-6 leading-8 text-white/80">
-              Siphorahq brings timeless elegance to modern homes. Every piece is designed
-              to make everyday meals feel special, meaningful, and beautifully presented.
-            </p>
-            <Link href="/our-story" className="mt-8 inline-block text-xs font-bold uppercase tracking-[0.25em] text-[#D4AF37] hover:text-white transition-colors">
-              Discover Our Story →
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Link href="/collections/gifting" className="group relative h-[500px] overflow-hidden">
+              <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Wedding Gifts" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
+              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
+                <h3 className="font-headline-lg text-4xl text-surface-cream mb-4">Wedding &amp; Trousseau</h3>
+                <p className="font-body-md text-surface-cream/90 mb-8 max-w-sm">Curated dinnerware sets that become family heirlooms.</p>
+                <span className="bg-surface-cream text-ink-charcoal px-8 py-3 font-label-caps text-[11px] uppercase tracking-widest hover:bg-burnished-gold hover:text-white transition-colors">Shop Wedding Gifts</span>
+              </div>
+            </Link>
+            <Link href="/collections/gifting" className="group relative h-[500px] overflow-hidden">
+              <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Corporate Gifts" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
+              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
+                <h3 className="font-headline-lg text-4xl text-surface-cream mb-4">Corporate Gifting</h3>
+                <p className="font-body-md text-surface-cream/90 mb-8 max-w-sm">Leave a lasting impression with luxury porcelain tea sets.</p>
+                <span className="bg-surface-cream text-ink-charcoal px-8 py-3 font-label-caps text-[11px] uppercase tracking-widest hover:bg-burnished-gold hover:text-white transition-colors">Inquire Now</span>
+              </div>
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="bg-white py-20">
-        <div className="mx-auto max-w-7xl px-5 text-center lg:px-10">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-[#C5A059]">Customer Love</p>
-          <h2 className="font-serif text-4xl font-semibold">Real Stories from Happy Homes</h2>
-          <p className="mt-3 text-[#4A4A4A]">4.8 / 5 rating · Trusted by 2,500+ homes across India</p>
+      {/* 8. Collections Grid (Masonry-style) */}
+      <section className="py-section-gap px-5 md:px-margin-desktop bg-white border-t border-muted-sand">
+        <div className="max-w-container-max mx-auto text-center">
+          <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal mb-16">The Artisanal Collections</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Link href="/collections/gifting" className="group text-left">
+              <div className="relative aspect-[3/4] overflow-hidden mb-6 bg-muted-sand">
+                <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="The Azure Series" fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, 33vw" />
+              </div>
+              <h3 className="font-headline-md text-2xl text-ink-charcoal mb-2">The Azure Series</h3>
+              <p className="font-body-md text-on-surface-variant">Inspired by Moroccan skies and deep oceans.</p>
+            </Link>
+            
+            <Link href="/collections/gifting" className="group text-left md:mt-16">
+              <div className="relative aspect-[3/4] overflow-hidden mb-6 bg-muted-sand">
+                <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="The Imperial Gold" fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, 33vw" />
+              </div>
+              <h3 className="font-headline-md text-2xl text-ink-charcoal mb-2">The Imperial Gold</h3>
+              <p className="font-body-md text-on-surface-variant">Hand-painted 24k gold details on pure white porcelain.</p>
+            </Link>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            <Link href="/collections/gifting" className="group text-left">
+              <div className="relative aspect-[3/4] overflow-hidden mb-6 bg-muted-sand">
+                <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="The Emerald Heritage" fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, 33vw" />
+              </div>
+              <h3 className="font-headline-md text-2xl text-ink-charcoal mb-2">The Emerald Heritage</h3>
+              <p className="font-body-md text-on-surface-variant">Rich jewel tones paired with classical Indian motifs.</p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 9. Limited Edition Collection */}
+      <section className="bg-ink-charcoal text-surface-cream">
+        <div className="grid grid-cols-1 lg:grid-cols-2">
+          <div className="relative h-[500px] lg:h-auto">
+            <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Kintsugi Collection" fill className="object-cover opacity-80" sizes="(max-width: 1024px) 100vw, 50vw" />
+          </div>
+          <div className="p-12 md:p-24 flex flex-col justify-center">
+            <span className="font-label-caps text-[11px] uppercase tracking-widest text-burnished-gold mb-6 block">Limited Edition</span>
+            <h2 className="font-headline-lg text-4xl md:text-6xl italic mb-6">The Kintsugi Series</h2>
+            <p className="font-body-md text-surface-cream/80 text-lg mb-10 max-w-md">
+              Celebrating the beauty of imperfection. Only 50 exclusive pieces crafted, each uniquely adorned with pure gold powder lines highlighting natural forms.
+            </p>
+            <div>
+              <Link href="/collections" className="inline-block border border-burnished-gold text-burnished-gold px-10 py-4 font-label-caps text-[11px] uppercase tracking-widest hover:bg-burnished-gold hover:text-white transition-colors">
+                Discover the Series
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 10. Brand Story */}
+      <section className="py-section-gap px-5 md:px-margin-desktop bg-surface-cream">
+        <div className="max-w-container-max mx-auto">
+          <div className="flex flex-col md:flex-row items-center gap-16">
+            <div className="w-full md:w-1/2 relative h-[600px]">
+              <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Brand Story" fill className="object-cover rounded-t-[200px]" sizes="(max-width: 768px) 100vw, 50vw" />
+            </div>
+            <div className="w-full md:w-1/2 md:pl-10">
+              <span className="font-label-caps text-[11px] uppercase tracking-widest text-burnished-gold mb-6 block">Our Philosophy</span>
+              <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal mb-8 leading-tight">Poetry in Porcelain, Crafted for the Modern Home</h2>
+              <p className="font-body-md text-on-surface-variant text-lg leading-relaxed mb-6">
+                Siphorahq was born from a simple desire: to make everyday dining feel like an occasion. We believe that the objects we interact with daily should bring us joy, pause, and a touch of luxury.
+              </p>
+              <p className="font-body-md text-on-surface-variant text-lg leading-relaxed mb-10">
+                Working with master artisans, we combine timeless traditional techniques with contemporary aesthetics to create porcelain that isn't just beautiful to look at, but a pleasure to use.
+              </p>
+              <Link href="/our-story" className="font-label-caps text-[12px] uppercase tracking-widest text-ink-charcoal border-b border-burnished-gold pb-1 hover:text-burnished-gold transition-colors">
+                Read Our Full Story
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 11. Craftsmanship / Quality */}
+      <section className="bg-white py-24 border-y border-muted-sand">
+        <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center divide-y md:divide-y-0 md:divide-x divide-muted-sand">
+            <div className="pt-8 md:pt-0 md:px-8">
+              <div className="w-16 h-16 mx-auto bg-surface-cream rounded-full flex items-center justify-center mb-6">
+                <span className="material-symbols-outlined text-burnished-gold text-2xl">local_fire_department</span>
+              </div>
+              <h3 className="font-headline-md text-xl text-ink-charcoal mb-3">Fired at 1350°C</h3>
+              <p className="font-body-md text-on-surface-variant">Ensuring maximum durability and a perfectly non-porous finish.</p>
+            </div>
+            <div className="pt-8 md:pt-0 md:px-8">
+              <div className="w-16 h-16 mx-auto bg-surface-cream rounded-full flex items-center justify-center mb-6">
+                <span className="material-symbols-outlined text-burnished-gold text-2xl">diamond</span>
+              </div>
+              <h3 className="font-headline-md text-xl text-ink-charcoal mb-3">24k Gold Accents</h3>
+              <p className="font-body-md text-on-surface-variant">Real gold detailing applied meticulously by hand on select pieces.</p>
+            </div>
+            <div className="pt-8 md:pt-0 md:px-8">
+              <div className="w-16 h-16 mx-auto bg-surface-cream rounded-full flex items-center justify-center mb-6">
+                <span className="material-symbols-outlined text-burnished-gold text-2xl">eco</span>
+              </div>
+              <h3 className="font-headline-md text-xl text-ink-charcoal mb-3">Lead-Free &amp; Safe</h3>
+              <p className="font-body-md text-on-surface-variant">Completely free from harmful toxins, prioritizing your family's health.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 12. Reviews */}
+      <section className="py-section-gap px-5 md:px-margin-desktop bg-surface-cream">
+        <div className="max-w-container-max mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal mb-4">Words from Happy Homes</h2>
+            <div className="flex justify-center gap-1">
+              {[1,2,3,4,5].map((_, i) => (
+                <span key={i} className="material-symbols-outlined text-[18px] text-burnished-gold" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              ["The porcelain quality feels genuinely premium. Packaging was stunning.", "Anjali M.", "Delhi"],
-              ["Perfect wedding gift. The box itself looked like a luxury brand.", "Rahul S.", "Mumbai"],
-              ["Fast delivery, excellent quality, and responsive support.", "Priya K.", "Bangalore"],
-            ].map(([text, name, city]) => (
-              <blockquote key={name} className="border border-[#E5E4E2] p-8 text-left hover:border-[#C5A059] transition-colors">
-                <p className="text-[#C5A059]">★★★★★</p>
-                <p className="mt-5 leading-7 text-[#4A4A4A]">“{text}”</p>
-                <footer className="mt-6 text-sm font-bold uppercase tracking-[0.2em] text-[#1A2A3A]">
-                  {name}
-                  <span className="block pt-1 text-xs font-normal tracking-normal text-[#888]">{city}</span>
-                </footer>
-              </blockquote>
+              {
+                text: "The quality is simply unmatched. The weight, the finish, and the packaging make it feel like you're opening a piece of jewelry.",
+                author: "Priya S.",
+                location: "Mumbai"
+              },
+              {
+                text: "I bought the Emerald series for my new home and it completely elevated my dining table. Every guest asks where I got them.",
+                author: "Aanya R.",
+                location: "Delhi"
+              },
+              {
+                text: "Their customer service is incredible. A piece was damaged in transit and they replaced it within 48 hours, no questions asked.",
+                author: "Karan M.",
+                location: "Bangalore"
+              }
+            ].map((review, i) => (
+              <div key={i} className="bg-white p-10 border border-muted-sand hover:border-burnished-gold transition-colors">
+                <p className="font-body-md text-on-surface-variant text-lg italic leading-relaxed mb-8">"{review.text}"</p>
+                <div>
+                  <p className="font-label-caps text-[12px] uppercase tracking-widest text-ink-charcoal font-bold">{review.author}</p>
+                  <p className="font-body-md text-on-surface-variant text-sm mt-1">{review.location}</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-4xl px-5 py-20">
-        <h2 className="text-center font-serif text-4xl font-semibold mb-10 text-[#1A2A3A]">Frequently Asked Questions</h2>
-        <div className="space-y-3">
-          {[
-            ["Are products food safe?", "Yes, our porcelain products are food safe and designed for everyday dining."],
-            ["Do you offer gift packaging?", "Yes, selected products come in premium gift-ready packaging."],
-            ["What if product arrives damaged?", "Contact us within 48 hours with photos for replacement support."],
-            ["How long does delivery take?", "Usually 4–7 business days depending on your location."],
-          ].map(([q, a]) => (
-            <details key={q} className="border border-[#E5E4E2] bg-white p-5 group cursor-pointer">
-              <summary className="font-semibold text-[#1A2A3A] group-open:text-[#C5A059] transition-colors outline-none">{q}</summary>
-              <p className="mt-3 text-sm leading-7 text-[#4A4A4A]">{a}</p>
-            </details>
-          ))}
+      {/* 13. FAQ */}
+      <section className="py-section-gap px-5 md:px-margin-desktop bg-white border-t border-muted-sand">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal mb-4">Service &amp; Care</h2>
+          </div>
+          <div className="divide-y divide-muted-sand">
+            {[
+              {
+                q: "Are the products microwave and dishwasher safe?",
+                a: "Most of our porcelain is microwave and dishwasher safe. However, pieces with 24k gold or platinum accents should be hand-washed and kept out of the microwave."
+              },
+              {
+                q: "Do you offer international shipping?",
+                a: "Currently, we ship exclusively within India to ensure the highest quality of service and safe delivery of our delicate products."
+              },
+              {
+                q: "What happens if a piece breaks during delivery?",
+                a: "We offer a 100% damage-free guarantee. If your order arrives damaged, send us a photo on WhatsApp within 48 hours, and we will send a free replacement immediately."
+              },
+              {
+                q: "Can I customize a set for a wedding gift?",
+                a: "Yes, we offer bespoke gifting concierge services. You can contact our team via WhatsApp to curate a custom box for your special occasion."
+              }
+            ].map((faq, i) => (
+              <details key={i} className="group py-6">
+                <summary className="flex justify-between items-center cursor-pointer list-none font-headline-md text-xl text-ink-charcoal group-open:text-burnished-gold transition-colors">
+                  {faq.q}
+                  <span className="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-burnished-gold">expand_more</span>
+                </summary>
+                <p className="font-body-md text-on-surface-variant mt-4 leading-relaxed pr-12">{faq.a}</p>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
 
       <NewsletterForm />
-    </div>
+
+      {/* WhatsApp Floating Button */}
+      <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I'm%20interested%20in%20Siphorahq%20products`} target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(37,211,102,0.4)] hover:scale-110 transition-transform">
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+        </svg>
+      </a>
+    </>
   );
 }

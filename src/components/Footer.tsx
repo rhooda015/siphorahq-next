@@ -1,69 +1,73 @@
 import React from 'react';
 import Link from 'next/link';
 import { BRAND } from '@/config/brand';
-import NewsletterForm from './NewsletterForm';
-import dbConnect from '@/lib/db';
-import Navigation from '@/models/Navigation';
 
-export default async function Footer() {
-  await dbConnect();
-  
-  let footerMenu1 = await Navigation.findOne({ menuId: 'footer-menu-1' }).lean();
-  let footerMenu2 = await Navigation.findOne({ menuId: 'footer-menu-2' }).lean();
-  
-  const menu1Links = footerMenu1?.links || [
-    { label: 'Shipping & Returns', url: '/shipping-policy' },
-    { label: 'Care Guide', url: '/faq' },
-    { label: 'Trade Program', url: '/contact' }
-  ];
-
-  const menu2Links = footerMenu2?.links || [
-    { label: 'Sustainability', url: '/about' },
-    { label: 'Privacy Policy', url: '/privacy-policy' },
-    { label: 'Terms of Service', url: '/terms-of-service' }
-  ];
-
+export default function Footer() {
   return (
-    <footer className="bg-bone-gray dark:bg-primary-container w-full pt-stack-xl pb-stack-md mt-auto">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+    <footer className="bg-ink-charcoal text-surface-cream pt-24 pb-12 px-5 md:px-margin-desktop border-t border-burnished-gold/20">
+      <div className="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+        <div>
+          <h3 className="font-headline-lg text-3xl italic mb-6">{BRAND.name}</h3>
+          <p className="font-body-md text-surface-cream/70 max-w-sm mb-8">
+            Elevating everyday rituals with luxury porcelain, crafted for the modern home.
+          </p>
+          <div className="flex gap-4">
+            <a className="w-10 h-10 rounded-full border border-surface-cream/20 flex items-center justify-center hover:bg-burnished-gold hover:border-burnished-gold transition-colors" href="#">
+              <span className="material-symbols-outlined text-[20px]">share</span>
+            </a>
+            <a className="w-10 h-10 rounded-full border border-surface-cream/20 flex items-center justify-center hover:bg-burnished-gold hover:border-burnished-gold transition-colors" href="#">
+              <span className="material-symbols-outlined text-[20px]">photo_camera</span>
+            </a>
+          </div>
+        </div>
         
-        <div className="space-y-6">
-          <span className="font-display-lg text-headline-md font-bold text-heritage-navy dark:text-porcelain-white tracking-tight uppercase">{BRAND.name}</span>
-          <p className="font-body-md text-on-surface-variant dark:text-on-primary-container/80 max-w-xs">Elevating the everyday through artisanal craft and timeless luxury.</p>
-        </div>
-
         <div>
-          <h4 className="font-label-caps text-label-caps uppercase text-heritage-navy dark:text-porcelain-white mb-6">{footerMenu1?.name || 'Support'}</h4>
-          <ul className="space-y-3 font-body-md text-on-surface-variant dark:text-on-primary-container/80">
-            {menu1Links.map((link: any, idx: number) => (
-              <li key={idx}><Link href={link.url} className="hover:text-champagne-gold transition-all duration-200">{link.label}</Link></li>
-            ))}
+          <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">Shop</h4>
+          <ul className="space-y-4 font-body-md text-surface-cream/80">
+            <li><Link className="hover:text-white transition-colors" href="/collections/dinnerware">Dinnerware Sets</Link></li>
+            <li><Link className="hover:text-white transition-colors" href="/products">Mugs &amp; Cups</Link></li>
+            <li><Link className="hover:text-white transition-colors" href="/collections/gifting">Luxury Gifting</Link></li>
+            <li><Link className="hover:text-white transition-colors" href="/products">New Arrivals</Link></li>
           </ul>
         </div>
-
+        
         <div>
-          <h4 className="font-label-caps text-label-caps uppercase text-heritage-navy dark:text-porcelain-white mb-6">{footerMenu2?.name || 'Company'}</h4>
-          <ul className="space-y-3 font-body-md text-on-surface-variant dark:text-on-primary-container/80">
-            {menu2Links.map((link: any, idx: number) => (
-              <li key={idx}><Link href={link.url} className="hover:text-champagne-gold transition-all duration-200">{link.label}</Link></li>
-            ))}
+          <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">Support</h4>
+          <ul className="space-y-4 font-body-md text-surface-cream/80">
+            <li><Link className="hover:text-white transition-colors" href="/faq">Care Instructions</Link></li>
+            <li><Link className="hover:text-white transition-colors" href="/shipping-policy">Shipping &amp; Returns</Link></li>
+            <li><Link className="hover:text-white transition-colors" href="/contact">Track Order</Link></li>
+            <li><Link className="hover:text-white transition-colors" href="/faq">FAQ</Link></li>
           </ul>
         </div>
-
+        
         <div>
-          <h4 className="font-label-caps text-label-caps uppercase text-heritage-navy dark:text-porcelain-white mb-6">Newsletter</h4>
-          <p className="font-body-md text-on-surface-variant dark:text-on-primary-container/80 mb-4">Join our list for exclusive artisanal drops.</p>
-          <NewsletterForm />
+          <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">Contact Us</h4>
+          <ul className="space-y-4 font-body-md text-surface-cream/80 mb-8">
+            <li className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-burnished-gold text-[18px]">mail</span> 
+              <a className="hover:text-white transition-colors" href="mailto:hello@siphorahq.com">hello@siphorahq.com</a>
+            </li>
+            <li className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-burnished-gold text-[18px]">call</span> 
+              <a className="hover:text-white transition-colors" href="tel:+919540027978">+91 95400 27978</a>
+            </li>
+          </ul>
+          <p className="font-label-caps text-[10px] uppercase tracking-widest text-surface-cream/50 mb-4">Secure Payments</p>
+          <div className="flex gap-2">
+            <div className="w-12 h-8 bg-white/10 rounded flex items-center justify-center text-[10px] font-bold">VISA</div>
+            <div className="w-12 h-8 bg-white/10 rounded flex items-center justify-center text-[10px] font-bold">MC</div>
+            <div className="w-12 h-8 bg-white/10 rounded flex items-center justify-center text-[10px] font-bold">AMEX</div>
+            <div className="w-12 h-8 bg-white/10 rounded flex items-center justify-center text-[10px] font-bold">UPI</div>
+          </div>
         </div>
-
       </div>
-
-      <div className="mt-stack-xl pt-stack-md border-t border-heritage-navy/10 dark:border-porcelain-white/10 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="font-body-md text-[14px] text-on-surface-variant dark:text-on-primary-container/60">© {new Date().getFullYear()} {BRAND.name}. All rights reserved. Handcrafted Excellence.</p>
-        <div className="flex gap-6">
-          <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-heritage-navy transition-colors">brand_family</span>
-          <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-heritage-navy transition-colors">share</span>
-          <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-heritage-navy transition-colors">public</span>
+      
+      <div className="max-w-container-max mx-auto border-t border-surface-cream/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p className="font-body-md text-surface-cream/50 text-sm">© {new Date().getFullYear()} {BRAND.name}. All rights reserved.</p>
+        <div className="flex gap-6 font-body-md text-surface-cream/50 text-sm">
+          <Link className="hover:text-white transition-colors" href="/privacy-policy">Privacy Policy</Link>
+          <Link className="hover:text-white transition-colors" href="/terms-of-service">Terms of Service</Link>
         </div>
       </div>
     </footer>
