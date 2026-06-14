@@ -91,10 +91,10 @@ export default function OurStoryPage() {
               Explore Collections
             </Link>
             <Link 
-              href="/new-arrivals"
+              href="/best-sellers"
               className="bg-transparent text-surface-cream border border-surface-cream font-label-caps text-[12px] uppercase tracking-widest px-8 py-4 hover:bg-surface-cream/10 transition-colors duration-300"
             >
-              Shop New Arrivals
+              Shop Best Sellers
             </Link>
           </div>
         </div>
@@ -165,7 +165,7 @@ export default function OurStoryPage() {
       {/* ── QUALITY PROMISE ── */}
       <section className="py-24 px-5 max-w-container-md mx-auto text-center">
         <p className="font-label-caps text-[11px] uppercase tracking-widest text-burnished-gold mb-6">
-          The Siphorahq Standard
+          Siphorahq Promise
         </p>
         <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal tracking-tighter mb-12">
           Beauty, Safety and Everyday Utility
@@ -190,7 +190,7 @@ export default function OurStoryPage() {
       <section className="py-24 px-5 bg-ink-charcoal text-surface-cream text-center">
         <div className="max-w-4xl mx-auto">
           <p className="font-label-caps text-[11px] uppercase tracking-widest text-burnished-gold mb-6">
-            Fine Dining at Home
+            Luxury Gifting
           </p>
           <h2 className="font-headline-lg text-4xl md:text-5xl italic tracking-tighter mb-8 leading-tight">
             A More Beautiful Table, Every Day
@@ -263,7 +263,7 @@ export default function OurStoryPage() {
             href="/best-sellers"
             className="bg-transparent text-ink-charcoal border border-ink-charcoal font-label-caps text-[12px] uppercase tracking-widest px-8 py-4 hover:bg-ink-charcoal hover:text-surface-cream transition-colors duration-300"
           >
-            View Best Sellers
+            Shop Best Sellers
           </Link>
         </div>
       </section>

@@ -64,10 +64,14 @@ export default function Footer() {
       </div>
       
       <div className="max-w-container-max mx-auto border-t border-surface-cream/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="font-body-md text-surface-cream/50 text-sm">© {new Date().getFullYear()} {BRAND.name}. All rights reserved.</p>
+        <div className="flex flex-col items-center md:items-start text-surface-cream/50 text-sm">
+          <p className="font-body-md mb-1">© {new Date().getFullYear()} {BRAND.name}. All rights reserved.</p>
+          <p className="font-body-md text-[10px] uppercase tracking-wider">GSTIN: 06APTPH1635N1ZG</p>
+        </div>
         <div className="flex gap-6 font-body-md text-surface-cream/50 text-sm">
           <Link className="hover:text-white transition-colors" href="/privacy-policy">Privacy Policy</Link>
-          <Link className="hover:text-white transition-colors" href="/terms-of-service">Terms of Service</Link>
+          <Link className="hover:text-white transition-colors" href="/terms-of-service">Terms</Link>
+          <Link className="hover:text-white transition-colors" href="/sitemap.xml">Sitemap</Link>
         </div>
       </div>
     </footer>

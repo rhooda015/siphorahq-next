@@ -120,7 +120,7 @@ export default async function HomePage() {
               <span className="font-label-caps text-[11px] uppercase tracking-widest text-burnished-gold mb-4 block">Iconic Pieces</span>
               <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal">Most Loved by Modern Homes</h2>
             </div>
-            <Link href="/products" className="font-label-caps text-[12px] uppercase tracking-widest text-ink-charcoal border-b border-ink-charcoal pb-1 hover:text-burnished-gold hover:border-burnished-gold transition-colors">
+            <Link href="/best-sellers" className="font-label-caps text-[12px] uppercase tracking-widest text-ink-charcoal border-b border-ink-charcoal pb-1 hover:text-burnished-gold hover:border-burnished-gold transition-colors">
               View All Best Sellers
             </Link>
           </div>

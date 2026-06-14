@@ -84,7 +84,7 @@ export default function AboutPage() {
           </div>
           
           <div className="mt-20">
-            <Link href="/products" className="inline-block border-[0.5px] border-[var(--color-primary)] text-[var(--color-primary)] px-12 py-5 text-[10px] font-sans tracking-[0.2em] uppercase hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-500">
+            <Link href="/collections" className="inline-block border-[0.5px] border-[var(--color-primary)] text-[var(--color-primary)] px-12 py-5 text-[10px] font-sans tracking-[0.2em] uppercase hover:bg-[var(--color-primary)] hover:text-white transition-colors duration-500">
               Explore Collections
             </Link>
           </div>

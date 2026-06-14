@@ -46,7 +46,7 @@ export default function WishlistPage() {
       ) : wishedProducts.length === 0 ? (
         <div className="border-[0.5px] border-zinc-200 py-24 text-center font-sans text-sm text-[#1a1612]/60 bg-[#fdfbf9]">
           <p className="uppercase tracking-widest text-[#1a1612]/70 mb-6">YOUR WISHLIST IS CURRENTLY EMPTY</p>
-          <Link href="/products" className="inline-block bg-[#1a1612] text-white px-8 py-3 text-[10px] uppercase tracking-[0.2em] hover:bg-[#8b6914] transition-colors duration-300">
+          <Link href="/collections" className="inline-block bg-[#1a1612] text-white px-8 py-3 text-[10px] uppercase tracking-[0.2em] hover:bg-[#8b6914] transition-colors duration-300">
             Discover Collections
           </Link>
         </div>

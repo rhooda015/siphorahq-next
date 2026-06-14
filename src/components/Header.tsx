@@ -8,20 +8,38 @@ import { useCart } from '@/store/useCart';
 import { useSession } from 'next-auth/react';
 import { X, Menu } from 'lucide-react';
 
+const NAVIGATION_LINKS = [
+  { label: 'Shop', url: '/products' },
+  { label: 'Collections', url: '/collections', hasMegaMenu: true },
+  { label: 'New Arrivals', url: '/new-arrivals' },
+  { label: 'Best Sellers', url: '/best-sellers' },
+  { label: 'Gift Sets', url: '/gift-sets' },
+  { label: 'Our Story', url: '/our-story' },
+  { label: 'Contact', url: '/contact' }
+];
+
+const MEGA_MENU_ITEMS = [
+  { title: "Dining Collection", url: "/collections/dinnerware" },
+  { title: "Tea & Coffee Collection", url: "/collections/tea-coffee" },
+  { title: "Serveware", url: "/collections/serveware" },
+  { title: "Luxury Gift Sets", url: "/gift-sets" },
+  { title: "Fine Porcelain Cups", url: "/products?category=cups" },
+  { title: "Premium Mugs", url: "/products?category=mugs" }
+];
+
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [mounted, setMounted] = useState(false);
+  const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
+
   const pathname = usePathname();
   const router = useRouter();
   const isCheckout = pathname.startsWith('/checkout');
   const { items, openDrawer } = useCart();
   const { data: session } = useSession();
-  
-  const [desktopNav, setDesktopNav] = useState<any[]>([]);
-  const [mobileNav, setMobileNav] = useState<any[]>([]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,38 +55,6 @@ export default function Header() {
       setIsScrolled(window.scrollY > 40); // 40px is about the height of the announcement bar
     };
     window.addEventListener('scroll', handleScroll);
-    
-    Promise.all([
-      fetch('/api/admin/navigation?menuId=main-menu').then(r => r.json()),
-      fetch('/api/admin/navigation?menuId=mobile-menu').then(r => r.json())
-    ]).then(([main, mobile]) => {
-      if (main.links && main.links.length > 0) {
-        setDesktopNav(main.links);
-      } else {
-        setDesktopNav([
-          { label: 'Shop', url: '/products' },
-          { label: 'Collections', url: '/collections' },
-          { label: 'New Arrivals', url: '/new-arrivals' },
-          { label: 'Best Sellers', url: '/products' },
-          { label: 'Gift Sets', url: '/collections/gifting' },
-          { label: 'Our Story', url: '/our-story' }
-        ]);
-      }
-      
-      if (mobile.links && mobile.links.length > 0) {
-        setMobileNav(mobile.links);
-      } else {
-        setMobileNav([
-          { label: 'Shop', url: '/products' },
-          { label: 'Collections', url: '/collections' },
-          { label: 'New Arrivals', url: '/new-arrivals' },
-          { label: 'Best Sellers', url: '/products' },
-          { label: 'Gift Sets', url: '/collections/gifting' },
-          { label: 'Our Story', url: '/our-story' }
-        ]);
-      }
-    }).catch(e => console.error(e));
-
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -97,7 +83,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="sticky top-0 z-50 w-full flex flex-col">
+      <div className="sticky top-0 z-50 w-full flex flex-col group/header">
         {/* 1. Announcement Bar */}
         <div className="bg-ink-charcoal text-surface-cream py-3 overflow-hidden border-b border-burnished-gold/20 relative z-50">
           <div className="flex animate-marquee whitespace-nowrap gap-16 items-center">
@@ -117,7 +103,7 @@ export default function Header() {
         </div>
 
         {/* 2. Luxury Header */}
-        <header className={`transition-all duration-500 bg-surface-cream/95 backdrop-blur-sm border-b ${isScrolled ? 'border-muted-sand shadow-sm' : 'border-transparent'}`}>
+        <header className={`transition-all duration-500 bg-surface-cream/95 backdrop-blur-md border-b ${isScrolled ? 'border-muted-sand shadow-sm' : 'border-transparent'} relative z-50`}>
           <nav className="flex justify-between items-center px-5 md:px-margin-desktop py-5 w-full max-w-container-max mx-auto">
             <div className="flex items-center gap-12">
               <div className="flex items-center xl:hidden mr-4">
@@ -134,18 +120,44 @@ export default function Header() {
               </Link>
 
               <div className="hidden xl:flex gap-8">
-                {desktopNav.map((item, index) => (
-                  <Link 
+                {NAVIGATION_LINKS.map((item) => (
+                  <div 
                     key={item.label}
-                    href={item.url} 
-                    className={`font-label-caps text-[12px] transition-colors ${
-                      index === 0 
-                      ? 'text-ink-charcoal border-b border-burnished-gold pb-1' 
-                      : 'text-on-surface-variant hover:text-ink-charcoal'
-                    }`}
+                    className="relative"
+                    onMouseEnter={() => item.hasMegaMenu && setHoveredMenu(item.label)}
+                    onMouseLeave={() => setHoveredMenu(null)}
                   >
-                    {item.label}
-                  </Link>
+                    <Link 
+                      href={item.url} 
+                      className={`font-label-caps text-[12px] uppercase tracking-widest relative pb-2 transition-colors ${
+                        pathname === item.url || (pathname.startsWith('/products') && item.label === 'Shop')
+                        ? 'text-ink-charcoal' 
+                        : 'text-on-surface-variant hover:text-ink-charcoal'
+                      } after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-burnished-gold after:transition-transform after:duration-300 after:origin-left ${
+                        pathname === item.url || (pathname.startsWith('/products') && item.label === 'Shop') ? 'after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+
+                    {/* Mega Menu Dropdown */}
+                    {item.hasMegaMenu && hoveredMenu === item.label && (
+                      <div className="absolute top-full left-0 pt-6 w-64 animate-in fade-in slide-in-from-top-2 duration-300">
+                        <div className="bg-surface-cream shadow-xl border border-muted-sand p-6 flex flex-col gap-4">
+                          <p className="font-label-caps text-[10px] uppercase tracking-[0.2em] text-burnished-gold mb-2">Explore Collections</p>
+                          {MEGA_MENU_ITEMS.map((megaItem) => (
+                            <Link 
+                              key={megaItem.title} 
+                              href={megaItem.url}
+                              className="font-body-md text-sm text-on-surface-variant hover:text-ink-charcoal transition-colors hover:translate-x-1 transform duration-300"
+                            >
+                              {megaItem.title}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
@@ -160,7 +172,7 @@ export default function Header() {
               <Link href={session ? "/account" : "/login"} className="hover:text-burnished-gold transition-colors hidden md:block">
                 <span className="material-symbols-outlined">person</span>
               </Link>
-              <button className="hover:text-burnished-gold transition-colors relative hidden md:block">
+              <button onClick={() => router.push('/account/wishlist')} className="hover:text-burnished-gold transition-colors relative hidden md:block">
                 <span className="material-symbols-outlined">favorite</span>
               </button>
               <button onClick={openDrawer} className="hover:text-burnished-gold transition-colors relative">
@@ -172,11 +184,16 @@ export default function Header() {
             </div>
           </nav>
         </header>
+
+        {/* Global Hover Overlay for Mega Menu */}
+        {hoveredMenu && (
+          <div className="fixed inset-0 top-[110px] bg-ink-charcoal/20 backdrop-blur-sm z-40 pointer-events-none transition-opacity duration-300" />
+        )}
       </div>
 
       {/* Desktop Search Dropdown */}
       {isSearchOpen && (
-        <div className="fixed top-[130px] left-0 w-full bg-surface-cream shadow-md p-6 border-b border-muted-sand z-[40] pointer-events-auto transition-all">
+        <div className="fixed top-[110px] left-0 w-full bg-surface-cream shadow-md p-6 border-b border-muted-sand z-[60] pointer-events-auto transition-all">
           <div className="max-w-3xl mx-auto relative">
             <form onSubmit={handleSearch}>
               <input 
@@ -208,17 +225,32 @@ export default function Header() {
           </button>
         </div>
         <div className="flex flex-col p-6 space-y-6 overflow-y-auto">
-          {mobileNav.map((item) => (
-            <Link 
-              key={item.label}
-              href={item.url} 
-              onClick={() => setIsMobileMenuOpen(false)} 
-              className="font-headline-md text-2xl text-ink-charcoal border-b border-muted-sand pb-4"
-            >
-              {item.label}
-            </Link>
+          {NAVIGATION_LINKS.map((item) => (
+            <div key={item.label}>
+              <Link 
+                href={item.url} 
+                onClick={() => setIsMobileMenuOpen(false)} 
+                className="font-headline-md text-2xl text-ink-charcoal border-b border-muted-sand pb-4 block"
+              >
+                {item.label}
+              </Link>
+              {item.hasMegaMenu && (
+                <div className="flex flex-col gap-3 pt-4 pl-4 border-l border-burnished-gold/30 mt-4">
+                  {MEGA_MENU_ITEMS.map((mega) => (
+                    <Link 
+                      key={mega.title}
+                      href={mega.url}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="font-body-md text-on-surface-variant text-lg"
+                    >
+                      {mega.title}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
-          <Link href={session ? "/account" : "/login"} onClick={() => setIsMobileMenuOpen(false)} className="font-headline-md text-2xl text-ink-charcoal pt-4">
+          <Link href={session ? "/account" : "/login"} onClick={() => setIsMobileMenuOpen(false)} className="font-headline-md text-2xl text-ink-charcoal pt-4 border-t border-muted-sand">
             {session ? session.user?.name || "My Account" : "Sign In"}
           </Link>
         </div>
