@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 const SLIDES = [
   {
-    image: "https://lh3.googleusercontent.com/aida/AP1WRLuMGowMGAmQRNVmlI3BUJQrvlgZea_Ploa3N0Ua1mi7mRcJvniDPGVCvvFRyMqbY4ciRNsN1GXJta5YznUwUNskHxOlAqpdNDjFbPtTEIsmUZRFwAvHHjQQL6AiR5Mfaf0xKwuFQM3kr6Nfbv0mCOggL75oTqBNH3iOswBSd4hoT4u126g0e7HJHEQ4Fph0mwtxf8XbY2Zd0Ys3xP05Y6zMrR7P10A4Izb8Nw8iT7YmLhC-sSzPsF1J0yLP",
+    image: "/images/homepage/hero_tea_set.png",
     badge: "Est. 2024",
     title: "The Art of Fine Porcelain",
     description: "Experience the quiet luxury of timeless craftsmanship in every piece.",

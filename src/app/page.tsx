@@ -72,34 +72,42 @@ export default async function HomePage() {
             <p className="font-body-md text-on-surface-variant">The foundation of a beautiful dining experience</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            <Link href="/collections/dinnerware" className="md:col-span-7 group relative h-[600px] overflow-hidden">
-              <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Dinnerware Collections" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 60vw" />
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
+            <Link href="/collections/dinnerware" className="group relative h-[450px] md:h-[600px] overflow-hidden">
+              <Image src="/images/homepage/curated_dinnerware.png" alt="Dinnerware Collections" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 25vw" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-              <div className="absolute bottom-10 left-10 text-surface-cream">
-                <h3 className="font-headline-lg text-3xl mb-2">Dinnerware Sets</h3>
-                <span className="font-label-caps text-[11px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Explore Collection</span>
+              <div className="absolute bottom-8 left-6 text-surface-cream">
+                <h3 className="font-headline-md text-2xl mb-1">Dinnerware Sets</h3>
+                <span className="font-label-caps text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
               </div>
             </Link>
             
-            <div className="md:col-span-5 flex flex-col gap-8">
-              <Link href="/products" className="group relative h-[284px] overflow-hidden">
-                <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Cups & Mugs" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 40vw" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                <div className="absolute bottom-8 left-8 text-surface-cream">
-                  <h3 className="font-headline-lg text-2xl mb-2">Cups &amp; Mugs</h3>
-                  <span className="font-label-caps text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
-                </div>
-              </Link>
-              <Link href="/collections/tea-sets" className="group relative h-[284px] overflow-hidden">
-                <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Tea Sets" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 40vw" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                <div className="absolute bottom-8 left-8 text-surface-cream">
-                  <h3 className="font-headline-lg text-2xl mb-2">Tea Sets</h3>
-                  <span className="font-label-caps text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
-                </div>
-              </Link>
-            </div>
+            <Link href="/products" className="group relative h-[450px] md:h-[600px] overflow-hidden">
+              <Image src="/images/homepage/curated_mugs.png" alt="Cups & Mugs" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 25vw" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <div className="absolute bottom-8 left-6 text-surface-cream">
+                <h3 className="font-headline-md text-2xl mb-1">Cups &amp; Mugs</h3>
+                <span className="font-label-caps text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
+              </div>
+            </Link>
+
+            <Link href="/collections/tea-sets" className="group relative h-[450px] md:h-[600px] overflow-hidden">
+              <Image src="/images/homepage/curated_teasets.png" alt="Tea Sets" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 25vw" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <div className="absolute bottom-8 left-6 text-surface-cream">
+                <h3 className="font-headline-md text-2xl mb-1">Tea Sets</h3>
+                <span className="font-label-caps text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
+              </div>
+            </Link>
+
+            <Link href="/collections/gifting" className="group relative h-[450px] md:h-[600px] overflow-hidden">
+              <Image src="/images/homepage/curated_luxury_gifting.png" alt="Luxury Gifting" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 25vw" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+              <div className="absolute bottom-8 left-6 text-surface-cream">
+                <h3 className="font-headline-md text-2xl mb-1">Luxury Gifting</h3>
+                <span className="font-label-caps text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
+              </div>
+            </Link>
           </div>
         </div>
       </section>
@@ -154,24 +162,30 @@ export default async function HomePage() {
             <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal">Gifts for Every Milestone</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Link href="/collections/gifting" className="group relative h-[500px] overflow-hidden">
-              <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Wedding Gifts" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
-              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-                <h3 className="font-headline-lg text-4xl text-surface-cream mb-4">Wedding &amp; Trousseau</h3>
-                <p className="font-body-md text-surface-cream/90 mb-8 max-w-sm">Curated dinnerware sets that become family heirlooms.</p>
-                <span className="bg-surface-cream text-ink-charcoal px-8 py-3 font-label-caps text-[11px] uppercase tracking-widest hover:bg-burnished-gold hover:text-white transition-colors">Shop Wedding Gifts</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            <Link href="/collections/gifting" className="group text-center">
+              <div className="relative aspect-square overflow-hidden mb-4 bg-muted-sand rounded-sm">
+                <Image src="/images/homepage/milestone_wedding.png" alt="Wedding Gifts" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
+              <h3 className="font-headline-md text-xl text-ink-charcoal">Wedding &amp; Trousseau</h3>
             </Link>
-            <Link href="/collections/gifting" className="group relative h-[500px] overflow-hidden">
-              <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Corporate Gifts" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
-              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-                <h3 className="font-headline-lg text-4xl text-surface-cream mb-4">Corporate Gifting</h3>
-                <p className="font-body-md text-surface-cream/90 mb-8 max-w-sm">Leave a lasting impression with luxury porcelain tea sets.</p>
-                <span className="bg-surface-cream text-ink-charcoal px-8 py-3 font-label-caps text-[11px] uppercase tracking-widest hover:bg-burnished-gold hover:text-white transition-colors">Inquire Now</span>
+            <Link href="/collections/gifting" className="group text-center">
+              <div className="relative aspect-square overflow-hidden mb-4 bg-muted-sand rounded-sm">
+                <Image src="/images/homepage/milestone_corporate.png" alt="Corporate Gifts" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
               </div>
+              <h3 className="font-headline-md text-xl text-ink-charcoal">Corporate Gifting</h3>
+            </Link>
+            <Link href="/collections/gifting" className="group text-center">
+              <div className="relative aspect-square overflow-hidden mb-4 bg-muted-sand rounded-sm">
+                <Image src="/images/homepage/milestone_festive.png" alt="Festive Gifts" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+              </div>
+              <h3 className="font-headline-md text-xl text-ink-charcoal">Festive Gifts</h3>
+            </Link>
+            <Link href="/collections/gifting" className="group text-center">
+              <div className="relative aspect-square overflow-hidden mb-4 bg-muted-sand rounded-sm">
+                <Image src="/images/homepage/milestone_everyday.png" alt="Everyday Dining" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+              </div>
+              <h3 className="font-headline-md text-xl text-ink-charcoal">Everyday Dining</h3>
             </Link>
           </div>
         </div>
@@ -182,30 +196,32 @@ export default async function HomePage() {
         <div className="max-w-container-max mx-auto text-center">
           <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal mb-16">The Artisanal Collections</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Link href="/collections/gifting" className="group text-left">
-              <div className="relative aspect-[3/4] overflow-hidden mb-6 bg-muted-sand">
-                <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="The Azure Series" fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, 33vw" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            <Link href="/collections/dinnerware" className="group text-left flex flex-col h-full">
+              <div className="relative aspect-square md:h-[800px] w-full overflow-hidden mb-6 bg-muted-sand">
+                <Image src="/images/homepage/artisanal_left.png" alt="The Azure Series" fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
-              <h3 className="font-headline-md text-2xl text-ink-charcoal mb-2">The Azure Series</h3>
-              <p className="font-body-md text-on-surface-variant">Inspired by Moroccan skies and deep oceans.</p>
+              <h3 className="font-headline-md text-2xl text-ink-charcoal mb-2">The Imperial White</h3>
+              <p className="font-body-md text-on-surface-variant">Timeless white porcelain with subtle brush details.</p>
             </Link>
             
-            <Link href="/collections/gifting" className="group text-left md:mt-16">
-              <div className="relative aspect-[3/4] overflow-hidden mb-6 bg-muted-sand">
-                <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="The Imperial Gold" fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, 33vw" />
-              </div>
-              <h3 className="font-headline-md text-2xl text-ink-charcoal mb-2">The Imperial Gold</h3>
-              <p className="font-body-md text-on-surface-variant">Hand-painted 24k gold details on pure white porcelain.</p>
-            </Link>
+            <div className="flex flex-col gap-8 md:gap-12">
+              <Link href="/collections/gifting" className="group text-left flex-1">
+                <div className="relative h-[300px] md:h-[350px] w-full overflow-hidden mb-6 bg-muted-sand">
+                  <Image src="/images/homepage/artisanal_top_right.png" alt="The Handpainted Collection" fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, 50vw" />
+                </div>
+                <h3 className="font-headline-md text-2xl text-ink-charcoal mb-2">The Handpainted Collection</h3>
+                <p className="font-body-md text-on-surface-variant">Meticulous craftsmanship by master artisans.</p>
+              </Link>
 
-            <Link href="/collections/gifting" className="group text-left">
-              <div className="relative aspect-[3/4] overflow-hidden mb-6 bg-muted-sand">
-                <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="The Emerald Heritage" fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, 33vw" />
-              </div>
-              <h3 className="font-headline-md text-2xl text-ink-charcoal mb-2">The Emerald Heritage</h3>
-              <p className="font-body-md text-on-surface-variant">Rich jewel tones paired with classical Indian motifs.</p>
-            </Link>
+              <Link href="/collections/tea-sets" className="group text-left flex-1">
+                <div className="relative h-[300px] md:h-[350px] w-full overflow-hidden mb-6 bg-muted-sand">
+                  <Image src="/images/homepage/artisanal_bottom_right.png" alt="The Emerald Heritage" fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, 50vw" />
+                </div>
+                <h3 className="font-headline-md text-2xl text-ink-charcoal mb-2">The Emerald Heritage</h3>
+                <p className="font-body-md text-on-surface-variant">Rich jewel tones paired with 24k gold motifs.</p>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -214,7 +230,7 @@ export default async function HomePage() {
       <section className="bg-ink-charcoal text-surface-cream">
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="relative h-[500px] lg:h-auto">
-            <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Kintsugi Collection" fill className="object-cover opacity-80" sizes="(max-width: 1024px) 100vw, 50vw" />
+            <Image src="/images/homepage/kintsugi_mug.png" alt="Kintsugi Collection" fill className="object-cover opacity-80" sizes="(max-width: 1024px) 100vw, 50vw" />
           </div>
           <div className="p-12 md:p-24 flex flex-col justify-center">
             <span className="font-label-caps text-[11px] uppercase tracking-widest text-burnished-gold mb-6 block">Limited Edition</span>
@@ -235,8 +251,8 @@ export default async function HomePage() {
       <section className="py-section-gap px-5 md:px-margin-desktop bg-surface-cream">
         <div className="max-w-container-max mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-16">
-            <div className="w-full md:w-1/2 relative h-[600px]">
-              <Image src="https://lh3.googleusercontent.com/aida-public/AB6AXuCL3bKzH2uWq7oG6yP8W3GzM9uF6b_xX6n8M8V2oXW2Bv4H9YvW1g3kX8Z2V3Yn6w5nK7m8jB2tF7H1R3J6tZ4F1H8V2W5L4N3P7D9M4B1L7tF2K4S8K7M1F9T8" alt="Brand Story" fill className="object-cover rounded-t-[200px]" sizes="(max-width: 768px) 100vw, 50vw" />
+            <div className="w-full md:w-1/2 relative h-[600px] overflow-hidden">
+              <Image src="/images/homepage/brand_story.png" alt="Brand Story" fill className="object-cover transition-transform duration-1000 hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
             <div className="w-full md:w-1/2 md:pl-10">
               <span className="font-label-caps text-[11px] uppercase tracking-widest text-burnished-gold mb-6 block">Our Philosophy</span>
