@@ -29,14 +29,15 @@ export default async function HomePage() {
   return (
     <main className="overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative h-[921px] w-full overflow-hidden flex items-center px-margin-desktop">
+      <section className="relative min-h-[500px] h-[70vh] max-h-[850px] w-full overflow-hidden flex items-center px-margin-desktop">
         <div className="absolute inset-0 z-0">
           <Image 
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjKFOZSacyg5S9aewoF3p5oBtjy_Q6nHjK8fbYWNIEQ3LSTzg57OIL9Xx8kgOKA3TaHabGVUW5M7MxrG3Pa6wcW0jutvTnX9A2m0Dy_Mgnq0FH1H2YbQAJzDywwfuPRN7nCM2qoxAGBJnml4nkufhGUF0yRZjQqLwTotipfqv95Uu2K72OnDAR4D0pMGx4tR3hzakgB_9ZslgeKvzBCkeYXLKZd5IbwxK2x2TE9WDOYHDU_WMBW-Rvpn9CTc7WHhg6deAZq7lKEgM"
             alt="Luxury Dining Experience" 
             fill
             priority
-            className="object-cover" 
+            sizes="100vw"
+            className="object-cover object-center" 
           />
           <div className="absolute inset-0 bg-gradient-to-r from-heritage-navy/40 to-transparent"></div>
         </div>
