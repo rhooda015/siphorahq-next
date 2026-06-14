@@ -19,54 +19,54 @@ const PRODUCTS = [
     name: "Imperial White Porcelain Mug",
     slug: "imperial-white-porcelain-mug",
     category: "Cups & Mugs",
-    material: "Fine Porcelain",
     price: "₹799",
     badge: "New Arrival",
+    rating: "4.8",
     image: "/images/products/imperial-white-mug.webp"
   },
   {
     name: "Minimalist Porcelain Tea Cups",
     slug: "minimalist-porcelain-tea-cups",
     category: "Tea Sets",
-    material: "Fine Porcelain",
     price: "₹1,299",
-    badge: "New Arrival",
+    badge: "Just Launched",
+    rating: "4.7",
     image: "/images/products/minimalist-tea-cups.webp"
   },
   {
     name: "Golden Rim Serving Bowl",
     slug: "golden-rim-serving-bowl",
     category: "Serveware",
-    material: "Gold Rim Porcelain",
     price: "₹1,899",
-    badge: "Just Launched",
+    badge: "New Season",
+    rating: "4.6",
     image: "/images/products/golden-rim-serving-bowl.webp"
-  },
-  {
-    name: "Royal Ivory Cup Set",
-    slug: "royal-ivory-cup-set",
-    category: "Cups & Mugs",
-    material: "Bone China",
-    price: "₹1,499",
-    badge: "Gift Ready",
-    image: "/images/products/royal-ivory-cup-set.webp"
   },
   {
     name: "Blue Rose Tea Set",
     slug: "blue-rose-tea-set",
     category: "Tea Sets",
-    material: "Fine Porcelain",
     price: "₹4,999",
-    badge: "New Season",
+    badge: "Gift Ready",
+    rating: "4.9",
     image: "/images/products/blue-rose-tea-set.webp"
+  },
+  {
+    name: "Royal Ivory Cup Set",
+    slug: "royal-ivory-cup-set",
+    category: "Cups & Mugs",
+    price: "₹1,499",
+    badge: "Premium Pick",
+    rating: "4.7",
+    image: "/images/products/royal-ivory-cup-set.webp"
   },
   {
     name: "Heritage Navy Mug Set",
     slug: "heritage-navy-mug-set",
     category: "Cups & Mugs",
-    material: "Fine Porcelain",
     price: "₹1,999",
-    badge: "Premium Pick",
+    badge: "New Arrival",
+    rating: "4.8",
     image: "/images/products/heritage-navy-mug-set.webp"
   }
 ];
@@ -130,7 +130,7 @@ export default function NewArrivalsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
 
       {/* ── CINEMATIC HERO ── */}
-      <section className="relative h-[85vh] min-h-[600px] w-full flex items-center justify-center overflow-hidden">
+      <section className="relative h-[75vh] lg:min-h-[90vh] w-full flex items-center justify-center overflow-hidden">
         <Image
           src="/images/new-arrivals/new-arrivals-hero.webp"
           alt="New Porcelain Arrivals"
@@ -146,10 +146,10 @@ export default function NewArrivalsPage() {
             New Season Launch
           </p>
           <h1 className="font-headline-lg text-5xl md:text-7xl text-surface-cream italic tracking-tighter mb-6 leading-tight">
-            New Porcelain Arrivals for Elegant Homes
+            Luxury Porcelain Crafted for Elegant Homes
           </h1>
           <p className="font-body-md text-surface-cream/90 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-            Discover our latest cups, tea sets, dinnerware, and gift-ready porcelain pieces crafted for modern Indian dining.
+            Discover premium porcelain mugs, tea sets, dinnerware and gift-ready collections for modern Indian homes.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4">
@@ -174,20 +174,24 @@ export default function NewArrivalsPage() {
         <div className="max-w-container-max mx-auto px-5 flex justify-between items-center overflow-hidden">
           <div className="flex animate-marquee md:animate-none md:justify-center md:w-full gap-8 md:gap-16 whitespace-nowrap">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px] text-burnished-gold">local_shipping</span>
-              <span className="font-label-caps text-[11px] uppercase tracking-widest">Free Shipping Pan India Above ₹999</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px] text-burnished-gold">support_agent</span>
-              <span className="font-label-caps text-[11px] uppercase tracking-widest">WhatsApp Concierge: +91 9540027978</span>
+              <span className="material-symbols-outlined text-[18px] text-burnished-gold">diamond</span>
+              <span className="font-label-caps text-[11px] uppercase tracking-widest">Premium Porcelain</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-[18px] text-burnished-gold">verified_user</span>
-              <span className="font-label-caps text-[11px] uppercase tracking-widest">Lead-free & Food Safe</span>
+              <span className="font-label-caps text-[11px] uppercase tracking-widest">Lead Free & Food Safe</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-[18px] text-burnished-gold">redeem</span>
+              <span className="font-label-caps text-[11px] uppercase tracking-widest">Gift Ready Packaging</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-[18px] text-burnished-gold">replay</span>
-              <span className="font-label-caps text-[11px] uppercase tracking-widest">Damage Replacement Support</span>
+              <span className="font-label-caps text-[11px] uppercase tracking-widest">Damage Replacement</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="material-symbols-outlined text-[18px] text-burnished-gold">local_shipping</span>
+              <span className="font-label-caps text-[11px] uppercase tracking-widest">Free Shipping Above ₹999</span>
             </div>
           </div>
         </div>

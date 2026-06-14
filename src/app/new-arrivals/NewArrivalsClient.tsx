@@ -8,18 +8,18 @@ type Product = {
   name: string;
   slug: string;
   category: string;
-  material: string;
   price: string;
   badge: string;
+  rating: string;
   image: string;
 };
 
 export default function NewArrivalsClient({ products }: { products: Product[] }) {
-  const [activeTab, setActiveTab] = useState('All New');
-  const tabs = ['All New', 'Cups & Mugs', 'Tea Sets', 'Dinnerware', 'Gift Sets'];
+  const [activeTab, setActiveTab] = useState('All');
+  const tabs = ['All', 'Cups & Mugs', 'Tea Sets', 'Dinnerware', 'Serveware', 'Gift Sets'];
 
   const filtered = products.filter(p => {
-    if (activeTab === 'All New') return true;
+    if (activeTab === 'All') return true;
     return p.category === activeTab;
   });
 
@@ -73,11 +73,10 @@ export default function NewArrivalsClient({ products }: { products: Product[] })
             <div className="flex flex-col flex-1 text-center">
               <p className="font-label-caps text-[10px] uppercase tracking-widest text-burnished-gold mb-2">{product.category}</p>
               <h3 className="font-headline-md text-xl text-ink-charcoal mb-2">{product.name}</h3>
-              <p className="font-body-md text-sm text-on-surface-variant mb-4">{product.material}</p>
               
               <div className="mt-auto">
-                <div className="flex justify-center text-burnished-gold text-[12px] mb-2">
-                  ★★★★★
+                <div className="flex justify-center items-center text-burnished-gold text-[12px] mb-2">
+                  <span className="mr-1">★</span> {product.rating}
                 </div>
                 <div className="flex flex-col items-center gap-1 border-t border-muted-sand/50 pt-4 mt-2">
                   <span className="font-body-md font-semibold text-lg text-ink-charcoal mb-1">{product.price}</span>
