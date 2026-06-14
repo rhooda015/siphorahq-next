@@ -124,12 +124,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
         />
       </head>
-      <body className="bg-porcelain-white text-heritage-navy font-body-md antialiased min-h-screen pb-[64px] md:pb-0">
+      <body className="bg-porcelain-white text-heritage-navy font-body-md antialiased min-h-screen pb-[64px] md:pb-0 flex flex-col">
         <ThemeInjector theme={theme} />
         <SettingsProvider initialSettings={JSON.parse(JSON.stringify(settings))}>
           <SessionWrapper>
             <Header />
-            <main className="min-h-screen">{children}</main>
+            <main className="flex-1 flex flex-col">{children}</main>
             <Footer />
             <MobileBottomNav />
             <CartDrawer />
