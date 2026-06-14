@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import NewsletterForm from "./NewsletterForm";
 
 const WHATSAPP_NUMBER = "919540027978";
 
@@ -23,15 +23,6 @@ const trust = [
 ];
 
 export default function HomeClient({ products }: { products: any[] }) {
-  const [email, setEmail] = useState("");
-  const [joined, setJoined] = useState(false);
-
-  function submitNewsletter(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email.includes("@")) return;
-    setJoined(true);
-    setEmail("");
-  }
 
   // Fallback to static products if DB products are empty or not provided
   const displayProducts = products && products.length > 0 ? products : [
@@ -275,32 +266,7 @@ export default function HomeClient({ products }: { products: any[] }) {
         </div>
       </section>
 
-      <section className="bg-[#1A2A3A] py-16 text-white border-y border-[#C5A059]/20">
-        <div className="mx-auto max-w-2xl px-5 text-center">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-[#D4AF37]">Join Siphorahq Circle</p>
-          <h2 className="font-serif text-3xl font-semibold">Get Early Access to New Collections</h2>
-
-          <form onSubmit={submitNewsletter} className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              className="flex-1 border border-white/20 bg-white/10 px-5 py-3 text-white placeholder-white/50 outline-none focus:border-[#D4AF37] transition-colors"
-            />
-            <button className="bg-[#D4AF37] px-8 py-3 text-xs font-bold uppercase tracking-[0.25em] text-[#1A2A3A] hover:bg-white transition-colors">
-              Subscribe
-            </button>
-          </form>
-
-          {joined && (
-            <p className="mt-4 text-sm text-[#D4AF37] animate-pulse">
-              Thank you for joining Siphorahq Circle.
-            </p>
-          )}
-        </div>
-      </section>
+      <NewsletterForm />
 
       <a
         href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%20Siphorahq%2C%20I%20need%20help%20choosing%20a%20premium%20gift.`}
