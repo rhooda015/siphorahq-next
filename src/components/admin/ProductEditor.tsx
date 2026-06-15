@@ -6,7 +6,7 @@ import StarterKit from '@tiptap/starter-kit';
 import { useDropzone } from 'react-dropzone';
 import { 
   ChevronLeft, UploadCloud, Trash2, GripVertical, Image as ImageIcon,
-  Bold, Italic, List, ListOrdered, Heading3, Search, Link as LinkIcon, Share2
+  Bold, Italic, List, ListOrdered, Heading3, Search, Link as LinkIcon, Share2, Star, ChevronRight
 } from 'lucide-react';
 
 interface ProductEditorProps {
@@ -24,7 +24,7 @@ const CATEGORIES = [
   'Accessories'
 ];
 
-type TabType = 'General' | 'Pricing' | 'Media' | 'Variants' | 'SEO' | 'Specifications';
+type TabType = 'General' | 'Pricing' | 'Media' | 'Variants' | 'SEO' | 'Specifications' | 'Preview';
 
 export default function ProductEditor({ initialData, onClose, onSave }: ProductEditorProps) {
   const isEdit = !!initialData?._id;
@@ -172,8 +172,10 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: {'image/*': []} });
 
-  const handleSave = async () => {
+  const handleSave = async (overrideStatus?: 'Draft' | 'Live') => {
     setIsSaving(true);
+    const finalStatus = overrideStatus || status;
+    setStatus(finalStatus);
     await onSave({
       _id: initialData?._id,
       title,
@@ -182,7 +184,7 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
       price: Number(price),
       inventoryCount: Number(inventoryCount),
       category,
-      status,
+      status: finalStatus,
       images,
       sizes: sizes.split(',').map((s: string) => s.trim()).filter(Boolean),
       colors: colors.split(',').map((c: string) => c.trim()).filter(Boolean),
@@ -201,7 +203,8 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
     { id: 'Media', label: 'Media Asset Manager' },
     { id: 'Variants', label: 'Variation Matrix Grid' },
     { id: 'Specifications', label: 'Product Specifications' },
-    { id: 'SEO', label: 'SEO & Search Visibility' }
+    { id: 'SEO', label: 'SEO & Search Visibility' },
+    { id: 'Preview', label: 'Preview & Publish' }
   ];
 
   return (
@@ -224,9 +227,11 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
           <button onClick={onClose} className="px-6 py-2.5 text-[13px] tracking-widest uppercase font-bold text-zinc-600 bg-white border-[0.5px] border-zinc-300 rounded-[2px] hover:bg-zinc-50 hover:text-zinc-900 transition-all">
             Discard
           </button>
-          <button onClick={handleSave} disabled={isSaving} className="px-6 py-2.5 text-[13px] tracking-widest uppercase font-bold text-white bg-[#18181b] rounded-[2px] hover:bg-black transition-all shadow-md disabled:opacity-50 flex items-center gap-2">
-            {isSaving ? 'Synchronizing...' : 'Save Catalog'}
-          </button>
+          {activeTab !== 'Preview' && (
+            <button onClick={() => handleSave()} disabled={isSaving} className="px-6 py-2.5 text-[13px] tracking-widest uppercase font-bold text-white bg-[#18181b] rounded-[2px] hover:bg-black transition-all shadow-md disabled:opacity-50 flex items-center gap-2">
+              {isSaving ? 'Synchronizing...' : 'Save Catalog'}
+            </button>
+          )}
         </div>
       </div>
 
@@ -576,6 +581,108 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
                     ))}
                   </div>
                 </div>
+              </div>
+            )}
+
+            {/* 7. PREVIEW TAB */}
+            {activeTab === 'Preview' && (
+              <div className="space-y-8 animate-in fade-in duration-300">
+                <div className="border-b-[0.5px] border-zinc-200 pb-4 mb-8 flex justify-between items-end">
+                  <div>
+                    <h2 className="text-xl font-bold text-[#18181b] uppercase tracking-widest font-arimo">Live Preview</h2>
+                    <p className="text-sm text-zinc-500 mt-2">Simulated frontend render of the product page.</p>
+                  </div>
+                  <div className="flex gap-4">
+                    <button onClick={() => setActiveTab('General')} className="px-6 py-2.5 text-[12px] tracking-widest uppercase font-bold text-[#18181b] bg-white border border-[#18181b] rounded-[2px] hover:bg-zinc-50 transition-all">
+                      Edit Details
+                    </button>
+                    <button onClick={() => handleSave('Draft')} disabled={isSaving} className="px-6 py-2.5 text-[12px] tracking-widest uppercase font-bold text-zinc-600 bg-white border border-zinc-300 rounded-[2px] hover:bg-zinc-50 hover:text-zinc-900 transition-all disabled:opacity-50">
+                      Save Draft
+                    </button>
+                    <button onClick={() => handleSave('Live')} disabled={isSaving} className="px-6 py-2.5 text-[12px] tracking-widest uppercase font-bold text-white bg-[#D4AF37] rounded-[2px] hover:bg-[#c4a132] transition-all shadow-sm disabled:opacity-50">
+                      Publish Product
+                    </button>
+                  </div>
+                </div>
+
+                <div className="bg-[#fdf8f8] border border-zinc-200 rounded-[2px] p-8">
+                  {/* PREVIEW CONTAINER (Mimicking store layout) */}
+                  <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-12">
+                    {/* Left: Gallery */}
+                    <div className="lg:w-1/2">
+                      <div className="aspect-[4/5] bg-white border-[0.5px] border-zinc-200 rounded-[2px] overflow-hidden">
+                        {images.length > 0 ? (
+                          <img src={images[0].url} alt="Main" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-zinc-400 font-medium text-sm tracking-widest uppercase">No Image Provided</div>
+                        )}
+                      </div>
+                      {images.length > 1 && (
+                        <div className="flex gap-4 mt-4 overflow-x-auto pb-2">
+                          {images.slice(1, 5).map((img, i) => (
+                            <img key={i} src={img.url} className="w-20 h-24 object-cover rounded-[2px] border-[0.5px] border-zinc-200 opacity-60" />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Right: Details */}
+                    <div className="lg:w-1/2 flex flex-col">
+                      <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#D4AF37] mb-2">SIPHORAHQ EXCLUSIVE</span>
+                      <h1 className="text-3xl font-serif text-[#1c1b1c] leading-tight mb-4">{title || 'Untitled Product'}</h1>
+                      
+                      <div className="flex text-[#EED202] mb-6">
+                        {[1,2,3,4,5].map(s => <Star key={s} className="w-4 h-4 fill-current" />)}
+                      </div>
+
+                      <div className="border-b-[0.5px] border-zinc-200 pb-6 mb-6">
+                        <p className="text-2xl font-sans font-medium text-[#1c1b1c]">₹{price.toLocaleString('en-IN')}</p>
+                      </div>
+
+                      {/* Mock Add to Cart */}
+                      <button disabled className="w-full bg-[#1c1b1c] text-white py-4 text-[13px] font-bold uppercase tracking-widest rounded-[2px] mb-8 opacity-90 cursor-not-allowed">
+                        Add to Cart
+                      </button>
+
+                      {/* Description Accordion */}
+                      <div className="border-t-[0.5px] border-zinc-200 pt-4 mb-4">
+                        <h3 className="font-serif text-lg font-medium text-[#1c1b1c] mb-3">Product Details</h3>
+                        <div className="text-sm font-sans text-zinc-600 leading-relaxed prose prose-sm max-w-none prose-p:mb-3" dangerouslySetInnerHTML={{ __html: description || '<p>No description provided.</p>' }} />
+                      </div>
+
+                      {/* Specifications Table */}
+                      <div className="border-t-[0.5px] border-zinc-200 pt-4 mt-4">
+                        <h3 className="font-serif text-lg font-medium text-[#1c1b1c] mb-4">Specifications</h3>
+                        <div className="grid grid-cols-1 gap-y-3">
+                          {Object.entries(specifications).map(([key, value]) => {
+                            if (!value) return null;
+                            const formattedKey = key.replace(/([A-Z])/g, ' $1').trim();
+                            return (
+                              <div key={key} className="flex justify-between border-b-[0.5px] border-zinc-100 pb-2">
+                                <span className="text-[11px] text-zinc-500 font-bold uppercase tracking-widest">{formattedKey}</span>
+                                <span className="text-[13px] text-[#1c1b1c] font-medium text-right max-w-[60%]">{value as string}</span>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* SEO PREVIEW */}
+                <div className="bg-zinc-50 p-6 border-[0.5px] border-zinc-200 rounded-[2px]">
+                   <h3 className="tracking-widest text-[11px] font-bold text-zinc-500 uppercase mb-4">Live SERP Preview</h3>
+                   <div className="bg-white p-4 rounded-[2px] border-[0.5px] border-zinc-200 shadow-sm">
+                     <p className="text-[12px] text-[#1a0dab] truncate">siphorahq.in › products › {handle || 'product-slug'}</p>
+                     <h4 className="text-[16px] text-[#1a0dab] hover:underline cursor-pointer truncate mt-1">
+                       {metaTitle || title || 'Product Title'} | Siphorahq Luxury
+                     </h4>
+                     <p className="text-[13px] text-[#4d5156] mt-1 line-clamp-2 leading-relaxed">
+                       {metaDescription || description.replace(/<[^>]+>/g, '').substring(0, 150) || 'Discover luxury porcelain and timeless elegance with Siphorahq...'}
+                     </p>
+                   </div>
+                 </div>
               </div>
             )}
 
