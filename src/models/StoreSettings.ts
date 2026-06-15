@@ -13,6 +13,9 @@ export interface IStoreSettings extends Document {
   flatShippingRate: number;
   razorpayKeyId: string;
   razorpayKeySecret: string;
+  // Admin Auth
+  adminUsername?: string;
+  adminPassword?: string;
   // SEO
   seoTitle: string;
   seoDescription: string;
@@ -36,6 +39,8 @@ const StoreSettingsSchema = new mongoose.Schema(
     flatShippingRate: { type: Number, default: 100 },
     razorpayKeyId: { type: String, default: '' },
     razorpayKeySecret: { type: String, default: '' },
+    adminUsername: { type: String, default: '' },
+    adminPassword: { type: String, default: '' },
 
     // SEO
     seoTitle: { type: String, default: 'Siphorahq — Luxury Porcelain Dinnerware India' },

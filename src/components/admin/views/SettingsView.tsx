@@ -14,7 +14,8 @@ export default function SettingsView() {
     storePhone: '',
     freeShippingThreshold: 999,
     flatShippingRate: 100,
-
+    adminUsername: '',
+    adminPassword: '',
   });
 
   const tabs = [
@@ -42,7 +43,8 @@ export default function SettingsView() {
           storePhone: data.storePhone || '',
           freeShippingThreshold: data.freeShippingThreshold || 999,
           flatShippingRate: data.flatShippingRate || 100,
-
+          adminUsername: data.adminUsername || '',
+          adminPassword: data.adminPassword || '',
         });
       }
     } catch (error) {
@@ -192,8 +194,28 @@ export default function SettingsView() {
               </div>
             )}
 
+            {activeTab === 'User Permissions' && (
+              <div className="space-y-8 animate-in fade-in duration-300">
+                <div>
+                  <h3 className="text-lg font-bold text-[#18181b] mb-1">Admin Credentials</h3>
+                  <p className="text-sm text-zinc-500 mb-6">Update the username and password used to access this admin panel.</p>
+                  <div className="space-y-5 max-w-md">
+                    <div>
+                      <label className="block text-sm font-medium text-[#18181b] mb-1.5">Admin Username</label>
+                      <input type="text" name="adminUsername" value={settings.adminUsername} onChange={handleChange} placeholder="e.g. admin" className="w-full border border-zinc-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#18181b]/10 focus:border-[#18181b] outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-[#18181b] mb-1.5">Admin Password</label>
+                      <input type="text" name="adminPassword" value={settings.adminPassword} onChange={handleChange} placeholder="Leave blank to use .env value or enter new password" className="w-full border border-zinc-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#18181b]/10 focus:border-[#18181b] outline-none" />
+                      <p className="text-xs text-zinc-500 mt-2">If these are left blank, the system will use the values from your .env file.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Placeholder for other tabs */}
-            {activeTab !== 'Store Details' && activeTab !== 'Payment Providers' && activeTab !== 'Shipping & Delivery' && (
+            {activeTab !== 'Store Details' && activeTab !== 'Payment Providers' && activeTab !== 'Shipping & Delivery' && activeTab !== 'User Permissions' && (
               <div className="h-full flex flex-col items-center justify-center text-center animate-in fade-in duration-300 py-20">
                 <div className="w-16 h-16 bg-zinc-100 text-zinc-400 rounded-full flex items-center justify-center mb-4">
                   <Store size={24} />

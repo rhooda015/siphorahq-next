@@ -1,8 +1,9 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, resetRateLimit } from '@/lib/rateLimit';
-import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { SignJWT } from 'jose';
+import dbConnect from '@/lib/db';
+import StoreSettings from '@/models/StoreSettings';
 
 export async function POST(request: NextRequest) {
   const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
@@ -12,8 +13,11 @@ export async function POST(request: NextRequest) {
   try {
     const { username, password } = await request.json();
 
-    const ADMIN_USERNAME = process.env.ADMIN_USERNAME;
-    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+    await dbConnect();
+    const settings = await StoreSettings.findOne();
+
+    const ADMIN_USERNAME = settings?.adminUsername || process.env.ADMIN_USERNAME;
+    const ADMIN_PASSWORD = settings?.adminPassword || process.env.ADMIN_PASSWORD;
     const SECRET = new TextEncoder().encode(process.env.NEXTAUTH_SECRET || 'fallback_secret_32_chars_minimum!!');
 
     if (!ADMIN_USERNAME || !ADMIN_PASSWORD) {
