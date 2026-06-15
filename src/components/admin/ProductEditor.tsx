@@ -24,7 +24,7 @@ const CATEGORIES = [
   'Accessories'
 ];
 
-type TabType = 'General' | 'Pricing' | 'Media' | 'Variants' | 'SEO';
+type TabType = 'General' | 'Pricing' | 'Media' | 'Variants' | 'SEO' | 'Specifications';
 
 export default function ProductEditor({ initialData, onClose, onSave }: ProductEditorProps) {
   const isEdit = !!initialData?._id;
@@ -53,6 +53,21 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
   const [handle, setHandle] = useState(initialData?.handle || '');
   const [metaTitle, setMetaTitle] = useState(initialData?.metaTitle || '');
   const [metaDescription, setMetaDescription] = useState(initialData?.metaDescription || '');
+  const [keywords, setKeywords] = useState(initialData?.keywords || '');
+
+  // Specifications
+  const [specifications, setSpecifications] = useState({
+    setIncludes: initialData?.specifications?.setIncludes || '',
+    color: initialData?.specifications?.color || '',
+    finish: initialData?.specifications?.finish || '',
+    designStyle: initialData?.specifications?.designStyle || '',
+    handleType: initialData?.specifications?.handleType || '',
+    occasion: initialData?.specifications?.occasion || '',
+    microwaveSafe: initialData?.specifications?.microwaveSafe || '',
+    dishwasherSafe: initialData?.specifications?.dishwasherSafe || '',
+    countryOfOrigin: initialData?.specifications?.countryOfOrigin || '',
+    idealFor: initialData?.specifications?.idealFor || ''
+  });
 
   const [isSaving, setIsSaving] = useState(false);
 
@@ -173,7 +188,9 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
       colors: colors.split(',').map((c: string) => c.trim()).filter(Boolean),
       variants,
       metaTitle,
-      metaDescription
+      metaDescription,
+      keywords,
+      specifications
     });
     setIsSaving(false);
   };
@@ -183,6 +200,7 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
     { id: 'Pricing', label: 'Pricing & Inventory' },
     { id: 'Media', label: 'Media Asset Manager' },
     { id: 'Variants', label: 'Variation Matrix Grid' },
+    { id: 'Specifications', label: 'Product Specifications' },
     { id: 'SEO', label: 'SEO & Search Visibility' }
   ];
 
@@ -487,6 +505,16 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
                         className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-3 px-4 focus:outline-none focus:border-[#18181b] resize-none"
                       />
                     </div>
+                    <div>
+                      <label className="tracking-widest text-[11px] font-bold text-[#D4AF37] uppercase mb-3 flex items-center gap-2"><Search size={14}/> Keywords / Tags</label>
+                      <input 
+                        type="text" 
+                        value={keywords} 
+                        onChange={e => setKeywords(e.target.value)} 
+                        placeholder="e.g. porcelain, dinnerware, luxury, gift"
+                        className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-3 px-4 focus:outline-none focus:border-[#18181b]"
+                      />
+                    </div>
                   </div>
 
                   {/* SERP Preview */}
@@ -503,6 +531,50 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
                     </div>
                   </div>
 
+                </div>
+              </div>
+            )}
+
+            {/* 6. SPECIFICATIONS TAB */}
+            {activeTab === 'Specifications' && (
+              <div className="space-y-8 animate-in fade-in duration-300">
+                <div className="border-b-[0.5px] border-zinc-200 pb-4 mb-8">
+                  <h2 className="text-xl font-bold text-[#18181b] uppercase tracking-widest font-arimo">Product Specifications</h2>
+                  <p className="text-sm text-zinc-500 mt-2">Detailed attributes displayed on the product page.</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-6">
+                    {['setIncludes', 'color', 'finish', 'designStyle', 'handleType'].map((field) => (
+                      <div key={field}>
+                        <label className="block tracking-widest text-[11px] font-bold text-zinc-500 uppercase mb-2">
+                          {field.replace(/([A-Z])/g, ' $1').trim()}
+                        </label>
+                        <input
+                          type="text"
+                          value={(specifications as any)[field]}
+                          onChange={e => setSpecifications({ ...specifications, [field]: e.target.value })}
+                          className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-2.5 px-4 focus:outline-none focus:border-[#18181b]"
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="space-y-6">
+                    {['occasion', 'microwaveSafe', 'dishwasherSafe', 'countryOfOrigin', 'idealFor'].map((field) => (
+                      <div key={field}>
+                        <label className="block tracking-widest text-[11px] font-bold text-zinc-500 uppercase mb-2">
+                          {field.replace(/([A-Z])/g, ' $1').trim()}
+                        </label>
+                        <input
+                          type="text"
+                          value={(specifications as any)[field]}
+                          onChange={e => setSpecifications({ ...specifications, [field]: e.target.value })}
+                          className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-2.5 px-4 focus:outline-none focus:border-[#18181b]"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}

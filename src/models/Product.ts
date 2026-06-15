@@ -47,7 +47,20 @@ const ProductSchema = new mongoose.Schema({
   metaTitle: String,
   metaDescription: String,
   seoTitle: String,
-  seoDescription: String
+  seoDescription: String,
+  keywords: String,
+  specifications: {
+    setIncludes: String,
+    color: String,
+    finish: String,
+    designStyle: String,
+    handleType: String,
+    occasion: String,
+    microwaveSafe: String,
+    dishwasherSafe: String,
+    countryOfOrigin: String,
+    idealFor: String
+  }
 }, {
   timestamps: true,
 });
