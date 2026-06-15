@@ -67,7 +67,11 @@ module.exports = {
         "on-surface": "#1c1b1c",
         "on-secondary-fixed": "#241a00",
         "tertiary-fixed": "#ffdea5",
-        "heritage-navy": "#1a2a3a"
+        "heritage-navy": "#1a2a3a",
+        "dark-surface": "#161414",
+        "dark-surface-container": "#211f1f",
+        "dark-muted-sand": "#2a2726",
+        "dark-on-surface-variant": "#c4c0bd"
       },
       borderRadius: {
         "DEFAULT": "0.125rem",
@@ -81,11 +85,16 @@ module.exports = {
         "container-max": "1440px",
         "unit": "8px",
         "margin-mobile": "20px",
-        "gutter": "24px"
+        "gutter": "24px",
+        "site-x": "64px",
+        "site-x-sm": "20px"
+      },
+      maxWidth: {
+        "site": "1440px",
       },
       fontFamily: {
-        serif: ['var(--font-cormorant)', 'Cormorant Garamond', 'Georgia', 'serif'],
-        sans:  ['var(--font-dm-sans)',   'DM Sans',            'system-ui', 'sans-serif'],
+        serif: ["var(--font-playfair)", "Georgia", "serif"],
+        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         "display-lg": ["var(--font-playfair)", "Playfair Display", "serif"],
         "body-md": ["var(--font-inter)", "Inter", "sans-serif"],
         "price-lg": ["var(--font-inter)", "Inter", "sans-serif"],
