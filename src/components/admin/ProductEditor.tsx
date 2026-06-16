@@ -4,9 +4,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useDropzone } from 'react-dropzone';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronLeft, UploadCloud, Trash2, GripVertical, Image as ImageIcon,
-  Bold, Italic, List, ListOrdered, Heading3, Search, Link as LinkIcon, Share2, Star, ChevronRight
+  Bold, Italic, List, ListOrdered, Heading3, Sparkles, Smartphone, Monitor, Check, ArrowRight,
+  Search, ShoppingBag, Star
 } from 'lucide-react';
 
 interface ProductEditorProps {
@@ -16,46 +18,47 @@ interface ProductEditorProps {
 }
 
 const CATEGORIES = [
-  'Dinnerware',
-  'Tea Sets',
-  'Mugs & Cups',
-  'Serveware',
-  'Gifting',
-  'Accessories'
+  'Dinnerware', 'Tea Sets', 'Mugs & Cups', 'Serveware', 'Gifting', 'Accessories'
 ];
 
-type TabType = 'General' | 'Pricing' | 'Media' | 'Variants' | 'SEO' | 'Specifications' | 'Preview';
+const STEPS = [
+  { id: 'general', label: '01 General Information' },
+  { id: 'pricing', label: '02 Pricing & Inventory' },
+  { id: 'media', label: '03 Media Manager' },
+  { id: 'variants', label: '04 Variants' },
+  { id: 'specs', label: '05 Specifications' },
+  { id: 'seo', label: '06 SEO & Visibility' }
+];
 
 export default function ProductEditor({ initialData, onClose, onSave }: ProductEditorProps) {
   const isEdit = !!initialData?._id;
   
-  const [activeTab, setActiveTab] = useState<TabType>('General');
+  const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const activeStep = STEPS[activeStepIndex];
+  
+  const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop');
 
-  // General
+  // Form State
   const [title, setTitle] = useState(initialData?.title || '');
   const [description, setDescription] = useState(initialData?.description || '');
   const [category, setCategory] = useState(initialData?.category || '');
   const [status, setStatus] = useState(initialData?.status || 'Live');
 
-  // Pricing
+  const [mrp, setMrp] = useState(initialData?.mrp || initialData?.price || 0);
   const [price, setPrice] = useState(initialData?.price || 0);
   const [inventoryCount, setInventoryCount] = useState(initialData?.inventoryCount || 0);
 
-  // Media
   const [images, setImages] = useState<{url: string, altText?: string}[]>(initialData?.images || []);
 
-  // Variants
   const [sizes, setSizes] = useState(initialData?.sizes?.join(', ') || '');
   const [colors, setColors] = useState(initialData?.colors?.join(', ') || '');
   const [variants, setVariants] = useState<any[]>(initialData?.variants || []);
 
-  // SEO
   const [handle, setHandle] = useState(initialData?.handle || '');
   const [metaTitle, setMetaTitle] = useState(initialData?.metaTitle || '');
   const [metaDescription, setMetaDescription] = useState(initialData?.metaDescription || '');
   const [keywords, setKeywords] = useState(initialData?.keywords || '');
 
-  // Specifications
   const [specifications, setSpecifications] = useState({
     setIncludes: initialData?.specifications?.setIncludes || '',
     color: initialData?.specifications?.color || '',
@@ -71,7 +74,6 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
 
   const [isSaving, setIsSaving] = useState(false);
 
-  // TipTap Editor
   const editor = useEditor({
     extensions: [StarterKit],
     content: description,
@@ -80,12 +82,17 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
     },
     editorProps: {
       attributes: {
-        class: 'prose prose-sm focus:outline-none min-h-[250px] p-6 text-[#52525b] text-[15px]',
+        class: 'prose prose-sm focus:outline-none min-h-[200px] text-zinc-700 font-sans p-4 bg-transparent',
       },
     },
   });
 
-  // Auto-slugification
+  // Calculations
+  const discountPercent = mrp > 0 ? Math.round(((mrp - price) / mrp) * 100) : 0;
+  const estimatedCost = price * 0.4; 
+  const margin = price - estimatedCost;
+  const marginPercent = price > 0 ? Math.round((margin / price) * 100) : 0;
+
   useEffect(() => {
     if (!isEdit && title && !handle) {
       setHandle(title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''));
@@ -95,599 +102,384 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
     }
   }, [title, isEdit]);
 
-  // Generate Cartesian Matrix for Variants
-  useEffect(() => {
-    const sizeArr = sizes.split(',').map((s: string) => s.trim()).filter(Boolean);
-    const colorArr = colors.split(',').map((c: string) => c.trim()).filter(Boolean);
-    
-    if (sizeArr.length === 0 && colorArr.length === 0) {
-      if (variants.length > 0) setVariants([]);
-      return;
-    }
-
-    const combinations: string[] = [];
-    if (sizeArr.length > 0 && colorArr.length > 0) {
-      colorArr.forEach((c: string) => {
-        sizeArr.forEach((s: string) => {
-          combinations.push(`${c} / ${s}`);
-        });
-      });
-    } else if (sizeArr.length > 0) {
-      combinations.push(...sizeArr);
-    } else if (colorArr.length > 0) {
-      combinations.push(...colorArr);
-    }
-
-    const newVariants = combinations.map((combo: string) => {
-      const existing = variants.find((v: any) => v.title === combo);
-      return existing || { title: combo, sku: `${handle || 'SKU'}-${combo.replace(/[^a-zA-Z0-9]/g, '')}`.toUpperCase(), price: price, inventoryCount: 0 };
-    });
-    
-    // Only update if length or titles changed to prevent infinite loops and state wiping
-    const currentTitles = variants.map(v => v.title).join('|');
-    const newTitles = newVariants.map(v => v.title).join('|');
-    if (currentTitles !== newTitles) {
-      setVariants(newVariants);
-    }
-  }, [sizes, colors, price, handle]);
-
-  // Dropzone for Images (with Compression & Base64 encoding)
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach(file => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (event) => {
-        const img = new window.Image();
-        img.src = event.target?.result as string;
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 1000;
-          const MAX_HEIGHT = 1000;
-          let width = img.width;
-          let height = img.height;
-
-          if (width > height) {
-            if (width > MAX_WIDTH) {
-              height *= MAX_WIDTH / width;
-              width = MAX_WIDTH;
-            }
-          } else {
-            if (height > MAX_HEIGHT) {
-              width *= MAX_HEIGHT / height;
-              height = MAX_HEIGHT;
-            }
-          }
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx?.drawImage(img, 0, 0, width, height);
-          
-          // Compress to JPEG with 80% quality to save DB space
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-          
-          setImages(prev => [...prev, { url: dataUrl, altText: file.name }]);
-        };
-      };
-    });
+    const newImages = acceptedFiles.map(file => ({
+      url: URL.createObjectURL(file),
+      altText: ''
+    }));
+    setImages(prev => [...prev, ...newImages]);
   }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: {'image/*': []} });
 
-  const handleSave = async (overrideStatus?: 'Draft' | 'Live') => {
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop, accept: { 'image/*': [] }
+  });
+
+  const handleSave = async () => {
     setIsSaving(true);
-    const finalStatus = overrideStatus || status;
-    setStatus(finalStatus);
     await onSave({
-      _id: initialData?._id,
-      title,
-      handle,
-      description,
-      price: Number(price),
-      inventoryCount: Number(inventoryCount),
-      category,
-      status: finalStatus,
-      images,
+      ...(initialData || {}),
+      title, description, category, status,
+      mrp, price, inventoryCount, images,
       sizes: sizes.split(',').map((s: string) => s.trim()).filter(Boolean),
       colors: colors.split(',').map((c: string) => c.trim()).filter(Boolean),
-      variants,
-      metaTitle,
-      metaDescription,
-      keywords,
-      specifications
+      variants, handle, metaTitle, metaDescription, keywords, specifications
     });
     setIsSaving(false);
   };
 
-  const tabs: {id: TabType, label: string}[] = [
-    { id: 'General', label: 'General Information' },
-    { id: 'Pricing', label: 'Pricing & Inventory' },
-    { id: 'Media', label: 'Media Asset Manager' },
-    { id: 'Variants', label: 'Variation Matrix Grid' },
-    { id: 'Specifications', label: 'Product Specifications' },
-    { id: 'SEO', label: 'SEO & Search Visibility' },
-    { id: 'Preview', label: 'Preview & Publish' }
-  ];
+  const renderStep = () => {
+    switch(activeStep.id) {
+      case 'general': return (
+        <motion.div initial={{opacity:0, y:10}} animate={{opacity:1, y:0}} className="space-y-6">
+          <div>
+            <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Product Title</label>
+            <input value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Emperor Royal Teacup Set" className="w-full bg-zinc-50 border border-transparent focus:border-luxury-gold/50 rounded-xl px-4 py-3 font-serif text-lg text-zinc-900 focus:ring-4 focus:ring-luxury-gold/10 outline-none transition-all placeholder:font-sans placeholder:text-sm placeholder:text-zinc-400" />
+          </div>
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Category</label>
+              <select value={category} onChange={e => setCategory(e.target.value)} className="w-full bg-zinc-50 border border-transparent focus:border-luxury-gold/50 rounded-xl px-4 py-3 text-sm text-zinc-900 focus:ring-4 focus:ring-luxury-gold/10 outline-none transition-all appearance-none">
+                <option value="">Select Category</option>
+                {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Status</label>
+              <select value={status} onChange={e => setStatus(e.target.value)} className="w-full bg-zinc-50 border border-transparent focus:border-luxury-gold/50 rounded-xl px-4 py-3 text-sm text-zinc-900 focus:ring-4 focus:ring-luxury-gold/10 outline-none transition-all appearance-none">
+                <option value="Live">Live (Published)</option>
+                <option value="Draft">Draft</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest">Product Description</label>
+              <button className="text-[11px] font-bold text-luxury-gold uppercase tracking-widest flex items-center gap-1 hover:text-zinc-900 transition-colors">
+                <Sparkles size={12} /> Optimize with AI
+              </button>
+            </div>
+            <div className="border border-zinc-200/60 rounded-xl overflow-hidden bg-white focus-within:border-luxury-gold/50 focus-within:ring-4 focus-within:ring-luxury-gold/10 transition-all">
+              <div className="bg-zinc-50 border-b border-zinc-200/60 p-2 flex gap-1">
+                <button onClick={() => editor?.chain().focus().toggleBold().run()} className={`p-2 rounded-lg text-zinc-600 hover:bg-zinc-200/50 ${editor?.isActive('bold') ? 'bg-zinc-200/80 text-zinc-900' : ''}`}><Bold size={16} /></button>
+                <button onClick={() => editor?.chain().focus().toggleItalic().run()} className={`p-2 rounded-lg text-zinc-600 hover:bg-zinc-200/50 ${editor?.isActive('italic') ? 'bg-zinc-200/80 text-zinc-900' : ''}`}><Italic size={16} /></button>
+                <button onClick={() => editor?.chain().focus().toggleBulletList().run()} className={`p-2 rounded-lg text-zinc-600 hover:bg-zinc-200/50 ${editor?.isActive('bulletList') ? 'bg-zinc-200/80 text-zinc-900' : ''}`}><List size={16} /></button>
+                <button onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()} className={`p-2 rounded-lg text-zinc-600 hover:bg-zinc-200/50 ${editor?.isActive('heading') ? 'bg-zinc-200/80 text-zinc-900' : ''}`}><Heading3 size={16} /></button>
+              </div>
+              <EditorContent editor={editor} />
+            </div>
+          </div>
+        </motion.div>
+      );
+      case 'pricing': return (
+        <motion.div initial={{opacity:0, y:10}} animate={{opacity:1, y:0}} className="space-y-8">
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">MRP (Maximum Retail Price)</label>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 font-sans">₹</span>
+                <input type="number" value={mrp} onChange={e => setMrp(Number(e.target.value))} className="w-full bg-zinc-50 border border-transparent focus:border-luxury-gold/50 rounded-xl pl-8 pr-4 py-3 font-mono text-zinc-900 focus:ring-4 focus:ring-luxury-gold/10 outline-none transition-all" />
+              </div>
+            </div>
+            <div>
+              <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Selling Price</label>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 font-sans">₹</span>
+                <input type="number" value={price} onChange={e => setPrice(Number(e.target.value))} className="w-full bg-zinc-50 border border-transparent focus:border-luxury-gold/50 rounded-xl pl-8 pr-4 py-3 font-mono text-zinc-900 focus:ring-4 focus:ring-luxury-gold/10 outline-none transition-all" />
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-zinc-900 rounded-xl p-6 text-white border border-zinc-800 shadow-xl">
+            <h4 className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-4">Margin Analysis</h4>
+            <div className="grid grid-cols-3 gap-6 divide-x divide-zinc-800">
+              <div>
+                <p className="text-zinc-400 text-sm mb-1">Discount</p>
+                <p className="text-2xl font-serif text-emerald-400">{discountPercent}%</p>
+              </div>
+              <div className="pl-6">
+                <p className="text-zinc-400 text-sm mb-1">Est. Profit Margin</p>
+                <p className="text-2xl font-serif text-luxury-gold">₹{margin.toLocaleString()}</p>
+              </div>
+              <div className="pl-6">
+                <p className="text-zinc-400 text-sm mb-1">Margin %</p>
+                <p className="text-2xl font-serif text-luxury-gold">{marginPercent}%</p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Inventory Count</label>
+            <input type="number" value={inventoryCount} onChange={e => setInventoryCount(Number(e.target.value))} className="w-1/2 bg-zinc-50 border border-transparent focus:border-luxury-gold/50 rounded-xl px-4 py-3 font-mono text-zinc-900 focus:ring-4 focus:ring-luxury-gold/10 outline-none transition-all" />
+          </div>
+        </motion.div>
+      );
+      case 'media': return (
+        <motion.div initial={{opacity:0, y:10}} animate={{opacity:1, y:0}} className="space-y-6">
+          <div {...getRootProps()} className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all ${isDragActive ? 'border-luxury-gold bg-luxury-gold/5' : 'border-zinc-200 hover:border-luxury-gold hover:bg-zinc-50'}`}>
+            <input {...getInputProps()} />
+            <div className="w-16 h-16 rounded-full bg-white shadow-sm border border-zinc-100 flex items-center justify-center mx-auto mb-4 text-zinc-400">
+              <UploadCloud size={24} />
+            </div>
+            <p className="text-zinc-900 font-medium mb-1">Drag and drop images here</p>
+            <p className="text-sm text-zinc-500">Supports JPG, PNG, WEBP (Max 5MB)</p>
+          </div>
+          
+          {images.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              {images.map((img, i) => (
+                <div key={i} className="relative group rounded-xl overflow-hidden aspect-square bg-zinc-100 border border-zinc-200/60 shadow-sm">
+                  <img src={img.url} alt="" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-zinc-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                    <button className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-zinc-900 hover:text-red-500 transition-colors shadow-sm" onClick={() => setImages(imgs => imgs.filter((_, idx) => idx !== i))}>
+                      <Trash2 size={14} />
+                    </button>
+                    <button className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-zinc-900 hover:text-luxury-gold transition-colors shadow-sm">
+                      <Sparkles size={14} />
+                    </button>
+                  </div>
+                  {i === 0 && <span className="absolute top-2 left-2 bg-zinc-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Primary</span>}
+                </div>
+              ))}
+            </div>
+          )}
+        </motion.div>
+      );
+      case 'seo': return (
+        <motion.div initial={{opacity:0, y:10}} animate={{opacity:1, y:0}} className="space-y-6">
+          <div className="bg-white p-6 rounded-2xl border border-zinc-200/60 shadow-sm mb-8">
+            <h4 className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-4">Google Search Preview</h4>
+            <div className="max-w-xl">
+              <div className="text-[#1a0dab] font-sans text-xl hover:underline cursor-pointer truncate mb-1">
+                {metaTitle || title || 'Product Title'} - Siphorahq
+              </div>
+              <div className="text-[#006621] font-sans text-sm mb-1 truncate">
+                https://siphorahq.com/products/{handle || 'product-handle'}
+              </div>
+              <div className="text-[#545454] font-sans text-sm line-clamp-2">
+                {metaDescription || description?.replace(/<[^>]*>?/gm, '').substring(0, 160) || 'Product description will appear here. Write a compelling description to increase click-through rates.'}
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <div>
+              <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Meta Title</label>
+              <input value={metaTitle} onChange={e => setMetaTitle(e.target.value)} className="w-full bg-zinc-50 border border-transparent focus:border-luxury-gold/50 rounded-xl px-4 py-3 text-zinc-900 focus:ring-4 focus:ring-luxury-gold/10 outline-none transition-all" />
+              <p className={`text-xs mt-1 ${metaTitle.length > 60 ? 'text-red-500' : 'text-zinc-500'}`}>{metaTitle.length}/60 characters</p>
+            </div>
+            <div>
+              <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Meta Description</label>
+              <textarea value={metaDescription} onChange={e => setMetaDescription(e.target.value)} rows={3} className="w-full bg-zinc-50 border border-transparent focus:border-luxury-gold/50 rounded-xl px-4 py-3 text-zinc-900 focus:ring-4 focus:ring-luxury-gold/10 outline-none transition-all resize-none" />
+              <p className={`text-xs mt-1 ${metaDescription.length > 160 ? 'text-red-500' : 'text-zinc-500'}`}>{metaDescription.length}/160 characters</p>
+            </div>
+            <div>
+              <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">URL Slug</label>
+              <input value={handle} onChange={e => setHandle(e.target.value)} className="w-full bg-zinc-50 border border-transparent focus:border-luxury-gold/50 rounded-xl px-4 py-3 font-mono text-zinc-900 focus:ring-4 focus:ring-luxury-gold/10 outline-none transition-all" />
+            </div>
+          </div>
+        </motion.div>
+      );
+      case 'variants': return (
+        <motion.div initial={{opacity:0, y:10}} animate={{opacity:1, y:0}} className="space-y-6">
+          <div className="bg-zinc-50 rounded-2xl p-6 border border-zinc-200/60">
+            <h3 className="text-sm font-semibold text-zinc-900 mb-4">Variant Options</h3>
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Sizes (Comma separated)</label>
+                <input value={sizes} onChange={e => setSizes(e.target.value)} placeholder="e.g. S, M, L" className="w-full bg-white border border-transparent focus:border-luxury-gold/50 rounded-xl px-4 py-3 text-sm text-zinc-900 focus:ring-4 focus:ring-luxury-gold/10 outline-none transition-all" />
+              </div>
+              <div>
+                <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">Colors (Comma separated)</label>
+                <input value={colors} onChange={e => setColors(e.target.value)} placeholder="e.g. Gold, Silver" className="w-full bg-white border border-transparent focus:border-luxury-gold/50 rounded-xl px-4 py-3 text-sm text-zinc-900 focus:ring-4 focus:ring-luxury-gold/10 outline-none transition-all" />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      );
+      case 'specs': return (
+        <motion.div initial={{opacity:0, y:10}} animate={{opacity:1, y:0}} className="space-y-6">
+           <div className="grid grid-cols-2 gap-6">
+             {Object.keys(specifications).map(key => (
+               <div key={key}>
+                 <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest mb-2">
+                   {key.replace(/([A-Z])/g, ' $1').trim()}
+                 </label>
+                 <input 
+                   value={(specifications as any)[key]} 
+                   onChange={e => setSpecifications(prev => ({...prev, [key]: e.target.value}))} 
+                   className="w-full bg-zinc-50 border border-transparent focus:border-luxury-gold/50 rounded-xl px-4 py-3 text-sm text-zinc-900 focus:ring-4 focus:ring-luxury-gold/10 outline-none transition-all" 
+                 />
+               </div>
+             ))}
+           </div>
+        </motion.div>
+      );
+      default: return null;
+    }
+  };
+
+  const renderPreview = () => {
+    return (
+      <div className={`mx-auto bg-white transition-all duration-500 origin-top shadow-2xl ${previewMode === 'mobile' ? 'w-[375px] h-[812px] rounded-[3rem] border-[8px] border-zinc-900 overflow-y-auto custom-scrollbar' : 'w-full h-full rounded-2xl border border-zinc-200/60 overflow-y-auto custom-scrollbar'}`}>
+        
+        {previewMode === 'mobile' && (
+          <div className="h-6 w-full flex justify-center pt-2 pb-1 sticky top-0 bg-white z-50">
+            <div className="w-20 h-5 bg-zinc-900 rounded-full"></div>
+          </div>
+        )}
+
+        <div className="bg-warm-ivory min-h-full">
+          {/* Mock header */}
+          <header className="h-16 flex items-center justify-between px-6 border-b border-zinc-200/50 bg-white sticky top-0 z-40">
+            <div className="font-serif font-bold text-xl tracking-wider text-zinc-900">Siphorahq</div>
+            <div className="flex gap-4">
+              <Search size={18} className="text-zinc-900" />
+              <ShoppingBag size={18} className="text-zinc-900" />
+            </div>
+          </header>
+
+          <main className={previewMode === 'desktop' ? 'max-w-6xl mx-auto p-12 grid grid-cols-2 gap-16' : 'p-4 flex flex-col gap-6'}>
+            
+            {/* Image Gallery */}
+            <div className="space-y-4">
+              <div className="aspect-[4/5] bg-zinc-100 w-full overflow-hidden relative">
+                {images[0]?.url ? (
+                  <img src={images[0].url} className="w-full h-full object-cover" alt="" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-zinc-300">
+                    <ImageIcon size={64} />
+                  </div>
+                )}
+              </div>
+              {previewMode === 'desktop' && images.length > 1 && (
+                <div className="flex gap-4">
+                  {images.slice(1, 4).map((img, i) => (
+                    <div key={i} className="aspect-square w-24 bg-zinc-100 overflow-hidden">
+                      <img src={img.url} className="w-full h-full object-cover" alt="" />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Product Info */}
+            <div className="flex flex-col">
+              <p className="text-[10px] font-bold text-luxury-gold uppercase tracking-[0.2em] mb-2">{category || 'Category'}</p>
+              <h1 className="text-3xl font-serif text-zinc-900 mb-4">{title || 'Product Title'}</h1>
+              
+              <div className="flex items-center gap-3 mb-6">
+                <div className="flex text-zinc-900"><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/></div>
+                <span className="text-xs text-zinc-500">(12 Reviews)</span>
+              </div>
+
+              <div className="flex items-end gap-3 mb-8 pb-8 border-b border-zinc-200">
+                <span className="text-2xl font-mono text-zinc-900">₹{price.toLocaleString() || '0'}</span>
+                {mrp > price && (
+                  <span className="text-sm font-mono text-zinc-400 line-through mb-1">₹{mrp.toLocaleString()}</span>
+                )}
+              </div>
+
+              <div className="prose prose-sm text-zinc-600 font-sans mb-8 leading-relaxed" dangerouslySetInnerHTML={{ __html: description || '<p>Product description will appear here...</p>' }} />
+
+              <button className="w-full bg-zinc-900 text-white font-sans text-xs uppercase tracking-widest font-bold py-4 hover:bg-luxury-gold transition-colors duration-300">
+                Add to Cart
+              </button>
+            </div>
+          </main>
+        </div>
+
+      </div>
+    );
+  };
 
   return (
-    <div className="max-w-6xl mx-auto pb-24 animate-in fade-in slide-in-from-bottom-4 duration-300">
+    <div className="fixed inset-0 z-[100] bg-zinc-50 flex flex-col font-sans animate-in slide-in-from-bottom-full duration-500">
       
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8 pb-6 border-b-[0.5px] border-zinc-200">
-        <div className="flex items-center gap-4">
-          <button onClick={onClose} className="text-zinc-500 hover:text-[#18181b] transition-colors p-2 -ml-2 rounded-md hover:bg-zinc-100">
-            <ChevronLeft size={24} />
+      {/* Editor Header */}
+      <header className="h-[80px] bg-white border-b border-zinc-200/60 px-8 flex items-center justify-between flex-shrink-0 z-10 shadow-sm relative">
+        <div className="flex items-center gap-6">
+          <button onClick={onClose} className="w-10 h-10 rounded-full bg-zinc-50 flex items-center justify-center text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors">
+            <ChevronLeft size={20} />
           </button>
           <div>
-            <h1 className="text-[28px] font-bold text-[#18181b] tracking-wide uppercase font-arimo">
-              {isEdit ? title : 'New Product Creation'}
-            </h1>
-            <p className="text-sm tracking-widest text-[#D4AF37] uppercase font-medium mt-1">Catalog Management Engine</p>
+            <h1 className="font-serif font-bold text-2xl tracking-wide text-zinc-900">{isEdit ? 'Edit Product' : 'New Product'}</h1>
+            <p className="text-xs text-zinc-500 font-medium">Save as draft or publish to live store.</p>
           </div>
         </div>
-        <div className="flex gap-4">
-          <button onClick={onClose} className="px-6 py-2.5 text-[13px] tracking-widest uppercase font-bold text-zinc-600 bg-white border-[0.5px] border-zinc-300 rounded-[2px] hover:bg-zinc-50 hover:text-zinc-900 transition-all">
-            Discard
-          </button>
-          {activeTab !== 'Preview' && (
-            <button onClick={() => handleSave()} disabled={isSaving} className="px-6 py-2.5 text-[13px] tracking-widest uppercase font-bold text-white bg-[#18181b] rounded-[2px] hover:bg-black transition-all shadow-md disabled:opacity-50 flex items-center gap-2">
-              {isSaving ? 'Synchronizing...' : 'Save Catalog'}
+        <div className="flex items-center gap-6">
+          {/* Device Toggle */}
+          <div className="bg-zinc-100 p-1.5 rounded-xl flex items-center">
+            <button onClick={() => setPreviewMode('desktop')} className={`p-2 rounded-lg transition-colors ${previewMode === 'desktop' ? 'bg-white shadow-sm text-zinc-900' : 'text-zinc-400 hover:text-zinc-900'}`}>
+              <Monitor size={18} />
             </button>
-          )}
+            <button onClick={() => setPreviewMode('mobile')} className={`p-2 rounded-lg transition-colors ${previewMode === 'mobile' ? 'bg-white shadow-sm text-zinc-900' : 'text-zinc-400 hover:text-zinc-900'}`}>
+              <Smartphone size={18} />
+            </button>
+          </div>
+          <button onClick={onClose} className="text-sm font-semibold text-zinc-500 hover:text-zinc-900 transition-colors px-2">Cancel</button>
+          <button onClick={handleSave} disabled={isSaving} className="bg-zinc-900 text-white px-6 py-3 rounded-xl text-sm font-semibold hover:bg-luxury-gold transition-colors shadow-sm flex items-center gap-2">
+            {isSaving ? <span className="animate-pulse">Saving...</span> : <><Check size={16} /> Save Product</>}
+          </button>
         </div>
-      </div>
+      </header>
 
-      {/* Tabs Layout */}
-      <div className="flex gap-10">
+      {/* Main Workspace */}
+      <div className="flex-1 overflow-hidden flex relative">
         
-        {/* Sidebar Nav */}
-        <div className="w-64 flex-shrink-0">
-          <nav className="flex flex-col gap-2 sticky top-8">
-            {tabs.map((tab, idx) => {
-              const isActive = activeTab === tab.id;
-              return (
-                <button 
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`text-left px-4 py-3 rounded-[2px] text-[13px] uppercase tracking-widest font-semibold transition-all border-l-4 ${
-                    isActive 
-                      ? 'bg-white border-[#D4AF37] text-[#18181b] shadow-sm' 
-                      : 'border-transparent text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900'
-                  }`}
-                >
-                  <span className="text-zinc-400 mr-3 font-normal">0{idx + 1}</span>
-                  {tab.label}
-                </button>
-              );
-            })}
-          </nav>
-        </div>
+        {/* Left: Editor Sidebar & Form */}
+        <div className="w-[600px] flex-shrink-0 flex border-r border-zinc-200/60 bg-white">
+          
+          {/* Steps Sidebar */}
+          <div className="w-64 border-r border-zinc-200/60 bg-[#F7F5F0] p-6 flex flex-col gap-2">
+            <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.2em] mb-4 mt-2">Steps</p>
+            {STEPS.map((step, idx) => (
+              <button 
+                key={step.id} 
+                onClick={() => setActiveStepIndex(idx)}
+                className={`text-left px-4 py-3 rounded-xl text-xs font-bold transition-all ${
+                  activeStepIndex === idx 
+                    ? 'bg-zinc-900 text-white shadow-md scale-105 ml-2' 
+                    : 'text-zinc-500 hover:bg-white hover:text-zinc-900 hover:shadow-sm'
+                }`}
+              >
+                {step.label}
+              </button>
+            ))}
+          </div>
 
-        {/* Tab Content */}
-        <div className="flex-1">
-          <div className="bg-white border-[0.5px] border-zinc-200 rounded-[2px] p-10 shadow-sm min-h-[500px]">
-            
-            {/* 1. GENERAL TAB */}
-            {activeTab === 'General' && (
-              <div className="space-y-8 animate-in fade-in duration-300">
-                <div className="border-b-[0.5px] border-zinc-200 pb-4 mb-8">
-                  <h2 className="text-xl font-bold text-[#18181b] uppercase tracking-widest font-arimo">The Core Identity</h2>
-                  <p className="text-sm text-zinc-500 mt-2">The foundation of the product narrative and taxonomy.</p>
-                </div>
+          {/* Form Content */}
+          <div className="flex-1 overflow-y-auto custom-scrollbar p-10 bg-white">
+            <AnimatePresence mode="wait">
+              <motion.div key={activeStep.id} initial={{opacity:0, x:10}} animate={{opacity:1, x:0}} exit={{opacity:0, x:-10}} transition={{duration: 0.2}}>
+                <h2 className="font-serif text-3xl font-semibold text-zinc-900 mb-8 border-b border-zinc-100 pb-5 tracking-wide">{activeStep.label.substring(3)}</h2>
+                {renderStep()}
 
-                <div className="grid grid-cols-3 gap-8">
-                  <div className="col-span-2 space-y-8">
-                    <div>
-                      <label className="block tracking-widest text-[11px] font-bold text-[#D4AF37] uppercase mb-3">Product Title</label>
-                      <input 
-                        type="text" 
-                        value={title} 
-                        onChange={e => setTitle(e.target.value)} 
-                        placeholder="e.g. 46-Piece Gold Dinner Set"
-                        className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-base py-3 px-4 focus:outline-none focus:border-[#18181b] transition-colors"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block tracking-widest text-[11px] font-bold text-[#D4AF37] uppercase mb-3">Editorial Description</label>
-                      <div className="border-[0.5px] border-zinc-300 rounded-[2px] overflow-hidden focus-within:border-[#18181b] transition-colors">
-                        {/* TipTap Toolbar */}
-                        <div className="flex items-center gap-2 bg-zinc-50 border-b-[0.5px] border-zinc-200 p-2">
-                          <button onClick={() => editor?.chain().focus().toggleBold().run()} className={`p-2 rounded-[2px] ${editor?.isActive('bold') ? 'bg-zinc-200 text-[#18181b]' : 'text-zinc-500 hover:bg-zinc-200 hover:text-[#18181b]'}`}><Bold size={15}/></button>
-                          <button onClick={() => editor?.chain().focus().toggleItalic().run()} className={`p-2 rounded-[2px] ${editor?.isActive('italic') ? 'bg-zinc-200 text-[#18181b]' : 'text-zinc-500 hover:bg-zinc-200 hover:text-[#18181b]'}`}><Italic size={15}/></button>
-                          <div className="w-px h-5 bg-zinc-300 mx-1"></div>
-                          <button onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()} className={`p-2 rounded-[2px] ${editor?.isActive('heading', { level: 3 }) ? 'bg-zinc-200 text-[#18181b]' : 'text-zinc-500 hover:bg-zinc-200 hover:text-[#18181b]'}`}><Heading3 size={15}/></button>
-                          <div className="w-px h-5 bg-zinc-300 mx-1"></div>
-                          <button onClick={() => editor?.chain().focus().toggleBulletList().run()} className={`p-2 rounded-[2px] ${editor?.isActive('bulletList') ? 'bg-zinc-200 text-[#18181b]' : 'text-zinc-500 hover:bg-zinc-200 hover:text-[#18181b]'}`}><List size={15}/></button>
-                          <button onClick={() => editor?.chain().focus().toggleOrderedList().run()} className={`p-2 rounded-[2px] ${editor?.isActive('orderedList') ? 'bg-zinc-200 text-[#18181b]' : 'text-zinc-500 hover:bg-zinc-200 hover:text-[#18181b]'}`}><ListOrdered size={15}/></button>
-                        </div>
-                        <EditorContent editor={editor} />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-8 pl-8 border-l-[0.5px] border-zinc-200">
-                    <div>
-                      <label className="block tracking-widest text-[11px] font-bold text-[#D4AF37] uppercase mb-3">Status Toggle</label>
-                      <select value={status} onChange={e => setStatus(e.target.value)} className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-[14px] font-medium py-3 px-4 focus:outline-none focus:border-[#18181b] bg-white">
-                        <option value="Draft">Draft (Hidden)</option>
-                        <option value="Live">Live (Published)</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block tracking-widest text-[11px] font-bold text-[#D4AF37] uppercase mb-3">Categorization</label>
-                      <select value={category} onChange={e => setCategory(e.target.value)} className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-[14px] py-3 px-4 focus:outline-none focus:border-[#18181b] bg-white">
-                        <option value="">Select Category...</option>
-                        {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* 2. PRICING & INVENTORY TAB */}
-            {activeTab === 'Pricing' && (
-              <div className="space-y-8 animate-in fade-in duration-300">
-                <div className="border-b-[0.5px] border-zinc-200 pb-4 mb-8 flex items-end justify-between">
-                  <div>
-                    <h2 className="text-xl font-bold text-[#18181b] uppercase tracking-widest font-arimo">Valuation Control</h2>
-                    <p className="text-sm text-zinc-500 mt-2">Integrated financial data and stock levels.</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[10px] tracking-widest uppercase font-bold text-[#D4AF37]">Global Status</p>
-                    <p className="text-[28px] font-bold text-[#18181b] leading-none mt-1 font-arimo">100%</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-10">
-                  <div className="bg-zinc-50 p-8 border-[0.5px] border-zinc-200 rounded-[2px]">
-                    <h3 className="tracking-widest text-[13px] font-bold text-[#18181b] uppercase mb-6">Base Pricing</h3>
-                    <div className="space-y-6">
-                      <div>
-                        <label className="block tracking-widest text-[11px] font-bold text-zinc-500 uppercase mb-3">Retail Price (INR)</label>
-                        <div className="relative">
-                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500">₹</span>
-                          <input type="number" value={price} onChange={e => setPrice(Number(e.target.value))} className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-lg font-medium py-3 pl-8 pr-4 focus:outline-none focus:border-[#18181b]" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-zinc-50 p-8 border-[0.5px] border-zinc-200 rounded-[2px]">
-                    <h3 className="tracking-widest text-[13px] font-bold text-[#18181b] uppercase mb-6">Stock Level</h3>
-                    <div className="space-y-6">
-                      <div>
-                        <label className="block tracking-widest text-[11px] font-bold text-zinc-500 uppercase mb-3">Base Inventory Count</label>
-                        <input type="number" value={inventoryCount} onChange={e => setInventoryCount(Number(e.target.value))} className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-lg font-medium py-3 px-4 focus:outline-none focus:border-[#18181b]" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {variants.length > 0 && (
-                  <div className="bg-amber-50 border border-amber-200 p-4 rounded-[2px]">
-                    <p className="text-sm text-amber-800"><strong>Note:</strong> You have created variants for this product. Base pricing and inventory will act as a fallback, but variant-specific overrides in the "Variation Matrix" tab will take priority.</p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* 3. MEDIA ASSET MANAGER */}
-            {activeTab === 'Media' && (
-              <div className="space-y-8 animate-in fade-in duration-300">
-                <div className="border-b-[0.5px] border-zinc-200 pb-4 mb-8">
-                  <h2 className="text-xl font-bold text-[#18181b] uppercase tracking-widest font-arimo">Asset Performance</h2>
-                  <p className="text-sm text-zinc-500 mt-2">A dedicated environment for high-resolution imagery and gallery sync.</p>
-                </div>
-
-                <div {...getRootProps()} className={`border border-dashed rounded-[2px] p-12 text-center cursor-pointer transition-colors ${isDragActive ? 'border-[#18181b] bg-zinc-50' : 'border-zinc-300 hover:bg-zinc-50'}`}>
-                  <input {...getInputProps()} />
-                  <UploadCloud size={32} className="mx-auto mb-4 text-[#D4AF37]" />
-                  <p className="text-base font-bold text-[#18181b] uppercase tracking-widest">Drag & Drop High-Res Imagery</p>
-                  <p className="text-[13px] text-zinc-500 mt-2">JPG, PNG, WEBP (1080x1080 minimum recommended)</p>
-                </div>
-
-                {images.length > 0 && (
-                  <div className="mt-10 border-t-[0.5px] border-zinc-200 pt-8">
-                    <h3 className="tracking-widest text-[11px] font-bold text-[#D4AF37] uppercase mb-6">Gallery Ordering</h3>
-                    <div className="grid grid-cols-4 gap-6">
-                      {images.map((img, idx) => (
-                        <div key={idx} className="group relative aspect-[4/5] border-[0.5px] border-zinc-200 rounded-[2px] overflow-hidden bg-zinc-50 shadow-sm hover:border-[#18181b] transition-all">
-                          <img src={img.url} alt="Product" className="w-full h-full object-cover" />
-                          <div className="absolute inset-0 bg-[#18181b]/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                            <button className="p-2 bg-white text-[#18181b] rounded-[2px] cursor-grab hover:bg-zinc-100"><GripVertical size={16}/></button>
-                            <button onClick={() => setImages(images.filter((_, i) => i !== idx))} className="p-2 bg-white text-red-600 rounded-[2px] hover:bg-red-50"><Trash2 size={16}/></button>
-                          </div>
-                          <div className="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-[2px] tracking-widest">{idx + 1}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* 4. VARIATION MATRIX */}
-            {activeTab === 'Variants' && (
-              <div className="space-y-8 animate-in fade-in duration-300">
-                <div className="border-b-[0.5px] border-zinc-200 pb-4 mb-8">
-                  <h2 className="text-xl font-bold text-[#18181b] uppercase tracking-widest font-arimo">Variation Matrix Grid</h2>
-                  <p className="text-sm text-zinc-500 mt-2">Managing complex SKU matrices and overrides.</p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-8 mb-10">
-                  <div className="bg-zinc-50 p-6 border-[0.5px] border-zinc-200 rounded-[2px]">
-                    <label className="block tracking-widest text-[11px] font-bold text-zinc-500 uppercase mb-3">Sizes (Comma Separated)</label>
-                    <input type="text" value={sizes} onChange={e => setSizes(e.target.value)} placeholder="Standard, Luxury, Mini" className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-2.5 px-3 focus:outline-none focus:border-[#18181b]" />
-                  </div>
-                  <div className="bg-zinc-50 p-6 border-[0.5px] border-zinc-200 rounded-[2px]">
-                    <label className="block tracking-widest text-[11px] font-bold text-zinc-500 uppercase mb-3">Colors (Comma Separated)</label>
-                    <input type="text" value={colors} onChange={e => setColors(e.target.value)} placeholder="Gold, Silver, Platinum" className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-2.5 px-3 focus:outline-none focus:border-[#18181b]" />
-                  </div>
-                </div>
-
-                {variants.length > 0 ? (
-                  <div>
-                    <table className="w-full text-sm text-left border-[0.5px] border-zinc-200">
-                      <thead className="bg-[#18181b] text-white tracking-widest text-[11px] uppercase">
-                        <tr>
-                          <th className="py-4 px-6 font-semibold">Variant Combo</th>
-                          <th className="py-4 px-6 font-semibold">SKU Identifier</th>
-                          <th className="py-4 px-6 font-semibold">Price Override</th>
-                          <th className="py-4 px-6 font-semibold">Stock Level</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-zinc-200">
-                        {variants.map((variant, idx) => (
-                          <tr key={idx} className="hover:bg-zinc-50 transition-colors">
-                            <td className="py-4 px-6 font-semibold text-[#18181b]">{variant.title}</td>
-                            <td className="py-4 px-6">
-                              <input type="text" value={variant.sku} onChange={e => {
-                                const newV = [...variants]; newV[idx].sku = e.target.value; setVariants(newV);
-                              }} className="w-32 border-[0.5px] border-zinc-300 rounded-[2px] text-xs font-mono py-2 px-3 focus:border-[#18181b] focus:outline-none uppercase bg-transparent" />
-                            </td>
-                            <td className="py-4 px-6">
-                              <div className="relative w-28">
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-xs">₹</span>
-                                <input type="number" value={variant.price} onChange={e => {
-                                  const newV = [...variants]; newV[idx].price = e.target.value; setVariants(newV);
-                                }} className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-2 pl-7 pr-2 focus:border-[#18181b] focus:outline-none bg-transparent" />
-                              </div>
-                            </td>
-                            <td className="py-4 px-6">
-                              <input type="number" value={variant.inventoryCount} onChange={e => {
-                                const newV = [...variants]; newV[idx].inventoryCount = e.target.value; setVariants(newV);
-                              }} className="w-24 border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-2 px-3 focus:border-[#18181b] focus:outline-none bg-transparent" />
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <div className="py-12 text-center border-[0.5px] border-zinc-200 rounded-[2px] bg-zinc-50">
-                    <p className="text-zinc-500 font-medium">Enter sizes or colors to generate the variant matrix.</p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* 5. SEO TAB */}
-            {activeTab === 'SEO' && (
-              <div className="space-y-8 animate-in fade-in duration-300">
-                <div className="border-b-[0.5px] border-zinc-200 pb-4 mb-8">
-                  <h2 className="text-xl font-bold text-[#18181b] uppercase tracking-widest font-arimo">SEO & Search Visibility</h2>
-                  <p className="text-sm text-zinc-500 mt-2">Optimized indexing and canonical mapping.</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  
-                  {/* Form */}
-                  <div className="col-span-2 space-y-8">
-                    <div>
-                      <label className="tracking-widest text-[11px] font-bold text-[#D4AF37] uppercase mb-3 flex items-center gap-2"><Search size={14}/> Meta Title</label>
-                      <input 
-                        type="text" 
-                        value={metaTitle} 
-                        onChange={e => setMetaTitle(e.target.value)} 
-                        className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-3 px-4 focus:outline-none focus:border-[#18181b]"
-                      />
-                    </div>
-                    <div>
-                      <label className="tracking-widest text-[11px] font-bold text-[#D4AF37] uppercase mb-3 flex items-center gap-2"><LinkIcon size={14}/> Canonical URL Handle (Slug)</label>
-                      <input 
-                        type="text" 
-                        value={handle} 
-                        onChange={e => setHandle(e.target.value)} 
-                        className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-3 px-4 focus:outline-none focus:border-[#18181b] bg-zinc-50 font-mono"
-                      />
-                    </div>
-                    <div>
-                      <label className="tracking-widest text-[11px] font-bold text-[#D4AF37] uppercase mb-3 flex items-center gap-2"><Share2 size={14}/> Meta Description / Open Graph</label>
-                      <textarea 
-                        rows={4}
-                        value={metaDescription} 
-                        onChange={e => setMetaDescription(e.target.value)} 
-                        className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-3 px-4 focus:outline-none focus:border-[#18181b] resize-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="tracking-widest text-[11px] font-bold text-[#D4AF37] uppercase mb-3 flex items-center gap-2"><Search size={14}/> Keywords / Tags</label>
-                      <input 
-                        type="text" 
-                        value={keywords} 
-                        onChange={e => setKeywords(e.target.value)} 
-                        placeholder="e.g. porcelain, dinnerware, luxury, gift"
-                        className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-3 px-4 focus:outline-none focus:border-[#18181b]"
-                      />
-                    </div>
-                  </div>
-
-                  {/* SERP Preview */}
-                  <div className="bg-zinc-50 p-6 border-[0.5px] border-zinc-200 rounded-[2px] self-start">
-                    <h3 className="tracking-widest text-[11px] font-bold text-zinc-500 uppercase mb-4">Live SERP Preview</h3>
-                    <div className="bg-white p-4 rounded-[2px] border-[0.5px] border-zinc-200 shadow-sm">
-                      <p className="text-[12px] text-[#1a0dab] truncate">siphorahq.in › products › {handle || 'product-slug'}</p>
-                      <h4 className="text-[16px] text-[#1a0dab] hover:underline cursor-pointer truncate mt-1">
-                        {metaTitle || title || 'Product Title'} | Siphorahq Luxury
-                      </h4>
-                      <p className="text-[13px] text-[#4d5156] mt-1 line-clamp-2 leading-relaxed">
-                        {metaDescription || description.replace(/<[^>]+>/g, '').substring(0, 150) || 'Discover luxury porcelain and timeless elegance with Siphorahq...'}
-                      </p>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            )}
-
-            {/* 6. SPECIFICATIONS TAB */}
-            {activeTab === 'Specifications' && (
-              <div className="space-y-8 animate-in fade-in duration-300">
-                <div className="border-b-[0.5px] border-zinc-200 pb-4 mb-8">
-                  <h2 className="text-xl font-bold text-[#18181b] uppercase tracking-widest font-arimo">Product Specifications</h2>
-                  <p className="text-sm text-zinc-500 mt-2">Detailed attributes displayed on the product page.</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-6">
-                    {['setIncludes', 'color', 'finish', 'designStyle', 'handleType'].map((field) => (
-                      <div key={field}>
-                        <label className="block tracking-widest text-[11px] font-bold text-zinc-500 uppercase mb-2">
-                          {field.replace(/([A-Z])/g, ' $1').trim()}
-                        </label>
-                        <input
-                          type="text"
-                          value={(specifications as any)[field]}
-                          onChange={e => setSpecifications({ ...specifications, [field]: e.target.value })}
-                          className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-2.5 px-4 focus:outline-none focus:border-[#18181b]"
-                        />
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="space-y-6">
-                    {['occasion', 'microwaveSafe', 'dishwasherSafe', 'countryOfOrigin', 'idealFor'].map((field) => (
-                      <div key={field}>
-                        <label className="block tracking-widest text-[11px] font-bold text-zinc-500 uppercase mb-2">
-                          {field.replace(/([A-Z])/g, ' $1').trim()}
-                        </label>
-                        <input
-                          type="text"
-                          value={(specifications as any)[field]}
-                          onChange={e => setSpecifications({ ...specifications, [field]: e.target.value })}
-                          className="w-full border-[0.5px] border-zinc-300 rounded-[2px] text-sm py-2.5 px-4 focus:outline-none focus:border-[#18181b]"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* 7. PREVIEW TAB */}
-            {activeTab === 'Preview' && (
-              <div className="space-y-8 animate-in fade-in duration-300">
-                <div className="border-b-[0.5px] border-zinc-200 pb-4 mb-8 flex justify-between items-end">
-                  <div>
-                    <h2 className="text-xl font-bold text-[#18181b] uppercase tracking-widest font-arimo">Live Preview</h2>
-                    <p className="text-sm text-zinc-500 mt-2">Simulated frontend render of the product page.</p>
-                  </div>
-                  <div className="flex gap-4">
-                    <button onClick={() => setActiveTab('General')} className="px-6 py-2.5 text-[12px] tracking-widest uppercase font-bold text-[#18181b] bg-white border border-[#18181b] rounded-[2px] hover:bg-zinc-50 transition-all">
-                      Edit Details
+                <div className="mt-12 flex justify-end">
+                  {activeStepIndex < STEPS.length - 1 && (
+                    <button onClick={() => setActiveStepIndex(activeStepIndex + 1)} className="flex items-center gap-2 text-sm font-bold text-zinc-900 hover:text-luxury-gold transition-colors">
+                      Next Step <ArrowRight size={16} />
                     </button>
-                    <button onClick={() => handleSave('Draft')} disabled={isSaving} className="px-6 py-2.5 text-[12px] tracking-widest uppercase font-bold text-zinc-600 bg-white border border-zinc-300 rounded-[2px] hover:bg-zinc-50 hover:text-zinc-900 transition-all disabled:opacity-50">
-                      Save Draft
-                    </button>
-                    <button onClick={() => handleSave('Live')} disabled={isSaving} className="px-6 py-2.5 text-[12px] tracking-widest uppercase font-bold text-white bg-[#D4AF37] rounded-[2px] hover:bg-[#c4a132] transition-all shadow-sm disabled:opacity-50">
-                      Publish Product
-                    </button>
-                  </div>
+                  )}
                 </div>
-
-                <div className="bg-[#fdf8f8] border border-zinc-200 rounded-[2px] p-8">
-                  {/* PREVIEW CONTAINER (Mimicking store layout) */}
-                  <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-12">
-                    {/* Left: Gallery */}
-                    <div className="lg:w-1/2">
-                      <div className="aspect-[4/5] bg-white border-[0.5px] border-zinc-200 rounded-[2px] overflow-hidden">
-                        {images.length > 0 ? (
-                          <img src={images[0].url} alt="Main" className="w-full h-full object-cover" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-zinc-400 font-medium text-sm tracking-widest uppercase">No Image Provided</div>
-                        )}
-                      </div>
-                      {images.length > 1 && (
-                        <div className="flex gap-4 mt-4 overflow-x-auto pb-2">
-                          {images.slice(1, 5).map((img, i) => (
-                            <img key={i} src={img.url} className="w-20 h-24 object-cover rounded-[2px] border-[0.5px] border-zinc-200 opacity-60" />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Right: Details */}
-                    <div className="lg:w-1/2 flex flex-col">
-                      <span className="text-[10px] font-sans font-bold uppercase tracking-widest text-[#D4AF37] mb-2">SIPHORAHQ EXCLUSIVE</span>
-                      <h1 className="text-3xl font-serif text-[#1c1b1c] leading-tight mb-4">{title || 'Untitled Product'}</h1>
-                      
-                      <div className="flex text-[#EED202] mb-6">
-                        {[1,2,3,4,5].map(s => <Star key={s} className="w-4 h-4 fill-current" />)}
-                      </div>
-
-                      <div className="border-b-[0.5px] border-zinc-200 pb-6 mb-6">
-                        <p className="text-2xl font-sans font-medium text-[#1c1b1c]">₹{price.toLocaleString('en-IN')}</p>
-                      </div>
-
-                      {/* Mock Add to Cart */}
-                      <button disabled className="w-full bg-[#1c1b1c] text-white py-4 text-[13px] font-bold uppercase tracking-widest rounded-[2px] mb-8 opacity-90 cursor-not-allowed">
-                        Add to Cart
-                      </button>
-
-                      {/* Description Accordion */}
-                      <div className="border-t-[0.5px] border-zinc-200 pt-4 mb-4">
-                        <h3 className="font-serif text-lg font-medium text-[#1c1b1c] mb-3">Product Details</h3>
-                        <div className="text-sm font-sans text-zinc-600 leading-relaxed prose prose-sm max-w-none prose-p:mb-3" dangerouslySetInnerHTML={{ __html: description || '<p>No description provided.</p>' }} />
-                      </div>
-
-                      {/* Specifications Table */}
-                      <div className="border-t-[0.5px] border-zinc-200 pt-4 mt-4">
-                        <h3 className="font-serif text-lg font-medium text-[#1c1b1c] mb-4">Specifications</h3>
-                        <div className="grid grid-cols-1 gap-y-3">
-                          {Object.entries(specifications).map(([key, value]) => {
-                            if (!value) return null;
-                            const formattedKey = key.replace(/([A-Z])/g, ' $1').trim();
-                            return (
-                              <div key={key} className="flex justify-between border-b-[0.5px] border-zinc-100 pb-2">
-                                <span className="text-[11px] text-zinc-500 font-bold uppercase tracking-widest">{formattedKey}</span>
-                                <span className="text-[13px] text-[#1c1b1c] font-medium text-right max-w-[60%]">{value as string}</span>
-                              </div>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* SEO PREVIEW */}
-                <div className="bg-zinc-50 p-6 border-[0.5px] border-zinc-200 rounded-[2px]">
-                   <h3 className="tracking-widest text-[11px] font-bold text-zinc-500 uppercase mb-4">Live SERP Preview</h3>
-                   <div className="bg-white p-4 rounded-[2px] border-[0.5px] border-zinc-200 shadow-sm">
-                     <p className="text-[12px] text-[#1a0dab] truncate">siphorahq.in › products › {handle || 'product-slug'}</p>
-                     <h4 className="text-[16px] text-[#1a0dab] hover:underline cursor-pointer truncate mt-1">
-                       {metaTitle || title || 'Product Title'} | Siphorahq Luxury
-                     </h4>
-                     <p className="text-[13px] text-[#4d5156] mt-1 line-clamp-2 leading-relaxed">
-                       {metaDescription || description.replace(/<[^>]+>/g, '').substring(0, 150) || 'Discover luxury porcelain and timeless elegance with Siphorahq...'}
-                     </p>
-                   </div>
-                 </div>
-              </div>
-            )}
-
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
+
+        {/* Right: Live Preview */}
+        <div className="flex-1 bg-zinc-50 overflow-hidden flex items-center justify-center p-8 relative">
+          
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
+          
+          <div className="absolute top-6 left-6 z-10 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest bg-white/80 backdrop-blur px-3 py-1.5 rounded-lg border border-zinc-200">Live Preview</span>
+          </div>
+
+          {renderPreview()}
+
+        </div>
+
       </div>
     </div>
   );

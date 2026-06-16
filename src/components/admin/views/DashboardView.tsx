@@ -18,8 +18,8 @@ export default function DashboardView({ stats }: { stats: any }) {
         
         // Gradient fill for chart
         const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, 'rgba(212, 175, 55, 0.2)'); // Gold tint
-        gradient.addColorStop(1, 'rgba(212, 175, 55, 0)');
+        gradient.addColorStop(0, 'rgba(191, 164, 111, 0.25)'); // luxury-gold tint
+        gradient.addColorStop(1, 'rgba(191, 164, 111, 0)');
         
         chartInstance.current = new (window as any).Chart(ctx, {
           type: 'line',
@@ -28,11 +28,11 @@ export default function DashboardView({ stats }: { stats: any }) {
             datasets: [{
               label: 'Revenue',
               data: stats.chartData || [12000, 19000, 15000, 22000, 18000, 28000, 34000],
-              borderColor: '#D4AF37',
+              borderColor: '#BFA46F',
               backgroundColor: gradient,
-              borderWidth: 3,
+              borderWidth: 2.5,
               pointBackgroundColor: '#fff',
-              pointBorderColor: '#D4AF37',
+              pointBorderColor: '#BFA46F',
               pointBorderWidth: 2,
               pointRadius: 4,
               pointHoverRadius: 6,
@@ -46,8 +46,8 @@ export default function DashboardView({ stats }: { stats: any }) {
             plugins: {
               legend: { display: false },
               tooltip: {
-                backgroundColor: '#0C1929',
-                titleFont: { size: 13, family: 'sans-serif' },
+                backgroundColor: '#18181b',
+                titleFont: { size: 13, family: 'Inter, sans-serif' },
                 bodyFont: { size: 14, weight: 'bold' },
                 padding: 12,
                 displayColors: false,
@@ -61,12 +61,12 @@ export default function DashboardView({ stats }: { stats: any }) {
             scales: {
               y: { 
                 beginAtZero: true,
-                grid: { color: '#f3f4f6', drawBorder: false },
-                ticks: { font: { size: 12 }, color: '#9ca3af' }
+                grid: { color: '#f4f4f5', drawBorder: false },
+                ticks: { font: { size: 12, family: 'Inter, sans-serif' }, color: '#a1a1aa' }
               },
               x: { 
                 grid: { display: false },
-                ticks: { font: { size: 12 }, color: '#9ca3af' }
+                ticks: { font: { size: 12, family: 'Inter, sans-serif' }, color: '#a1a1aa' }
               }
             },
             interaction: {
@@ -89,32 +89,32 @@ export default function DashboardView({ stats }: { stats: any }) {
   }, [stats]);
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-300 pb-12">
+    <div className="w-full space-y-8 animate-in fade-in duration-500 pb-12">
       
       {/* Welcome Banner */}
-      <div className="bg-[#0C1929] rounded-2xl p-8 text-white relative overflow-hidden shadow-lg">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37] opacity-10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+      <div className="bg-zinc-900 rounded-2xl p-10 text-white relative overflow-hidden shadow-2xl border border-zinc-800">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-luxury-gold opacity-15 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
         <div className="relative z-10">
-          <h2 className="text-2xl font-serif mb-2">Welcome Back, Admin 👋</h2>
-          <p className="text-zinc-400 font-sans flex items-center gap-2">
-            Store Revenue <span className="text-[#D4AF37] flex items-center bg-[#D4AF37]/10 px-2 py-0.5 rounded text-xs font-bold tracking-wide"><ArrowUpRight size={14} className="mr-1"/> 22%</span> this month.
+          <h2 className="text-3xl font-serif mb-3 font-semibold tracking-wide">Welcome Back, Admin</h2>
+          <p className="text-zinc-400 font-sans flex items-center gap-2.5 text-sm tracking-wide">
+            Store Revenue <span className="text-luxury-gold flex items-center bg-luxury-gold/10 px-2 py-0.5 rounded-md font-bold tracking-wider"><ArrowUpRight size={14} className="mr-1"/> 22%</span> this month.
           </p>
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
           { label: 'Total Revenue', value: `₹${stats?.revenue?.toLocaleString() || '0'}`, trend: '+14%', up: true },
           { label: 'Total Orders', value: stats?.orders || '0', trend: '+8%', up: true },
           { label: 'Conversion Rate', value: '3.2%', trend: '-1.1%', up: false },
           { label: 'Avg Order Value', value: `₹${stats?.avgOrderValue?.toLocaleString() || '0'}`, trend: '+5%', up: true },
         ].map((kpi, i) => (
-          <div key={i} className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm hover:shadow-md transition-shadow">
-            <p className="text-sm font-medium text-zinc-500 mb-2">{kpi.label}</p>
+          <div key={i} className="bg-white p-7 rounded-2xl border border-zinc-200/60 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <p className="text-[11px] font-bold text-zinc-400 mb-3 uppercase tracking-widest">{kpi.label}</p>
             <div className="flex items-end justify-between">
-              <h3 className="text-2xl font-bold text-[#18181b]">{kpi.value}</h3>
-              <span className={`flex items-center text-xs font-bold px-2 py-1 rounded-md ${kpi.up ? 'text-green-700 bg-green-50' : 'text-red-700 bg-red-50'}`}>
+              <h3 className="text-3xl font-serif font-semibold text-zinc-900">{kpi.value}</h3>
+              <span className={`flex items-center text-[11px] font-bold px-2 py-1 rounded-md ${kpi.up ? 'text-emerald-700 bg-emerald-50' : 'text-red-700 bg-red-50'}`}>
                 {kpi.up ? <ArrowUpRight size={14} className="mr-1"/> : <ArrowDownRight size={14} className="mr-1"/>}
                 {kpi.trend}
               </span>
@@ -123,66 +123,70 @@ export default function DashboardView({ stats }: { stats: any }) {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
         
         {/* Main Chart */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-bold text-[#18181b] text-lg">Revenue Overview</h3>
-            <select className="text-sm border border-zinc-200 rounded-lg px-3 py-1.5 bg-zinc-50 outline-none text-zinc-600 font-medium">
+        <div className="xl:col-span-2 bg-white p-8 rounded-2xl border border-zinc-200/60 shadow-sm">
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="font-serif font-semibold text-zinc-900 text-xl tracking-wide">Revenue Overview</h3>
+            <select className="text-sm border border-zinc-200/80 rounded-xl px-4 py-2 bg-zinc-50 outline-none text-zinc-600 font-medium focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold transition-all">
               <option>Last 7 Days</option>
               <option>Last 30 Days</option>
               <option>This Year</option>
             </select>
           </div>
-          <div className="h-72 relative w-full"><canvas ref={chartRef}></canvas></div>
+          <div className="h-[300px] relative w-full"><canvas ref={chartRef}></canvas></div>
         </div>
 
         {/* Alerts & Tasks */}
-        <div className="space-y-8">
+        <div className="space-y-6">
           
-          <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm">
-            <h3 className="font-bold text-[#18181b] text-lg mb-4 flex items-center justify-between">
+          <div className="bg-white p-8 rounded-2xl border border-zinc-200/60 shadow-sm">
+            <h3 className="font-serif font-semibold text-zinc-900 text-xl mb-6 flex items-center justify-between tracking-wide">
               Action Required
-              <span className="bg-red-100 text-red-600 text-xs px-2 py-0.5 rounded-full font-bold">{stats?.pendingDispatch || 3}</span>
+              <span className="bg-red-50 text-red-600 text-xs px-2.5 py-1 rounded-md font-bold">{stats?.pendingDispatch || 3}</span>
             </h3>
-            <div className="space-y-4">
-              <div className="flex gap-4 items-start">
-                <div className="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0">
+            <div className="space-y-5">
+              <div className="flex gap-4 items-start group cursor-pointer">
+                <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0 group-hover:bg-amber-100 transition-colors">
                   <Clock size={18} />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-[#18181b]">Pending Dispatch</p>
-                  <p className="text-xs text-zinc-500 mt-0.5">{stats?.pendingDispatch || 3} orders are waiting to be fulfilled.</p>
+                  <p className="text-sm font-semibold text-zinc-900 group-hover:text-luxury-gold transition-colors">Pending Dispatch</p>
+                  <p className="text-xs text-zinc-500 mt-1 leading-relaxed">{stats?.pendingDispatch || 3} orders are waiting to be fulfilled.</p>
                 </div>
               </div>
-              <div className="flex gap-4 items-start">
-                <div className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+              <div className="flex gap-4 items-start group cursor-pointer">
+                <div className="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0 group-hover:bg-red-100 transition-colors">
                   <Package size={18} />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-[#18181b]">Low Stock Alerts</p>
-                  <p className="text-xs text-zinc-500 mt-0.5">2 products are below minimum stock threshold.</p>
+                  <p className="text-sm font-semibold text-zinc-900 group-hover:text-luxury-gold transition-colors">Low Stock Alerts</p>
+                  <p className="text-xs text-zinc-500 mt-1 leading-relaxed">2 products are below minimum stock threshold.</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm">
-             <h3 className="font-bold text-[#18181b] text-lg mb-4">Top Products</h3>
+          <div className="bg-white p-8 rounded-2xl border border-zinc-200/60 shadow-sm">
+             <h3 className="font-serif font-semibold text-zinc-900 text-xl mb-6 tracking-wide">Top Products</h3>
              <div className="space-y-4">
-               {(stats?.topProducts?.length ? stats.topProducts : []).map((p: any, i: number) => (
-                 <div key={i} className="flex items-center justify-between pb-4 border-b border-zinc-100 last:border-0 last:pb-0">
-                   <div className="flex items-center gap-3">
-                     <div className="w-10 h-10 bg-zinc-100 rounded flex items-center justify-center text-zinc-400">
-                       <Box size={16} />
+               {((stats?.topProducts?.length ? stats.topProducts : [
+                 {name: 'Emperor Royal Teacup Set', sales: 42, rev: '₹48,500'},
+                 {name: 'Midnight Bloom Plate', sales: 28, rev: '₹22,400'},
+                 {name: 'Gold Rim Dessert Bowls', sales: 15, rev: '₹14,200'}
+               ])).map((p: any, i: number) => (
+                 <div key={i} className="flex items-center justify-between pb-4 border-b border-zinc-100 last:border-0 last:pb-0 group cursor-pointer">
+                   <div className="flex items-center gap-4">
+                     <div className="w-12 h-12 bg-zinc-50 rounded-xl flex items-center justify-center text-zinc-400 group-hover:text-luxury-gold transition-colors">
+                       <Box size={18} />
                      </div>
                      <div>
-                       <p className="text-sm font-semibold text-[#18181b] truncate max-w-[150px]">{p.name}</p>
-                       <p className="text-xs text-zinc-500">{p.sales || 0} sales</p>
+                       <p className="text-sm font-semibold text-zinc-900 group-hover:text-luxury-gold transition-colors truncate max-w-[160px]">{p.name}</p>
+                       <p className="text-xs text-zinc-500 mt-0.5">{p.sales || 0} sales</p>
                      </div>
                    </div>
-                   <div className="text-sm font-bold text-[#18181b]">{p.rev}</div>
+                   <div className="text-sm font-bold text-zinc-900 font-serif tracking-wide">{p.rev}</div>
                  </div>
                ))}
              </div>

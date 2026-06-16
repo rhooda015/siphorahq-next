@@ -128,49 +128,66 @@ export default function AdminSPA() {
   };
 
   return (
-    <div className="flex h-screen bg-zinc-50 overflow-hidden font-sans">
+    <div className="flex h-screen bg-warm-ivory overflow-hidden font-sans">
       
       {/* SIDEBAR */}
       <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} pendingDispatch={stats?.pendingDispatch || 0} />
 
       {/* MAIN CONTENT AREA */}
-      <main className="flex-1 flex flex-col h-screen overflow-hidden relative">
+      <main className="flex-1 flex flex-col h-screen overflow-hidden relative bg-warm-ivory">
         
-        {/* TOP NAVBAR */}
-        <header className="h-[72px] bg-white border-b border-zinc-200 flex items-center justify-between px-8 flex-shrink-0 z-10">
+        {/* TOP NAVBAR (EXECUTIVE LEVEL) */}
+        <header className="h-[80px] bg-white/80 backdrop-blur-md border-b border-zinc-200/60 flex items-center justify-between px-8 lg:px-12 flex-shrink-0 z-20 sticky top-0 transition-all duration-300">
           
-          <div className="flex items-center gap-4 flex-1">
-            <button className="md:hidden text-zinc-500 hover:text-[#18181b]"><Menu size={20}/></button>
-            <div className="relative w-96 hidden md:block">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" />
-              <input type="text" placeholder="Search orders, products, customers..." className="w-full bg-zinc-100 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-[#18181b]/10 outline-none transition-all" />
+          {/* Left: Mobile Menu & Search */}
+          <div className="flex items-center gap-6 flex-1">
+            <button className="md:hidden text-zinc-500 hover:text-luxury-gold transition-colors"><Menu size={20}/></button>
+            <div className="relative w-full max-w-md hidden md:block group">
+              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-luxury-gold transition-colors" />
+              <input type="text" placeholder="Search orders, products, customers..." className="w-full bg-zinc-50 border border-transparent focus:border-luxury-gold/30 rounded-xl pl-12 pr-4 py-2.5 text-sm focus:ring-4 focus:ring-luxury-gold/10 outline-none transition-all placeholder:text-zinc-400 font-medium text-zinc-800" />
             </div>
           </div>
 
-          <div className="flex items-center gap-6">
-            <button className="relative text-zinc-500 hover:text-[#18181b] transition-colors">
-              <Bell size={20} />
-              {stats?.pendingDispatch > 0 && <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>}
+          {/* Right: Quick Actions & Profile */}
+          <div className="flex items-center gap-5">
+            {/* Quick Create Button */}
+            <button onClick={() => setProductEditor({})} className="hidden lg:flex items-center gap-2 bg-zinc-900 text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-luxury-gold transition-colors shadow-sm">
+              <Plus size={16} />
+              <span>New Product</span>
             </button>
-            <div className="w-px h-6 bg-zinc-200"></div>
-            <div className="flex items-center gap-3 cursor-pointer hover:bg-zinc-50 p-1.5 rounded-lg transition-colors -mr-1.5">
-              <div className="w-8 h-8 rounded-full bg-zinc-800 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+
+            {/* Live Website */}
+            <a href="/" target="_blank" rel="noreferrer" className="hidden lg:flex items-center gap-2 text-zinc-500 hover:text-zinc-900 text-sm font-medium transition-colors px-3">
+              Live Store
+            </a>
+
+            <div className="w-px h-6 bg-zinc-200 hidden md:block"></div>
+
+            {/* Notifications */}
+            <button className="relative text-zinc-400 hover:text-zinc-900 transition-colors p-2 rounded-full hover:bg-zinc-50">
+              <Bell size={20} />
+              {stats?.pendingDispatch > 0 && <span className="absolute top-1.5 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>}
+            </button>
+
+            {/* Profile Dropdown (Simplified) */}
+            <div className="flex items-center gap-3 cursor-pointer hover:bg-zinc-50 p-1.5 pr-3 rounded-xl transition-colors border border-transparent hover:border-zinc-200/60 ml-2">
+              <div className="w-9 h-9 rounded-full bg-luxury-gold text-white flex items-center justify-center font-bold text-sm shadow-sm ring-2 ring-white">
                 A
               </div>
               <div className="hidden md:block">
-                <p className="text-sm font-bold text-[#18181b] leading-tight">Admin User</p>
+                <p className="text-sm font-semibold text-zinc-900 leading-tight">Admin User</p>
                 <p className="text-[11px] font-medium text-zinc-500">Store Owner</p>
               </div>
             </div>
-            <button onClick={handleLogout} className="flex items-center gap-2 text-sm text-zinc-500 hover:text-red-600 transition-colors ml-2 border border-zinc-200 rounded-lg px-3 py-1.5 relative z-50 cursor-pointer">
-              <LogOut size={15} />
-              <span className="hidden md:block">Logout</span>
+
+            <button onClick={handleLogout} className="flex items-center justify-center text-zinc-400 hover:text-red-500 transition-colors p-2 rounded-xl hover:bg-red-50" title="Logout">
+              <LogOut size={18} />
             </button>
           </div>
         </header>
 
-        {/* PAGE CONTENT */}
-        <div className="flex-1 overflow-auto p-8 relative">
+        {/* PAGE CONTENT CONTAINER */}
+        <div className="flex-1 overflow-auto p-6 md:p-8 lg:p-12 relative w-full max-w-[1600px] mx-auto">
           
           {productEditor ? (
             <div className="bg-white rounded-2xl shadow-sm border border-zinc-200 p-2">
