@@ -106,7 +106,7 @@ export default function Header() {
 
         {/* 2. Luxury Header */}
         <header className={`transition-all duration-500 bg-surface-cream/95 backdrop-blur-md border-b ${isScrolled ? 'border-muted-sand shadow-sm' : 'border-transparent'} relative z-50 h-16 flex items-center`}>
-          <nav className="flex justify-between items-center px-4 md:px-margin-desktop w-full max-w-container-max mx-auto">
+          <nav className="flex justify-between items-center px-4 md:px-margin-desktop w-full max-w-container-max mx-auto relative">
             <div className="flex items-center gap-4 md:gap-12">
               <div className="flex items-center xl:hidden">
                 <button 
@@ -117,7 +117,7 @@ export default function Header() {
                 </button>
               </div>
 
-              <Link href="/" className="font-headline-lg text-2xl md:text-3xl tracking-tighter text-ink-charcoal italic whitespace-nowrap">
+              <Link href="/" className="font-headline-lg text-2xl md:text-3xl tracking-tighter text-ink-charcoal italic whitespace-nowrap absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 xl:static xl:translate-x-0 xl:translate-y-0">
                 {BRAND.name}
               </Link>
 
