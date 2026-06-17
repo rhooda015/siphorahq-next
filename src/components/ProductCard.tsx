@@ -14,8 +14,8 @@ export default function ProductCard({ product }: { product: any }) {
   };
 
   return (
-    <div className="product-card group relative animate-reveal">
-      <Link href={`/products/${product.id || product.slug}`} className="block relative aspect-[4/5] overflow-hidden bg-bone-gray mb-4">
+    <div className="product-card group relative animate-reveal h-full flex flex-col">
+      <Link href={`/products/${product.id || product.slug}`} className="block relative aspect-[4/5] overflow-hidden bg-[#faf7f2] mb-4">
         {/* Badges */}
         {product.badge && (
           <div className="absolute top-4 left-4 z-10 bg-champagne-gold text-porcelain-white px-2 py-1 font-label-caps text-[10px]">
@@ -28,23 +28,23 @@ export default function ProductCard({ product }: { product: any }) {
           alt={product.name}
           fill
           sizes="(max-width: 768px) 100vw, 25vw"
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
+          className="w-full h-full object-contain p-4 bg-[#faf7f2] transition-transform duration-500 group-hover:scale-[1.03]"
         />
 
         <ProductCardActions product={product} />
       </Link>
 
-      <div className="space-y-1">
+      <div className="flex flex-col flex-grow justify-between space-y-1">
         <Link href={`/products/${product.id || product.slug}`} className="flex justify-between items-start">
-          <h3 className="font-headline-md text-body-lg text-heritage-navy line-clamp-1 pr-2">{product.name}</h3>
-          <div className="text-right flex-shrink-0">
+          <h3 className="font-headline-md text-body-lg text-heritage-navy line-clamp-2 pr-2 leading-tight flex-grow">{product.name}</h3>
+          <div className="text-right flex-shrink-0 ml-2">
             <p className="font-price-lg text-price-lg text-heritage-navy">{formatPrice(price)}</p>
             {oldPrice && (
               <p className="text-xs line-through text-on-surface-variant">{formatPrice(oldPrice)}</p>
             )}
           </div>
         </Link>
-        <div className="flex text-champagne-gold items-center">
+        <div className="flex text-champagne-gold items-center mt-2">
           {[1,2,3,4,5].map((star) => (
             <span key={star} className="material-symbols-outlined !text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
           ))}

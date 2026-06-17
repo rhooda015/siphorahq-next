@@ -12,7 +12,6 @@ import ProductDescription from './ProductDescription';
 import RecentlyViewed from './RecentlyViewed';
 import ImageGallery from './ImageGallery';
 import DeliveryChecker from './DeliveryChecker';
-import FrequentlyBoughtTogether from './FrequentlyBoughtTogether';
 import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
 import { Shield, Droplets, Award, Sparkles } from 'lucide-react';
@@ -171,7 +170,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     }
   };
 
-  const relatedProductForBundle = STATIC_PRODUCTS.find(p => p.id !== product.id && p.category !== product.category) || STATIC_PRODUCTS[0];
+  const imagesToPass = (product as any).images?.length > 0 
+    ? (product as any).images.map((img: any) => img.url)
+    : [product.image];
+
+  // Real related products from the same category
+  const relatedProducts = STATIC_PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
 
   return (
     <>
@@ -273,142 +277,26 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               </span>
             </summary>
             <ProductDescription 
-              htmlContent={product.description || 'Crafted from the finest bone china porcelain, perfectly balancing aesthetic appeal with exceptional durability, making it ideal for both everyday dining and festive occasions.'}
+              htmlContent={product.description}
             />
-          </details>
-          <details className="group border-b border-[var(--color-border)] py-4 cursor-pointer">
-            <summary className="flex justify-between items-center font-serif text-lg font-medium outline-none text-[var(--color-primary)]">
-              Specifications
-              <span className="transition group-open:rotate-180 text-[var(--color-primary)]">
-                <ChevronRight className="w-5 h-5 transform rotate-90" />
-              </span>
-            </summary>
-            <div className="mt-4 text-sm font-sans text-[var(--color-text-muted)] leading-relaxed">
-              <ul className="list-disc pl-5 space-y-2">
-                <li>Material: Premium Bone China / Fine Porcelain</li>
-                <li>Finish: Hand-glazed with 24k Gold accents</li>
-                <li>Durability: Chip-resistant and scratch-proof</li>
-                <li>Origin: Exclusively crafted for {BRAND.name}</li>
-              </ul>
-            </div>
-          </details>
-          <details className="group border-b border-[var(--color-border)] py-4 cursor-pointer">
-            <summary className="flex justify-between items-center font-serif text-lg font-medium outline-none text-[var(--color-primary)]">
-              What's Included
-              <span className="transition group-open:rotate-180 text-[var(--color-primary)]">
-                <ChevronRight className="w-5 h-5 transform rotate-90" />
-              </span>
-            </summary>
-            <div className="mt-4 text-sm font-sans text-[var(--color-text-muted)] leading-relaxed">
-              Carefully packaged in our signature luxury gift box to ensure safe transit and an unforgettable unboxing experience.
-            </div>
-          </details>
-          <details className="group border-b border-[var(--color-border)] py-4 cursor-pointer">
-            <summary className="flex justify-between items-center font-serif text-lg font-medium outline-none text-[var(--color-primary)]">
-              Care Instructions
-              <span className="transition group-open:rotate-180 text-[var(--color-primary)]">
-                <ChevronRight className="w-5 h-5 transform rotate-90" />
-              </span>
-            </summary>
-            <div className="mt-4 text-sm font-sans text-[var(--color-text-muted)] leading-relaxed">
-              {product.care || 'Hand wash recommended with mild detergent. Not safe for microwave due to gold detailing. Do not use abrasive scrubbers.'}
-            </div>
-          </details>
-          <details className="group border-b border-[var(--color-border)] py-4 cursor-pointer">
-            <summary className="flex justify-between items-center font-serif text-lg font-medium outline-none text-[var(--color-primary)]">
-              Shipping & Returns
-              <span className="transition group-open:rotate-180 text-[var(--color-primary)]">
-                <ChevronRight className="w-5 h-5 transform rotate-90" />
-              </span>
-            </summary>
-            <div className="mt-4 text-sm font-sans text-[var(--color-text-muted)] leading-relaxed">
-              Free secure shipping on all orders above ₹{BRAND.freeShippingThreshold}. Delivered in 3-5 business days. Enjoy hassle-free 7-day returns for any transit damage.
-            </div>
-          </details>
-          <details className="group border-b border-[var(--color-border)] py-4 cursor-pointer">
-            <summary className="flex justify-between items-center font-serif text-lg font-medium outline-none text-[var(--color-primary)]">
-              FAQs
-              <span className="transition group-open:rotate-180 text-[var(--color-primary)]">
-                <ChevronRight className="w-5 h-5 transform rotate-90" />
-              </span>
-            </summary>
-            <div className="mt-4 text-sm font-sans text-[var(--color-text-muted)] leading-relaxed space-y-4">
-              <div>
-                <p className="font-semibold text-[var(--color-primary)]">Is this safe for hot beverages?</p>
-                <p>Yes, our premium porcelain is designed to retain heat without cracking.</p>
-              </div>
-              <div>
-                <p className="font-semibold text-[var(--color-primary)]">Does it come in gift packaging?</p>
-                <p>You can add our premium gift packaging during checkout for an elevated gifting experience.</p>
-              </div>
-            </div>
           </details>
         </div>
       </div>
     </div>
     
-    {/* Frequently Bought Together */}
-    <FrequentlyBoughtTogether mainProduct={product} relatedProduct={relatedProductForBundle} />
-
     {/* Related Products Section */}
-    <div className="max-w-7xl mx-auto px-4 py-16 border-t border-[var(--color-border)]">
-      <h2 className="text-3xl md:text-4xl font-serif italic text-[var(--color-primary)] text-center mb-12">You May Also Like</h2>
-      <div className="flex overflow-x-auto gap-4 pb-8 custom-scrollbar md:grid md:grid-cols-4 md:overflow-visible md:pb-0">
-        {STATIC_PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4).map((relatedProduct) => (
-          <div key={relatedProduct.id} className="min-w-[280px] md:min-w-0">
-            <ProductCard product={relatedProduct} />
-          </div>
-        ))}
-      </div>
-    </div>
-
-    {/* Customer Reviews Section */}
-    <div className="bg-[#f8f5ef] py-20 mt-8">
-      <div className="max-w-4xl mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-4xl font-serif italic text-[var(--color-primary)] mb-8">Customer Reviews</h2>
-        <div className="flex items-center justify-center gap-6 mb-12">
-          <div className="text-6xl font-serif text-[var(--color-primary)]">4.8</div>
-          <div className="text-left">
-            <div className="flex text-[#C9A84C] mb-1">
-              <Star className="w-5 h-5 fill-current" />
-              <Star className="w-5 h-5 fill-current" />
-              <Star className="w-5 h-5 fill-current" />
-              <Star className="w-5 h-5 fill-current" />
-              <Star className="w-5 h-5 fill-current" />
+    {relatedProducts.length > 0 && (
+      <div className="max-w-7xl mx-auto px-4 py-16 border-t border-[var(--color-border)]">
+        <h2 className="text-3xl md:text-4xl font-serif italic text-[var(--color-primary)] text-center mb-12">You May Also Like</h2>
+        <div className="flex overflow-x-auto gap-4 pb-8 custom-scrollbar md:grid md:grid-cols-4 md:overflow-visible md:pb-0">
+          {relatedProducts.map((relatedProduct) => (
+            <div key={relatedProduct.id} className="min-w-[280px] md:min-w-0">
+              <ProductCard product={relatedProduct} />
             </div>
-            <p className="text-sm font-sans text-[var(--color-text-muted)]">Based on {product.reviewCount || 124} reviews</p>
-          </div>
-        </div>
-        
-        <div className="bg-white p-8 md:p-12 text-left rounded-sm border border-[var(--color-border)] shadow-sm">
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <div className="flex text-[#C9A84C] mb-2">
-                <Star className="w-4 h-4 fill-current" />
-                <Star className="w-4 h-4 fill-current" />
-                <Star className="w-4 h-4 fill-current" />
-                <Star className="w-4 h-4 fill-current" />
-                <Star className="w-4 h-4 fill-current" />
-              </div>
-              <p className="font-sans font-bold text-[var(--color-primary)]">Absolutely Stunning!</p>
-            </div>
-            <span className="text-xs font-sans text-[var(--color-text-muted)]">2 weeks ago</span>
-          </div>
-          <p className="font-sans text-[var(--color-text-muted)] text-sm leading-relaxed mb-6">
-            "I ordered this for a dinner party, and I was blown away by the quality. It feels extremely premium, and the gold detailing is exquisite. Highly recommend!"
-          </p>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-[#F7F5F0] rounded-full flex items-center justify-center font-serif text-[var(--color-primary)] text-sm">S</div>
-            <div>
-              <p className="text-xs font-sans font-bold text-[var(--color-primary)]">Simran K.</p>
-              <p className="text-[10px] font-sans text-[var(--color-text-muted)] uppercase tracking-widest flex items-center gap-1">
-                <Shield className="w-3 h-3 text-green-600" /> Verified Buyer
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
-    </div>
+    )}
 
     {/* Recently Viewed */}
     <RecentlyViewed currentProductId={product.id} />
