@@ -252,8 +252,8 @@ export default function Header() {
               )}
             </div>
           ))}
-          <Link href={session ? "/account" : "/login"} onClick={() => setIsMobileMenuOpen(false)} className="font-headline-md text-2xl text-ink-charcoal pt-4 border-t border-muted-sand">
-            {session ? session.user?.name || "My Account" : "Sign In"}
+          <Link href={session ? "/account" : "/login"} onClick={() => setIsMobileMenuOpen(false)} className="font-headline-md text-2xl text-ink-charcoal pt-4 border-t border-muted-sand block">
+            {session ? "My Account" : "Sign In"}
           </Link>
         </div>
       </div>
