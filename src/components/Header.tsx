@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { BRAND } from '@/config/brand';
 import { useCart } from '@/store/useCart';
 import { useSession } from 'next-auth/react';
-import { X, Menu } from 'lucide-react';
+import { X, Menu, ChevronRight } from 'lucide-react';
 
 const NAVIGATION_LINKS = [
   { label: 'Shop', url: '/products' },
@@ -232,9 +232,10 @@ export default function Header() {
               <Link 
                 href={item.url} 
                 onClick={() => setIsMobileMenuOpen(false)} 
-                className="font-headline-md text-2xl text-ink-charcoal border-b border-muted-sand pb-4 block"
+                className="flex items-center justify-between font-headline-md text-2xl text-ink-charcoal hover:text-burnished-gold transition-colors border-b border-muted-sand pb-4"
               >
-                {item.label}
+                <span>{item.label}</span>
+                <ChevronRight className="w-6 h-6 text-on-surface-variant opacity-50" />
               </Link>
               {item.hasMegaMenu && (
                 <div className="flex flex-col gap-3 pt-4 pl-4 border-l border-burnished-gold/30 mt-4">
