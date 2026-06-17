@@ -59,13 +59,13 @@ export default function AutoCarousel() {
               <span className="font-label-caps text-sm tracking-[0.3em] mb-6 uppercase text-burnished-gold">
                 {slide.badge}
               </span>
-              <h1 className="font-display-lg text-5xl sm:text-6xl lg:text-8xl mb-8 max-w-5xl leading-tight">
+              <h1 className="font-display-lg text-4xl sm:text-6xl lg:text-8xl mb-6 max-w-4xl leading-[1.1] drop-shadow-lg">
                 {slide.title}
               </h1>
-              <p className="font-body-lg text-lg sm:text-xl mb-12 max-w-2xl opacity-90">
+              <p className="font-body-lg text-base sm:text-xl mb-10 max-w-2xl opacity-90 drop-shadow-md">
                 {slide.description}
               </p>
-              <div className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto">
+              <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                 {slide.buttons.map((btn, i) => (
                   <Link 
                     key={i} 

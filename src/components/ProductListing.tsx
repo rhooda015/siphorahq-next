@@ -39,7 +39,7 @@ export default function ProductListing({ products }: { products: Product[] }) {
   });
 
   return (
-    <div className="max-w-container-max mx-auto px-5 md:px-margin-desktop py-12 md:py-20 flex flex-col md:flex-row gap-12">
+    <div className="max-w-container-max mx-auto px-4 md:px-margin-desktop py-10 md:py-20 flex flex-col md:flex-row gap-8 md:gap-12">
       
       {/* ── DESKTOP SIDEBAR ── */}
       <aside className="hidden md:block w-64 flex-shrink-0">
@@ -47,7 +47,7 @@ export default function ProductListing({ products }: { products: Product[] }) {
           <h2 className="font-headline-md text-xl mb-6">Filters</h2>
           
           <div className="mb-8">
-            <h3 className="font-label-caps text-[12px] uppercase tracking-widest text-on-surface-variant mb-4">Category</h3>
+            <h3 className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-on-surface-variant mb-4">Category</h3>
             <ul className="space-y-3">
               {categories.map(cat => (
                 <li key={cat}>
@@ -63,7 +63,7 @@ export default function ProductListing({ products }: { products: Product[] }) {
           </div>
 
           <div className="mb-8">
-            <h3 className="font-label-caps text-[12px] uppercase tracking-widest text-on-surface-variant mb-4">Material</h3>
+            <h3 className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-on-surface-variant mb-4">Material</h3>
             <div className="flex flex-wrap gap-2">
               {['Fine Porcelain', 'Bone China', 'Ceramic', 'Gold Rim'].map(mat => (
                 <span key={mat} className="px-3 py-1 border border-muted-sand rounded-full text-xs font-body-md text-on-surface-variant cursor-pointer hover:border-ink-charcoal transition-colors">
@@ -86,7 +86,7 @@ export default function ProductListing({ products }: { products: Product[] }) {
           </div>
           <div className="flex-1 overflow-y-auto">
             <div className="mb-8">
-              <h3 className="font-label-caps text-[12px] uppercase tracking-widest text-on-surface-variant mb-4">Category</h3>
+              <h3 className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-on-surface-variant mb-4">Category</h3>
               <ul className="space-y-4">
                 {categories.map(cat => (
                   <li key={cat}>
@@ -111,13 +111,13 @@ export default function ProductListing({ products }: { products: Product[] }) {
           
           <div className="flex gap-4 items-center">
             <button 
-              className="md:hidden flex items-center gap-2 font-label-caps text-[12px] uppercase tracking-widest"
+              className="md:hidden flex items-center gap-2 font-label-caps text-[11px] uppercase tracking-[0.18em]"
               onClick={() => setIsMobileDrawerOpen(true)}
             >
               <span className="material-symbols-outlined text-[18px]">tune</span> Filters
             </button>
             <div className="hidden md:flex items-center gap-3">
-              <span className="font-label-caps text-[12px] uppercase tracking-widest text-on-surface-variant">Sort:</span>
+              <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-on-surface-variant">Sort:</span>
               <select 
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value)}
@@ -130,12 +130,12 @@ export default function ProductListing({ products }: { products: Product[] }) {
         </div>
 
         {/* ── PRODUCT GRID ── */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-12 md:gap-x-8 md:gap-y-16">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 gap-y-12 md:gap-8 md:gap-y-16">
           {sorted.map(product => (
             <Link href={`/products/${product.slug}`} key={product.slug} className="group flex flex-col h-full">
-              <div className="relative aspect-[4/5] bg-[#f5f5f5] mb-6 overflow-hidden">
+              <div className="relative aspect-[4/5] bg-[#faf7f2] mb-6 overflow-hidden border border-[#f0ebe1] rounded-sm">
                 {product.badge && (
-                  <span className="absolute top-3 left-3 z-10 bg-surface-cream text-ink-charcoal font-label-caps text-[10px] uppercase tracking-widest px-3 py-1.5 shadow-sm">
+                  <span className="absolute top-3 left-3 z-10 bg-surface-cream text-ink-charcoal font-label-caps text-[10px] uppercase tracking-[0.18em] px-3 py-1.5 shadow-sm">
                     {product.badge}
                   </span>
                 )}
@@ -144,18 +144,18 @@ export default function ProductListing({ products }: { products: Product[] }) {
                   alt={product.name}
                   fill
                   sizes="(max-width: 768px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-contain p-4 bg-[#faf7f2] transition-transform duration-500 group-hover:scale-[1.03]"
                   priority={false}
                 />
-                <div className="absolute inset-x-0 bottom-0 p-4 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                  <button className="w-full bg-ink-charcoal text-surface-cream font-label-caps text-[11px] uppercase tracking-widest py-3 hover:bg-burnished-gold transition-colors">
+                <div className="absolute inset-x-0 bottom-0 p-4 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hidden md:block">
+                  <button className="w-full bg-ink-charcoal text-surface-cream font-label-caps text-[11px] uppercase tracking-[0.18em] py-3 hover:bg-burnished-gold transition-colors">
                     View Product
                   </button>
                 </div>
               </div>
               <div className="flex flex-col flex-1">
-                <p className="font-label-caps text-[10px] uppercase tracking-widest text-burnished-gold mb-2">{product.category}</p>
-                <h3 className="font-headline-md text-lg text-ink-charcoal mb-2 leading-snug">{product.name}</h3>
+                <p className="font-label-caps text-[10px] uppercase tracking-[0.18em] text-burnished-gold mb-2">{product.category}</p>
+                <h3 className="font-headline-md text-base sm:text-lg text-ink-charcoal mb-2 leading-snug line-clamp-2">{product.name}</h3>
                 <div className="flex items-center gap-2 mb-3 mt-auto">
                   <div className="flex text-burnished-gold text-[12px]">
                     ★★★★★

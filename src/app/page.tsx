@@ -72,40 +72,40 @@ export default async function HomePage() {
             <p className="font-body-md text-on-surface-variant">The foundation of a beautiful dining experience</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
-            <Link href="/collections/dinnerware" className="group relative h-[450px] md:h-[600px] overflow-hidden">
-              <Image src="/images/homepage/curated_dinnerware.png" alt="Dinnerware Collections" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 25vw" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-              <div className="absolute bottom-8 left-6 text-surface-cream">
-                <h3 className="font-headline-md text-2xl mb-1">Dinnerware Sets</h3>
-                <span className="font-label-caps text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 md:gap-6">
+            <Link href="/collections/dinnerware" className="group relative aspect-[4/5] md:h-[600px] overflow-hidden">
+              <Image src="/images/homepage/curated_dinnerware.png" alt="Dinnerware Collections" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+              <div className="absolute bottom-4 sm:bottom-8 left-3 sm:left-6 text-surface-cream">
+                <h3 className="font-headline-md text-lg sm:text-2xl mb-1 leading-snug">Dinnerware Sets</h3>
+                <span className="font-label-caps text-[9px] sm:text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-0.5 sm:pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
               </div>
             </Link>
             
-            <Link href="/products" className="group relative h-[450px] md:h-[600px] overflow-hidden">
-              <Image src="/images/homepage/curated_mugs.png" alt="Cups & Mugs" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 25vw" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-              <div className="absolute bottom-8 left-6 text-surface-cream">
-                <h3 className="font-headline-md text-2xl mb-1">Cups &amp; Mugs</h3>
-                <span className="font-label-caps text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
+            <Link href="/products" className="group relative aspect-[4/5] md:h-[600px] overflow-hidden">
+              <Image src="/images/homepage/curated_mugs.png" alt="Cups & Mugs" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+              <div className="absolute bottom-4 sm:bottom-8 left-3 sm:left-6 text-surface-cream">
+                <h3 className="font-headline-md text-lg sm:text-2xl mb-1 leading-snug">Cups &amp; Mugs</h3>
+                <span className="font-label-caps text-[9px] sm:text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-0.5 sm:pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
               </div>
             </Link>
 
-            <Link href="/collections/tea-sets" className="group relative h-[450px] md:h-[600px] overflow-hidden">
-              <Image src="/images/homepage/curated_teasets.png" alt="Tea Sets" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 25vw" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-              <div className="absolute bottom-8 left-6 text-surface-cream">
-                <h3 className="font-headline-md text-2xl mb-1">Tea Sets</h3>
-                <span className="font-label-caps text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
+            <Link href="/collections/tea-sets" className="group relative aspect-[4/5] md:h-[600px] overflow-hidden">
+              <Image src="/images/homepage/curated_teasets.png" alt="Tea Sets" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+              <div className="absolute bottom-4 sm:bottom-8 left-3 sm:left-6 text-surface-cream">
+                <h3 className="font-headline-md text-lg sm:text-2xl mb-1 leading-snug">Tea Sets</h3>
+                <span className="font-label-caps text-[9px] sm:text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-0.5 sm:pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
               </div>
             </Link>
 
-            <Link href="/collections/gifting" className="group relative h-[450px] md:h-[600px] overflow-hidden">
-              <Image src="/images/homepage/curated_luxury_gifting.png" alt="Luxury Gifting" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 25vw" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-              <div className="absolute bottom-8 left-6 text-surface-cream">
-                <h3 className="font-headline-md text-2xl mb-1">Luxury Gifting</h3>
-                <span className="font-label-caps text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
+            <Link href="/collections/gifting" className="group relative aspect-[4/5] md:h-[600px] overflow-hidden">
+              <Image src="/images/homepage/curated_luxury_gifting.png" alt="Luxury Gifting" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+              <div className="absolute bottom-4 sm:bottom-8 left-3 sm:left-6 text-surface-cream">
+                <h3 className="font-headline-md text-lg sm:text-2xl mb-1 leading-snug">Luxury Gifting</h3>
+                <span className="font-label-caps text-[9px] sm:text-[10px] uppercase tracking-widest border-b border-burnished-gold pb-0.5 sm:pb-1 group-hover:text-burnished-gold transition-colors">Shop Now</span>
               </div>
             </Link>
           </div>
@@ -113,39 +113,39 @@ export default async function HomePage() {
       </section>
 
       {/* 6. Best Sellers */}
-      <section className="bg-white py-section-gap px-5 md:px-margin-desktop border-y border-muted-sand">
+      <section className="bg-white py-10 md:py-section-gap px-4 md:px-margin-desktop border-y border-muted-sand">
         <div className="max-w-container-max mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
             <div>
-              <span className="font-label-caps text-[11px] uppercase tracking-widest text-burnished-gold mb-4 block">Iconic Pieces</span>
-              <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal">Most Loved by Modern Homes</h2>
+              <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-burnished-gold mb-4 block">Iconic Pieces</span>
+              <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-5xl italic text-ink-charcoal">Most Loved by Modern Homes</h2>
             </div>
-            <Link href="/best-sellers" className="font-label-caps text-[12px] uppercase tracking-widest text-ink-charcoal border-b border-ink-charcoal pb-1 hover:text-burnished-gold hover:border-burnished-gold transition-colors">
+            <Link href="/best-sellers" className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-ink-charcoal border-b border-ink-charcoal pb-1 hover:text-burnished-gold hover:border-burnished-gold transition-colors">
               View All Best Sellers
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 gap-y-12">
             {displayProducts.map((p: any) => (
               <div key={p.id} className="group cursor-pointer flex flex-col h-full">
                 <Link href={`/products/${p.id || p.slug}`} className="flex-1 flex flex-col">
-                  <div className="relative aspect-[4/5] mb-6 overflow-hidden bg-muted-sand">
-                    <span className="absolute top-4 left-4 z-10 bg-surface-cream px-3 py-1 font-label-caps text-[9px] uppercase tracking-widest text-ink-charcoal">Best Seller</span>
-                    <Image src={p.image || p.imageURL || '/images/dinnerware.webp'} alt={p.name} fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" />
+                  <div className="relative aspect-[4/5] mb-6 overflow-hidden bg-[#faf7f2] border border-[#f0ebe1] rounded-sm">
+                    <span className="absolute top-3 left-3 z-10 bg-surface-cream px-3 py-1.5 font-label-caps text-[9px] uppercase tracking-widest text-ink-charcoal shadow-sm">Best Seller</span>
+                    <Image src={p.image || p.imageURL || '/images/dinnerware.webp'} alt={p.name} fill className="w-full h-full object-contain p-4 bg-[#faf7f2] transition-transform duration-700 group-hover:scale-[1.03]" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" />
                     <button className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-burnished-gold hover:text-white">
                       <span className="material-symbols-outlined text-[20px]">shopping_bag</span>
                     </button>
                   </div>
-                  <div className="text-center flex-1 flex flex-col justify-between">
+                  <div className="text-center flex-1 flex flex-col justify-between pt-2">
                     <div>
-                      <h3 className="font-headline-md text-xl text-ink-charcoal mb-2 group-hover:text-burnished-gold transition-colors line-clamp-2">{p.name}</h3>
+                      <h3 className="font-headline-md text-base sm:text-lg text-ink-charcoal mb-2 group-hover:text-burnished-gold transition-colors line-clamp-2 leading-snug">{p.name}</h3>
                       <div className="flex justify-center gap-1 mb-3">
                         {[1,2,3,4,5].map((_, i) => (
-                          <span key={i} className="material-symbols-outlined text-[14px] text-burnished-gold" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                          <span key={i} className="material-symbols-outlined text-[12px] text-burnished-gold" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
                         ))}
                       </div>
                     </div>
-                    <p className="font-price-lg text-lg text-on-surface-variant mt-2">₹{p.price?.toLocaleString('en-IN') || p.price}</p>
+                    <p className="font-price-lg text-sm sm:text-base text-on-surface-variant mt-auto">₹{p.price?.toLocaleString('en-IN') || p.price}</p>
                   </div>
                 </Link>
               </div>
@@ -155,14 +155,14 @@ export default async function HomePage() {
       </section>
 
       {/* 7. Shop by Occasion */}
-      <section className="py-section-gap px-5 md:px-margin-desktop bg-surface-cream">
+      <section className="py-10 md:py-section-gap px-4 md:px-margin-desktop bg-surface-cream">
         <div className="max-w-container-max mx-auto">
-          <div className="text-center mb-16">
-            <span className="font-label-caps text-[11px] uppercase tracking-widest text-burnished-gold mb-4 block">The Art of Gifting</span>
-            <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal">Gifts for Every Milestone</h2>
+          <div className="text-center mb-12">
+            <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-burnished-gold mb-4 block">The Art of Gifting</span>
+            <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-5xl italic text-ink-charcoal">Gifts for Every Milestone</h2>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             <Link href="/collections/gifting" className="group text-center">
               <div className="relative aspect-square overflow-hidden mb-4 bg-muted-sand rounded-sm">
                 <Image src="/images/homepage/milestone_wedding.png" alt="Wedding Gifts" fill className="object-cover transition-transform duration-1000 group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
@@ -192,11 +192,11 @@ export default async function HomePage() {
       </section>
 
       {/* 8. Collections Grid (Masonry-style) */}
-      <section className="py-section-gap px-5 md:px-margin-desktop bg-white border-t border-muted-sand">
+      <section className="py-10 md:py-section-gap px-4 md:px-margin-desktop bg-white border-t border-muted-sand">
         <div className="max-w-container-max mx-auto text-center">
-          <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal mb-16">The Artisanal Collections</h2>
+          <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-5xl italic text-ink-charcoal mb-12">The Artisanal Collections</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12">
             <Link href="/collections/dinnerware" className="group text-left flex flex-col h-full">
               <div className="relative aspect-square md:h-[800px] w-full overflow-hidden mb-6 bg-muted-sand">
                 <Image src="/images/homepage/artisanal_left.png" alt="The Azure Series" fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, 50vw" />
@@ -207,7 +207,7 @@ export default async function HomePage() {
             
             <div className="flex flex-col gap-8 md:gap-12">
               <Link href="/collections/gifting" className="group text-left flex-1">
-                <div className="relative h-[300px] md:h-[350px] w-full overflow-hidden mb-6 bg-muted-sand">
+                <div className="relative aspect-square md:aspect-auto md:h-[350px] w-full overflow-hidden mb-6 bg-muted-sand">
                   <Image src="/images/homepage/artisanal_top_right.png" alt="The Handpainted Collection" fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, 50vw" />
                 </div>
                 <h3 className="font-headline-md text-2xl text-ink-charcoal mb-2">The Handpainted Collection</h3>
@@ -215,7 +215,7 @@ export default async function HomePage() {
               </Link>
 
               <Link href="/collections/tea-sets" className="group text-left flex-1">
-                <div className="relative h-[300px] md:h-[350px] w-full overflow-hidden mb-6 bg-muted-sand">
+                <div className="relative aspect-square md:aspect-auto md:h-[350px] w-full overflow-hidden mb-6 bg-muted-sand">
                   <Image src="/images/homepage/artisanal_bottom_right.png" alt="The Emerald Heritage" fill className="object-cover transition-transform duration-700 group-hover:scale-105 mix-blend-multiply" sizes="(max-width: 768px) 100vw, 50vw" />
                 </div>
                 <h3 className="font-headline-md text-2xl text-ink-charcoal mb-2">The Emerald Heritage</h3>
@@ -229,13 +229,13 @@ export default async function HomePage() {
       {/* 9. Limited Edition Collection */}
       <section className="bg-ink-charcoal text-surface-cream">
         <div className="grid grid-cols-1 lg:grid-cols-2">
-          <div className="relative h-[500px] lg:h-auto">
+          <div className="relative h-[300px] md:h-[500px] lg:h-auto">
             <Image src="/images/homepage/kintsugi_mug.png" alt="Kintsugi Collection" fill className="object-cover opacity-80" sizes="(max-width: 1024px) 100vw, 50vw" />
           </div>
-          <div className="p-12 md:p-24 flex flex-col justify-center">
-            <span className="font-label-caps text-[11px] uppercase tracking-widest text-burnished-gold mb-6 block">Limited Edition</span>
-            <h2 className="font-headline-lg text-4xl md:text-6xl italic mb-6">The Kintsugi Series</h2>
-            <p className="font-body-md text-surface-cream/80 text-lg mb-10 max-w-md">
+          <div className="p-8 md:p-24 flex flex-col justify-center">
+            <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-burnished-gold mb-4 block">Limited Edition</span>
+            <h2 className="font-headline-lg text-3xl sm:text-4xl md:text-6xl italic mb-6">The Kintsugi Series</h2>
+            <p className="font-body-md text-surface-cream/80 text-sm sm:text-base leading-relaxed mb-8 max-w-md">
               Celebrating the beauty of imperfection. Only 50 exclusive pieces crafted, each uniquely adorned with pure gold powder lines highlighting natural forms.
             </p>
             <div>
@@ -248,19 +248,19 @@ export default async function HomePage() {
       </section>
 
       {/* 10. Brand Story */}
-      <section className="py-section-gap px-5 md:px-margin-desktop bg-surface-cream">
+      <section className="py-10 md:py-section-gap px-4 md:px-margin-desktop bg-surface-cream text-center">
         <div className="max-w-container-max mx-auto">
-          <div className="flex flex-col md:flex-row items-center gap-16">
-            <div className="w-full md:w-1/2 relative h-[600px] overflow-hidden">
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
+            <div className="w-full md:w-1/2 relative h-[300px] md:h-[600px] overflow-hidden">
               <Image src="/images/homepage/brand_story.png" alt="Brand Story" fill className="object-cover transition-transform duration-1000 hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
-            <div className="w-full md:w-1/2 md:pl-10">
-              <span className="font-label-caps text-[11px] uppercase tracking-widest text-burnished-gold mb-6 block">Our Philosophy</span>
-              <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal mb-8 leading-tight">Poetry in Porcelain, Crafted for the Modern Home</h2>
-              <p className="font-body-md text-on-surface-variant text-lg leading-relaxed mb-6">
+            <div className="w-full md:w-1/2 md:pl-10 text-left">
+              <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-burnished-gold mb-4 block">Our Philosophy</span>
+              <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-5xl italic text-ink-charcoal mb-6 leading-tight">Poetry in Porcelain, Crafted for the Modern Home</h2>
+              <p className="font-body-md text-sm sm:text-base leading-relaxed text-on-surface-variant mb-4">
                 Siphorahq was born from a simple desire: to make everyday dining feel like an occasion. We believe that the objects we interact with daily should bring us joy, pause, and a touch of luxury.
               </p>
-              <p className="font-body-md text-on-surface-variant text-lg leading-relaxed mb-10">
+              <p className="font-body-md text-sm sm:text-base leading-relaxed text-on-surface-variant mb-8">
                 Working with master artisans, we combine timeless traditional techniques with contemporary aesthetics to create porcelain that isn't just beautiful to look at, but a pleasure to use.
               </p>
               <Link href="/our-story" className="font-label-caps text-[12px] uppercase tracking-widest text-ink-charcoal border-b border-burnished-gold pb-1 hover:text-burnished-gold transition-colors">

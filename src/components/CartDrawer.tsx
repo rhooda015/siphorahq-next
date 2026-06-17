@@ -8,16 +8,20 @@ import { useCart } from '@/store/useCart';
 import { BRAND } from '@/config/brand';
 import { trackBeginCheckout } from '@/lib/analytics';
 import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function CartDrawer() {
   const { items, isDrawerOpen, closeDrawer, removeItem, updateQuantity, cartTotal } = useCart();
   const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  if (pathname?.startsWith('/admin')) return null;
 
   if (!mounted) return null;
 

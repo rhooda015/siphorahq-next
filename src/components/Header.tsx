@@ -41,6 +41,8 @@ export default function Header() {
   const { items, openDrawer } = useCart();
   const { data: session } = useSession();
 
+  if (pathname?.startsWith('/admin')) return null;
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -103,12 +105,12 @@ export default function Header() {
         </div>
 
         {/* 2. Luxury Header */}
-        <header className={`transition-all duration-500 bg-surface-cream/95 backdrop-blur-md border-b ${isScrolled ? 'border-muted-sand shadow-sm' : 'border-transparent'} relative z-50`}>
-          <nav className="flex justify-between items-center px-5 md:px-margin-desktop py-5 w-full max-w-container-max mx-auto">
-            <div className="flex items-center gap-12">
-              <div className="flex items-center xl:hidden mr-4">
+        <header className={`transition-all duration-500 bg-surface-cream/95 backdrop-blur-md border-b ${isScrolled ? 'border-muted-sand shadow-sm' : 'border-transparent'} relative z-50 h-16 flex items-center`}>
+          <nav className="flex justify-between items-center px-4 md:px-margin-desktop w-full max-w-container-max mx-auto">
+            <div className="flex items-center gap-4 md:gap-12">
+              <div className="flex items-center xl:hidden">
                 <button 
-                  className="text-ink-charcoal hover:text-burnished-gold transition-colors"
+                  className="text-ink-charcoal hover:text-burnished-gold transition-colors p-1 -ml-1"
                   onClick={() => setIsMobileMenuOpen(true)}
                 >
                   <Menu className="h-6 w-6 stroke-[1.5]" />

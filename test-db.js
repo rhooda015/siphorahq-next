@@ -1,9 +1,13 @@
-const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI);
-const Product = mongoose.model('Product', new mongoose.Schema({}, { strict: false }));
-async function run() {
-  const products = await Product.find({}, 'title status');
-  console.log(products);
-  process.exit();
+import { MongoClient } from 'mongodb';
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
+
+async function check() {
+  const client = new MongoClient(process.env.MONGODB_URI);
+  await client.connect();
+  const db = client.db();
+  const products = await db.collection('products').find({status: 'Live'}).sort({createdAt: -1}).limit(4).toArray();
+  products.forEach(p => console.log(p.title, p.images));
+  process.exit(0);
 }
-run();
+check();
