@@ -342,9 +342,9 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
             
             {/* Image Gallery */}
             <div className="space-y-4">
-              <div className="aspect-[4/5] bg-zinc-100 w-full overflow-hidden relative">
+              <div className="aspect-[4/5] bg-[#f8f5ef] w-full overflow-hidden relative rounded-sm">
                 {images[0]?.url ? (
-                  <img src={images[0].url} className="w-full h-full object-cover" alt="" />
+                  <img src={images[0].url} className="w-full h-full object-contain bg-[#f8f5ef] max-h-[650px]" alt="" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-zinc-300">
                     <ImageIcon size={64} />
@@ -354,8 +354,8 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
               {previewMode === 'desktop' && images.length > 1 && (
                 <div className="flex gap-4">
                   {images.slice(1, 4).map((img, i) => (
-                    <div key={i} className="aspect-square w-24 bg-zinc-100 overflow-hidden">
-                      <img src={img.url} className="w-full h-full object-cover" alt="" />
+                    <div key={i} className="aspect-square w-24 bg-[#f8f5ef] overflow-hidden rounded-sm">
+                      <img src={img.url} className="w-full h-full object-contain bg-[#f8f5ef]" alt="" />
                     </div>
                   ))}
                 </div>

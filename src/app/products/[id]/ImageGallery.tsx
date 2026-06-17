@@ -90,7 +90,7 @@ export default function ImageGallery({ images, productName }: { images: string[]
 
         {/* Main image */}
         <div
-          className="aspect-square md:aspect-[4/5] max-h-[480px] md:max-h-[560px] bg-white overflow-hidden relative cursor-zoom-in border border-[var(--color-border)]"
+          className="aspect-square md:aspect-[4/5] max-h-[480px] md:max-h-[650px] bg-[#f8f5ef] overflow-hidden relative cursor-zoom-in border border-[var(--color-border)] rounded-sm"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           onTouchStart={handleTouchStart}
@@ -99,7 +99,7 @@ export default function ImageGallery({ images, productName }: { images: string[]
           <Image
             src={activeImage}
             fill
-            className="object-contain transition-transform duration-200 p-4"
+            className="object-contain transition-transform duration-200 bg-[#f8f5ef]"
             style={zoomStyle}
             alt={productName}
             unoptimized={activeImage.startsWith('data:')}
