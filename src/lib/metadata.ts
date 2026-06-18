@@ -150,7 +150,7 @@ export const journalMetadata: Metadata = {
 export const contactMetadata: Metadata = {
   title: 'Contact Us — SiphoraHQ Customer Care',
   description:
-    'Get in touch with SiphoraHQ for order queries, returns, corporate gifting enquiries, or any support. Email: concierge@siphorahq.in. Response within 24–48 hours.',
+    'Get in touch with SiphoraHQ for order queries, returns, corporate gifting enquiries, or any support. Email: concierge [at] siphorahq.in. Response within 24–48 hours.',
   alternates: { canonical: 'https://www.siphorahq.in/contact' },
   openGraph: {
     title: 'Contact SiphoraHQ',
@@ -238,7 +238,7 @@ export const organizationSchema = {
   logo: 'https://www.siphorahq.in/images/logo.png',
   contactPoint: {
     '@type': 'ContactPoint',
-    email: 'concierge@siphorahq.in',
+    email: 'concierge [at] siphorahq.in',
     contactType: 'customer service',
     availableLanguage: ['English', 'Hindi'],
   },

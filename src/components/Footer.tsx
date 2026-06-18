@@ -1,13 +1,9 @@
-"use client";
-
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import ProtectedEmail from '@/components/ProtectedEmail';
 import { BRAND } from '@/config/brand';
 
 export default function Footer() {
-  const pathname = usePathname();
-  if (pathname?.startsWith('/admin')) return null;
 
   return (
     <footer className="bg-ink-charcoal text-surface-cream pt-24 pb-12 px-5 md:px-margin-desktop border-t border-burnished-gold/20">
@@ -52,7 +48,7 @@ export default function Footer() {
           <ul className="space-y-4 font-body-md text-surface-cream/80 mb-8">
             <li className="flex items-center gap-3">
               <span className="material-symbols-outlined text-burnished-gold text-[18px]">mail</span> 
-              <a className="hover:text-white transition-colors" href="mailto:concierge@siphorahq.in">concierge@siphorahq.in</a>
+              <ProtectedEmail email="concierge@siphorahq.in" className="hover:text-white transition-colors" />
             </li>
             <li className="flex items-center gap-3">
               <span className="material-symbols-outlined text-burnished-gold text-[18px]">call</span> 

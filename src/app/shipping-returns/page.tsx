@@ -59,7 +59,7 @@ const sections = [
     bullets: [
       'A tracking link will be sent to your registered email and phone number once your order is dispatched',
       'You can track your order directly on the courier partner\'s website using the AWB number provided',
-      'For tracking assistance, email concierge@siphorahq.in with your order number',
+      'For tracking assistance, email concierge [at] siphorahq.in with your order number',
       'Live tracking is available 4–6 hours after dispatch',
     ],
   },
@@ -94,7 +94,7 @@ Additional shipping charges may apply for extremely remote pincodes. You will be
     title: 'International Shipping',
     content: `At present, SiphoraHQ ships within India only. We are working on enabling international shipping and will update this policy when available.
 
-For urgent international enquiries, write to us at concierge@siphorahq.in.`,
+For urgent international enquiries, write to us at concierge [at] siphorahq.in.`,
   },
   {
     id: '11',
@@ -207,7 +207,7 @@ export default function ShippingPolicy() {
                 {section.contact && (
                   <div className="bg-gray-50 rounded-lg p-6 text-sm space-y-2 text-gray-700">
                     <p className="font-medium text-gray-900">SiphoraHQ Customer Care</p>
-                    <p>Email: <a href="mailto:concierge@siphorahq.in" className="underline underline-offset-2">concierge@siphorahq.in</a></p>
+                    <p>Email: <ProtectedEmail email="concierge@siphorahq.in" className="underline underline-offset-2" /></p>
                     <p>Hours: Monday – Saturday, 10 AM – 6 PM IST</p>
                     <p>Response Time: Within 24–48 business hours</p>
                     <p className="text-gray-500 text-xs pt-1">Please include your order number in all correspondence.</p>

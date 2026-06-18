@@ -51,7 +51,7 @@ export default function HeroCarousel({ slides, title, buttonText, buttonLink }: 
               quality={80}
             />
           {/* Refined gradient overlay for text legibility without muddying the image */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/60" />
         </motion.div>
       </AnimatePresence>
       

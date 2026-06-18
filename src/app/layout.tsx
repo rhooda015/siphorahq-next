@@ -1,11 +1,13 @@
 import React from 'react';
-import { Playfair_Display, Inter } from 'next/font/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
+import { Playfair_Display, Inter, Material_Symbols_Outlined } from 'next/font/google';
+import dynamic from 'next/dynamic';
 import './globals.css';
 import { BRAND, getWhatsAppLink } from '@/config/brand';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileBottomNav from '@/components/MobileBottomNav';
-import CartDrawer from '@/components/CartDrawer';
+const CartDrawer = dynamic(() => import('@/components/CartDrawer'), { ssr: false });
 import SessionWrapper from '@/components/SessionWrapper';
 import dbConnect from '@/lib/db';
 import StoreSettings from '@/models/StoreSettings';
@@ -26,6 +28,14 @@ const inter = Inter({
   weight: ['300', '400', '500', '600'],
   variable: '--font-inter',
   display: 'swap',
+});
+
+const materialSymbols = Material_Symbols_Outlined({
+  subsets: ['latin'],
+  weight: ['400'],
+  style: ['normal'],
+  variable: '--font-material-symbols',
+  display: 'block',
 });
 
 export const viewport = {
@@ -114,9 +124,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   };
 
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
+    <html lang="en" className={`${playfair.variable} ${inter.variable} ${materialSymbols.variable}`}>
       <head>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preload" as="image" href="/images/hero.webp" />
         <link rel="canonical" href={BRAND.domain} />
         <script
@@ -152,6 +163,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             />
           </SessionWrapper>
         </SettingsProvider>
+        <GoogleAnalytics gaId="G-XXXXXXXXXX" />
       </body>
     </html>
   );

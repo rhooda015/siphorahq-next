@@ -1,4 +1,6 @@
 import React from 'react';
+import Link from 'next/link';
+import ProtectedEmail from '@/components/ProtectedEmail';
 import { BRAND } from '@/config/brand';
 import ContactForm from '@/components/ContactForm';
 
@@ -27,9 +29,7 @@ export default function ContactPage() {
               
               <div>
                 <h3 className="font-sans text-[10px] uppercase tracking-[0.2em] text-[var(--color-secondary)] mb-3">Email Us</h3>
-                <a href="mailto:concierge@siphorahq.in" className="font-serif text-2xl text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors">
-                  concierge@siphorahq.in
-                </a>
+                <ProtectedEmail email="concierge@siphorahq.in" className="font-serif text-2xl text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors" />
               </div>
 
               <div>

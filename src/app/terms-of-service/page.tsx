@@ -1,4 +1,6 @@
+import React from 'react';
 import { BRAND } from "@/config/brand";
+import ProtectedEmail from '@/components/ProtectedEmail';
 
 export const metadata = {
   title: `Terms & Conditions | ${BRAND.name}`,
@@ -17,7 +19,7 @@ export default function Page() {
         </section>
         <section>
           <h2 className="text-base font-semibold uppercase tracking-wider mb-3">2. About Us</h2>
-          <p><strong>SiphoraHQ</strong> is operated by Rohit Hooda, Faridabad, Haryana – 121004, India. GSTIN: 06APTPH1635N1ZG. Contact: <a href="mailto:concierge@siphorahq.in" className="underline">concierge@siphorahq.in</a></p>
+          <p><strong>SiphoraHQ</strong> is operated by Rohit Hooda, Faridabad, Haryana – 121004, India. GSTIN: 06APTPH1635N1ZG. Contact: <ProtectedEmail email="concierge@siphorahq.in" className="underline" /></p>
         </section>
         <section>
           <h2 className="text-base font-semibold uppercase tracking-wider mb-3">3. Products & Pricing</h2>
@@ -58,7 +60,7 @@ export default function Page() {
         </section>
         <section>
           <h2 className="text-base font-semibold uppercase tracking-wider mb-3">10. Contact</h2>
-          <p>Email: <a href="mailto:concierge@siphorahq.in" className="underline">concierge@siphorahq.in</a> | Response within 72 business hours.</p>
+          <p>Email: <ProtectedEmail email="concierge@siphorahq.in" className="underline" /> | Response within 72 business hours.</p>
         </section>
       </div>
     </main>

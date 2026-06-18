@@ -10,7 +10,7 @@ export default function Page() {
           Corporate Gifting
         </h1>
         <div className="prose prose-lg mx-auto text-[var(--color-text-muted)] font-sans whitespace-pre-wrap leading-relaxed">
-          Elevate your corporate relationships with Siphorahq. We offer bulk pricing, custom branding, and specialized packaging for corporate clients. Contact concierge@siphorahq.in for a catalog.
+          Elevate your corporate relationships with Siphorahq. We offer bulk pricing, custom branding, and specialized packaging for corporate clients. Contact concierge [at] siphorahq.in for a catalog.
         </div>
       </div>
     </div>

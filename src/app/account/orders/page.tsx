@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -109,9 +110,9 @@ export default function OrdersPage() {
                    order.items.map((item: any, i: number) => (
                      <div key={i} className={`flex flex-col md:flex-row gap-6 md:gap-8 ${i !== 0 ? 'pt-6 border-t-[0.5px] border-zinc-100' : ''}`}>
                        {/* Product Image */}
-                       <div className="w-24 h-32 md:w-28 md:h-36 bg-zinc-50 border-[0.5px] border-zinc-100 flex-shrink-0 flex items-center justify-center overflow-hidden">
+                       <div className="w-24 h-32 md:w-28 md:h-36 bg-zinc-50 border-[0.5px] border-zinc-100 flex-shrink-0 flex items-center justify-center overflow-hidden relative">
                          {(item.image || item.img || item.imageURL) ? (
-                           <img src={item.image || item.img || item.imageURL} alt={item.name || 'Product Image'} className="object-cover w-full h-full mix-blend-multiply" />
+                           <Image src={item.image || item.img || item.imageURL} alt={item.name || 'Product Image'} fill className="object-cover mix-blend-multiply" sizes="(max-width: 768px) 96px, 112px" />
                          ) : (
                            <span className="font-sans text-[10px] text-zinc-400 tracking-widest uppercase text-center px-2">No Image</span>
                          )}

@@ -1,0 +1,3 @@
+# Ads.txt file for siphorahq.in
+# Replace pub-0000000000000000 with your actual publisher ID if you use Google AdSense or another ad network
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0

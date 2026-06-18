@@ -49,7 +49,7 @@ Please read this policy carefully before placing an order. By purchasing from si
       {
         num: 'Step 1',
         title: 'Contact Us Within 7 Days',
-        detail: 'Email concierge@siphorahq.in with your order number, reason for return, and clear photographs of the product and packaging.',
+        detail: 'Email concierge [at] siphorahq.in with your order number, reason for return, and clear photographs of the product and packaging.',
       },
       {
         num: 'Step 2',
@@ -99,7 +99,7 @@ To request an exchange, follow the same process as a return and mention your pre
     bullets: [
       'Orders can be cancelled within 12 hours of placement, before processing begins',
       'Once the order is packed and dispatched, cancellation is not possible',
-      'To cancel, email concierge@siphorahq.in immediately with your order number',
+      'To cancel, email concierge [at] siphorahq.in immediately with your order number',
       'Cancelled order refunds are processed within 2–3 business days',
     ],
   },
@@ -108,7 +108,7 @@ To request an exchange, follow the same process as a return and mention your pre
     title: 'Marketplace Orders',
     content: `For orders placed through Amazon, Flipkart, or Meesho, the return and refund policy of the respective marketplace applies. Please initiate returns directly through the marketplace platform.
 
-For any additional support, you may write to us at concierge@siphorahq.in with your marketplace order ID.`,
+For any additional support, you may write to us at concierge [at] siphorahq.in with your marketplace order ID.`,
   },
   {
     id: '09',
@@ -203,7 +203,7 @@ export default function RefundPolicy() {
                 {section.contact && (
                   <div className="bg-gray-50 rounded-lg p-6 text-sm space-y-2 text-gray-700">
                     <p className="font-medium text-gray-900">SiphoraHQ Customer Care</p>
-                    <p>Email: <a href="mailto:concierge@siphorahq.in" className="underline underline-offset-2">concierge@siphorahq.in</a></p>
+                    <p>Email: <ProtectedEmail email="concierge@siphorahq.in" className="underline underline-offset-2" /></p>
                     <p>Response Time: Within 24–48 business hours</p>
                     <p className="text-gray-500 text-xs pt-1">Please include your order number in all correspondence for faster resolution.</p>
                   </div>

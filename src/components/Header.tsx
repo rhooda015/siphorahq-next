@@ -112,6 +112,7 @@ export default function Header() {
                 <button 
                   className="text-ink-charcoal hover:text-burnished-gold transition-colors p-1 -ml-1"
                   onClick={() => setIsMobileMenuOpen(true)}
+                  aria-label="Open mobile menu"
                 >
                   <Menu className="h-6 w-6 stroke-[1.5]" />
                 </button>
@@ -168,16 +169,17 @@ export default function Header() {
               <button 
                 className="hover:text-burnished-gold transition-colors hidden md:block"
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
+                aria-label="Toggle search"
               >
                 <span className="material-symbols-outlined">search</span>
               </button>
-              <Link href={session ? "/account" : "/login"} className="hover:text-burnished-gold transition-colors hidden md:block">
+              <Link href={session ? "/account" : "/login"} className="hover:text-burnished-gold transition-colors hidden md:block" aria-label="Account">
                 <span className="material-symbols-outlined">person</span>
               </Link>
-              <button onClick={() => router.push('/account/wishlist')} className="hover:text-burnished-gold transition-colors relative hidden md:block">
+              <button onClick={() => router.push('/account/wishlist')} className="hover:text-burnished-gold transition-colors relative hidden md:block" aria-label="View wishlist">
                 <span className="material-symbols-outlined">favorite</span>
               </button>
-              <button onClick={openDrawer} className="hover:text-burnished-gold transition-colors relative">
+              <button onClick={openDrawer} className="hover:text-burnished-gold transition-colors relative" aria-label="Open cart">
                 <span className="material-symbols-outlined">shopping_bag</span>
                 <span className={`absolute -top-1 -right-1 bg-burnished-gold text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold transition-all duration-300 ${mounted && items.length > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
                   {mounted ? items.length : 0}
@@ -206,7 +208,7 @@ export default function Header() {
                 className="w-full border-b border-ink-charcoal text-xl font-display-lg py-3 px-2 focus:outline-none focus:border-burnished-gold bg-transparent text-ink-charcoal placeholder:text-on-surface-variant/50"
                 autoFocus
               />
-              <button type="submit" className="absolute right-2 top-3 text-on-surface-variant hover:text-ink-charcoal transition-colors">
+              <button type="submit" className="absolute right-2 top-3 text-on-surface-variant hover:text-ink-charcoal transition-colors" aria-label="Submit search">
                 <span className="material-symbols-outlined text-[24px]">search</span>
               </button>
             </form>

@@ -4,7 +4,8 @@ import Link from "next/link";
 import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
 import { STATIC_PRODUCTS } from '@/data/products';
-import NewsletterForm from '@/components/NewsletterForm';
+import dynamic from 'next/dynamic';
+const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false });
 import AutoCarousel from '@/components/AutoCarousel';
 
 export const revalidate = 60; // Use ISR
@@ -131,7 +132,7 @@ export default async function HomePage() {
                 <Link href={`/products/${p.id || p.slug}`} className="flex-1 flex flex-col">
                   <div className="relative aspect-[4/5] mb-6 overflow-hidden bg-[#faf7f2] border border-[#f0ebe1] rounded-sm">
                     <span className="absolute top-3 left-3 z-10 bg-surface-cream px-3 py-1.5 font-label-caps text-[9px] uppercase tracking-widest text-ink-charcoal shadow-sm">Best Seller</span>
-                    <Image src={p.image || p.imageURL || '/images/dinnerware.webp'} alt={p.name} fill className="w-full h-full object-contain p-4 bg-[#faf7f2] transition-transform duration-700 group-hover:scale-[1.03]" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" />
+                    <Image src={p.image || p.imageURL || '/images/dinnerware.webp'} alt={p.name} fill className="w-full h-full object-contain p-4 bg-[#faf7f2] transition-transform duration-700 group-hover:scale-[1.03]" sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw" />
                     <button className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-burnished-gold hover:text-white">
                       <span className="material-symbols-outlined text-[20px]">shopping_bag</span>
                     </button>

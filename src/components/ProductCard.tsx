@@ -27,7 +27,7 @@ export default function ProductCard({ product }: { product: any }) {
           src={(product.images?.[0]?.url) || product.image || product.img || '/images/dinnerware.webp'}
           alt={product.name}
           fill
-          sizes="(max-width: 768px) 100vw, 25vw"
+          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="w-full h-full object-contain p-4 bg-[#faf7f2] transition-transform duration-500 group-hover:scale-[1.03]"
         />
 

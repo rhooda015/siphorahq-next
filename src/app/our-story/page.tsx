@@ -29,7 +29,7 @@ export default function OurStoryPage() {
         '@type': 'ContactPoint',
         telephone: '+91-9540027978',
         contactType: 'customer service',
-        email: 'concierge@siphorahq.in',
+        email: 'concierge [at] siphorahq.in',
         areaServed: 'IN'
       }
     }

@@ -90,7 +90,7 @@ By accessing our website or placing an order, you consent to the practices descr
   {
     id: '10',
     title: "Children's Privacy",
-    content: `Our website and services are not directed at children under the age of 18. We do not knowingly collect personal information from minors. If you believe a minor has provided us with personal data without parental consent, please contact us immediately at concierge@siphorahq.in and we will take prompt steps to delete such data.`,
+    content: `Our website and services are not directed at children under the age of 18. We do not knowingly collect personal information from minors. If you believe a minor has provided us with personal data without parental consent, please contact us immediately at concierge [at] siphorahq.in and we will take prompt steps to delete such data.`,
   },
   {
     id: '11',
@@ -170,9 +170,7 @@ export default function PrivacyPolicy() {
                     <p>GSTIN: 06APTPH1635N1ZG</p>
                     <p className="pt-1">
                       Email:{' '}
-                      <a href="mailto:concierge@siphorahq.in" className="underline underline-offset-2">
-                        concierge@siphorahq.in
-                      </a>
+                      <ProtectedEmail email="concierge@siphorahq.in" className="underline underline-offset-2" />
                     </p>
                     <p className="text-gray-500 text-xs pt-1">We aim to respond to all grievances within 72 business hours.</p>
                   </div>

@@ -54,7 +54,7 @@ export default function AutoCarousel() {
               className="object-cover"
               sizes="100vw"
             />
-            <div className="absolute inset-0 bg-black/30"></div>
+            <div className="absolute inset-0 bg-black/50"></div>
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-surface-cream px-6">
               <span className="font-label-caps text-sm tracking-[0.3em] mb-6 uppercase text-burnished-gold">
                 {slide.badge}

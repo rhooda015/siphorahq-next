@@ -1,3 +1,6 @@
+import React from 'react';
+import ProtectedEmail from '@/components/ProtectedEmail';
+
 export const metadata = {
   title: 'Shipping Policy | SiphoraHQ',
   description: 'Shipping timelines, charges, and delivery information for SiphoraHQ orders.',
@@ -53,11 +56,11 @@ export default function ShippingPolicyPage() {
         </section>
         <section>
           <h2 className="text-base font-semibold uppercase tracking-wider mb-3">7. Damaged in Transit</h2>
-          <p>If your order arrives damaged, please photograph the package and product immediately and email us at <a href="mailto:concierge@siphorahq.in" className="underline">concierge@siphorahq.in</a> within 48 hours of delivery. We will arrange a replacement or refund.</p>
+          <p>If your order arrives damaged, please photograph the package and product immediately and email us at <ProtectedEmail email="concierge@siphorahq.in" className="underline" /> within 48 hours of delivery. We will arrange a replacement or refund.</p>
         </section>
         <section>
           <h2 className="text-base font-semibold uppercase tracking-wider mb-3">8. Contact</h2>
-          <p>For shipping queries: <a href="mailto:concierge@siphorahq.in" className="underline">concierge@siphorahq.in</a> | +91 9540027978</p>
+          <p>For shipping queries: <ProtectedEmail email="concierge@siphorahq.in" className="underline" /> | +91 9540027978</p>
         </section>
       </div>
     </main>

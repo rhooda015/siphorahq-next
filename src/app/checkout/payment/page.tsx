@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Script from 'next/script';
 import { ChevronRight, CreditCard, Wallet, Truck, ShieldCheck, Lock, CheckCircle, MessageCircle, HeartHandshake } from 'lucide-react';
 import { BRAND } from '@/config/brand';
@@ -157,7 +158,7 @@ export default function PaymentPage() {
               {orderDetails.items.map((item: any, idx: number) => (
                 <div key={idx} className="flex gap-6 border-b-[0.5px] border-zinc-200 pb-6">
                   <div className="w-24 h-32 bg-neutral-50 relative flex-shrink-0 border-[0.5px] border-zinc-100">
-                    <img src={item.image} alt={item.name} className="absolute inset-0 w-full h-full object-cover" />
+                    <Image src={item.image} alt={item.name} fill className="object-cover" />
                   </div>
                   <div className="flex flex-col flex-1 py-1">
                     <h4 className="font-sans text-sm uppercase tracking-widest text-[#1a1612] mb-2">{item.name}</h4>
