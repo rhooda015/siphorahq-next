@@ -1,0 +1,21 @@
+# Siphorahq
+
+Siphorahq is a luxury ecommerce brand specializing in handcrafted porcelain dinnerware, tea sets, and exclusive gifting collections. Based in India, Siphorahq works with master artisans to create premium pieces that blend traditional craftsmanship with contemporary design. All products are fired at 1350°C for durability and feature lead-free, non-porous finishes. Select pieces are adorned with 24k gold accents.
+
+## Product Categories
+- Dinnerware Collections: Timeless plates, bowls, and serving dishes.
+- Tea Sets & Mugs: Artisan-crafted cups, mugs, and complete tea sets.
+- Gifting: Curated gift boxes for weddings, corporate events, and festivals.
+- Limited Editions: Exclusive series like the Kintsugi collection.
+
+## Primary URLs
+- Homepage: https://siphorahq.in/
+- Shop All Products: https://siphorahq.in/products
+- Collections: https://siphorahq.in/collections
+- Best Sellers: https://siphorahq.in/best-sellers
+- Our Story: https://siphorahq.in/our-story
+- Contact Us: https://siphorahq.in/contact
+
+## Philosophy
+"Poetry in Porcelain, Crafted for the Modern Home."
+We believe everyday dining should feel like an occasion. Every piece is designed to bring joy and a touch of luxury to the modern home.

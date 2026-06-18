@@ -1,11 +1,12 @@
+import { Award, Truck, Gift, HeadphonesIcon, ShoppingBag, Star, Flame, Gem, Leaf, ChevronDown } from 'lucide-react';
 import React from 'react';
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
 import { STATIC_PRODUCTS } from '@/data/products';
-import dynamic from 'next/dynamic';
-const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false });
+import NewsletterFormDynamic from '@/components/NewsletterFormDynamic';
 import AutoCarousel from '@/components/AutoCarousel';
 
 export const revalidate = 60; // Use ISR
@@ -37,28 +38,73 @@ export default async function HomePage() {
 
   return (
     <>
+      <Script
+        id="faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Are the products microwave and dishwasher safe?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Most of our porcelain is microwave and dishwasher safe. However, pieces with 24k gold or platinum accents should be hand-washed and kept out of the microwave."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do you offer international shipping?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Currently, we ship exclusively within India to ensure the highest quality of service and safe delivery of our delicate products."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What happens if a piece breaks during delivery?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "We offer a 100% damage-free guarantee. If your order arrives damaged, send us a photo on WhatsApp within 48 hours, and we will send a free replacement immediately."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I customize a set for a wedding gift?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, we offer bespoke gifting concierge services. You can contact our team via WhatsApp to curate a custom box for your special occasion."
+                }
+              }
+            ]
+          })
+        }}
+      />
+      <h1 className="sr-only">Luxury Porcelain Tea Cups & Dinnerware in India</h1>
       <AutoCarousel />
 
       {/* 4. Trust Grid */}
       <section className="border-b border-muted-sand">
         <div className="max-w-container-max mx-auto grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-muted-sand">
           <div className="p-8 md:p-12 text-center group hover:bg-white transition-colors">
-            <span className="material-symbols-outlined text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform">workspace_premium</span>
+            <Award className="text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform w-5 h-5 inline-block" />
             <h3 className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal mb-2">Artisan Crafted</h3>
             <p className="font-body-md text-on-surface-variant text-sm">Fine porcelain, fired at 1350°C</p>
           </div>
           <div className="p-8 md:p-12 text-center group hover:bg-white transition-colors">
-            <span className="material-symbols-outlined text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform">local_shipping</span>
+            <Truck className="text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform w-5 h-5 inline-block" />
             <h3 className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal mb-2">Secure Delivery</h3>
             <p className="font-body-md text-on-surface-variant text-sm">Damage-free guarantee across India</p>
           </div>
           <div className="p-8 md:p-12 text-center group hover:bg-white transition-colors">
-            <span className="material-symbols-outlined text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform">redeem</span>
+            <Gift className="text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform w-5 h-5 inline-block" />
             <h3 className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal mb-2">Luxury Packaging</h3>
             <p className="font-body-md text-on-surface-variant text-sm">Signature gifting boxes included</p>
           </div>
           <div className="p-8 md:p-12 text-center group hover:bg-white transition-colors">
-            <span className="material-symbols-outlined text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform">headset_mic</span>
+            <HeadphonesIcon className="text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform w-5 h-5 inline-block" />
             <h3 className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal mb-2">Private Concierge</h3>
             <p className="font-body-md text-on-surface-variant text-sm">Dedicated WhatsApp support</p>
           </div>
@@ -134,7 +180,7 @@ export default async function HomePage() {
                     <span className="absolute top-3 left-3 z-10 bg-surface-cream px-3 py-1.5 font-label-caps text-[9px] uppercase tracking-widest text-ink-charcoal shadow-sm">Best Seller</span>
                     <Image src={p.image || p.imageURL || '/images/dinnerware.webp'} alt={p.name} fill className="w-full h-full object-contain p-4 bg-[#faf7f2] transition-transform duration-700 group-hover:scale-[1.03]" sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw" />
                     <button className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-burnished-gold hover:text-white">
-                      <span className="material-symbols-outlined text-[20px]">shopping_bag</span>
+                      <ShoppingBag className=" w-5 h-5 inline-block" />
                     </button>
                   </div>
                   <div className="text-center flex-1 flex flex-col justify-between pt-2">
@@ -142,7 +188,7 @@ export default async function HomePage() {
                       <h3 className="font-headline-md text-base sm:text-lg text-ink-charcoal mb-2 group-hover:text-burnished-gold transition-colors line-clamp-2 leading-snug">{p.name}</h3>
                       <div className="flex justify-center gap-1 mb-3">
                         {[1,2,3,4,5].map((_, i) => (
-                          <span key={i} className="material-symbols-outlined text-[12px] text-burnished-gold" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                          <Star className="text-burnished-gold w-5 h-5 inline-block" />
                         ))}
                       </div>
                     </div>
@@ -278,21 +324,21 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center divide-y md:divide-y-0 md:divide-x divide-muted-sand">
             <div className="pt-8 md:pt-0 md:px-8">
               <div className="w-16 h-16 mx-auto bg-surface-cream rounded-full flex items-center justify-center mb-6">
-                <span className="material-symbols-outlined text-burnished-gold text-2xl">local_fire_department</span>
+                <Flame className="text-burnished-gold text-2xl w-5 h-5 inline-block" />
               </div>
               <h3 className="font-headline-md text-xl text-ink-charcoal mb-3">Fired at 1350°C</h3>
               <p className="font-body-md text-on-surface-variant">Ensuring maximum durability and a perfectly non-porous finish.</p>
             </div>
             <div className="pt-8 md:pt-0 md:px-8">
               <div className="w-16 h-16 mx-auto bg-surface-cream rounded-full flex items-center justify-center mb-6">
-                <span className="material-symbols-outlined text-burnished-gold text-2xl">diamond</span>
+                <Gem className="text-burnished-gold text-2xl w-5 h-5 inline-block" />
               </div>
               <h3 className="font-headline-md text-xl text-ink-charcoal mb-3">24k Gold Accents</h3>
               <p className="font-body-md text-on-surface-variant">Real gold detailing applied meticulously by hand on select pieces.</p>
             </div>
             <div className="pt-8 md:pt-0 md:px-8">
               <div className="w-16 h-16 mx-auto bg-surface-cream rounded-full flex items-center justify-center mb-6">
-                <span className="material-symbols-outlined text-burnished-gold text-2xl">eco</span>
+                <Leaf className="text-burnished-gold text-2xl w-5 h-5 inline-block" />
               </div>
               <h3 className="font-headline-md text-xl text-ink-charcoal mb-3">Lead-Free &amp; Safe</h3>
               <p className="font-body-md text-on-surface-variant">Completely free from harmful toxins, prioritizing your family's health.</p>
@@ -308,7 +354,7 @@ export default async function HomePage() {
             <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal mb-4">Words from Happy Homes</h2>
             <div className="flex justify-center gap-1">
               {[1,2,3,4,5].map((_, i) => (
-                <span key={i} className="material-symbols-outlined text-[18px] text-burnished-gold" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                <Star className="text-burnished-gold w-5 h-5 inline-block" />
               ))}
             </div>
           </div>
@@ -371,7 +417,7 @@ export default async function HomePage() {
               <details key={i} className="group py-6">
                 <summary className="flex justify-between items-center cursor-pointer list-none font-headline-md text-xl text-ink-charcoal group-open:text-burnished-gold transition-colors">
                   {faq.q}
-                  <span className="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 text-burnished-gold">expand_more</span>
+                  <ChevronDown className="transition-transform duration-300 group-open:rotate-180 text-burnished-gold w-5 h-5 inline-block" />
                 </summary>
                 <p className="font-body-md text-on-surface-variant mt-4 leading-relaxed pr-12">{faq.a}</p>
               </details>
@@ -380,7 +426,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <NewsletterForm />
+        <NewsletterFormDynamic />
 
       {/* WhatsApp Floating Button */}
       <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I'm%20interested%20in%20Siphorahq%20products`} target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(37,211,102,0.4)] hover:scale-110 transition-transform">

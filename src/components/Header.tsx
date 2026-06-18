@@ -1,4 +1,5 @@
 "use client";
+import { Lock, Search, User, Heart, ShoppingBag } from 'lucide-react';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -75,7 +76,7 @@ export default function Header() {
             {BRAND.name}
           </Link>
           <div className="flex items-center gap-2 text-ink-charcoal">
-            <span className="material-symbols-outlined text-[16px]">lock</span>
+            <Lock className=" w-5 h-5 inline-block" />
             <span className="font-label-caps text-label-caps uppercase tracking-widest">Secure</span>
           </div>
         </div>
@@ -171,16 +172,16 @@ export default function Header() {
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 aria-label="Toggle search"
               >
-                <span className="material-symbols-outlined">search</span>
+                <Search className=" w-5 h-5 inline-block" />
               </button>
               <Link href={session ? "/account" : "/login"} className="hover:text-burnished-gold transition-colors hidden md:block" aria-label="Account">
-                <span className="material-symbols-outlined">person</span>
+                <User className=" w-5 h-5 inline-block" />
               </Link>
               <button onClick={() => router.push('/account/wishlist')} className="hover:text-burnished-gold transition-colors relative hidden md:block" aria-label="View wishlist">
-                <span className="material-symbols-outlined">favorite</span>
+                <Heart className=" w-5 h-5 inline-block" />
               </button>
               <button onClick={openDrawer} className="hover:text-burnished-gold transition-colors relative" aria-label="Open cart">
-                <span className="material-symbols-outlined">shopping_bag</span>
+                <ShoppingBag className=" w-5 h-5 inline-block" />
                 <span className={`absolute -top-1 -right-1 bg-burnished-gold text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold transition-all duration-300 ${mounted && items.length > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
                   {mounted ? items.length : 0}
                 </span>
@@ -209,7 +210,7 @@ export default function Header() {
                 autoFocus
               />
               <button type="submit" className="absolute right-2 top-3 text-on-surface-variant hover:text-ink-charcoal transition-colors" aria-label="Submit search">
-                <span className="material-symbols-outlined text-[24px]">search</span>
+                <Search className=" w-5 h-5 inline-block" />
               </button>
             </form>
           </div>

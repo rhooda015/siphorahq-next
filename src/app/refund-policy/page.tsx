@@ -1,3 +1,4 @@
+import ProtectedEmail from '@/components/ProtectedEmail';
 export { refundMetadata as metadata } from '@/lib/metadata';
 
 const highlights = [

@@ -1,4 +1,6 @@
+import { Plus } from 'lucide-react';
 import React from 'react';
+import { Gem, ShieldCheck, Gift, Truck } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BRAND } from '@/config/brand';
@@ -72,13 +74,13 @@ export default async function BestSellersPage() {
       <section className="border-y border-muted-sand py-8 px-5 bg-surface-cream">
         <div className="max-w-container-max mx-auto flex flex-wrap justify-center gap-x-12 gap-y-6 md:justify-between items-center text-center">
           {[
-            { icon: 'diamond', text: 'Premium Porcelain Finish' },
-            { icon: 'verified_user', text: 'Lead-Free & Food Safe' },
-            { icon: 'redeem', text: 'Elegant Gift Packaging' },
-            { icon: 'local_shipping', text: 'Damage Replacement Support' }
+            { icon: <Gem className="w-5 h-5 text-burnished-gold" />, text: 'Premium Porcelain Finish' },
+            { icon: <ShieldCheck className="w-5 h-5 text-burnished-gold" />, text: 'Lead-Free & Food Safe' },
+            { icon: <Gift className="w-5 h-5 text-burnished-gold" />, text: 'Elegant Gift Packaging' },
+            { icon: <Truck className="w-5 h-5 text-burnished-gold" />, text: 'Damage Replacement Support' }
           ].map((item, idx) => (
             <div key={idx} className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-[20px] text-burnished-gold">{item.icon}</span>
+              {item.icon}
               <span className="font-label-caps text-[10px] uppercase tracking-widest text-ink-charcoal">{item.text}</span>
             </div>
           ))}
@@ -196,7 +198,7 @@ export default async function BestSellersPage() {
               <summary className="font-headline-md text-lg md:text-xl text-ink-charcoal cursor-pointer py-6 pr-8 relative list-none outline-none">
                 {faq.q}
                 <span className="absolute right-0 top-1/2 -translate-y-1/2 text-burnished-gold transition-transform duration-300 group-open:rotate-45">
-                  <span className="material-symbols-outlined text-[24px]">add</span>
+                  <Plus className=" w-5 h-5 inline-block" />
                 </span>
               </summary>
               <div className="pb-6 pr-8 text-on-surface-variant font-body-md text-base leading-relaxed animate-in fade-in slide-in-from-top-2 duration-300">

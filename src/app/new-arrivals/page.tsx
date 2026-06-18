@@ -1,3 +1,4 @@
+import { Gem, ShieldCheck, Gift, RefreshCw, Truck } from 'lucide-react';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -174,23 +175,23 @@ export default function NewArrivalsPage() {
         <div className="max-w-container-max mx-auto px-5 flex justify-between items-center overflow-hidden">
           <div className="flex animate-marquee md:animate-none md:justify-center md:w-full gap-8 md:gap-16 whitespace-nowrap">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px] text-burnished-gold">diamond</span>
+              <Gem className="text-burnished-gold w-5 h-5 inline-block" />
               <span className="font-label-caps text-[11px] uppercase tracking-widest">Premium Porcelain</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px] text-burnished-gold">verified_user</span>
+              <ShieldCheck className="text-burnished-gold w-5 h-5 inline-block" />
               <span className="font-label-caps text-[11px] uppercase tracking-widest">Lead Free & Food Safe</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px] text-burnished-gold">redeem</span>
+              <Gift className="text-burnished-gold w-5 h-5 inline-block" />
               <span className="font-label-caps text-[11px] uppercase tracking-widest">Gift Ready Packaging</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px] text-burnished-gold">replay</span>
+              <RefreshCw className="text-burnished-gold w-5 h-5 inline-block" />
               <span className="font-label-caps text-[11px] uppercase tracking-widest">Damage Replacement</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px] text-burnished-gold">local_shipping</span>
+              <Truck className="text-burnished-gold w-5 h-5 inline-block" />
               <span className="font-label-caps text-[11px] uppercase tracking-widest">Free Shipping Above ₹999</span>
             </div>
           </div>

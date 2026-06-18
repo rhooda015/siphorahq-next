@@ -1,4 +1,5 @@
 import React from 'react';
+import { ShieldCheck, Gem, Gift, CheckCircle2, RefreshCw } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BRAND } from '@/config/brand';
@@ -172,14 +173,14 @@ export default function OurStoryPage() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-10 gap-x-6">
           {[
-            { icon: "verified_user", text: "Lead-free and food-safe finish" },
-            { icon: "diamond", text: "Premium porcelain body" },
-            { icon: "redeem", text: "Elegant gift-ready packaging" },
-            { icon: "check_circle", text: "Carefully checked before dispatch" },
-            { icon: "replay", text: "Damage replacement support" }
+            { icon: <ShieldCheck className="w-8 h-8 text-burnished-gold mb-4" />, text: "Lead-free and food-safe finish" },
+            { icon: <Gem className="w-8 h-8 text-burnished-gold mb-4" />, text: "Premium porcelain body" },
+            { icon: <Gift className="w-8 h-8 text-burnished-gold mb-4" />, text: "Elegant gift-ready packaging" },
+            { icon: <CheckCircle2 className="w-8 h-8 text-burnished-gold mb-4" />, text: "Carefully checked before dispatch" },
+            { icon: <RefreshCw className="w-8 h-8 text-burnished-gold mb-4" />, text: "Damage replacement support" }
           ].map((item, idx) => (
             <div key={idx} className="flex flex-col items-center">
-              <span className="material-symbols-outlined text-3xl text-burnished-gold mb-4">{item.icon}</span>
+              {item.icon}
               <p className="font-body-md text-ink-charcoal font-medium">{item.text}</p>
             </div>
           ))}

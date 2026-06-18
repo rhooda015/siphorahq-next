@@ -1,4 +1,5 @@
 "use client";
+import { Gift } from 'lucide-react';
 
 import React, { useState } from 'react';
 import Image from 'next/image';
@@ -81,7 +82,7 @@ export default function NewArrivalsClient({ products }: { products: Product[] })
                 <div className="flex flex-col items-center gap-1 border-t border-muted-sand/50 pt-4 mt-2">
                   <span className="font-body-md font-semibold text-lg text-ink-charcoal mb-1">{product.price}</span>
                   <span className="font-body-md text-[11px] text-on-surface-variant flex items-center justify-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]">redeem</span> Gift-ready box · Safe delivery
+                    <Gift className=" w-5 h-5 inline-block" /> Gift-ready box · Safe delivery
                   </span>
                 </div>
               </div>

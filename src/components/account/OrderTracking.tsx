@@ -1,4 +1,5 @@
 "use client";
+import { CheckCircle2, Package, Receipt } from 'lucide-react';
 
 import Image from "next/image";
 import Link from "next/link";

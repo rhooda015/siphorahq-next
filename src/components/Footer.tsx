@@ -1,3 +1,4 @@
+import { Share2, Camera, Mail, Phone } from 'lucide-react';
 import React from 'react';
 import Link from 'next/link';
 import ProtectedEmail from '@/components/ProtectedEmail';
@@ -14,11 +15,11 @@ export default function Footer() {
             Elevating everyday rituals with luxury porcelain, crafted for the modern home.
           </p>
           <div className="flex gap-4">
-            <a className="w-10 h-10 rounded-full border border-surface-cream/20 flex items-center justify-center hover:bg-burnished-gold hover:border-burnished-gold transition-colors" href="#">
-              <span className="material-symbols-outlined text-[20px]">share</span>
+            <a className="w-10 h-10 rounded-full border border-surface-cream/20 flex items-center justify-center hover:bg-burnished-gold hover:border-burnished-gold transition-colors" href="#" aria-label="Share on Pinterest">
+              <Share2 className=" w-5 h-5 inline-block" />
             </a>
-            <a className="w-10 h-10 rounded-full border border-surface-cream/20 flex items-center justify-center hover:bg-burnished-gold hover:border-burnished-gold transition-colors" href="#">
-              <span className="material-symbols-outlined text-[20px]">photo_camera</span>
+            <a className="w-10 h-10 rounded-full border border-surface-cream/20 flex items-center justify-center hover:bg-burnished-gold hover:border-burnished-gold transition-colors" href={BRAND.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
+              <Camera className=" w-5 h-5 inline-block" />
             </a>
           </div>
         </div>
@@ -47,11 +48,11 @@ export default function Footer() {
           <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">Contact Us</h4>
           <ul className="space-y-4 font-body-md text-surface-cream/80 mb-8">
             <li className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-burnished-gold text-[18px]">mail</span> 
+              <Mail className="text-burnished-gold w-5 h-5 inline-block" /> 
               <ProtectedEmail email="concierge@siphorahq.in" className="hover:text-white transition-colors" />
             </li>
             <li className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-burnished-gold text-[18px]">call</span> 
+              <Phone className="text-burnished-gold w-5 h-5 inline-block" /> 
               <a className="hover:text-white transition-colors" href="tel:+919540027978">+91 95400 27978</a>
             </li>
           </ul>

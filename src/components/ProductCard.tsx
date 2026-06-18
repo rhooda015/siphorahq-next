@@ -1,3 +1,4 @@
+import { Star } from 'lucide-react';
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -46,7 +47,7 @@ export default function ProductCard({ product }: { product: any }) {
         </Link>
         <div className="flex text-champagne-gold items-center mt-2">
           {[1,2,3,4,5].map((star) => (
-            <span key={star} className="material-symbols-outlined !text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+            <Star className=" w-5 h-5 inline-block" />
           ))}
           <span className="text-[10px] text-on-surface-variant ml-2 font-label-caps">({Math.floor(Math.random() * 50) + 4})</span>
         </div>

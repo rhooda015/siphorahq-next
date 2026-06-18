@@ -1,3 +1,4 @@
+import ProtectedEmail from '@/components/ProtectedEmail';
 export { shippingMetadata as metadata } from '@/lib/metadata';
 
 const shippingZones = [

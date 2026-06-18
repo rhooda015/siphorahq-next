@@ -1,4 +1,5 @@
 "use client";
+import { Search, User, Heart, ShoppingBag, Star, Truck, Award, Gift, ChevronRight, Gem, Camera, Share2, Mail, Phone, ArrowRight, Globe, MessageCircle } from 'lucide-react';
 
 import { useState } from "react";
 import Image from "next/image";
@@ -200,32 +201,20 @@ export default function AccountDashboard({
             <Link
               href="/search"
               aria-label="Search"
-              className="material-symbols-outlined hover:text-burnished-gold transition-colors hidden sm:inline-flex"
-            >
-              search
-            </Link>
+              className="hover:text-burnished-gold transition-colors hidden sm:inline-flex"><Search className="w-5 h-5" /></Link>
             <Link
               href="/account"
               aria-label="My account"
               aria-current="page"
-              className="material-symbols-outlined border-b-2 border-burnished-gold pb-0.5"
-            >
-              person
-            </Link>
+              className="border-b-2 border-burnished-gold pb-0.5"><User className="w-5 h-5" /></Link>
             <Link
               href="/wishlist"
               aria-label="Wishlist"
-              className="material-symbols-outlined hover:text-burnished-gold transition-colors hidden sm:inline-flex"
-            >
-              favorite
-            </Link>
+              className="hover:text-burnished-gold transition-colors hidden sm:inline-flex"><Heart className="w-5 h-5" /></Link>
             <Link
               href="/cart"
               aria-label="Shopping bag"
-              className="material-symbols-outlined hover:text-burnished-gold transition-colors"
-            >
-              shopping_bag
-            </Link>
+              className="hover:text-burnished-gold transition-colors"><ShoppingBag className="w-5 h-5" /></Link>
 
             {/* Mobile hamburger */}
             <button
@@ -373,9 +362,7 @@ export default function AccountDashboard({
                   className="text-[11px] font-semibold uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all duration-300 mt-6"
                 >
                   {card.cta}{" "}
-                  <span className="material-symbols-outlined" style={{ fontSize: "16px" }} aria-hidden="true">
-                    arrow_forward
-                  </span>
+                  <ArrowRight className="w-5 h-5" aria-hidden="true" />
                 </Link>
               </article>
             ))}
@@ -409,9 +396,7 @@ export default function AccountDashboard({
                 className="text-[11px] font-semibold uppercase tracking-widest text-burnished-gold flex items-center gap-2 group-hover:gap-4 transition-all duration-300 mt-6"
               >
                 Start consultation{" "}
-                <span className="material-symbols-outlined" style={{ fontSize: "16px" }} aria-hidden="true">
-                  arrow_forward
-                </span>
+                <ArrowRight className="w-5 h-5" aria-hidden="true" />
               </a>
             </article>
           </div>
@@ -619,26 +604,20 @@ export default function AccountDashboard({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Siphora HQ on Instagram"
-                className="material-symbols-outlined hover:text-burnished-gold transition-colors"
-              >
-                language
-              </a>
+                className=" hover:text-burnished-gold transition-colors"
+              ><Globe className="w-5 h-5" /></a>
               <a
                 href="https://wa.me/919540027978"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Chat with us on WhatsApp"
-                className="material-symbols-outlined hover:text-burnished-gold transition-colors"
-              >
-                chat
-              </a>
+                className=" hover:text-burnished-gold transition-colors"
+              ><MessageCircle className="w-5 h-5" /></a>
               <a
                 href="mailto:hello@siphorahq.in"
                 aria-label="Email us at hello@siphorahq.in"
-                className="material-symbols-outlined hover:text-burnished-gold transition-colors"
-              >
-                mail
-              </a>
+                className=" hover:text-burnished-gold transition-colors"
+              ><Mail className="w-5 h-5" /></a>
             </div>
           </div>
 
@@ -744,9 +723,7 @@ export default function AccountDashboard({
         aria-label="Chat with Siphora HQ concierge on WhatsApp"
         className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-ink-charcoal dark:bg-burnished-gold text-white dark:text-ink-charcoal px-5 py-3 rounded-full text-sm font-semibold shadow-lg hover:bg-burnished-gold dark:hover:bg-surface-cream transition-colors"
       >
-        <span className="material-symbols-outlined" style={{ fontSize: "18px" }} aria-hidden="true">
-          chat
-        </span>
+        <MessageCircle className="w-5 h-5" aria-hidden="true" />
         WhatsApp
       </a>
     </div>

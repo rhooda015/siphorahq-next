@@ -1,3 +1,4 @@
+import ProtectedEmail from '@/components/ProtectedEmail';
 export { privacyMetadata as metadata } from '@/lib/metadata';
 
 const sections = [

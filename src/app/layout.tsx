@@ -1,13 +1,12 @@
 import React from 'react';
-import { GoogleAnalytics } from '@next/third-parties/google';
-import { Playfair_Display, Inter, Material_Symbols_Outlined } from 'next/font/google';
-import dynamic from 'next/dynamic';
+import Script from 'next/script';
+import { Playfair_Display, Inter } from 'next/font/google';
 import './globals.css';
 import { BRAND, getWhatsAppLink } from '@/config/brand';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileBottomNav from '@/components/MobileBottomNav';
-const CartDrawer = dynamic(() => import('@/components/CartDrawer'), { ssr: false });
+import CartDrawerDynamic from '@/components/CartDrawerDynamic';
 import SessionWrapper from '@/components/SessionWrapper';
 import dbConnect from '@/lib/db';
 import StoreSettings from '@/models/StoreSettings';
@@ -30,13 +29,7 @@ const inter = Inter({
   display: 'swap',
 });
 
-const materialSymbols = Material_Symbols_Outlined({
-  subsets: ['latin'],
-  weight: ['400'],
-  style: ['normal'],
-  variable: '--font-material-symbols',
-  display: 'block',
-});
+
 
 export const viewport = {
   width: 'device-width',
@@ -120,11 +113,25 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           'query-input': 'required name=search_term_string',
         },
       },
+      {
+        '@type': 'Store',
+        '@id': `${BRAND.domain}/#store`,
+        name: 'Siphorahq',
+        url: 'https://siphorahq.in',
+        description: 'Luxury porcelain tea cups, tea sets, dinnerware and gifting collections.',
+        image: `${BRAND.domain}/assets/siphorahq/logo.png`,
+        sameAs: [BRAND.social.instagram],
+        telephone: '+919540027978',
+        address: {
+          '@type': 'PostalAddress',
+          addressCountry: 'IN'
+        }
+      }
     ],
   };
 
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable} ${materialSymbols.variable}`}>
+    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -143,7 +150,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <main className="flex-1 flex flex-col">{children}</main>
             <Footer />
             <MobileBottomNav />
-            <CartDrawer />
+            <CartDrawerDynamic />
             <Toaster 
               position="bottom-center"
               toastOptions={{
@@ -163,7 +170,33 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             />
           </SessionWrapper>
         </SettingsProvider>
-        <GoogleAnalytics gaId="G-XXXXXXXXXX" />
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=G-22VV0R5MCN`}
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-22VV0R5MCN', {
+                page_path: window.location.pathname,
+              });
+            `,
+          }}
+        />
+        <Script id="microsoft-clarity" strategy="afterInteractive">
+          {`
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "x8rtgt9b6p");
+          `}
+        </Script>
       </body>
     </html>
   );

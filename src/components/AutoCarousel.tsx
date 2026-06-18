@@ -59,9 +59,9 @@ export default function AutoCarousel() {
               <span className="font-label-caps text-sm tracking-[0.3em] mb-6 uppercase text-burnished-gold">
                 {slide.badge}
               </span>
-              <h1 className="font-display-lg text-4xl sm:text-6xl lg:text-8xl mb-6 max-w-4xl leading-[1.1] drop-shadow-lg">
+              <h2 className="font-display-lg text-4xl sm:text-6xl lg:text-8xl mb-6 max-w-4xl leading-[1.1] drop-shadow-lg">
                 {slide.title}
-              </h1>
+              </h2>
               <p className="font-body-lg text-base sm:text-xl mb-10 max-w-2xl opacity-90 drop-shadow-md">
                 {slide.description}
               </p>

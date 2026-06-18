@@ -1,3 +1,4 @@
+import { Truck, Headset, ShieldCheck, RefreshCw } from 'lucide-react';
 import React from 'react';
 import ProductListing from '@/components/ProductListing';
 import { BRAND } from '@/config/brand';
@@ -190,19 +191,19 @@ export default function ShopAllPage() {
         <div className="max-w-container-max mx-auto px-5 flex justify-between items-center overflow-hidden">
           <div className="flex animate-marquee md:animate-none md:justify-center md:w-full gap-8 md:gap-16 whitespace-nowrap">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[16px]">local_shipping</span>
+              <Truck className=" w-5 h-5 inline-block" />
               <span className="font-label-caps text-[10px] uppercase tracking-widest">Free Shipping Pan India Above ₹999</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[16px]">support_agent</span>
+              <Headset className=" w-5 h-5 inline-block" />
               <span className="font-label-caps text-[10px] uppercase tracking-widest">WhatsApp Concierge: +91 9540027978</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[16px]">verified_user</span>
+              <ShieldCheck className=" w-5 h-5 inline-block" />
               <span className="font-label-caps text-[10px] uppercase tracking-widest">Lead-free & Food Safe</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[16px]">replay</span>
+              <RefreshCw className=" w-5 h-5 inline-block" />
               <span className="font-label-caps text-[10px] uppercase tracking-widest">Damage Replacement Support</span>
             </div>
           </div>

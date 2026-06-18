@@ -1,4 +1,5 @@
 "use client";
+import { X, SlidersHorizontal, Gift } from 'lucide-react';
 
 import React, { useState } from 'react';
 import Image from 'next/image';
@@ -81,7 +82,7 @@ export default function ProductListing({ products }: { products: Product[] }) {
           <div className="flex justify-between items-center mb-8">
             <h2 className="font-headline-md text-2xl">Filters</h2>
             <button onClick={() => setIsMobileDrawerOpen(false)} className="text-ink-charcoal">
-              <span className="material-symbols-outlined text-[32px]">close</span>
+              <X className=" w-5 h-5 inline-block" />
             </button>
           </div>
           <div className="flex-1 overflow-y-auto">
@@ -114,7 +115,7 @@ export default function ProductListing({ products }: { products: Product[] }) {
               className="md:hidden flex items-center gap-2 font-label-caps text-[11px] uppercase tracking-[0.18em]"
               onClick={() => setIsMobileDrawerOpen(true)}
             >
-              <span className="material-symbols-outlined text-[18px]">tune</span> Filters
+              <SlidersHorizontal className=" w-5 h-5 inline-block" /> Filters
             </button>
             <div className="hidden md:flex items-center gap-3">
               <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-on-surface-variant">Sort:</span>
@@ -165,7 +166,7 @@ export default function ProductListing({ products }: { products: Product[] }) {
                 <div className="flex justify-between items-center border-t border-muted-sand/50 pt-3">
                   <span className="font-body-md font-semibold text-ink-charcoal">{product.price}</span>
                   <span className="font-body-md text-[11px] text-on-surface-variant flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]">redeem</span> Gift Box
+                    <Gift className=" w-5 h-5 inline-block" /> Gift Box
                   </span>
                 </div>
               </div>

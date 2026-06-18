@@ -1,4 +1,5 @@
 "use client";
+import { Heart } from 'lucide-react';
 
 import React, { useState } from 'react';
 import { trackAddToCart } from '@/lib/analytics';
@@ -58,7 +59,7 @@ export default function ProductCardActions({ product }: { product: any }) {
         className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 z-10 hover:scale-105 ${isWished ? 'opacity-100 text-heritage-navy' : 'opacity-0 group-hover:opacity-100 text-on-surface-variant hover:text-heritage-navy'}`}
         aria-label={isWished ? "Remove from wishlist" : "Add to wishlist"}
       >
-        <span className="material-symbols-outlined" style={{ fontVariationSettings: isWished ? "'FILL' 1" : "'FILL' 0" }}>favorite</span>
+        <Heart className=" w-5 h-5 inline-block" />
       </button>
 
       {/* Quick View could still be accessed via a long press or we can remove it to keep it clean. Let's keep the modal but hide the button to simplify unless needed. We'll rely on product page for details. */}
