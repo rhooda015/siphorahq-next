@@ -142,7 +142,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="preload" as="image" href="/images/hero.webp" />
+        <link rel="preload" as="image" href="/images/hero.webp" fetchPriority="high" />
         <link rel="canonical" href={BRAND.domain} />
         <link rel="alternate" hrefLang="en-IN" href={BRAND.domain} />
         <link rel="alternate" hrefLang="x-default" href={BRAND.domain} />
