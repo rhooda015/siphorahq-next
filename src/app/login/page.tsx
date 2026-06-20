@@ -19,7 +19,7 @@ const Toast = ({ message, type, onClose }: { message: string; type: 'success' | 
   }, [onClose]);
 
   return (
-    <div className={`fixed top-4 right-4 z-[200] px-6 py-3 shadow-lg flex items-center gap-3 animate-fade-in ${type === 'success' ? 'bg-[#1e1a14] text-white' : 'bg-[#E24B4A] text-white'}`}>
+    <div className={`fixed top-4 right-4 z-[200] px-6 py-3 shadow-lg flex items-center gap-3 animate-fade-in ${type === 'success' ? 'bg-[#1e1a14] text-white' : 'bg-[#d32f2f] text-white'}`}>
       <span className="font-sans text-sm tracking-widest uppercase">{message}</span>
       <button onClick={onClose}><X className="w-4 h-4" /></button>
     </div>
@@ -39,8 +39,8 @@ export default function LoginPage() {
   }, [status, router]);
 
   // Common styles
-  const inputBaseStyle = "w-full border-[0.5px] rounded-[2px] px-[14px] py-[12px] font-sans text-[13px] outline-none transition-colors";
-  const btnBaseStyle = "w-full flex items-center justify-center tracking-[4px] uppercase rounded-[2px] transition-colors py-[14px] font-sans text-xs";
+  const inputBaseStyle = "w-full border-[0.5px] rounded-[2px] px-[14px] min-h-[52px] font-sans text-[13px] outline-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:border-transparent focus-visible:ring-[#1e1a14]";
+  const btnBaseStyle = "w-full flex items-center justify-center tracking-[4px] uppercase rounded-[2px] transition-colors min-h-[52px] font-sans text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#1e1a14]";
 
   const showToast = (message: string, type: 'success' | 'error') => setToast({ message, type });
 
@@ -60,11 +60,11 @@ export default function LoginPage() {
         <Link href="/" className="text-white text-5xl font-serif tracking-[8px] uppercase mb-4 text-center z-10">
           {BRAND.name}
         </Link>
-        <p className="text-[#b8922a] font-sans text-sm tracking-[4px] uppercase mb-16 text-center z-10">
+        <p className="text-[#ebd28a] font-sans text-sm tracking-[4px] uppercase mb-16 text-center z-10">
           Luxury Redefined
         </p>
         
-        <p className="text-white/60 font-serif italic text-xl text-center max-w-sm leading-relaxed z-10">
+        <p className="text-white/90 font-serif italic text-xl text-center max-w-sm leading-relaxed z-10">
           "Where every meal becomes a masterpiece, and every gathering an unforgettable experience."
         </p>
       </div>
@@ -74,7 +74,7 @@ export default function LoginPage() {
         {/* Mobile Logo Fallback */}
         <div className="md:hidden text-center mb-10">
           <Link href="/" className="text-[#1e1a14] text-4xl font-serif tracking-[6px] uppercase">{BRAND.name}</Link>
-          <p className="text-[#b8922a] font-sans text-[10px] tracking-[3px] uppercase mt-2">Luxury Redefined</p>
+          <p className="text-gray-800 font-sans text-[10px] tracking-[3px] uppercase mt-2">Luxury Redefined</p>
         </div>
 
         <div className="w-full max-w-md mx-auto">
@@ -82,19 +82,19 @@ export default function LoginPage() {
           <div className="flex border-b border-gray-200 mb-8 font-sans text-[11px] uppercase tracking-[2px]">
             <button 
               onClick={() => setActiveTab('email')} 
-              className={`flex-1 pb-4 transition-colors ${activeTab === 'email' ? 'text-[#b8922a] border-b-[1.5px] border-[#b8922a] font-medium' : 'text-gray-400 hover:text-gray-600'}`}
+              className={`flex-1 pb-4 transition-colors min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e1a14] ${activeTab === 'email' ? 'text-gray-900 border-b-[1.5px] border-[#1e1a14] font-medium' : 'text-gray-600 hover:text-gray-900'}`}
             >
               Email Login
             </button>
             <button 
               onClick={() => setActiveTab('otp')} 
-              className={`flex-1 pb-4 transition-colors ${activeTab === 'otp' ? 'text-[#b8922a] border-b-[1.5px] border-[#b8922a] font-medium' : 'text-gray-400 hover:text-gray-600'}`}
+              className={`flex-1 pb-4 transition-colors min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e1a14] ${activeTab === 'otp' ? 'text-gray-900 border-b-[1.5px] border-[#1e1a14] font-medium' : 'text-gray-600 hover:text-gray-900'}`}
             >
               Mobile OTP
             </button>
             <button 
               onClick={() => setActiveTab('register')} 
-              className={`flex-1 pb-4 transition-colors ${activeTab === 'register' ? 'text-[#b8922a] border-b-[1.5px] border-[#b8922a] font-medium' : 'text-gray-400 hover:text-gray-600'}`}
+              className={`flex-1 pb-4 transition-colors min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e1a14] ${activeTab === 'register' ? 'text-gray-900 border-b-[1.5px] border-[#1e1a14] font-medium' : 'text-gray-600 hover:text-gray-900'}`}
             >
               Register
             </button>
@@ -109,21 +109,21 @@ export default function LoginPage() {
           {activeTab !== 'otp' && (
             <div className="mt-8">
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex-1 h-[1px] bg-gray-200" />
-                <span className="font-sans text-[10px] tracking-[2px] text-gray-400 uppercase">Or continue with</span>
-                <div className="flex-1 h-[1px] bg-gray-200" />
+                <div className="flex-1 h-[1px] bg-gray-300" />
+                <span className="font-sans text-[10px] tracking-[2px] text-gray-700 uppercase">Or continue with</span>
+                <div className="flex-1 h-[1px] bg-gray-300" />
               </div>
               <div className="grid grid-cols-3 gap-3">
-                <button onClick={() => signIn('google', { callbackUrl: '/account' })} className="flex items-center justify-center gap-2 border-[0.5px] border-gray-300 py-3 rounded-[2px] hover:bg-gray-50 transition-colors">
+                <button onClick={() => signIn('google', { callbackUrl: '/account' })} className="flex items-center justify-center gap-2 border-[0.5px] border-gray-400 min-h-[44px] py-3 rounded-[2px] hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e1a14] transition-colors">
                   <span className="font-bold font-sans text-lg leading-none">G</span>
                   <span className="font-sans text-[10px] tracking-widest uppercase">Google</span>
                 </button>
-                <button onClick={() => showToast('Connecting to Facebook...', 'success')} className="flex items-center justify-center gap-2 border-[0.5px] border-gray-300 py-3 rounded-[2px] hover:bg-gray-50 transition-colors">
-                  <span className="font-bold font-serif text-lg leading-none text-blue-600">f</span>
+                <button onClick={() => showToast('Connecting to Facebook...', 'success')} className="flex items-center justify-center gap-2 border-[0.5px] border-gray-400 min-h-[44px] py-3 rounded-[2px] hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e1a14] transition-colors">
+                  <span className="font-bold font-serif text-lg leading-none text-blue-700">f</span>
                   <span className="font-sans text-[10px] tracking-widest uppercase">Facebook</span>
                 </button>
-                <button onClick={() => showToast('Connecting to Instagram...', 'success')} className="flex items-center justify-center gap-2 border-[0.5px] border-gray-300 py-3 rounded-[2px] hover:bg-gray-50 transition-colors">
-                  <span className="font-sans text-[10px] tracking-widest uppercase">Insta</span>
+                <button onClick={() => showToast('Connecting to Instagram...', 'success')} className="flex items-center justify-center gap-2 border-[0.5px] border-gray-400 min-h-[44px] py-3 rounded-[2px] hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e1a14] transition-colors">
+                  <span className="font-sans text-[10px] tracking-widest uppercase text-gray-800">Insta</span>
                 </button>
               </div>
             </div>
@@ -131,8 +131,8 @@ export default function LoginPage() {
 
           {/* Footer Text */}
           <div className="mt-12 text-center pb-8">
-            <p className="font-sans text-[11px] text-gray-400 leading-relaxed max-w-xs mx-auto">
-              By proceeding, you agree to our <Link href="#" className="underline">Terms of Service</Link> & <Link href="#" className="underline">Privacy Policy</Link>.
+            <p className="font-sans text-[12px] text-gray-700 leading-relaxed max-w-xs mx-auto">
+              By proceeding, you agree to our <Link href="#" className="underline font-medium hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e1a14]">Terms of Service</Link> & <Link href="#" className="underline font-medium hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e1a14]">Privacy Policy</Link>.
             </p>
           </div>
         </div>
@@ -190,7 +190,7 @@ function EmailLoginForm({ inputBaseStyle, btnBaseStyle, showToast, router }: any
   };
 
   const getInputClass = (val: string, err?: string) => {
-    if (err) return "border-[#E24B4A] bg-[#FCEBEB]";
+    if (err) return "border-[#d32f2f] bg-[#FCEBEB]";
     if (val) return "border-[#639922]";
     return "border-gray-300";
   };
@@ -205,7 +205,7 @@ function EmailLoginForm({ inputBaseStyle, btnBaseStyle, showToast, router }: any
           value={email}
           onChange={(e) => { setEmail(e.target.value); clearErr('email'); }}
         />
-        {errors.email && <p className="text-[#E24B4A] font-sans text-[11px] mt-1.5 ml-1">{errors.email}</p>}
+        {errors.email && <p className="text-[#d32f2f] font-sans text-[11px] mt-1.5 ml-1">{errors.email}</p>}
       </div>
       <div>
         <div className="relative">
@@ -216,19 +216,19 @@ function EmailLoginForm({ inputBaseStyle, btnBaseStyle, showToast, router }: any
             value={password}
             onChange={(e) => { setPassword(e.target.value); clearErr('password'); }}
           />
-          <button type="button" onClick={() => setShowPwd(!showPwd)} className="absolute right-3 top-[13px] text-gray-400 hover:text-gray-600">
-            {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+          <button type="button" aria-label={showPwd ? "Hide password" : "Show password"} onClick={() => setShowPwd(!showPwd)} className="absolute right-1 top-1 bottom-1 w-[44px] min-h-[44px] flex items-center justify-center text-gray-700 hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e1a14] rounded-[2px]">
+            {showPwd ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </button>
         </div>
-        {errors.password && <p className="text-[#E24B4A] font-sans text-[11px] mt-1.5 ml-1">{errors.password}</p>}
+        {errors.password && <p className="text-[#d32f2f] font-sans text-[11px] mt-1.5 ml-1">{errors.password}</p>}
       </div>
       <div className="text-right">
-        <Link href="#" className="font-sans text-[10px] tracking-[1px] text-[#b8922a] uppercase hover:underline">Forgot Password?</Link>
+        <Link href="#" className="font-sans text-[10px] tracking-[1px] text-[#8c6b16] uppercase hover:underline">Forgot Password?</Link>
       </div>
       <button 
         type="submit" 
         disabled={loading}
-        className={`${btnBaseStyle} bg-[#1e1a14] text-[#b8922a] hover:bg-black mt-2 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+        className={`${btnBaseStyle} bg-[#1e1a14] text-[#8c6b16] hover:bg-black mt-2 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
       >
         {loading ? "Signing In..." : "Sign In"}
       </button>
@@ -286,8 +286,8 @@ function OtpLoginForm({ inputBaseStyle, btnBaseStyle, showToast, router }: any) 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       <div>
-        <div className={`flex border-[0.5px] rounded-[2px] transition-colors ${errors.mobile ? 'border-[#E24B4A] bg-[#FCEBEB]' : mobile.length === 10 ? 'border-[#639922]' : 'border-gray-300'}`}>
-          <div className="px-4 py-[12px] text-gray-500 font-sans text-[13px] bg-gray-50 border-r border-gray-200">+91</div>
+        <div className={`flex border-[0.5px] rounded-[2px] transition-colors ${errors.mobile ? 'border-[#d32f2f] bg-[#FCEBEB]' : mobile.length === 10 ? 'border-[#639922]' : 'border-gray-300'}`}>
+          <div className="px-4 py-[12px] text-gray-700 font-sans text-[13px] bg-gray-50 border-r border-gray-200">+91</div>
           <input 
             type="text" 
             placeholder="Mobile Number" 
@@ -300,7 +300,7 @@ function OtpLoginForm({ inputBaseStyle, btnBaseStyle, showToast, router }: any) 
             }}
           />
         </div>
-        {errors.mobile && <p className="text-[#E24B4A] font-sans text-[11px] mt-1.5 ml-1">{errors.mobile}</p>}
+        {errors.mobile && <p className="text-[#d32f2f] font-sans text-[11px] mt-1.5 ml-1">{errors.mobile}</p>}
       </div>
 
       <div>
@@ -310,7 +310,7 @@ function OtpLoginForm({ inputBaseStyle, btnBaseStyle, showToast, router }: any) 
             placeholder="ENTER OTP" 
             maxLength={6}
             disabled={!otpSent}
-            className={`${inputBaseStyle} text-center tracking-[4px] flex-1 ${errors.otp ? 'border-[#E24B4A] bg-[#FCEBEB]' : otp.length === 6 ? 'border-[#639922]' : 'border-gray-300'} ${!otpSent ? 'opacity-50 bg-gray-50' : ''}`}
+            className={`${inputBaseStyle} text-center tracking-[4px] flex-1 ${errors.otp ? 'border-[#d32f2f] bg-[#FCEBEB]' : otp.length === 6 ? 'border-[#639922]' : 'border-gray-300'} ${!otpSent ? 'opacity-50 bg-gray-50' : ''}`}
             value={otp}
             onChange={(e) => { 
               const val = e.target.value.replace(/\D/g, '');
@@ -326,13 +326,13 @@ function OtpLoginForm({ inputBaseStyle, btnBaseStyle, showToast, router }: any) 
             {timer > 0 ? `${timer}s` : otpSent ? 'RESEND' : 'SEND OTP'}
           </button>
         </div>
-        {errors.otp && <p className="text-[#E24B4A] font-sans text-[11px] mt-1.5 ml-1">{errors.otp}</p>}
+        {errors.otp && <p className="text-[#d32f2f] font-sans text-[11px] mt-1.5 ml-1">{errors.otp}</p>}
       </div>
 
       <button 
         type="submit" 
         disabled={loading || !otpSent || otp.length !== 6}
-        className={`${btnBaseStyle} bg-[#1e1a14] text-[#b8922a] hover:bg-black mt-2 disabled:opacity-50 disabled:cursor-not-allowed`}
+        className={`${btnBaseStyle} bg-[#1e1a14] text-[#8c6b16] hover:bg-black mt-2 disabled:opacity-50 disabled:cursor-not-allowed`}
       >
         {loading ? "Verifying..." : "Verify & Sign In"}
       </button>
@@ -341,7 +341,7 @@ function OtpLoginForm({ inputBaseStyle, btnBaseStyle, showToast, router }: any) 
       <div className="mt-4">
         <div className="flex items-center gap-4 mb-4">
           <div className="flex-1 h-[1px] bg-gray-200" />
-          <span className="font-sans text-[10px] tracking-[2px] text-gray-400 uppercase">Or</span>
+          <span className="font-sans text-[10px] tracking-[2px] text-gray-700 uppercase">Or</span>
           <div className="flex-1 h-[1px] bg-gray-200" />
         </div>
         <div className="flex gap-3">
@@ -385,7 +385,7 @@ function RegisterForm({ inputBaseStyle, btnBaseStyle, showToast, router, setActi
     return [1, 2, 3, 4].map(level => {
       let color = 'bg-gray-200';
       if (pwd.length > 0) {
-        if (strength === 1 && level <= 1) color = 'bg-[#E24B4A]';
+        if (strength === 1 && level <= 1) color = 'bg-[#d32f2f]';
         else if (strength === 2 && level <= 2) color = 'bg-[#f59e0b]';
         else if (strength === 3 && level <= 3) color = 'bg-[#f59e0b]';
         else if (strength === 4 && level <= 4) color = 'bg-[#639922]';
@@ -442,7 +442,7 @@ function RegisterForm({ inputBaseStyle, btnBaseStyle, showToast, router, setActi
   };
 
   const getInputClass = (val: string, err?: string, customValid?: boolean) => {
-    if (err) return "border-[#E24B4A] bg-[#FCEBEB]";
+    if (err) return "border-[#d32f2f] bg-[#FCEBEB]";
     if (customValid !== undefined ? customValid : val) return "border-[#639922]";
     return "border-gray-300";
   };
@@ -457,7 +457,7 @@ function RegisterForm({ inputBaseStyle, btnBaseStyle, showToast, router, setActi
           value={name}
           onChange={(e) => { setName(e.target.value); clearErr('name'); }}
         />
-        {errors.name && <p className="text-[#E24B4A] font-sans text-[11px] mt-1 ml-1">{errors.name}</p>}
+        {errors.name && <p className="text-[#d32f2f] font-sans text-[11px] mt-1 ml-1">{errors.name}</p>}
       </div>
 
       <div>
@@ -468,12 +468,12 @@ function RegisterForm({ inputBaseStyle, btnBaseStyle, showToast, router, setActi
           value={email}
           onChange={(e) => { setEmail(e.target.value); clearErr('email'); }}
         />
-        {errors.email && <p className="text-[#E24B4A] font-sans text-[11px] mt-1 ml-1">{errors.email}</p>}
+        {errors.email && <p className="text-[#d32f2f] font-sans text-[11px] mt-1 ml-1">{errors.email}</p>}
       </div>
 
       <div>
-        <div className={`flex border-[0.5px] rounded-[2px] transition-colors ${errors.mobile ? 'border-[#E24B4A] bg-[#FCEBEB]' : mobile.length === 10 ? 'border-[#639922]' : 'border-gray-300'}`}>
-          <div className="px-4 py-[12px] text-gray-500 font-sans text-[13px] bg-gray-50 border-r border-gray-200">+91</div>
+        <div className={`flex border-[0.5px] rounded-[2px] transition-colors ${errors.mobile ? 'border-[#d32f2f] bg-[#FCEBEB]' : mobile.length === 10 ? 'border-[#639922]' : 'border-gray-300'}`}>
+          <div className="px-4 py-[12px] text-gray-700 font-sans text-[13px] bg-gray-50 border-r border-gray-200">+91</div>
           <input 
             type="text" 
             placeholder="Mobile Number" 
@@ -483,7 +483,7 @@ function RegisterForm({ inputBaseStyle, btnBaseStyle, showToast, router, setActi
             onChange={(e) => { setMobile(e.target.value.replace(/\D/g, '')); clearErr('mobile'); }}
           />
         </div>
-        {errors.mobile && <p className="text-[#E24B4A] font-sans text-[11px] mt-1 ml-1">{errors.mobile}</p>}
+        {errors.mobile && <p className="text-[#d32f2f] font-sans text-[11px] mt-1 ml-1">{errors.mobile}</p>}
       </div>
 
       <div>
@@ -495,15 +495,15 @@ function RegisterForm({ inputBaseStyle, btnBaseStyle, showToast, router, setActi
             value={pwd}
             onChange={(e) => { setPwd(e.target.value); clearErr('pwd'); }}
           />
-          <button type="button" onClick={() => setShowPwd(!showPwd)} className="absolute right-3 top-[13px] text-gray-400 hover:text-gray-600">
-            {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+          <button type="button" aria-label={showPwd ? "Hide password" : "Show password"} onClick={() => setShowPwd(!showPwd)} className="absolute right-1 top-1 bottom-1 w-[44px] min-h-[44px] flex items-center justify-center text-gray-700 hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e1a14] rounded-[2px]">
+            {showPwd ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </button>
         </div>
         <div className="flex items-center justify-between mt-2 px-1">
           <div className="flex gap-1 w-24">{getStrengthBars()}</div>
-          <span className="font-sans text-[10px] uppercase tracking-widest text-gray-500">{getStrengthText()}</span>
+          <span className="font-sans text-[10px] uppercase tracking-widest text-gray-700">{getStrengthText()}</span>
         </div>
-        {errors.pwd && <p className="text-[#E24B4A] font-sans text-[11px] mt-1 ml-1">{errors.pwd}</p>}
+        {errors.pwd && <p className="text-[#d32f2f] font-sans text-[11px] mt-1 ml-1">{errors.pwd}</p>}
       </div>
 
       <div>
@@ -515,23 +515,23 @@ function RegisterForm({ inputBaseStyle, btnBaseStyle, showToast, router, setActi
             value={cPwd}
             onChange={(e) => { setCPwd(e.target.value); clearErr('cPwd'); }}
           />
-          <button type="button" onClick={() => setShowCPwd(!showCPwd)} className="absolute right-3 top-[13px] text-gray-400 hover:text-gray-600">
-            {showCPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+          <button type="button" aria-label={showCPwd ? "Hide password" : "Show password"} onClick={() => setShowCPwd(!showCPwd)} className="absolute right-1 top-1 bottom-1 w-[44px] min-h-[44px] flex items-center justify-center text-gray-700 hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e1a14] rounded-[2px]">
+            {showCPwd ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
           </button>
         </div>
-        {errors.cPwd && <p className="text-[#E24B4A] font-sans text-[11px] mt-1 ml-1">{errors.cPwd}</p>}
+        {errors.cPwd && <p className="text-[#d32f2f] font-sans text-[11px] mt-1 ml-1">{errors.cPwd}</p>}
       </div>
 
       <button 
         type="submit" 
         disabled={loading}
-        className={`${btnBaseStyle} bg-[#1e1a14] text-[#b8922a] hover:bg-black mt-2 disabled:opacity-70 disabled:cursor-not-allowed`}
+        className={`${btnBaseStyle} bg-[#1e1a14] text-[#8c6b16] hover:bg-black mt-2 disabled:opacity-70 disabled:cursor-not-allowed`}
       >
         {loading ? "Creating Account..." : "Create Account"}
       </button>
       
       <div className="text-center mt-2">
-        <button type="button" onClick={() => setActiveTab('email')} className="font-sans text-[11px] text-gray-500 hover:text-[#1e1a14] transition-colors">
+        <button type="button" onClick={() => setActiveTab('email')} className="font-sans text-[11px] text-gray-700 hover:text-[#1e1a14] min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1e1a14] transition-colors">
           Already have an account? <span className="underline uppercase tracking-widest ml-1 text-[10px]">Sign in</span>
         </button>
       </div>

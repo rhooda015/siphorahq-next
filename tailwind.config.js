@@ -98,6 +98,7 @@ module.exports = {
       fontFamily: {
         serif: ["var(--font-playfair)", "Georgia", "serif"],
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        cormorant: ["var(--font-cormorant)", "Georgia", "serif"],
         "display-lg": ["var(--font-playfair)", "Playfair Display", "serif"],
         "body-md": ["var(--font-inter)", "Inter", "sans-serif"],
         "price-lg": ["var(--font-inter)", "Inter", "sans-serif"],
@@ -107,6 +108,15 @@ module.exports = {
         "body-lg": ["var(--font-inter)", "Inter", "sans-serif"]
       },
       fontSize: {
+        "hero-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+        "hero-md": ["52px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+        "hero-sm": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+        "section-lg": ["42px", {"lineHeight": "1.2", "fontWeight": "400"}],
+        "section-sm": ["32px", {"lineHeight": "1.2", "fontWeight": "400"}],
+        "collection-lg": ["30px", {"lineHeight": "1.3", "fontWeight": "400"}],
+        "collection-sm": ["24px", {"lineHeight": "1.3", "fontWeight": "400"}],
+        "nav-lg": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.08em", "fontWeight": "500"}],
+        "nav-sm": ["13px", {"lineHeight": "1.0", "letterSpacing": "0.08em", "fontWeight": "500"}],
         "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
         "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
         "price-lg": ["20px", {"lineHeight": "1.0", "fontWeight": "500"}],

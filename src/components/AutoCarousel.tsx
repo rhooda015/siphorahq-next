@@ -16,7 +16,7 @@ const SLIDES = [
     ]
   },
   {
-    image: "https://lh3.googleusercontent.com/aida/AP1WRLtEI3-LVUGAkEhlH5UToZh0vFcpz73IFxjxRTKyWDw3QOgtJmCrGZyVOoT-gxqKJ3vgZMQJZtsh8CzdAcAC8mbg1nonAGbZTupXbPxZ5a1j3xbEaf8c2m_R1031ZXdKWyHzoRg0d5wcT4GOMLZJjrt-FzoAoGceQWZO4OTULnFV7HRsASjG3Hw4oiNh70VcHOydtWpiSV_KAXeyFJ6lfPYWPUBC81sArsu6hUJh1yJxvODqev9HT0J36W20",
+    image: "/images/homepage/gifting.png",
     badge: "New Season",
     title: "Signature Gifting Sets",
     description: "Hand-curated collections delivered in our iconic premium packaging.",

@@ -59,7 +59,7 @@ export const rootMetadata: Metadata = {
   },
   manifest: '/manifest.json',
   alternates: {
-    canonical: 'https://www.siphorahq.in',
+
   },
 };
 
@@ -67,7 +67,7 @@ export const homeMetadata: Metadata = {
   title: 'SiphoraHQ — Premium Porcelain & Ceramic Tableware India',
   description:
     'Discover SiphoraHQ\'s collection of premium handcrafted porcelain and ceramic tableware. Tea cups, dinner sets, mug gift sets — crafted for modern Indian homes. Free shipping above ₹999.',
-  alternates: { canonical: 'https://www.siphorahq.in' },
+  alternates: { canonical: '/' },
   openGraph: {
     title: 'SiphoraHQ — Premium Porcelain & Ceramic Tableware India',
     description:
@@ -81,7 +81,7 @@ export const productsMetadata: Metadata = {
   title: 'Shop All Products — Porcelain & Ceramic Tableware',
   description:
     'Browse SiphoraHQ\'s full collection of premium porcelain and ceramic tableware. Ceramic tea cups (₹549), Porcelain dinner sets (₹899), Mug gift sets & more. Free shipping above ₹999.',
-  alternates: { canonical: 'https://www.siphorahq.in/products' },
+  alternates: { canonical: '/products' },
   openGraph: {
     title: 'Shop Porcelain & Ceramic Tableware — SiphoraHQ',
     description: 'Premium handcrafted tableware starting at ₹399. Free shipping above ₹999.',
@@ -93,7 +93,7 @@ export const collectionsMetadata: Metadata = {
   title: 'Collections — Curated Tableware Sets',
   description:
     'Explore SiphoraHQ\'s curated tableware collections. From everyday ceramic tea cups to complete porcelain dinner sets — find the perfect set for your home or as a gift.',
-  alternates: { canonical: 'https://www.siphorahq.in/collections' },
+  alternates: { canonical: '/collections' },
   openGraph: {
     title: 'Curated Tableware Collections — SiphoraHQ',
     description: 'Curated porcelain and ceramic tableware collections for every occasion.',
@@ -113,7 +113,7 @@ export const corporateGiftingMetadata: Metadata = {
     'branded tableware gifts',
     'premium gift sets India',
   ],
-  alternates: { canonical: 'https://www.siphorahq.in/corporate-gifting' },
+  alternates: { canonical: '/corporate-gifting' },
   openGraph: {
     title: 'Corporate Gifting — Premium Tableware | SiphoraHQ',
     description:
@@ -126,7 +126,7 @@ export const ourStoryMetadata: Metadata = {
   title: 'Our Story — The SiphoraHQ Journey',
   description:
     'Learn about SiphoraHQ — a premium porcelain and ceramic tableware brand born in Faridabad, India. Our story of craftsmanship, quality, and bringing artisan tableware to modern Indian homes.',
-  alternates: { canonical: 'https://www.siphorahq.in/our-story' },
+  alternates: { canonical: '/our-story' },
   openGraph: {
     title: 'Our Story — SiphoraHQ',
     description:
@@ -139,7 +139,7 @@ export const journalMetadata: Metadata = {
   title: 'Journal — Tableware Stories & Styling Tips',
   description:
     'The SiphoraHQ Journal — stories on ceramic care, tableware styling, gifting ideas, and the art of the Indian table. Explore tips for using and maintaining your porcelain pieces.',
-  alternates: { canonical: 'https://www.siphorahq.in/journal' },
+  alternates: { canonical: '/journal' },
   openGraph: {
     title: 'Journal — SiphoraHQ',
     description: 'Tableware stories, styling tips, and ceramic care guides from SiphoraHQ.',
@@ -151,7 +151,7 @@ export const contactMetadata: Metadata = {
   title: 'Contact Us — SiphoraHQ Customer Care',
   description:
     'Get in touch with SiphoraHQ for order queries, returns, corporate gifting enquiries, or any support. Email: concierge [at] siphorahq.in. Response within 24–48 hours.',
-  alternates: { canonical: 'https://www.siphorahq.in/contact' },
+  alternates: { canonical: '/contact' },
   openGraph: {
     title: 'Contact SiphoraHQ',
     description: 'Reach us for order support, returns, or corporate gifting enquiries.',
@@ -163,7 +163,7 @@ export const privacyMetadata: Metadata = {
   title: 'Privacy Policy',
   description:
     'Read SiphoraHQ\'s Privacy Policy — how we collect, use, and protect your personal data when you shop with us.',
-  alternates: { canonical: 'https://www.siphorahq.in/privacy-policy' },
+  alternates: { canonical: '/privacy-policy' },
   robots: { index: true, follow: false },
 };
 
@@ -171,7 +171,7 @@ export const refundMetadata: Metadata = {
   title: 'Refund & Return Policy',
   description:
     'SiphoraHQ\'s 7-day return policy — how to return products, get refunds, and resolve order issues.',
-  alternates: { canonical: 'https://www.siphorahq.in/refund-policy' },
+  alternates: { canonical: '/refund-policy' },
   robots: { index: true, follow: false },
 };
 
@@ -179,7 +179,7 @@ export const shippingMetadata: Metadata = {
   title: 'Shipping Policy',
   description:
     'SiphoraHQ shipping information — free shipping above ₹999, delivery timelines, courier partners, and order tracking.',
-  alternates: { canonical: 'https://www.siphorahq.in/shipping-returns' },
+  alternates: { canonical: '/shipping-returns' },
   robots: { index: true, follow: false },
 };
 

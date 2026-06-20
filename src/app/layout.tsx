@@ -1,6 +1,6 @@
 import React from 'react';
 import Script from 'next/script';
-import { Playfair_Display, Inter } from 'next/font/google';
+import { Playfair_Display, Inter, Cormorant_Garamond } from 'next/font/google';
 import './globals.css';
 import { BRAND, getWhatsAppLink } from '@/config/brand';
 import Header from '@/components/Header';
@@ -16,6 +16,13 @@ import ThemeInjector from '@/components/ThemeInjector';
 import { Toaster } from 'react-hot-toast';
 
 export const revalidate = 60;
+
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-cormorant',
+  display: 'swap',
+});
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -138,15 +145,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   };
 
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
+    <html lang="en" className={`${playfair.variable} ${inter.variable} ${cormorant.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preload" as="image" href="/images/hero.webp" fetchPriority="high" />
-        <link rel="canonical" href={BRAND.domain} />
-        <link rel="alternate" hrefLang="en-IN" href={BRAND.domain} />
-        <link rel="alternate" hrefLang="x-default" href={BRAND.domain} />
         <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
         <script
           type="application/ld+json"
