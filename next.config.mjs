@@ -25,9 +25,6 @@ const nextConfig = {
     ],
   },
   productionBrowserSourceMaps: true,
-  experimental: {
-    optimizePackageImports: ['lucide-react', 'framer-motion'],
-  },
   async redirects() {
     return [
       {
