@@ -126,9 +126,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         telephone: '+919540027978',
         address: {
           '@type': 'PostalAddress',
-          streetAddress: '123 Artisan Lane, Craftsmen District',
-          addressLocality: 'New Delhi',
-          postalCode: '110001',
+          streetAddress: '671, Dayalpur, Ballabgarh',
+          addressLocality: 'Faridabad',
+          addressRegion: 'Haryana',
+          postalCode: '121004',
           addressCountry: 'IN'
         },
         priceRange: '$$$'

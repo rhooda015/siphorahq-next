@@ -59,9 +59,8 @@ export default function Footer() {
             <li className="flex items-start gap-3 mt-4">
               <MapPin className="text-burnished-gold w-5 h-5 inline-block shrink-0 mt-0.5" /> 
               <address className="not-italic text-sm text-surface-cream/80 leading-relaxed">
-                123 Artisan Lane,<br />
-                Craftsmen District,<br />
-                New Delhi, IN 110001
+                671, Dayalpur, Ballabgarh,<br />
+                Faridabad, Haryana (121004)
               </address>
             </li>
           </ul>
