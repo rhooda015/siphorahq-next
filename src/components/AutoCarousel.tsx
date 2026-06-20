@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 const SLIDES = [
   {
-    image: "/images/homepage/hero_tea_set.png",
+    image: "/images/homepage/hero_tea_set.webp",
     badge: "Est. 2024",
     title: "The Art of Fine Porcelain",
     description: "Experience the quiet luxury of timeless craftsmanship in every piece.",
@@ -16,7 +16,7 @@ const SLIDES = [
     ]
   },
   {
-    image: "/images/homepage/gifting.png",
+    image: "/images/homepage/gifting.webp",
     badge: "New Season",
     title: "Signature Gifting Sets",
     description: "Hand-curated collections delivered in our iconic premium packaging.",
@@ -51,8 +51,9 @@ export default function AutoCarousel() {
               alt={slide.title}
               fill
               priority={index === 0}
+              fetchPriority={index === 0 ? "high" : "auto"}
               className="object-cover"
-              sizes="100vw"
+              sizes="(max-width: 768px) 100vw, 100vw"
             />
             <div className="absolute inset-0 bg-black/50"></div>
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-surface-cream px-6">
