@@ -164,7 +164,7 @@ export default async function HomePage() {
         <div className="max-w-container-max mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
             <div>
-              <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-burnished-gold mb-4 block">Iconic Pieces</span>
+              <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-[#8b6914] mb-4 block">Iconic Pieces</span>
               <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-5xl italic text-ink-charcoal">Most Loved by Modern Homes</h2>
             </div>
             <Link href="/best-sellers" className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-ink-charcoal border-b border-ink-charcoal pb-1 hover:text-burnished-gold hover:border-burnished-gold transition-colors">
@@ -179,7 +179,7 @@ export default async function HomePage() {
                   <div className="relative aspect-[4/5] mb-6 overflow-hidden bg-[#faf7f2] border border-[#f0ebe1] rounded-sm">
                     <span className="absolute top-3 left-3 z-10 bg-surface-cream px-3 py-1.5 font-label-caps text-[9px] uppercase tracking-widest text-ink-charcoal shadow-sm">Best Seller</span>
                     <Image src={p.image || p.imageURL || '/images/dinnerware.webp'} alt={p.name} fill className="w-full h-full object-contain p-4 bg-[#faf7f2] transition-transform duration-700 group-hover:scale-[1.03]" sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw" />
-                    <button className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-burnished-gold hover:text-white">
+                    <button aria-label={`Add ${p.name} to bag`} className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-burnished-gold hover:text-white">
                       <ShoppingBag className=" w-5 h-5 inline-block" />
                     </button>
                   </div>
@@ -205,7 +205,7 @@ export default async function HomePage() {
       <section className="py-10 md:py-section-gap px-4 md:px-margin-desktop bg-surface-cream">
         <div className="max-w-container-max mx-auto">
           <div className="text-center mb-12">
-            <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-burnished-gold mb-4 block">The Art of Gifting</span>
+            <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-[#8b6914] mb-4 block">The Art of Gifting</span>
             <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-5xl italic text-ink-charcoal">Gifts for Every Milestone</h2>
           </div>
 
@@ -302,7 +302,7 @@ export default async function HomePage() {
               <Image src="/images/homepage/brand_story.png" alt="Brand Story" fill className="object-cover transition-transform duration-1000 hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
             <div className="w-full md:w-1/2 md:pl-10 text-left">
-              <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-burnished-gold mb-4 block">Our Philosophy</span>
+              <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-[#8b6914] mb-4 block">Our Philosophy</span>
               <h2 className="font-headline-lg text-2xl sm:text-3xl md:text-5xl italic text-ink-charcoal mb-6 leading-tight">Poetry in Porcelain, Crafted for the Modern Home</h2>
               <p className="font-body-md text-sm sm:text-base leading-relaxed text-on-surface-variant mb-4">
                 Siphorahq was born from a simple desire: to make everyday dining feel like an occasion. We believe that the objects we interact with daily should bring us joy, pause, and a touch of luxury.
@@ -429,7 +429,7 @@ export default async function HomePage() {
         <NewsletterFormDynamic />
 
       {/* WhatsApp Floating Button */}
-      <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I'm%20interested%20in%20Siphorahq%20products`} target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(37,211,102,0.4)] hover:scale-110 transition-transform">
+      <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I'm%20interested%20in%20Siphorahq%20products`} target="_blank" rel="noopener noreferrer" aria-label="Contact us on WhatsApp" className="fixed bottom-6 right-6 z-40 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(37,211,102,0.4)] hover:scale-110 transition-transform">
         <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
         </svg>

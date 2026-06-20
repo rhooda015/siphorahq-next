@@ -1,4 +1,4 @@
-import { Share2, Camera, Mail, Phone } from 'lucide-react';
+import { Share2, Camera, Mail, Phone, MapPin } from 'lucide-react';
 import React from 'react';
 import Link from 'next/link';
 import ProtectedEmail from '@/components/ProtectedEmail';
@@ -37,6 +37,7 @@ export default function Footer() {
         <div>
           <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">Support</h4>
           <ul className="space-y-4 font-body-md text-surface-cream/80">
+            <li><Link className="hover:text-white transition-colors" href="/about">About Us</Link></li>
             <li><Link className="hover:text-white transition-colors" href="/faq">Care Instructions</Link></li>
             <li><Link className="hover:text-white transition-colors" href="/shipping-policy">Shipping &amp; Returns</Link></li>
             <li><Link className="hover:text-white transition-colors" href="/contact">Track Order</Link></li>
@@ -54,6 +55,14 @@ export default function Footer() {
             <li className="flex items-center gap-3">
               <Phone className="text-burnished-gold w-5 h-5 inline-block" /> 
               <a className="hover:text-white transition-colors" href="tel:+919540027978">+91 95400 27978</a>
+            </li>
+            <li className="flex items-start gap-3 mt-4">
+              <MapPin className="text-burnished-gold w-5 h-5 inline-block shrink-0 mt-0.5" /> 
+              <address className="not-italic text-sm text-surface-cream/80 leading-relaxed">
+                123 Artisan Lane,<br />
+                Craftsmen District,<br />
+                New Delhi, IN 110001
+              </address>
             </li>
           </ul>
           <p className="font-label-caps text-[10px] uppercase tracking-widest text-surface-cream/50 mb-4">Secure Payments</p>

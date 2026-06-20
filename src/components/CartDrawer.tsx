@@ -58,7 +58,7 @@ export default function CartDrawer() {
             <ShoppingBag className="w-5 h-5" />
             {cartTitle}
           </h2>
-          <button onClick={closeDrawer} className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
+          <button onClick={closeDrawer} aria-label="Close cart" className="p-2 hover:bg-neutral-100 rounded-full transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -99,7 +99,7 @@ export default function CartDrawer() {
                     <div>
                       <div className="flex justify-between items-start">
                         <h3 className="font-serif text-[15px] pr-4 leading-tight">{item.name}</h3>
-                        <button onClick={() => removeItem(item.cartItemId)} className="text-[var(--color-text-muted)] hover:text-red-500 transition-colors p-0.5 -mr-1 -mt-0.5">
+                        <button onClick={() => removeItem(item.cartItemId)} aria-label="Remove item" className="text-[var(--color-text-muted)] hover:text-red-500 transition-colors p-0.5 -mr-1 -mt-0.5">
                           <X className="w-4 h-4" />
                         </button>
                       </div>
@@ -109,9 +109,9 @@ export default function CartDrawer() {
                     </div>
                     <div className="flex items-end justify-between mt-2.5">
                       <div className="flex border border-[var(--color-border)] h-7 items-center">
-                        <button onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)} className="px-2 h-full flex items-center hover:bg-neutral-100 transition-colors"><Minus className="w-3 h-3" /></button>
+                        <button onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)} aria-label="Decrease quantity" className="px-2 h-full flex items-center hover:bg-neutral-100 transition-colors"><Minus className="w-3 h-3" /></button>
                         <span className="px-2.5 h-full flex items-center text-xs font-medium border-x border-[var(--color-border)]">{item.quantity}</span>
-                        <button onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)} className="px-2 h-full flex items-center hover:bg-neutral-100 transition-colors"><Plus className="w-3 h-3" /></button>
+                        <button onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)} aria-label="Increase quantity" className="px-2 h-full flex items-center hover:bg-neutral-100 transition-colors"><Plus className="w-3 h-3" /></button>
                       </div>
                       <p className="font-sans font-medium text-sm text-[var(--color-primary)]">
                         ₹{((item.salePrice || item.price) * item.quantity + (item.isGiftWrapped ? 500 * item.quantity : 0)).toLocaleString('en-IN')}

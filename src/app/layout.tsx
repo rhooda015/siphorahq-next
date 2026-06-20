@@ -15,6 +15,8 @@ import SettingsProvider from '@/providers/SettingsProvider';
 import ThemeInjector from '@/components/ThemeInjector';
 import { Toaster } from 'react-hot-toast';
 
+export const revalidate = 60;
+
 const playfair = Playfair_Display({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -40,8 +42,8 @@ export const viewport = {
 export async function generateMetadata() {
   await dbConnect();
   const settings = await StoreSettings.findOne().lean() || {
-    seoTitle: `${BRAND.name} — Handcrafted Porcelain Dinnerware & Tea Sets | India`,
-    seoDescription: 'Shop artisan-made porcelain tea cup sets, luxury dinnerware, and handcrafted gifting collections — designed in India, delivered nationwide.',
+    seoTitle: `${BRAND.name} — Premium Luxury Porcelain Dinnerware India`,
+    seoDescription: 'Shop artisan-made porcelain tea cups, luxury dinnerware, and handcrafted gifting collections. Designed in India, delivered nationwide.',
   };
 
   return {
@@ -124,8 +126,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         telephone: '+919540027978',
         address: {
           '@type': 'PostalAddress',
+          streetAddress: '123 Artisan Lane, Craftsmen District',
+          addressLocality: 'New Delhi',
+          postalCode: '110001',
           addressCountry: 'IN'
-        }
+        },
+        priceRange: '$$$'
       }
     ],
   };
@@ -135,19 +141,26 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preload" as="image" href="/images/hero.webp" />
         <link rel="canonical" href={BRAND.domain} />
+        <link rel="alternate" hrefLang="en-IN" href={BRAND.domain} />
+        <link rel="alternate" hrefLang="x-default" href={BRAND.domain} />
+        <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
         />
       </head>
       <body className="bg-surface-cream text-ink-charcoal font-body-md antialiased min-h-screen pb-[64px] md:pb-0 flex flex-col overflow-x-hidden">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-[100] focus:p-4 focus:bg-white focus:text-black">
+          Skip to main content
+        </a>
         <ThemeInjector theme={theme} />
         <SettingsProvider initialSettings={JSON.parse(JSON.stringify(settings))}>
           <SessionWrapper>
             <Header />
-            <main className="flex-1 flex flex-col">{children}</main>
+            <main id="main-content" className="flex-1 flex flex-col">{children}</main>
             <Footer />
             <MobileBottomNav />
             <CartDrawerDynamic />
@@ -171,12 +184,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </SessionWrapper>
         </SettingsProvider>
         <Script
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           src={`https://www.googletagmanager.com/gtag/js?id=G-22VV0R5MCN`}
         />
         <Script
           id="google-analytics"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
@@ -188,7 +201,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             `,
           }}
         />
-        <Script id="microsoft-clarity" strategy="afterInteractive">
+        <Script id="microsoft-clarity" strategy="lazyOnload">
           {`
             (function(c,l,a,r,i,t,y){
                 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};

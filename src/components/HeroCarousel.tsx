@@ -31,7 +31,7 @@ export default function HeroCarousel({ slides, title, buttonText, buttonLink }: 
 
   return (
     <section className="relative w-full h-[80vh] md:h-[90vh] bg-[#f8f7f5] overflow-hidden">
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={currentSlide}
           initial={{ opacity: 0 }}
