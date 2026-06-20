@@ -426,6 +426,48 @@ export default async function HomePage() {
         </div>
       </section>
 
+        {/* SEO Content Section — thin content fix */}
+        <section className="py-16 px-5 md:px-margin-desktop bg-white border-t border-muted-sand">
+          <div className="max-w-3xl mx-auto text-center">
+            <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-burnished-gold mb-4 block">
+              India's Finest
+            </span>
+            <h2 className="font-headline-lg text-3xl md:text-4xl italic text-ink-charcoal mb-8">
+              Handcrafted Luxury Porcelain Dinnerware — Shop the Best Seller Collection
+            </h2>
+            <div className="font-body-md text-on-surface-variant text-base leading-relaxed space-y-4 text-left">
+              <p>
+                At Siphorahq, every piece of fine porcelain is a work of art. Our luxury dinnerware sets,
+                handcrafted tea sets, gold-finish coffee mugs, and signature gift sets are designed to
+                transform your everyday table into an elegant dining experience. Each product is individually
+                crafted by skilled Indian artisans using time-honoured techniques, fired at 1350°C for a
+                non-porous, durable finish that lasts a lifetime.
+              </p>
+              <p>
+                Whether you are looking for the best porcelain tea set for your home, curating a luxury gift
+                set for a wedding or corporate occasion, or simply elevating your everyday dining with fine
+                porcelain plates and bowls — Siphorahq has a curated collection that speaks to your taste.
+                Our best seller sets like the Imperial White Dinner Set and the Emerald Heritage Tea Set
+                are consistently loved by modern Indian homes.
+              </p>
+              <p>
+                We ship pan-India with free shipping on orders above ₹999. Every order arrives in our
+                iconic premium gift packaging, making it the perfect ready-to-gift experience. Our
+                24k gold accent pieces are especially popular as wedding gifts, housewarming presents, and
+                festive Diwali sets. If you are looking for bespoke corporate gifting or custom porcelain
+                sets, our gifting concierge team is available on WhatsApp to curate the perfect order for
+                your occasion.
+              </p>
+              <p>
+                Siphorahq is built on the belief that luxury should not be reserved for special occasions.
+                Fine porcelain, when crafted with care and used daily, elevates the simple act of sharing
+                a meal into something meaningful. Shop our collections — from best seller dinner sets and
+                artisan tea sets to luxury gold gift hampers — and experience the quiet elegance of
+                handcrafted Indian porcelain.
+              </p>
+            </div>
+          </div>
+        </section>
         <NewsletterFormDynamic />
 
       {/* WhatsApp Floating Button */}

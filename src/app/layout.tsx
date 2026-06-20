@@ -42,8 +42,8 @@ export const viewport = {
 export async function generateMetadata() {
   await dbConnect();
   const settings = await StoreSettings.findOne().lean() || {
-    seoTitle: `${BRAND.name} — Premium Luxury Porcelain Dinnerware India`,
-    seoDescription: 'Shop artisan-made porcelain tea cups, luxury dinnerware, and handcrafted gifting collections. Designed in India, delivered nationwide.',
+    seoTitle: `Siphorahq | Best Luxury Porcelain Gift Sets, Tea Sets & Fine Dinnerware | Shop Now`,
+    seoDescription: 'Shop Siphorahq\'s best seller luxury porcelain dinnerware, gold-finish tea sets, fine porcelain gift sets & more. Free shipping above ₹999. Pan-India delivery.',
   };
 
   return {
@@ -201,15 +201,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             `,
           }}
         />
-        <Script id="microsoft-clarity" strategy="lazyOnload">
-          {`
-            (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "x8rtgt9b6p");
-          `}
-        </Script>
+        <Script
+          id="microsoft-clarity"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","x8rtgt9b6p");`,
+          }}
+        />
       </body>
     </html>
   );

@@ -4,7 +4,7 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 31536000,
+    minimumCacheTTL: 60,
     remotePatterns: [
       {
         protocol: 'https',
@@ -26,10 +26,16 @@ const nextConfig = {
   },
   productionBrowserSourceMaps: true,
   experimental: {
-    optimizePackageImports: ['lucide-react'],
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
   async redirects() {
     return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.siphorahq.in' }],
+        destination: 'https://siphorahq.in/:path*',
+        permanent: true,
+      },
       {
         source: '/collections',
         destination: '/products',
