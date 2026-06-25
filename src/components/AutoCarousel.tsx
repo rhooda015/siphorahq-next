@@ -93,8 +93,8 @@ export default function AutoCarousel() {
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`w-2 h-2 rounded-full transition-all duration-500 ${
-              index === currentSlide ? "bg-burnished-gold w-6" : "bg-white/50"
+            className={`h-2 w-2 rounded-full transition-transform duration-500 origin-center ${
+              index === currentSlide ? "bg-burnished-gold scale-x-[3]" : "bg-white/50 scale-x-100"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />

@@ -65,10 +65,15 @@ export default function CartDrawer() {
 
         <div className="flex-1 overflow-y-auto p-4">
           {items.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-[var(--color-text-muted)] space-y-4">
-              <ShoppingBag className="w-12 h-12 opacity-20" />
-              <p className="font-sans">Your cart is currently empty.</p>
-              <button onClick={closeDrawer} className="btn-primary mt-4">Continue Shopping</button>
+            <div className="h-full flex flex-col items-center justify-center text-center px-4 space-y-6">
+              <ShoppingBag className="w-12 h-12 text-[#C9A84C] opacity-50" strokeWidth={1} />
+              <div>
+                <p className="font-serif text-2xl text-ink-charcoal mb-2">Your cart is empty</p>
+                <p className="font-body-md text-sm text-on-surface-variant">Discover our collections and find the perfect addition to your home.</p>
+              </div>
+              <button onClick={closeDrawer} className="bg-ink-charcoal text-white font-sans text-xs uppercase tracking-widest px-8 py-4 rounded-sm hover:bg-black transition-colors">
+                Continue Shopping
+              </button>
             </div>
           ) : (
             <div className="flex flex-col gap-6">

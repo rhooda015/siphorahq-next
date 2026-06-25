@@ -15,6 +15,13 @@ import DeliveryChecker from './DeliveryChecker';
 import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
 import { Shield, Droplets, Award, Sparkles } from 'lucide-react';
+import StickyAddToCart from '@/components/StickyAddToCart';
+import TrustBadges from '@/components/TrustBadges';
+import ShippingReturnsSummary from '@/components/ShippingReturnsSummary';
+import ProductFAQ from '@/components/ProductFAQ';
+import ProductStory from '@/components/ProductStory';
+import CareGuide from '@/components/CareGuide';
+import WhySiphorahq from '@/components/WhySiphorahq';
 
 export const dynamic = 'force-dynamic';
 
@@ -217,6 +224,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               : getPlaceholderImages(product.id)
           )} 
         />
+        
+        <ProductStory />
       </div>
 
       {/* Right: Product Details */}
@@ -233,7 +242,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             <Sparkles className="w-3 h-3" /> Limited Edition
           </span>
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-[#F7F5F0] border border-[#E8E1D3] text-[10px] uppercase tracking-widest font-bold text-[#8A733F]">
-            <Droplets className="w-3 h-3" /> Handcrafted
+            <Droplets className="w-3 h-3" /> Premium Quality
           </span>
         </div>
         
@@ -248,16 +257,19 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         </div>
 
         {/* Price */}
-        <div className="mt-6 flex items-center gap-4 border-b border-[var(--color-border)] pb-6">
-          <p className="text-2xl font-sans font-medium text-[var(--color-primary)]">₹{(product.salePrice || product.price).toLocaleString('en-IN')}</p>
-          {product.salePrice && product.salePrice < product.price && (
-            <>
-              <p className="text-lg font-sans text-[var(--color-text-muted)] line-through">₹{product.price.toLocaleString('en-IN')}</p>
-              <span className="bg-red-50 text-red-700 px-2 py-1 text-[10px] font-medium font-sans uppercase tracking-widest rounded-sm border border-red-200">
-                Save {Math.round((1 - product.salePrice / product.price) * 100)}%
-              </span>
-            </>
-          )}
+        <div className="mt-6 border-b border-[var(--color-border)] pb-6">
+          <div className="flex items-end gap-3 mb-2">
+            <p className="text-3xl font-serif font-medium text-[var(--color-primary)]">₹{(product.salePrice || product.price).toLocaleString('en-IN')}</p>
+            {product.salePrice && product.salePrice < product.price && (
+              <>
+                <p className="text-lg font-sans text-[var(--color-text-muted)] line-through mb-1">MRP ₹{product.price.toLocaleString('en-IN')}</p>
+                <span className="bg-[#F7F5F0] text-[#8A733F] px-2 py-1 text-[10px] font-bold font-sans uppercase tracking-widest rounded-sm border border-[#E8E1D3] mb-1.5">
+                  Save ₹{(product.price - product.salePrice).toLocaleString('en-IN')} ({Math.round((1 - product.salePrice / product.price) * 100)}%)
+                </span>
+              </>
+            )}
+          </div>
+          <p className="text-xs font-sans text-[var(--color-text-muted)]">Price inclusive of all taxes. Free standard shipping on prepaid orders.</p>
         </div>
 
 
@@ -267,8 +279,14 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         {/* Dynamic Client Actions (ATC, Buy Now, Trust Badges, Stock) */}
         <ProductClientActions product={product} />
 
+        {/* Trust Badges */}
+        <TrustBadges />
+
+        {/* Shipping & Returns Summary */}
+        <ShippingReturnsSummary />
+
         {/* Accordions */}
-        <div className="mt-12 border-t border-[var(--color-border)]">
+        <div className="mt-8 border-t border-[var(--color-border)]">
           <details className="group border-b border-[var(--color-border)] py-4 cursor-pointer" open>
             <summary className="flex justify-between items-center font-serif text-lg font-medium outline-none text-[var(--color-primary)]">
               About This Collection
@@ -281,9 +299,31 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             />
           </details>
         </div>
+
+        {/* Product FAQs */}
+        <ProductFAQ 
+          faqs={[
+            {
+              question: "Is this product microwave and dishwasher safe?",
+              answer: "Yes, our premium ceramics are fully microwave and dishwasher safe. We recommend using a mild detergent and avoiding sudden temperature changes to ensure longevity."
+            },
+            {
+              question: "How is it packaged for delivery?",
+              answer: "We use a multi-layered premium packaging approach with foam inserts and heavy-duty corrugated boxes to guarantee safe transit. In the rare event of transit damage, we offer a hassle-free replacement."
+            },
+            {
+              question: "Can I return the product if I don't like it?",
+              answer: "Yes! We offer a 7-Day Return Policy. If you are not completely satisfied, you can return the item in its original, unused condition for a full refund."
+            }
+          ]}
+        />
+
+        <CareGuide />
       </div>
     </div>
     
+    <WhySiphorahq />
+
     {/* Related Products Section */}
     {relatedProducts.length > 0 && (
       <div className="max-w-7xl mx-auto px-4 py-16 border-t border-[var(--color-border)]">

@@ -8,6 +8,10 @@ import Product from '@/models/Product';
 import { STATIC_PRODUCTS } from '@/data/products';
 import NewsletterFormDynamic from '@/components/NewsletterFormDynamic';
 import AutoCarousel from '@/components/AutoCarousel';
+import LuxuryTrustStrip from '@/components/LuxuryTrustStrip';
+import InspiredLiving from '@/components/InspiredLiving';
+import GiftPackaging from '@/components/GiftPackaging';
+import EditorialQuote from '@/components/EditorialQuote';
 
 export const revalidate = 60; // Use ISR
 
@@ -85,29 +89,21 @@ export default async function HomePage() {
       <h1 className="sr-only">Luxury Porcelain Tea Cups & Dinnerware in India</h1>
       <AutoCarousel />
 
-      {/* 4. Trust Grid */}
-      <section className="border-b border-muted-sand">
-        <div className="max-w-container-max mx-auto grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-muted-sand">
-          <div className="p-8 md:p-12 text-center group hover:bg-white transition-colors">
-            <Award className="text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform w-5 h-5 inline-block" />
-            <h3 className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal mb-2">Artisan Crafted</h3>
-            <p className="font-body-md text-on-surface-variant text-sm">Fine porcelain, fired at 1350°C</p>
-          </div>
-          <div className="p-8 md:p-12 text-center group hover:bg-white transition-colors">
-            <Truck className="text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform w-5 h-5 inline-block" />
-            <h3 className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal mb-2">Secure Delivery</h3>
-            <p className="font-body-md text-on-surface-variant text-sm">Damage-free guarantee across India</p>
-          </div>
-          <div className="p-8 md:p-12 text-center group hover:bg-white transition-colors">
-            <Gift className="text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform w-5 h-5 inline-block" />
-            <h3 className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal mb-2">Luxury Packaging</h3>
-            <p className="font-body-md text-on-surface-variant text-sm">Signature gifting boxes included</p>
-          </div>
-          <div className="p-8 md:p-12 text-center group hover:bg-white transition-colors">
-            <HeadphonesIcon className="text-4xl text-burnished-gold mb-4 group-hover:scale-110 transition-transform w-5 h-5 inline-block" />
-            <h3 className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal mb-2">Private Concierge</h3>
-            <p className="font-body-md text-on-surface-variant text-sm">Dedicated WhatsApp support</p>
-          </div>
+      <LuxuryTrustStrip />
+
+      {/* 4. The Art of Everyday Dining (Editorial Block) */}
+      <section className="py-20 md:py-32 px-5 md:px-margin-desktop bg-white text-center">
+        <div className="max-w-2xl mx-auto">
+          <span className="text-xs font-sans font-medium uppercase tracking-widest text-[#C9A84C] mb-4 block">Siphorahq</span>
+          <h2 className="font-serif text-3xl md:text-5xl text-ink-charcoal mb-8 leading-tight">
+            The Art of Everyday Dining
+          </h2>
+          <p className="font-body-md text-on-surface-variant text-base md:text-lg leading-relaxed mb-6">
+            Designed for modern Indian homes, our collections balance timeless elegance with everyday practicality. We curate fine porcelain that honors tradition while embracing contemporary aesthetics—bringing quiet sophistication to your dining table.
+          </p>
+          <p className="font-body-md text-on-surface-variant text-base md:text-lg leading-relaxed">
+            Whether you are searching for the perfect wedding gift or elevating your own daily rituals, Siphorahq offers quality that endures. Discover tableware that tells a story and brings people together.
+          </p>
         </div>
       </section>
 
@@ -404,8 +400,14 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <InspiredLiving />
+      
+      <EditorialQuote />
+
+      <GiftPackaging />
+
       {/* 13. FAQ */}
-      <section className="py-section-gap px-5 md:px-margin-desktop bg-white border-t border-muted-sand">
+      <section className="py-section-gap px-5 md:px-margin-desktop bg-[#Fdfbf9] border-t border-muted-sand">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-headline-lg text-4xl md:text-5xl italic text-ink-charcoal mb-4">Service &amp; Care</h2>

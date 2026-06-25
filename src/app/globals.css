@@ -29,6 +29,11 @@
     font-family: var(--font-sans), sans-serif;
   }
 
+  *:focus-visible {
+    outline: 2px solid var(--color-gold-light);
+    outline-offset: 2px;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif), serif;
   }
@@ -151,14 +156,12 @@
 
 /* ── Luxury Hover & Animate Underline ── */
 .luxury-hover {
-  transition: transform 300ms ease, box-shadow 300ms ease;
+  transition: transform 300ms ease;
 }
 .luxury-hover:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(26, 26, 26, 0.08);
 }
 .dark .luxury-hover:hover {
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
 }
 
 .animate-underline::after {

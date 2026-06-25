@@ -5,7 +5,8 @@ import OrderTracking, { OrderTrackingData } from "@/components/account/OrderTrac
 import connectDB from "@/lib/db";
 import Order from "@/models/Order";
 
-export default async function OrderDetailsPage({ params }: { params: { id: string } }) {
+export default async function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
@@ -16,8 +17,8 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
   await connectDB();
   const orderDoc = await Order.findOne({ 
     $or: [
-      { orderId: params.id },
-      { _id: params.id.match(/^[0-9a-fA-F]{24}$/) ? params.id : null }
+      { orderId: resolvedParams.id },
+      { _id: resolvedParams.id.match(/^[0-9a-fA-F]{24}$/) ? resolvedParams.id : null }
     ]
   }).lean();
 
@@ -25,7 +26,7 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
     // Return a generic/mocked OrderTrackingData if order is not found for preview purposes
     // Or you could return a 404. We'll use mock data to demonstrate the luxury UI.
     const mockData: OrderTrackingData = {
-      orderId: params.id || "SPH-98421",
+      orderId: resolvedParams.id || "SPH-98421",
       status: "packed",
       estimatedDelivery: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(), // +3 days
       cartItemCount: 2,
@@ -93,7 +94,7 @@ export default async function OrderDetailsPage({ params }: { params: { id: strin
   // If real order data exists, we would map it here.
   // For now, mapping mock data around the real order ID:
   const orderData: OrderTrackingData = {
-    orderId: orderDoc.orderId || params.id,
+    orderId: orderDoc.orderId || resolvedParams.id,
     status: (orderDoc.status === "Delivered" ? "delivered" : "packed") as any, // Simple map
     estimatedDelivery: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
     cartItemCount: orderDoc.items?.length || 0,

@@ -44,8 +44,8 @@ export default function HeroCarousel({ slides, title, buttonText, buttonLink }: 
               src={heroSlides[currentSlide].img} 
               alt={`Siphorahq Luxury Collection ${currentSlide + 1}`} 
               fill 
-              priority
-              fetchPriority="high"
+              priority={currentSlide === 0}
+              fetchPriority={currentSlide === 0 ? "high" : "auto"}
               className="object-cover object-center" 
               sizes="100vw" 
               quality={80}

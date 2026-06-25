@@ -5,7 +5,6 @@ import './globals.css';
 import { BRAND, getWhatsAppLink } from '@/config/brand';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import MobileBottomNav from '@/components/MobileBottomNav';
 import CartDrawerDynamic from '@/components/CartDrawerDynamic';
 import SessionWrapper from '@/components/SessionWrapper';
 import dbConnect from '@/lib/db';
@@ -13,7 +12,11 @@ import StoreSettings from '@/models/StoreSettings';
 import ThemeSettings from '@/models/ThemeSettings';
 import SettingsProvider from '@/providers/SettingsProvider';
 import ThemeInjector from '@/components/ThemeInjector';
-import { Toaster } from 'react-hot-toast';
+import dynamic from 'next/dynamic';
+import { GoogleAnalytics } from '@next/third-parties/google';
+
+const MobileBottomNav = dynamic(() => import('@/components/MobileBottomNav'));
+const Toaster = dynamic(() => import('react-hot-toast').then(mod => mod.Toaster));
 
 export const revalidate = 60;
 
@@ -140,8 +143,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preload" as="image" href="/images/hero.webp" fetchPriority="high" />
         <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
@@ -181,24 +182,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             />
           </SessionWrapper>
         </SettingsProvider>
-        <Script
-          strategy="lazyOnload"
-          src={`https://www.googletagmanager.com/gtag/js?id=G-22VV0R5MCN`}
-        />
-        <Script
-          id="google-analytics"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-22VV0R5MCN', {
-                page_path: window.location.pathname,
-              });
-            `,
-          }}
-        />
+        <GoogleAnalytics gaId="G-22VV0R5MCN" />
         <Script
           id="microsoft-clarity"
           strategy="lazyOnload"

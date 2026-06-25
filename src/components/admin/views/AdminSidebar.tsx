@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { 
   LayoutDashboard, ShoppingBag, Package, Users, BarChart2, 
   Settings as SettingsIcon, Tag, Star, LayoutTemplate, 
-  Search as SearchIcon, Image as ImageIcon, Folders, FileText, Menu as MenuIcon, Palette, ListTree, ChevronLeft, ChevronRight
+  Search as SearchIcon, Image as ImageIcon, Folders, FileText, Menu as MenuIcon, Palette, ListTree, ChevronLeft, ChevronRight, Mail
 } from 'lucide-react';
 
 export default function AdminSidebar({ activeTab, setActiveTab, pendingDispatch }: { activeTab: string, setActiveTab: (t: string) => void, pendingDispatch: number }) {
@@ -79,7 +79,9 @@ export default function AdminSidebar({ activeTab, setActiveTab, pendingDispatch 
             <NavItem icon={LayoutDashboard} label="Overview" />
             <NavItem icon={ShoppingBag} label="Orders" badge={pendingDispatch} />
             <NavItem icon={Package} label="Products" />
+            <NavItem icon={Package} label="Inventory" />
             <NavItem icon={Users} label="Customers" />
+            <NavItem icon={Mail} label="Mailbox" />
           </div>
         </div>
 

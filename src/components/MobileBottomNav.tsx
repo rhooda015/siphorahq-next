@@ -1,9 +1,9 @@
 "use client";
+import { ShoppingBag, Store, User } from 'lucide-react';
 
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, Store, User } from 'lucide-react';
 import { useCart } from '@/store/useCart';
 import { useSession } from 'next-auth/react';
 

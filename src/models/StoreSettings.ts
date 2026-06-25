@@ -19,6 +19,11 @@ export interface IStoreSettings extends Document {
   // SEO
   seoTitle: string;
   seoDescription: string;
+  // Zoho API
+  zohoClientId?: string;
+  zohoClientSecret?: string;
+  zohoRefreshToken?: string;
+  zohoRegion?: string;
 }
 
 const StoreSettingsSchema = new mongoose.Schema(
@@ -45,6 +50,12 @@ const StoreSettingsSchema = new mongoose.Schema(
     // SEO
     seoTitle: { type: String, default: 'Siphorahq — Luxury Porcelain Dinnerware India' },
     seoDescription: { type: String, default: 'Shop artisan-made porcelain tea cup sets, luxury dinnerware, and handcrafted gifting collections — designed in India, delivered nationwide.' },
+
+    // Zoho API
+    zohoClientId: { type: String, default: '' },
+    zohoClientSecret: { type: String, default: '' },
+    zohoRefreshToken: { type: String, default: '' },
+    zohoRegion: { type: String, default: '.in' },
   },
   { timestamps: true }
 );

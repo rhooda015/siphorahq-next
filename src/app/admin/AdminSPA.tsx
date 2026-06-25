@@ -22,6 +22,8 @@ import ThemeEditorView from '@/components/admin/views/ThemeEditorView';
 import NavigationBuilderView from '@/components/admin/views/NavigationBuilderView';
 import CMSPagesView from '@/components/admin/views/CMSPagesView';
 import CategoriesView from '@/components/admin/views/CategoriesView';
+import InventoryView from '@/components/admin/views/InventoryView';
+import ZohoMailView from '@/components/admin/views/ZohoMailView';
 
 export default function AdminSPA() {
   const router = useRouter();
@@ -59,7 +61,7 @@ export default function AdminSPA() {
         if (res.status === 401) { router.push('/admin/login'); return; }
         const data = await res.json();
         setOrders(Array.isArray(data) ? data : []);
-      } else if (tab === 'Products') {
+      } else if (tab === 'Products' || tab === 'Inventory') {
         const res = await fetch('/api/products');
         if (res.status === 401) { router.push('/admin/login'); return; }
         setProducts(await res.json());
@@ -205,6 +207,7 @@ export default function AdminSPA() {
             <>
               {activeTab === 'Overview' && <DashboardView stats={stats} />}
               {activeTab === 'Products' && <ProductsTableView products={products} onEdit={setProductEditor} onDelete={handleDeleteProduct} />}
+              {activeTab === 'Inventory' && <InventoryView products={products} onUpdateStock={(id, stock) => handleSaveProduct({ _id: id, stock })} />}
               {activeTab === 'Orders' && <OrdersTableView orders={orders} onManage={setTrackingModalOrder} />}
               {activeTab === 'Analytics' && <AnalyticsView stats={stats} />}
               {activeTab === 'Settings' && <SettingsView />}
@@ -215,6 +218,7 @@ export default function AdminSPA() {
               {activeTab === 'Media' && <MediaLibraryView />}
               {activeTab === 'Coupons' && <CouponsView />}
               {activeTab === 'Customers' && <CustomersView />}
+              {activeTab === 'Mailbox' && <ZohoMailView />}
               {activeTab === 'Reviews' && <ReviewsView />}
               {activeTab === 'SEO' && <SEOView />}
               {activeTab === 'Theme' && <ThemeEditorView />}

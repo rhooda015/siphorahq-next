@@ -1,5 +1,5 @@
 "use client";
-import { Lock, Search, User, Heart, ShoppingBag } from 'lucide-react';
+import { Lock, Search, User, Heart, ShoppingBag, X, Menu, ChevronRight } from 'lucide-react';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -7,7 +7,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { BRAND } from '@/config/brand';
 import { useCart } from '@/store/useCart';
 import { useSession } from 'next-auth/react';
-import { X, Menu, ChevronRight } from 'lucide-react';
 
 const NAVIGATION_LINKS = [
   { label: 'Shop', url: '/products' },

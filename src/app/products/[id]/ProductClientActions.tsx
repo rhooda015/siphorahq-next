@@ -6,6 +6,7 @@ import { Minus, Plus, ShieldCheck, Truck, Package, RotateCcw } from 'lucide-reac
 import { trackAddToCart } from '@/lib/analytics';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/store/useCart';
+import StickyAddToCart from '@/components/StickyAddToCart';
 
 export default function ProductClientActions({ product }: { product: any }) {
   const [quantity, setQuantity] = useState(1);
@@ -54,7 +55,7 @@ export default function ProductClientActions({ product }: { product: any }) {
       </div>
 
       {/* Actions (Sticky on Mobile) */}
-      <div className="fixed md:relative bottom-[60px] md:bottom-0 left-0 w-full md:w-auto bg-white md:bg-transparent p-3 md:p-0 border-t border-[var(--color-border)] md:border-none z-50 flex flex-col gap-2 md:gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] md:shadow-none">
+      <div id="main-atc-section" className="fixed md:relative bottom-[60px] md:bottom-0 left-0 w-full md:w-auto bg-white md:bg-transparent p-3 md:p-0 border-t border-[var(--color-border)] md:border-none z-50 flex flex-col gap-2 md:gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] md:shadow-none">
         {/* Mobile Product Info (Only visible when sticky) */}
         <div className="md:hidden flex justify-between items-center mb-1 px-1">
           <span className="font-serif text-[13px] font-medium truncate pr-4 text-[var(--color-primary)]">{product.name}</span>
@@ -91,59 +92,19 @@ export default function ProductClientActions({ product }: { product: any }) {
         </button>
       </div>
 
-      {/* Trust & Shipping Signals */}
-      <div className="mt-8 pt-6 border-t border-[var(--color-border)] grid grid-cols-2 gap-y-4 gap-x-2">
-        <div className="flex items-center gap-2 text-sm font-sans text-[var(--color-text-muted)]">
-          <Truck className="w-4 h-4 text-[var(--color-primary)]" />
-          <span>Delivery in 3-5 Business Days</span>
-        </div>
-        <div className="flex items-center gap-2 text-sm font-sans text-[var(--color-text-muted)]">
-          <div className="w-4 h-4 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-[10px]">₹</div>
-          <span>Cash on Delivery Available</span>
-        </div>
-        <div className="flex items-center gap-2 text-sm font-sans text-[var(--color-text-muted)]">
-          <ShieldCheck className="w-4 h-4 text-[var(--color-primary)]" />
-          <span>100% Secure Checkout</span>
-        </div>
-        <div className="flex items-center gap-2 text-sm font-sans text-[var(--color-text-muted)]">
-          <RotateCcw className="w-4 h-4 text-[var(--color-primary)]" />
-          <span>Easy 7-Day Returns</span>
-        </div>
-      </div>
-      
-      {/* Checkout Badges */}
-      <div className="mt-8 py-4 px-4 border-[0.5px] border-[var(--color-border)] bg-[#fdfbf9] text-center">
-        <div className="flex items-center justify-center gap-2 mb-3">
-          <ShieldCheck className="w-3.5 h-3.5 text-green-600" />
-          <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-[var(--color-primary)]">Guaranteed Safe Checkout</p>
-        </div>
-        <div className="flex justify-center items-center gap-3 flex-wrap">
-          {/* Visa */}
-          <div className="h-8 px-3 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm min-w-[52px]">
-            <span className="font-bold italic text-[15px] tracking-tight" style={{color:'#1434CB', fontFamily:'serif'}}>VISA</span>
-          </div>
-          {/* Mastercard */}
-          <div className="h-8 px-2 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm">
-            <svg viewBox="0 0 38 24" className="h-6 w-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="14" cy="12" r="8" fill="#EB001B"/>
-              <circle cx="24" cy="12" r="8" fill="#F79E1B"/>
-              <path d="M19 18.3C20.7 16.8 21.8 14.5 21.8 12C21.8 9.5 20.7 7.2 19 5.7C17.3 7.2 16.2 9.5 16.2 12C16.2 14.5 17.3 16.8 19 18.3Z" fill="#FF5F00"/>
-            </svg>
-          </div>
-          {/* RuPay */}
-          <div className="h-8 px-3 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm">
-            <span className="font-bold text-[11px] tracking-wide" style={{color:'#1a6eb5'}}>RuPay</span>
-          </div>
-          {/* UPI */}
-          <div className="h-8 px-3 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm">
-            <span className="font-bold text-[11px] tracking-wide" style={{color:'#5f259f'}}>UPI</span>
-          </div>
-          {/* COD */}
-          <div className="h-8 px-3 bg-white border border-gray-200 rounded flex items-center justify-center shadow-sm">
-            <span className="font-bold text-[11px] tracking-wide text-green-700">COD</span>
-          </div>
-        </div>
-      </div>
+      <StickyAddToCart 
+        product={{
+          name: product.name,
+          price: product.price,
+          salePrice: product.salePrice,
+          image: product.image
+        }} 
+        targetId="main-atc-section" 
+        quantity={quantity}
+        setQuantity={setQuantity}
+        onAddToCart={handleAddToCart}
+        onBuyNow={handleBuyNow}
+      />
     </div>
   );
 }
