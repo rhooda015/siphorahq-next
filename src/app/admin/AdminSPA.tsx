@@ -1,29 +1,31 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Bell, Check, AlertCircle, Search, Menu, Plus, LogOut } from 'lucide-react';
-import ProductEditor from '@/components/admin/ProductEditor';
+import { Bell, Check, AlertCircle, Search, Menu, Plus, LogOut, Loader2 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 
-// Import Views
-import AdminSidebar from '@/components/admin/views/AdminSidebar';
-import DashboardView from '@/components/admin/views/DashboardView';
-import ProductsTableView from '@/components/admin/views/ProductsTableView';
-import OrdersTableView from '@/components/admin/views/OrdersTableView';
-import AnalyticsView from '@/components/admin/views/AnalyticsView';
-import SettingsView from '@/components/admin/views/SettingsView';
-import CollectionsView from '@/components/admin/views/CollectionsView';
-import CustomersView from '@/components/admin/views/CustomersView';
-import HomepageBuilderView from '@/components/admin/views/HomepageBuilderView';
-import MediaLibraryView from '@/components/admin/views/MediaLibraryView';
-import CouponsView from '@/components/admin/views/CouponsView';
-import ReviewsView from '@/components/admin/views/ReviewsView';
-import SEOView from '@/components/admin/views/SEOView';
-import ThemeEditorView from '@/components/admin/views/ThemeEditorView';
-import NavigationBuilderView from '@/components/admin/views/NavigationBuilderView';
-import CMSPagesView from '@/components/admin/views/CMSPagesView';
-import CategoriesView from '@/components/admin/views/CategoriesView';
-import InventoryView from '@/components/admin/views/InventoryView';
-import ZohoMailView from '@/components/admin/views/ZohoMailView';
+const LoadingFallback = () => <div className="p-8 flex justify-center items-center h-64"><Loader2 className="w-8 h-8 text-neutral-400 animate-spin" /></div>;
+
+const ProductEditor = dynamic(() => import('@/components/admin/ProductEditor'), { ssr: false, loading: LoadingFallback });
+const AdminSidebar = dynamic(() => import('@/components/admin/views/AdminSidebar'), { ssr: false });
+const DashboardView = dynamic(() => import('@/components/admin/views/DashboardView'), { ssr: false, loading: LoadingFallback });
+const ProductsTableView = dynamic(() => import('@/components/admin/views/ProductsTableView'), { ssr: false, loading: LoadingFallback });
+const OrdersTableView = dynamic(() => import('@/components/admin/views/OrdersTableView'), { ssr: false, loading: LoadingFallback });
+const AnalyticsView = dynamic(() => import('@/components/admin/views/AnalyticsView'), { ssr: false, loading: LoadingFallback });
+const SettingsView = dynamic(() => import('@/components/admin/views/SettingsView'), { ssr: false, loading: LoadingFallback });
+const CollectionsView = dynamic(() => import('@/components/admin/views/CollectionsView'), { ssr: false, loading: LoadingFallback });
+const CustomersView = dynamic(() => import('@/components/admin/views/CustomersView'), { ssr: false, loading: LoadingFallback });
+const HomepageBuilderView = dynamic(() => import('@/components/admin/views/HomepageBuilderView'), { ssr: false, loading: LoadingFallback });
+const MediaLibraryView = dynamic(() => import('@/components/admin/views/MediaLibraryView'), { ssr: false, loading: LoadingFallback });
+const CouponsView = dynamic(() => import('@/components/admin/views/CouponsView'), { ssr: false, loading: LoadingFallback });
+const ReviewsView = dynamic(() => import('@/components/admin/views/ReviewsView'), { ssr: false, loading: LoadingFallback });
+const SEOView = dynamic(() => import('@/components/admin/views/SEOView'), { ssr: false, loading: LoadingFallback });
+const ThemeEditorView = dynamic(() => import('@/components/admin/views/ThemeEditorView'), { ssr: false, loading: LoadingFallback });
+const NavigationBuilderView = dynamic(() => import('@/components/admin/views/NavigationBuilderView'), { ssr: false, loading: LoadingFallback });
+const CMSPagesView = dynamic(() => import('@/components/admin/views/CMSPagesView'), { ssr: false, loading: LoadingFallback });
+const CategoriesView = dynamic(() => import('@/components/admin/views/CategoriesView'), { ssr: false, loading: LoadingFallback });
+const InventoryView = dynamic(() => import('@/components/admin/views/InventoryView'), { ssr: false, loading: LoadingFallback });
+const ZohoMailView = dynamic(() => import('@/components/admin/views/ZohoMailView'), { ssr: false, loading: LoadingFallback });
 
 export default function AdminSPA() {
   const router = useRouter();

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
 
 interface HeroCarouselProps {
   slides: string[];
@@ -31,37 +30,30 @@ export default function HeroCarousel({ slides, title, buttonText, buttonLink }: 
 
   return (
     <section className="relative w-full h-[80vh] md:h-[90vh] bg-[#f8f7f5] overflow-hidden">
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={currentSlide}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
-          className="absolute inset-0"
+      {heroSlides.map((slide, index) => (
+        <div
+          key={slide.id}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out motion-reduce:transition-none ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
         >
-            <Image 
-              src={heroSlides[currentSlide].img} 
-              alt={`Siphorahq Luxury Collection ${currentSlide + 1}`} 
-              fill 
-              priority={currentSlide === 0}
-              fetchPriority={currentSlide === 0 ? "high" : "auto"}
-              className="object-cover object-center" 
-              sizes="100vw" 
-              quality={80}
-            />
+          <Image 
+            src={slide.img} 
+            alt={`Siphorahq Luxury Collection ${index + 1}`} 
+            fill 
+            priority={index === 0}
+            fetchPriority={index === 0 ? "high" : "auto"}
+            className="object-cover object-center" 
+            sizes="100vw" 
+            quality={80}
+          />
           {/* Refined gradient overlay for text legibility without muddying the image */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/60" />
-        </motion.div>
-      </AnimatePresence>
+        </div>
+      ))}
       
       <div className="absolute inset-0 flex flex-col items-center justify-end md:justify-center z-20 pointer-events-none px-6 pb-24 md:pb-0">
-        <motion.div 
+        <div 
           key={`text-${currentSlide}`}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-          className="flex flex-col items-center text-center max-w-4xl"
+          className="flex flex-col items-center text-center max-w-4xl animate-fade-in-up"
         >
           <span className="text-white/80 uppercase tracking-[0.3em] text-[10px] md:text-xs mb-4 font-sans font-light">
             Siphorahq Heritage
@@ -76,7 +68,7 @@ export default function HeroCarousel({ slides, title, buttonText, buttonLink }: 
           >
             <span className="relative z-10 transition-colors duration-500">{buttonText || 'Discover the Collection'}</span>
           </a>
-        </motion.div>
+        </div>
       </div>
       
       {/* Editorial Slider Dots */}
@@ -88,7 +80,13 @@ export default function HeroCarousel({ slides, title, buttonText, buttonLink }: 
             className="group py-2 px-1 flex items-center justify-center"
             aria-label={`Go to slide ${index + 1}`}
           >
-            <span className={`h-[1px] transition-all duration-700 ease-out ${index === currentSlide ? 'w-8 bg-white' : 'w-4 bg-white/40 group-hover:bg-white/80 group-hover:w-6'}`} />
+            <div className={`
+              h-[1px] transition-all duration-500 ease-out
+              ${currentSlide === index 
+                ? 'w-8 bg-white opacity-100' 
+                : 'w-4 bg-white/40 group-hover:bg-white/70 group-hover:w-6'
+              }
+            `} />
           </button>
         ))}
       </div>

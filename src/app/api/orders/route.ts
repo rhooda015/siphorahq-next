@@ -4,7 +4,7 @@ import Order from '@/models/Order';
 import { authenticateShiprocket, createShiprocketOrder } from '@/lib/shiprocket';
 
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 
 export async function GET() {
   try {

@@ -127,12 +127,17 @@ module.exports = {
       },
       animation: {
         marquee: 'marquee 22s linear infinite',
+        'fade-in-up': 'fade-in-up 1.2s cubic-bezier(0.21, 0.47, 0.32, 0.98) 0.5s both',
       },
       keyframes: {
         marquee: {
           '0%':   { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
         },
+        'fade-in-up': {
+          '0%': { opacity: '0', transform: 'translateY(30px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        }
       },
     },
   },

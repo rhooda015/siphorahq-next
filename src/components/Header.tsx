@@ -110,11 +110,12 @@ export default function Header() {
             <div className="flex items-center gap-4 md:gap-12">
               <div className="flex items-center xl:hidden">
                 <button 
-                  className="text-ink-charcoal hover:text-burnished-gold transition-colors p-1 -ml-1"
+                  className="text-ink-charcoal hover:text-burnished-gold transition-colors p-2 -ml-2 min-h-[44px] min-w-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-burnished-gold"
                   onClick={() => setIsMobileMenuOpen(true)}
                   aria-label="Open mobile menu"
+                  aria-expanded={isMobileMenuOpen}
                 >
-                  <Menu className="h-6 w-6 stroke-[1.5]" />
+                  <Menu className="h-6 w-6 stroke-[1.5]" aria-hidden="true" />
                 </button>
               </div>
 
@@ -165,23 +166,24 @@ export default function Header() {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 md:gap-6">
+            <div className="flex items-center gap-2 md:gap-4">
               <button 
-                className="hover:text-burnished-gold transition-colors hidden md:block"
+                className="hover:text-burnished-gold transition-colors hidden md:flex items-center justify-center p-2 min-w-[44px] min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-burnished-gold"
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 aria-label="Toggle search"
+                aria-expanded={isSearchOpen}
               >
-                <Search className=" w-5 h-5 inline-block" />
+                <Search className=" w-5 h-5 inline-block" aria-hidden="true" />
               </button>
-              <Link href={session ? "/account" : "/login"} className="hover:text-burnished-gold transition-colors hidden md:block" aria-label="Account">
-                <User className=" w-5 h-5 inline-block" />
+              <Link href={session ? "/account" : "/login"} className="hover:text-burnished-gold transition-colors hidden md:flex items-center justify-center p-2 min-w-[44px] min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-burnished-gold" aria-label="Account">
+                <User className=" w-5 h-5 inline-block" aria-hidden="true" />
               </Link>
-              <button onClick={() => router.push('/account/wishlist')} className="hover:text-burnished-gold transition-colors relative hidden md:block" aria-label="View wishlist">
-                <Heart className=" w-5 h-5 inline-block" />
+              <button onClick={() => router.push('/account/wishlist')} className="hover:text-burnished-gold transition-colors relative hidden md:flex items-center justify-center p-2 min-w-[44px] min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-burnished-gold" aria-label="View wishlist">
+                <Heart className=" w-5 h-5 inline-block" aria-hidden="true" />
               </button>
-              <button onClick={openDrawer} className="hover:text-burnished-gold transition-colors relative" aria-label="Open cart">
-                <ShoppingBag className=" w-5 h-5 inline-block" />
-                <span className={`absolute -top-1 -right-1 bg-burnished-gold text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold transition-all duration-300 ${mounted && items.length > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
+              <button onClick={openDrawer} className="hover:text-burnished-gold transition-colors relative flex items-center justify-center p-2 min-w-[44px] min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-burnished-gold" aria-label="Open cart">
+                <ShoppingBag className=" w-5 h-5 inline-block" aria-hidden="true" />
+                <span className={`absolute top-0 right-0 bg-burnished-gold text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold transition-all duration-300 ${mounted && items.length > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
                   {mounted ? items.length : 0}
                 </span>
               </button>
@@ -208,8 +210,8 @@ export default function Header() {
                 className="w-full border-b border-ink-charcoal text-xl font-display-lg py-3 px-2 focus:outline-none focus:border-burnished-gold bg-transparent text-ink-charcoal placeholder:text-on-surface-variant/50"
                 autoFocus
               />
-              <button type="submit" className="absolute right-2 top-3 text-on-surface-variant hover:text-ink-charcoal transition-colors" aria-label="Submit search">
-                <Search className=" w-5 h-5 inline-block" />
+              <button type="submit" className="absolute right-2 top-3 text-on-surface-variant hover:text-ink-charcoal transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-burnished-gold" aria-label="Submit search">
+                <Search className=" w-5 h-5 inline-block" aria-hidden="true" />
               </button>
             </form>
           </div>
@@ -224,8 +226,8 @@ export default function Header() {
       >
         <div className="flex justify-between items-center p-4 border-b border-muted-sand h-20">
           <span className="font-headline-lg text-2xl tracking-tighter text-ink-charcoal italic">{BRAND.name}</span>
-          <button onClick={() => setIsMobileMenuOpen(false)} className="p-4 text-ink-charcoal" aria-label="Close menu">
-            <X className="h-8 w-8" />
+          <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-ink-charcoal min-w-[44px] min-h-[44px] flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-burnished-gold focus:ring-offset-2" aria-label="Close menu">
+            <X className="h-8 w-8" aria-hidden="true" />
           </button>
         </div>
         <div className="flex flex-col p-6 space-y-6 overflow-y-auto">

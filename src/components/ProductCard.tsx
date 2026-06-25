@@ -15,8 +15,8 @@ export default function ProductCard({ product }: { product: any }) {
   };
 
   return (
-    <div className="product-card group relative animate-reveal h-full flex flex-col">
-      <Link href={`/products/${product.id || product.slug}`} className="block relative aspect-[4/5] overflow-hidden bg-[#faf7f2] mb-4">
+    <div className="product-card group relative animate-reveal h-full flex flex-col focus-within:ring-2 focus-within:ring-heritage-navy focus-within:ring-offset-2 rounded-sm transition-all duration-300">
+      <Link href={`/products/${product.id || product.slug}`} className="block relative aspect-[4/5] overflow-hidden bg-[#faf7f2] mb-4 focus:outline-none rounded-sm">
         {/* Badges */}
         {product.badge && (
           <div className="absolute top-4 left-4 z-10 bg-champagne-gold text-porcelain-white px-2 py-1 font-label-caps text-[10px]">
@@ -36,7 +36,7 @@ export default function ProductCard({ product }: { product: any }) {
       </Link>
 
       <div className="flex flex-col flex-grow justify-between space-y-1">
-        <Link href={`/products/${product.id || product.slug}`} className="flex justify-between items-start">
+        <Link href={`/products/${product.id || product.slug}`} className="flex justify-between items-start focus:outline-none">
           <h3 className="font-headline-md text-body-lg text-heritage-navy line-clamp-2 pr-2 leading-tight flex-grow">{product.name}</h3>
           <div className="text-right flex-shrink-0 ml-2">
             <p className="font-price-lg text-price-lg text-heritage-navy">{formatPrice(price)}</p>

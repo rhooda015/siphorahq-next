@@ -15,11 +15,11 @@ export default function Footer() {
             Elevating everyday rituals with luxury porcelain, crafted for the modern home.
           </p>
           <div className="flex gap-4">
-            <a className="w-10 h-10 rounded-full border border-surface-cream/20 flex items-center justify-center hover:bg-burnished-gold hover:border-burnished-gold transition-colors" href="#" aria-label="Share on Pinterest">
-              <Share2 className=" w-5 h-5 inline-block" />
+            <a className="w-11 h-11 rounded-full border border-surface-cream/20 flex items-center justify-center hover:bg-burnished-gold hover:border-burnished-gold transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold focus:ring-offset-2 focus:ring-offset-ink-charcoal" href="#" aria-label="Share on Pinterest">
+              <Share2 className=" w-5 h-5 inline-block" aria-hidden="true" />
             </a>
-            <a className="w-10 h-10 rounded-full border border-surface-cream/20 flex items-center justify-center hover:bg-burnished-gold hover:border-burnished-gold transition-colors" href={BRAND.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
-              <Camera className=" w-5 h-5 inline-block" />
+            <a className="w-11 h-11 rounded-full border border-surface-cream/20 flex items-center justify-center hover:bg-burnished-gold hover:border-burnished-gold transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold focus:ring-offset-2 focus:ring-offset-ink-charcoal" href={BRAND.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
+              <Camera className=" w-5 h-5 inline-block" aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -27,21 +27,21 @@ export default function Footer() {
         <div>
           <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">Shop</h4>
           <ul className="space-y-4 font-body-md text-surface-cream/80">
-            <li><Link className="hover:text-white transition-colors" href="/collections/dinnerware">Dinnerware Sets</Link></li>
-            <li><Link className="hover:text-white transition-colors" href="/products">Mugs &amp; Cups</Link></li>
-            <li><Link className="hover:text-white transition-colors" href="/collections/gifting">Luxury Gifting</Link></li>
-            <li><Link className="hover:text-white transition-colors" href="/products">New Arrivals</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/collections/dinnerware">Dinnerware Sets</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/products">Mugs &amp; Cups</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/collections/gifting">Luxury Gifting</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/products">New Arrivals</Link></li>
           </ul>
         </div>
         
         <div>
           <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">Support</h4>
           <ul className="space-y-4 font-body-md text-surface-cream/80">
-            <li><Link className="hover:text-white transition-colors" href="/about">About Us</Link></li>
-            <li><Link className="hover:text-white transition-colors" href="/faq">Care Instructions</Link></li>
-            <li><Link className="hover:text-white transition-colors" href="/shipping-policy">Shipping &amp; Returns</Link></li>
-            <li><Link className="hover:text-white transition-colors" href="/contact">Track Order</Link></li>
-            <li><Link className="hover:text-white transition-colors" href="/faq">FAQ</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/about">About Us</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/faq">Care Instructions</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/shipping-policy">Shipping &amp; Returns</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/contact">Track Order</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/faq">FAQ</Link></li>
           </ul>
         </div>
         
@@ -80,9 +80,9 @@ export default function Footer() {
           <p className="font-body-md text-[10px] uppercase tracking-wider">GSTIN: 06APTPH1635N1ZG</p>
         </div>
         <div className="flex gap-6 font-body-md text-surface-cream/50 text-sm">
-          <Link className="hover:text-white transition-colors" href="/privacy-policy">Privacy Policy</Link>
-          <Link className="hover:text-white transition-colors" href="/terms-of-service">Terms</Link>
-          <Link className="hover:text-white transition-colors" href="/sitemap.xml">Sitemap</Link>
+          <Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1" href="/privacy-policy">Privacy Policy</Link>
+          <Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1" href="/terms-of-service">Terms</Link>
+          <Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1" href="/sitemap.xml">Sitemap</Link>
         </div>
       </div>
     </footer>
