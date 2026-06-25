@@ -144,7 +144,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
       <head>
         <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="preload" as="image" href="/images/hero.webp" fetchPriority="high" />
         <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
         <script
           type="application/ld+json"
