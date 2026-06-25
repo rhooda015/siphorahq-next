@@ -3,10 +3,10 @@ import Image from 'next/image';
 
 export default function InspiredLiving() {
   const images = [
-    { src: '/images/lifestyle/morning-coffee.webp', title: 'Morning Coffee', span: 'col-span-12 md:col-span-8' },
-    { src: '/images/lifestyle/evening-tea.webp', title: 'Evening Tea', span: 'col-span-12 md:col-span-4' },
-    { src: '/images/lifestyle/weekend-hosting.webp', title: 'Weekend Hosting', span: 'col-span-12 md:col-span-6' },
-    { src: '/images/lifestyle/festive-table.webp', title: 'Festive Table', span: 'col-span-12 md:col-span-6' },
+    { src: '/images/lifestyle_1.webp', title: 'Morning Coffee', span: 'col-span-12 md:col-span-8' },
+    { src: '/images/lifestyle_2.webp', title: 'Evening Tea', span: 'col-span-12 md:col-span-4' },
+    { src: '/images/lifestyle_3.webp', title: 'Weekend Hosting', span: 'col-span-12 md:col-span-6' },
+    { src: '/images/lifestyle_4.webp', title: 'Festive Table', span: 'col-span-12 md:col-span-6' },
   ];
 
   return (
