@@ -13,32 +13,41 @@ import InspiredLiving from '@/components/InspiredLiving';
 import GiftPackaging from '@/components/GiftPackaging';
 import EditorialQuote from '@/components/EditorialQuote';
 
+import { unstable_cache } from 'next/cache';
+
 export const revalidate = 60; // Use ISR
 
 const WHATSAPP_NUMBER = "919540027978";
 
+const getCachedProducts = unstable_cache(
+  async () => {
+    await dbConnect();
+    // Fetch live products from DB
+    const dbProducts = await Product.find({ status: 'Live' }).sort({ createdAt: -1 }).lean();
+    
+    const mappedProducts = dbProducts.map((p: any) => ({
+      id: p.handle || p._id.toString(),
+      slug: p.handle || p._id.toString(),
+      name: p.title,
+      price: p.price,
+      salePrice: p.price, 
+      category: p.category,
+      image: p.images?.[0]?.url || '/images/dinnerware.webp',
+    }));
+
+    // Filter out duplicates (if static products are already in the DB)
+    const filteredStatic = STATIC_PRODUCTS.filter(
+      (sp: any) => !mappedProducts.find((mp: any) => mp.id === sp.id || mp.name === sp.name)
+    );
+
+    return [...mappedProducts, ...filteredStatic].slice(0, 4);
+  },
+  ['homepage-products'],
+  { revalidate: 60, tags: ['homepage-products'] }
+);
+
 export default async function HomePage() {
-  await dbConnect();
-  
-  // Fetch live products from DB
-  const dbProducts = await Product.find({ status: 'Live' }).sort({ createdAt: -1 }).lean();
-  
-  const mappedProducts = dbProducts.map((p: any) => ({
-    id: p.handle || p._id.toString(),
-    slug: p.handle || p._id.toString(),
-    name: p.title,
-    price: p.price,
-    salePrice: p.price, 
-    category: p.category,
-    image: p.images?.[0]?.url || '/images/dinnerware.webp',
-  }));
-
-  // Filter out duplicates (if static products are already in the DB)
-  const filteredStatic = STATIC_PRODUCTS.filter(
-    (sp: any) => !mappedProducts.find((mp: any) => mp.id === sp.id || mp.name === sp.name)
-  );
-
-  const displayProducts = [...mappedProducts, ...filteredStatic].slice(0, 4);
+  const displayProducts = await getCachedProducts();
 
   return (
     <>
