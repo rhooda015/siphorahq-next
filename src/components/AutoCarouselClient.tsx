@@ -44,6 +44,7 @@ export default function AutoCarouselClient({ slides }: AutoCarouselClientProps) 
               alt={slide.title}
               fill
               priority={false}
+              quality={65}
               className="object-cover"
               sizes="100vw"
             />

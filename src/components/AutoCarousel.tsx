@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'next/image';
+import { getImageProps } from 'next/image';
 import Link from 'next/link';
 import AutoCarouselClient from './AutoCarouselClient';
 
@@ -29,19 +29,40 @@ const SLIDES = [
 export default function AutoCarousel() {
   const firstSlide = SLIDES[0];
 
+  const commonProps = {
+    alt: firstSlide.title,
+    fill: true,
+    priority: true,
+    className: "object-cover"
+  };
+
+  const {
+    props: { srcSet: desktopSrcSet, ...desktopRest }
+  } = getImageProps({
+    ...commonProps,
+    src: firstSlide.image,
+    quality: 80,
+    sizes: "100vw",
+  });
+
+  const {
+    props: { srcSet: mobileSrcSet, ...mobileRest }
+  } = getImageProps({
+    ...commonProps,
+    src: firstSlide.image,
+    quality: 65,
+    sizes: "100vw",
+  });
+
   return (
     <section className="relative h-[80svh] md:h-screen w-full overflow-hidden bg-black">
       {/* Static First Slide Server Rendered immediately */}
       <div className="absolute inset-0 z-0">
-        <Image 
-          src={firstSlide.image}
-          alt={firstSlide.title}
-          fill
-          priority={true}
-          fetchPriority="high"
-          className="object-cover"
-          sizes="100vw"
-        />
+        <picture>
+          <source media="(max-width: 768px)" srcSet={mobileSrcSet} />
+          <source media="(min-width: 769px)" srcSet={desktopSrcSet} />
+          <img {...desktopRest} style={{ objectFit: 'cover', width: '100%', height: '100%' }} fetchPriority="high" />
+        </picture>
         <div className="absolute inset-0 bg-black/50"></div>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-surface-cream px-6">
           <span className="font-label-caps text-sm tracking-[0.3em] mb-6 uppercase text-burnished-gold">
