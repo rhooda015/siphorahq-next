@@ -37,7 +37,7 @@ export default function ProductCardActions({ product }: { product: any }) {
 
   return (
     <>
-      <div className="quick-add absolute bottom-0 left-0 w-full p-4 translate-y-full opacity-0 group-hover:opacity-100 group-hover:translate-y-0 focus-within:opacity-100 focus-within:translate-y-0 transition-all duration-300 bg-porcelain-white/90 backdrop-blur-md z-20">
+      <div className="quick-add absolute bottom-0 left-0 w-full p-2 md:p-4 bg-porcelain-white/95 backdrop-blur-sm z-20 transition-all duration-300 opacity-100 translate-y-0 md:translate-y-full md:opacity-0 md:group-hover:opacity-100 md:group-hover:translate-y-0 focus-within:opacity-100 focus-within:translate-y-0">
         <button 
           onClick={(e) => {
             e.preventDefault();
@@ -46,7 +46,7 @@ export default function ProductCardActions({ product }: { product: any }) {
             trackAddToCart(product, 1);
             toast.success(`${product.name} added to cart`);
           }}
-          className="w-full py-3 min-h-[44px] bg-heritage-navy text-porcelain-white font-label-caps text-label-caps uppercase tracking-widest hover:bg-champagne-gold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-heritage-navy"
+          className="w-full py-2 md:py-3 min-h-[36px] md:min-h-[44px] bg-heritage-navy text-porcelain-white font-label-caps text-[10px] md:text-label-caps uppercase tracking-widest hover:bg-champagne-gold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-heritage-navy"
         >
           QUICK ADD
         </button>
@@ -54,10 +54,14 @@ export default function ProductCardActions({ product }: { product: any }) {
 
       <button 
         onClick={toggleWishlist}
-        className={`absolute top-3 right-3 w-10 h-10 min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center transition-all duration-500 z-10 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-heritage-navy focus:opacity-100 ${isWished ? 'opacity-100 text-heritage-navy' : 'opacity-0 group-hover:opacity-100 text-on-surface-variant hover:text-heritage-navy'}`}
+        className={`absolute top-3 right-3 w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/95 shadow-sm flex items-center justify-center transition-all duration-300 z-10 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-heritage-navy ${
+          isWished 
+            ? 'text-heritage-navy' 
+            : 'text-on-surface-variant hover:text-heritage-navy opacity-100 md:opacity-0 md:group-hover:opacity-100'
+        }`}
         aria-label={isWished ? "Remove from wishlist" : "Add to wishlist"}
       >
-        <Heart className=" w-5 h-5 inline-block" aria-hidden="true" />
+        <Heart className="w-4 h-4 md:w-5 md:h-5 inline-block" aria-hidden="true" />
       </button>
 
       {/* Quick View could still be accessed via a long press or we can remove it to keep it clean. Let's keep the modal but hide the button to simplify unless needed. We'll rely on product page for details. */}

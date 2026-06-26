@@ -4,6 +4,7 @@ import { X, SlidersHorizontal, Gift } from 'lucide-react';
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import ProductCard from './ProductCard';
 
 type Product = {
   name: string;
@@ -133,44 +134,7 @@ export default function ProductListing({ products }: { products: Product[] }) {
         {/* ── PRODUCT GRID ── */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 gap-y-12 md:gap-8 md:gap-y-16">
           {sorted.map(product => (
-            <Link href={`/products/${product.slug}`} key={product.slug} className="group flex flex-col h-full">
-              <div className="relative aspect-[4/5] bg-[#faf7f2] mb-6 overflow-hidden border border-[#f0ebe1] rounded-sm">
-                {product.badge && (
-                  <span className="absolute top-3 left-3 z-10 bg-surface-cream text-ink-charcoal font-label-caps text-[10px] uppercase tracking-[0.18em] px-3 py-1.5 shadow-sm">
-                    {product.badge}
-                  </span>
-                )}
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 33vw"
-                  className="w-full h-full object-contain p-4 bg-[#faf7f2] transition-transform duration-500 group-hover:scale-[1.03]"
-                  priority={false}
-                />
-                <div className="absolute inset-x-0 bottom-0 p-4 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hidden md:block">
-                  <button className="w-full bg-ink-charcoal text-surface-cream font-label-caps text-[11px] uppercase tracking-[0.18em] py-3 hover:bg-burnished-gold transition-colors">
-                    View Product
-                  </button>
-                </div>
-              </div>
-              <div className="flex flex-col flex-1">
-                <p className="font-label-caps text-[10px] uppercase tracking-[0.18em] text-burnished-gold mb-2">{product.category}</p>
-                <h3 className="font-headline-md text-base sm:text-lg text-ink-charcoal mb-2 leading-snug line-clamp-2">{product.name}</h3>
-                <div className="flex items-center gap-2 mb-3 mt-auto">
-                  <div className="flex text-burnished-gold text-[12px]">
-                    ★★★★★
-                  </div>
-                  <span className="font-body-md text-[11px] text-on-surface-variant">(12)</span>
-                </div>
-                <div className="flex justify-between items-center border-t border-muted-sand/50 pt-3">
-                  <span className="font-body-md font-semibold text-ink-charcoal">{product.price}</span>
-                  <span className="font-body-md text-[11px] text-on-surface-variant flex items-center gap-1">
-                    <Gift className=" w-5 h-5 inline-block" /> Gift Box
-                  </span>
-                </div>
-              </div>
-            </Link>
+            <ProductCard key={product.slug} product={{ ...product, id: product.slug }} />
           ))}
         </div>
       </div>
