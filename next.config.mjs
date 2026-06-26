@@ -31,6 +31,21 @@ const nextConfig = {
     ];
   },
   async headers() {
+    const isDev = process.env.NODE_ENV !== 'production';
+
+    const cspHeader = `
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} vercel.live https://va.vercel-scripts.com googletagmanager.com google-analytics.com clarity.ms https://www.clarity.ms https://scripts.clarity.ms checkout.razorpay.com static.zohocdn.com;
+      style-src 'self' 'unsafe-inline' fonts.googleapis.com;
+      img-src 'self' data: blob: vercel.live vercel-insights.com google-analytics.com gstatic.com clarity.ms https://*.clarity.ms https://c.bing.com razorpay.com images.unsplash.com lh3.googleusercontent.com;
+      font-src 'self' fonts.gstatic.com;
+      connect-src 'self' vercel.live https://vitals.vercel-insights.com vercel-insights.com google-analytics.com clarity.ms https://*.clarity.ms https://c.bing.com api.razorpay.com checkout.razorpay.com accounts.zoho.in accounts.zoho.com;
+      frame-src 'self' checkout.razorpay.com;
+      object-src 'none';
+      base-uri 'self';
+      frame-ancestors 'none';
+    `.replace(/\s{2,}/g, ' ').trim();
+
     return [
       {
         source: '/(.*)',
@@ -68,8 +83,8 @@ const nextConfig = {
             value: 'cross-origin',
           },
           {
-            key: 'Content-Security-Policy-Report-Only',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' vercel.live googletagmanager.com google-analytics.com clarity.ms checkout.razorpay.com static.zohocdn.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com; img-src 'self' data: vercel.live vercel-insights.com google-analytics.com gstatic.com clarity.ms razorpay.com images.unsplash.com lh3.googleusercontent.com; font-src 'self' fonts.gstatic.com; connect-src 'self' vercel.live vercel-insights.com google-analytics.com clarity.ms api.razorpay.com checkout.razorpay.com accounts.zoho.in accounts.zoho.com; frame-src 'self' checkout.razorpay.com;",
+            key: 'Content-Security-Policy',
+            value: cspHeader,
           },
         ],
       },
