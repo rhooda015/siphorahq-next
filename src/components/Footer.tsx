@@ -58,10 +58,15 @@ export default function Footer() {
             </li>
             <li className="flex items-start gap-3 mt-4">
               <MapPin className="text-burnished-gold w-5 h-5 inline-block shrink-0 mt-0.5" /> 
-              <address className="not-italic text-sm text-surface-cream/80 leading-relaxed">
+              <a
+                href="https://maps.google.com/?q=671+Dayalpur+Ballabgarh+Faridabad+Haryana+121004"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-burnished-gold not-italic text-sm text-surface-cream/80 leading-relaxed"
+              >
                 671, Dayalpur, Ballabgarh,<br />
                 Faridabad, Haryana (121004)
-              </address>
+              </a>
             </li>
           </ul>
           <p className="font-label-caps text-[10px] uppercase tracking-widest text-surface-cream/50 mb-4">Secure Payments</p>

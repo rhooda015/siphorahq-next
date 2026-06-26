@@ -54,7 +54,7 @@ export default function MobileBottomNav() {
         >
           <User className="w-5 h-5" strokeWidth={1.5} />
           <span className="text-[10px] font-bold uppercase tracking-widest">
-            Profile
+            {session ? "Account" : "Sign In"}
           </span>
         </Link>
 

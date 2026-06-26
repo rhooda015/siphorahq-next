@@ -259,7 +259,7 @@ export default async function HomePage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[32px]">
             <Link href="/collections/dinnerware" className="group relative overflow-hidden flex flex-col h-full aspect-square md:aspect-auto md:h-[800px]">
-              <Image src="/images/homepage/imperial.png" alt="The Imperial White" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
+              <Image src="/images/homepage/imperial.png" alt="The Imperial White" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 640px" quality={70} />
               <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
               <div className="absolute bottom-8 left-8 text-surface-cream text-left transition-transform duration-700 ease-out group-hover:-translate-y-2">
                 <h3 className="font-cormorant text-section-sm md:text-section-lg mb-2">The Imperial White</h3>
@@ -270,7 +270,7 @@ export default async function HomePage() {
             
             <div className="flex flex-col gap-[32px]">
               <Link href="/collections/gifting" className="group relative overflow-hidden flex-1 aspect-square md:aspect-auto md:h-[384px]">
-                <Image src="/images/homepage/handpainted.png" alt="The Handpainted Collection" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
+                <Image src="/images/homepage/handpainted.png" alt="The Handpainted Collection" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 640px" quality={70} />
                 <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
                 <div className="absolute bottom-6 left-6 text-surface-cream text-left transition-transform duration-700 ease-out group-hover:-translate-y-2">
                   <h3 className="font-cormorant text-collection-sm md:text-collection-lg mb-2">The Handpainted Collection</h3>
@@ -280,7 +280,7 @@ export default async function HomePage() {
               </Link>
 
               <Link href="/collections/tea-sets" className="group relative overflow-hidden flex-1 aspect-square md:aspect-auto md:h-[384px]">
-                <Image src="/images/homepage/emerald.png" alt="The Emerald Heritage" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
+                <Image src="/images/homepage/emerald.png" alt="The Emerald Heritage" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 640px" quality={70} />
                 <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
                 <div className="absolute bottom-6 left-6 text-surface-cream text-left transition-transform duration-700 ease-out group-hover:-translate-y-2">
                   <h3 className="font-cormorant text-collection-sm md:text-collection-lg mb-2">The Emerald Heritage</h3>
@@ -297,7 +297,7 @@ export default async function HomePage() {
       <section className="bg-ink-charcoal text-surface-cream">
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="relative h-[300px] md:h-[500px] lg:h-auto overflow-hidden group">
-            <Image src="/images/homepage/kintsugi.png" alt="Kintsugi Collection" fill className="object-cover opacity-90 transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 1024px) 100vw, 50vw" />
+            <Image src="/images/homepage/kintsugi.png" alt="Kintsugi Collection" fill className="object-cover opacity-90 transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 1280px" quality={70} />
           </div>
           <div className="p-8 md:p-[120px] flex flex-col justify-center">
             <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-burnished-gold mb-4 block">Limited Edition</span>
@@ -319,7 +319,7 @@ export default async function HomePage() {
         <div className="max-w-container-max mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
             <div className="w-full md:w-1/2 relative h-[300px] md:h-[600px] overflow-hidden">
-              <Image src="/images/homepage/brand_story.png" alt="Brand Story" fill className="object-cover transition-transform duration-1000 hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
+              <Image src="/images/homepage/brand_story.png" alt="Brand Story" fill className="object-cover transition-transform duration-1000 hover:scale-105" sizes="(max-width: 768px) 100vw, 640px" quality={70} />
             </div>
             <div className="w-full md:w-1/2 md:pl-10 text-left">
               <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-[#8b6914] mb-4 block">Our Philosophy</span>
@@ -429,7 +429,7 @@ export default async function HomePage() {
               },
               {
                 q: "Do you offer international shipping?",
-                a: "Currently, we ship exclusively within India to ensure the highest quality of service and safe delivery of our delicate products."
+                a: "Currently we ship within India. Planning a gift for someone abroad? WhatsApp us — we can arrange select international deliveries on request."
               },
               {
                 q: "What happens if a piece breaks during delivery?",
@@ -440,12 +440,14 @@ export default async function HomePage() {
                 a: "Yes, we offer bespoke gifting concierge services. You can contact our team via WhatsApp to curate a custom box for your special occasion."
               }
             ].map((faq, i) => (
-              <details key={i} className="group py-6">
-                <summary className="flex justify-between items-center cursor-pointer list-none font-headline-md text-xl text-ink-charcoal group-open:text-burnished-gold transition-colors">
+              <details key={i} className="group border border-muted-sand bg-white py-0">
+                <summary className="flex cursor-pointer list-none items-center justify-between p-5 font-semibold font-headline-md text-xl text-ink-charcoal group-open:text-burnished-gold transition-colors">
                   {faq.q}
-                  <ChevronDown className="transition-transform duration-300 group-open:rotate-180 text-burnished-gold w-5 h-5 inline-block" />
+                  <span aria-hidden="true" className="ml-4 text-burnished-gold transition-transform duration-300 group-open:rotate-45 text-2xl font-light leading-none">+</span>
                 </summary>
-                <p className="font-body-md text-on-surface-variant mt-4 leading-relaxed pr-12">{faq.a}</p>
+                <p className="border-t border-muted-sand px-5 py-4 text-sm leading-7 text-on-surface-variant font-body-md pr-12">
+                  {faq.a}
+                </p>
               </details>
             ))}
           </div>

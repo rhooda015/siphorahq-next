@@ -162,6 +162,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Footer />
             <MobileBottomNav />
             <CartDrawerDynamic />
+            <a
+              href="https://wa.me/919540027978?text=Hi%2C%20I%27m%20interested%20in%20Siphorahq%20products"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Chat with Siphorahq concierge on WhatsApp"
+              className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-5 py-3 rounded-full text-sm font-semibold shadow-lg transition-colors"
+            >
+              WhatsApp
+            </a>
             <Toaster 
               position="bottom-center"
               toastOptions={{

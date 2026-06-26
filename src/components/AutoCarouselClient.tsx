@@ -68,7 +68,7 @@ export default function AutoCarouselClient({ slides }: AutoCarouselClientProps) 
                       px-10 py-4 font-button text-[12px] uppercase tracking-widest transition-all duration-300 w-full sm:w-auto
                       ${btn.primary 
                         ? "bg-surface-cream text-ink-charcoal hover:bg-burnished-gold hover:text-white" 
-                        : "border border-surface-cream text-surface-cream hover:bg-surface-cream hover:text-ink-charcoal"}
+                        : "text-surface-cream hover:text-burnished-gold underline underline-offset-4"}
                     `}
                   >
                     {btn.text}

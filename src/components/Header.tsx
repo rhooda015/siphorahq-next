@@ -89,18 +89,22 @@ export default function Header() {
         {/* 1. Announcement Bar */}
         <div className="bg-ink-charcoal text-surface-cream py-3 overflow-hidden border-b border-burnished-gold/20 relative z-50">
           <div className="flex animate-marquee whitespace-nowrap gap-16 items-center">
-            <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Free Shipping Pan India Above ₹999</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
-            <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Secure Razorpay Checkout</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
-            <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Luxury Gift Packaging Included</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
+            <div className="flex items-center gap-16">
+              <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Free Shipping Pan India Above ₹999</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
+              <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Secure Razorpay Checkout</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
+              <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Luxury Gift Packaging Included</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
+            </div>
             {/* Duplicate for seamless loop */}
-            <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Free Shipping Pan India Above ₹999</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
-            <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Secure Razorpay Checkout</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
-            <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Luxury Gift Packaging Included</span>
+            <div className="flex items-center gap-16" aria-hidden="true">
+              <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Free Shipping Pan India Above ₹999</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
+              <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Secure Razorpay Checkout</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-burnished-gold"></span>
+              <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Luxury Gift Packaging Included</span>
+            </div>
           </div>
         </div>
 
