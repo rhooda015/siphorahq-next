@@ -21,13 +21,6 @@ function buildCspHeader(nonce: string): string {
   ].join('; ');
 }
 
-function applySecurityHeaders(response: NextResponse, nonce: string, request: NextRequest): NextResponse {
-  // Set nonce in request headers so Next.js can read it for inline scripts
-  response.headers.set('x-nonce', nonce);
-  response.headers.set('Content-Security-Policy', buildCspHeader(nonce));
-  return response;
-}
-
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('admin_token')?.value;
@@ -35,11 +28,19 @@ export async function proxy(request: NextRequest) {
   // Generate a per-request nonce
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
 
+  // CRITICAL: Set nonce on REQUEST headers so Next.js can read it
+  // during server rendering and inject nonce="..." into <script> tags
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-nonce', nonce);
+
+  const cspHeader = buildCspHeader(nonce);
+
   const isLoginPage = pathname === '/admin/login';
   const isAdminUi = pathname.startsWith('/admin');
   const isAdminApi = pathname.startsWith('/api/admin');
   const isAuthApi = pathname.startsWith('/api/admin/auth');
 
+  // --- Admin API auth guard ---
   if (isAdminApi && !isAuthApi) {
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -52,7 +53,10 @@ export async function proxy(request: NextRequest) {
     } catch {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-  } else if (isAdminUi) {
+  }
+
+  // --- Admin UI auth guard ---
+  if (isAdminUi && !isAdminApi) {
     if (!token && !isLoginPage) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
@@ -64,18 +68,20 @@ export async function proxy(request: NextRequest) {
         await jwtVerify(token, SECRET);
         return NextResponse.redirect(new URL('/admin', request.url));
       } catch {
-        const response = NextResponse.next();
+        const response = NextResponse.next({
+          request: { headers: requestHeaders },
+        });
         response.cookies.delete('admin_token');
-        return applySecurityHeaders(response, nonce, request);
+        response.headers.set('Content-Security-Policy', cspHeader);
+        return response;
       }
-    } else if (token && !isLoginPage) {
+    }
+    if (token && !isLoginPage) {
       try {
         const SECRET = new TextEncoder().encode(
           process.env.NEXTAUTH_SECRET || 'fallback_secret_32_chars_minimum!!'
         );
         await jwtVerify(token, SECRET);
-        const response = NextResponse.next();
-        return applySecurityHeaders(response, nonce, request);
       } catch {
         const response = NextResponse.redirect(new URL('/admin/login', request.url));
         response.cookies.delete('admin_token');
@@ -84,8 +90,12 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  const response = NextResponse.next();
-  return applySecurityHeaders(response, nonce, request);
+  // --- Default: pass request with nonce + CSP ---
+  const response = NextResponse.next({
+    request: { headers: requestHeaders },
+  });
+  response.headers.set('Content-Security-Policy', cspHeader);
+  return response;
 }
 
 export const config = {
