@@ -3,19 +3,20 @@ import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
 /**
- * CSP Strategy:
- * - 'unsafe-inline' is required because Next.js 16 proxy.ts cannot inject
- *   nonces into server-rendered inline <script> tags (unlike middleware.ts).
- * - 'strict-dynamic' is added so modern browsers (CSP Level 3) ignore
- *   'unsafe-inline' and only trust scripts loaded by trusted initiators.
- * - script-src-elem is intentionally OMITTED so script elements fall back
- *   to script-src (avoids the override that was blocking inline scripts).
- * - script-src-attr 'none' blocks inline event handlers (onclick, etc.).
- * - All other directives remain strict.
+ * CSP Strategy for Next.js 16 (proxy.ts):
+ *
+ * Next.js 16 uses proxy.ts instead of middleware.ts. The proxy runs AFTER
+ * the HTML is rendered, so it cannot inject nonce attributes into inline
+ * <script> tags. This means nonce-based and strict-dynamic CSP are not
+ * possible with this architecture.
+ *
+ * We use 'unsafe-inline' for script-src (required for Next.js hydration
+ * scripts) with explicit domain allowlisting for all third-party scripts.
+ * All other directives remain strict.
  */
 const CSP_HEADER = [
   `default-src 'self'`,
-  `script-src 'self' 'unsafe-inline' 'strict-dynamic'`,
+  `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://scripts.clarity.ms https://checkout.razorpay.com https://va.vercel-scripts.com`,
   `script-src-attr 'none'`,
   `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
   `img-src 'self' data: blob: https://www.google-analytics.com https://www.googletagmanager.com https://www.gstatic.com https://*.clarity.ms https://c.bing.com https://checkout.razorpay.com https://*.razorpay.com https://images.unsplash.com https://lh3.googleusercontent.com`,
@@ -90,7 +91,7 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  // --- Default: apply CSP to every response ---
+  // --- Default: apply CSP to every page response ---
   const response = NextResponse.next();
   return applyCSP(response);
 }
