@@ -13,6 +13,7 @@ import InspiredLiving from '@/components/InspiredLiving';
 import GiftPackaging from '@/components/GiftPackaging';
 import EditorialQuote from '@/components/EditorialQuote';
 import ProductCard from '@/components/ProductCard';
+import { headers } from 'next/headers';
 
 import { unstable_cache } from 'next/cache';
 
@@ -49,12 +50,14 @@ const getCachedProducts = unstable_cache(
 
 export default async function HomePage() {
   const displayProducts = await getCachedProducts();
+  const nonce = (await headers()).get('x-nonce') || '';
 
   return (
     <>
       <Script
         id="faq-schema"
         type="application/ld+json"
+        nonce={nonce}
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",

@@ -19,7 +19,7 @@ export default function ProductCard({ product }: { product: any }) {
       <Link href={`/products/${product.id || product.slug}`} className="block relative aspect-[4/5] overflow-hidden bg-[#faf7f2] mb-4 focus:outline-none rounded-sm">
         {/* Badges */}
         {product.badge && (
-          <div className="absolute top-4 left-4 z-10 bg-champagne-gold text-porcelain-white px-2 py-1 font-label-caps text-[10px]">
+          <div className="absolute top-4 left-4 z-10 bg-burnished-gold text-white px-2 py-1 font-label-caps text-[10px]">
             {product.badge}
           </div>
         )}

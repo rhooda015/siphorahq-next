@@ -46,7 +46,7 @@ export default function ProductCardActions({ product }: { product: any }) {
             trackAddToCart(product, 1);
             toast.success(`${product.name} added to cart`);
           }}
-          className="w-full py-2 md:py-3 min-h-[36px] md:min-h-[44px] bg-heritage-navy text-porcelain-white font-label-caps text-[10px] md:text-label-caps uppercase tracking-widest hover:bg-champagne-gold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-heritage-navy"
+          className="w-full py-2 md:py-3 min-h-[36px] md:min-h-[44px] bg-heritage-navy text-white font-label-caps text-[10px] md:text-label-caps uppercase tracking-widest hover:bg-burnished-gold hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-heritage-navy"
         >
           QUICK ADD
         </button>

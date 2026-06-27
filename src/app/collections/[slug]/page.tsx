@@ -6,6 +6,7 @@ import { BRAND } from '@/config/brand';
 import ProductCard from '@/components/ProductCard';
 import Link from 'next/link';
 import WhySiphorahq from '@/components/WhySiphorahq';
+import { headers } from 'next/headers';
 
 export function generateStaticParams() {
   return Object.keys(collectionsData).map((slug) => ({
@@ -41,6 +42,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 export default async function CollectionPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
   const collection = collectionsData[params.slug];
+  const nonce = (await headers()).get('x-nonce') || '';
   
   if (!collection) {
     notFound();
@@ -71,7 +73,7 @@ export default async function CollectionPage(props: { params: Promise<{ slug: st
               const textMatch = part.match(/\[(.*?)\]/);
               const urlMatch = part.match(/\((.*?)\)/);
               if (textMatch && urlMatch) {
-                return <Link key={j} href={urlMatch[1]} className="underline text-ink-charcoal hover:text-champagne-gold transition-colors">{textMatch[1]}</Link>;
+                return <Link key={j} href={urlMatch[1]} className="underline text-ink-charcoal hover:text-burnished-gold transition-colors">{textMatch[1]}</Link>;
               }
             }
             return <React.Fragment key={j}>{part}</React.Fragment>;
@@ -130,10 +132,10 @@ export default async function CollectionPage(props: { params: Promise<{ slug: st
   return (
     <>
     <div className="bg-surface-cream min-h-screen pt-24 pb-20 px-4 md:px-margin-desktop">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
-      {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      {faqSchema && <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
 
       {/* Breadcrumb Visual */}
       <nav className="text-sm mb-8 text-on-surface-variant flex items-center gap-2">

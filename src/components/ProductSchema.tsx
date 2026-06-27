@@ -10,7 +10,7 @@ interface Product {
   category?: string;
 }
 
-export default function ProductSchema({ product }: { product: Product }) {
+export default function ProductSchema({ product, nonce }: { product: Product; nonce?: string }) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -50,6 +50,8 @@ export default function ProductSchema({ product }: { product: Product }) {
 
   return (
     <script
+      nonce={nonce}
+      suppressHydrationWarning={true}
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />

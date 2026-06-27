@@ -22,6 +22,7 @@ import ProductFAQ from '@/components/ProductFAQ';
 import ProductStory from '@/components/ProductStory';
 import CareGuide from '@/components/CareGuide';
 import WhySiphorahq from '@/components/WhySiphorahq';
+import { headers } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
@@ -112,6 +113,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const resolvedParams = await params;
   // First try static data, then fall back to MongoDB (for admin-created products)
   const product = getProductById(resolvedParams.id) || await getDbProduct(resolvedParams.id);
+  const nonce = (await headers()).get('x-nonce') || '';
 
   if (!product) {
     notFound();
@@ -187,10 +189,14 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   return (
     <>
       <script
+        nonce={nonce}
+        suppressHydrationWarning={true}
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <script
+        nonce={nonce}
+        suppressHydrationWarning={true}
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />

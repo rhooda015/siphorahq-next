@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { BRAND } from '@/config/brand';
 import NewsletterForm from '@/components/NewsletterForm';
+import { headers } from 'next/headers';
 
 export const metadata = {
   title: 'Our Story | Premium Porcelain Tableware for Elegant Indian Homes | Siphorahq',
@@ -14,7 +15,8 @@ export const metadata = {
   }
 };
 
-export default function OurStoryPage() {
+export default async function OurStoryPage() {
+  const nonce = (await headers()).get('x-nonce') || '';
   const aboutPageSchema = {
     '@context': 'https://schema.org',
     '@type': 'AboutPage',
@@ -58,8 +60,8 @@ export default function OurStoryPage() {
   return (
     <div className="bg-surface-cream text-ink-charcoal font-body-md overflow-x-hidden min-h-screen">
       {/* Schemas */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
 
       {/* ── HERO SECTION ── */}
       <section className="relative w-full h-[70vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden">

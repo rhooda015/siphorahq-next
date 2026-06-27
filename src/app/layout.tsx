@@ -11,9 +11,11 @@ import dbConnect from '@/lib/db';
 import StoreSettings from '@/models/StoreSettings';
 import ThemeSettings from '@/models/ThemeSettings';
 import SettingsProvider from '@/providers/SettingsProvider';
+import NonceProvider from '@/providers/NonceProvider';
 import ThemeInjector from '@/components/ThemeInjector';
 import dynamic from 'next/dynamic';
 import { GoogleAnalytics } from '@next/third-parties/google';
+import { headers } from 'next/headers';
 
 const MobileBottomNav = dynamic(() => import('@/components/MobileBottomNav'));
 const Toaster = dynamic(() => import('react-hot-toast').then(mod => mod.Toaster));
@@ -75,6 +77,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   await dbConnect();
   const settings = await StoreSettings.findOne().lean();
   const theme = await ThemeSettings.findOne().lean();
+  const nonce = (await headers()).get('x-nonce') || '';
 
   const schemaOrg = {
     '@context': 'https://schema.org',
@@ -146,6 +149,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
         <script
+          nonce={nonce}
+          suppressHydrationWarning={true}
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
         />
@@ -155,45 +160,48 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           Skip to main content
         </a>
         <ThemeInjector theme={theme} />
-        <SettingsProvider initialSettings={JSON.parse(JSON.stringify(settings))}>
-          <SessionWrapper>
-            <Header />
-            <main id="main-content" className="flex-1 flex flex-col">{children}</main>
-            <Footer />
-            <MobileBottomNav />
-            <CartDrawerDynamic />
-            <a
-              href="https://wa.me/919540027978?text=Hi%2C%20I%27m%20interested%20in%20Siphorahq%20products"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Chat with Siphorahq concierge on WhatsApp"
-              className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-5 py-3 rounded-full text-sm font-semibold shadow-lg transition-colors"
-            >
-              WhatsApp
-            </a>
-            <Toaster 
-              position="bottom-center"
-              toastOptions={{
-                duration: 3000,
-                style: {
-                  background: '#1A1A1A',
-                  color: '#fff',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '12px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  borderRadius: '0px',
-                  padding: '16px 24px',
-                  border: '1px solid #D4AF37',
-                },
-              }}
-            />
-          </SessionWrapper>
-        </SettingsProvider>
-        <GoogleAnalytics gaId="G-22VV0R5MCN" />
+        <NonceProvider nonce={nonce}>
+          <SettingsProvider initialSettings={JSON.parse(JSON.stringify(settings))}>
+            <SessionWrapper>
+              <Header />
+              <main id="main-content" className="flex-1 flex flex-col">{children}</main>
+              <Footer />
+              <MobileBottomNav />
+              <CartDrawerDynamic />
+              <a
+                href="https://wa.me/919540027978?text=Hi%2C%20I%27m%20interested%20in%20Siphorahq%20products"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Chat with Siphorahq concierge on WhatsApp"
+                className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-5 py-3 rounded-full text-sm font-semibold shadow-lg transition-colors"
+              >
+                WhatsApp
+              </a>
+              <Toaster 
+                position="bottom-center"
+                toastOptions={{
+                  duration: 3000,
+                  style: {
+                    background: '#1A1A1A',
+                    color: '#fff',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '12px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    borderRadius: '0px',
+                    padding: '16px 24px',
+                    border: '1px solid #D4AF37',
+                  },
+                }}
+              />
+            </SessionWrapper>
+          </SettingsProvider>
+        </NonceProvider>
+        <GoogleAnalytics gaId="G-22VV0R5MCN" nonce={nonce} />
         <Script
           id="microsoft-clarity"
           strategy="lazyOnload"
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","x8rtgt9b6p");`,
           }}

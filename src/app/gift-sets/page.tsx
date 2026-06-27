@@ -6,6 +6,7 @@ import ProductListing from '@/components/ProductListing';
 import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
 import NewsletterForm from '@/components/NewsletterForm';
+import { headers } from 'next/headers';
 
 export const metadata = {
   title: 'Luxury Gift Sets | Premium Porcelain Gifting | Siphorahq',
@@ -38,6 +39,7 @@ async function getGiftSets() {
 
 export default async function GiftSetsPage() {
   const products = await getGiftSets();
+  const nonce = (await headers()).get('x-nonce') || '';
 
   const collectionSchema = {
     '@context': 'https://schema.org',
@@ -58,8 +60,8 @@ export default async function GiftSetsPage() {
 
   return (
     <div className="bg-surface-cream text-ink-charcoal font-body-md overflow-x-hidden min-h-screen">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
 
       {/* ── HERO BANNER ── */}
       <section className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden">

@@ -20,7 +20,7 @@ export default function MobileBottomNav() {
   if (pathname?.startsWith('/admin')) return null;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-porcelain-white/95 backdrop-blur-md border-t border-bone-gray md:hidden pb-safe">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-surface-cream/95 backdrop-blur-md border-t border-muted-sand md:hidden pb-safe">
       <div className="flex items-stretch h-16">
         
         {/* Home */}

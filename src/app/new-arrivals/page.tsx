@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { BRAND } from '@/config/brand';
 import NewArrivalsClient from './NewArrivalsClient';
 import NewsletterForm from '@/components/NewsletterForm';
+import { headers } from 'next/headers';
 
 export const metadata = {
   title: 'New Arrivals | Premium Porcelain Cups, Tea Sets & Dinnerware | Siphorahq',
@@ -72,7 +73,8 @@ const PRODUCTS = [
   }
 ];
 
-export default function NewArrivalsPage() {
+export default async function NewArrivalsPage() {
+  const nonce = (await headers()).get('x-nonce') || '';
   
   // JSON-LD Schemas
   const collectionPageSchema = {
@@ -126,9 +128,9 @@ export default function NewArrivalsPage() {
   return (
     <div className="min-h-screen bg-surface-cream text-ink-charcoal font-body-md overflow-x-hidden">
       {/* Schemas */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
 
       {/* ── CINEMATIC HERO ── */}
       <section className="relative h-[75vh] lg:min-h-[90vh] w-full flex items-center justify-center overflow-hidden">

@@ -74,7 +74,10 @@ module.exports = {
         "dark-surface": "#161414",
         "dark-surface-container": "#211f1f",
         "dark-muted-sand": "#2a2726",
-        "dark-on-surface-variant": "#c4c0bd"
+        "dark-on-surface-variant": "#c4c0bd",
+        "champagne-gold": "#d4af37",
+        "porcelain-white": "#ffffff",
+        "bone-gray": "#f0ede9"
       },
       borderRadius: {
         "DEFAULT": "0.125rem",

@@ -8,6 +8,7 @@ import ProductListing from '@/components/ProductListing';
 import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
 import NewsletterForm from '@/components/NewsletterForm';
+import { headers } from 'next/headers';
 
 export const metadata = {
   title: 'Best Sellers | Premium Indian Porcelain | Siphorahq',
@@ -27,6 +28,7 @@ async function getBestSellers() {
 
 export default async function BestSellersPage() {
   const products = await getBestSellers();
+  const nonce = (await headers()).get('x-nonce') || '';
 
   const collectionSchema = {
     '@context': 'https://schema.org',
@@ -47,8 +49,8 @@ export default async function BestSellersPage() {
 
   return (
     <div className="bg-surface-cream text-ink-charcoal font-body-md overflow-x-hidden min-h-screen">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
 
       {/* ── 1. HERO SECTION (ENHANCED) ── */}
       <section className="bg-muted-sand/30 py-24 md:py-36 px-5 text-center relative overflow-hidden">

@@ -87,7 +87,7 @@ export default function Header() {
     <>
       <div className="sticky top-0 z-50 w-full flex flex-col group/header">
         {/* 1. Announcement Bar */}
-        <div className="bg-ink-charcoal text-surface-cream py-3 overflow-hidden border-b border-burnished-gold/20 relative z-50">
+        <div className="bg-ink-charcoal text-surface-cream py-3 w-full min-w-0 overflow-hidden border-b border-burnished-gold/20 relative z-50">
           <div className="flex animate-marquee whitespace-nowrap gap-16 items-center">
             <div className="flex items-center gap-16">
               <span className="font-label-caps text-[11px] uppercase tracking-[0.2em]">Free Shipping Pan India Above ₹999</span>

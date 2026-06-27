@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useNonce } from '@/providers/NonceProvider';
 
 interface FAQ {
   question: string;
@@ -14,6 +15,7 @@ interface ProductFAQProps {
 
 export default function ProductFAQ({ faqs }: ProductFAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const nonce = useNonce();
 
   if (!faqs || faqs.length === 0) return null;
 
@@ -68,6 +70,7 @@ export default function ProductFAQ({ faqs }: ProductFAQProps) {
       </div>
 
       <script
+        nonce={nonce}
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />

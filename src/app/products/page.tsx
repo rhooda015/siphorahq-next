@@ -3,6 +3,7 @@ import React from 'react';
 import ProductListing from '@/components/ProductListing';
 import { BRAND } from '@/config/brand';
 import Link from 'next/link';
+import { headers } from 'next/headers';
 
 export const metadata = {
   title: 'Shop Premium Porcelain Cups, Tea Sets & Dinnerware | Siphorahq',
@@ -112,7 +113,8 @@ const PRODUCTS = [
   }
 ];
 
-export default function ShopAllPage() {
+export default async function ShopAllPage() {
+  const nonce = (await headers()).get('x-nonce') || '';
   
   // JSON-LD Schemas
   const collectionPageSchema = {
@@ -166,9 +168,9 @@ export default function ShopAllPage() {
   return (
     <div className="min-h-screen bg-surface-cream text-ink-charcoal font-body-md overflow-x-hidden">
       {/* Schemas */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
+      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
 
       {/* ── HEADER BREADCRUMB & TITLE ── */}
       <div className="bg-[#111] text-surface-cream pt-24 pb-16 px-5 md:px-margin-desktop text-center relative overflow-hidden">

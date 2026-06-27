@@ -190,6 +190,7 @@ export function ProductSchema({
   sku,
   image,
   inStock = true,
+  nonce,
 }: {
   name: string;
   description: string;
@@ -197,6 +198,7 @@ export function ProductSchema({
   sku: string;
   image: string;
   inStock?: boolean;
+  nonce?: string;
 }) {
   const schema = {
     '@context': 'https://schema.org',
@@ -226,6 +228,8 @@ export function ProductSchema({
 
   return React.createElement('script', {
     type: 'application/ld+json',
+    nonce,
+    suppressHydrationWarning: true,
     dangerouslySetInnerHTML: { __html: JSON.stringify(schema) }
   });
 }
