@@ -648,7 +648,7 @@ export default function AccountDashboard({
             <Link href="/contact" className="block text-sm text-on-surface-variant dark:text-dark-on-surface-variant hover:text-ink-charcoal dark:hover:text-surface-cream transition-colors">
               Contact Us
             </Link>
-            <Link href="/privacy" className="block text-sm text-on-surface-variant dark:text-dark-on-surface-variant hover:text-ink-charcoal dark:hover:text-surface-cream transition-colors">
+             <Link href="/privacy-policy" className="block text-sm text-on-surface-variant dark:text-dark-on-surface-variant hover:text-ink-charcoal dark:hover:text-surface-cream transition-colors">
               Privacy Policy
             </Link>
           </div>
@@ -701,7 +701,7 @@ export default function AccountDashboard({
               &copy; {new Date().getFullYear()} Siphora HQ. All rights reserved.
             </p>
             <div className="flex gap-8">
-              <Link href="/terms" className="text-[10px] text-on-surface-variant dark:text-dark-on-surface-variant hover:text-ink-charcoal dark:hover:text-surface-cream uppercase tracking-widest transition-colors">
+               <Link href="/terms-of-service" className="text-[10px] text-on-surface-variant dark:text-dark-on-surface-variant hover:text-ink-charcoal dark:hover:text-surface-cream uppercase tracking-widest transition-colors">
                 Terms of Service
               </Link>
               <Link href="/accessibility" className="text-[10px] text-on-surface-variant dark:text-dark-on-surface-variant hover:text-ink-charcoal dark:hover:text-surface-cream uppercase tracking-widest transition-colors">
