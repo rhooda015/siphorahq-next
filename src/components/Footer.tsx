@@ -8,7 +8,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-ink-charcoal text-surface-cream pt-24 pb-12 px-5 md:px-margin-desktop border-t border-burnished-gold/20">
-      <div className="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
+      <div className="max-w-container-max mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 mb-20">
         <div>
           <h3 className="font-headline-lg text-3xl italic mb-6">{BRAND.name}</h3>
           <p className="font-body-md text-surface-cream/70 max-w-sm mb-8">
@@ -27,20 +27,32 @@ export default function Footer() {
         <div>
           <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">Shop</h4>
           <ul className="space-y-4 font-body-md text-surface-cream/80">
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/collections">Collections</Link></li>
             <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/collections/dinnerware">Dinnerware Sets</Link></li>
             <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/products">Mugs &amp; Cups</Link></li>
-            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/collections/gifting">Luxury Gifting</Link></li>
-            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/products">New Arrivals</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/gifting">Luxury Gifting</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/corporate-gifting">Corporate Gifting</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">About</h4>
+          <ul className="space-y-4 font-body-md text-surface-cream/80">
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/about">About Us</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/craftsmanship">Our Craftsmanship</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/sustainability">Sustainability</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/why-choose-us">Why Choose Us</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/journal">Journal</Link></li>
           </ul>
         </div>
         
         <div>
           <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">Support</h4>
           <ul className="space-y-4 font-body-md text-surface-cream/80">
-            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/about">About Us</Link></li>
-            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/faq">Care Instructions</Link></li>
-            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/shipping-policy">Shipping &amp; Returns</Link></li>
-            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/contact">Track Order</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/care-instructions">Care Instructions</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/track-order">Track Order</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/refund-policy">Refund Policy</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/shipping-policy">Shipping Policy</Link></li>
             <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/faq">FAQ</Link></li>
           </ul>
         </div>
