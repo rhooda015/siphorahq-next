@@ -71,10 +71,30 @@ export default function Footer() {
           </ul>
           <p className="font-label-caps text-[10px] uppercase tracking-widest text-surface-cream/50 mb-4">Secure Payments</p>
           <div className="flex gap-2">
-            <div className="w-12 h-8 bg-white/10 rounded flex items-center justify-center text-[10px] font-bold">VISA</div>
-            <div className="w-12 h-8 bg-white/10 rounded flex items-center justify-center text-[10px] font-bold">MC</div>
-            <div className="w-12 h-8 bg-white/10 rounded flex items-center justify-center text-[10px] font-bold">AMEX</div>
-            <div className="w-12 h-8 bg-white/10 rounded flex items-center justify-center text-[10px] font-bold">UPI</div>
+            {/* VISA */}
+            <div className="w-12 h-8 bg-[#1A1F71] rounded flex items-center justify-center shadow-sm overflow-hidden border border-[#1A1F71]" title="Visa">
+              <svg viewBox="0 0 24 24" className="w-9 h-5 text-white" fill="currentColor">
+                <path d="M15.48 14.288l1.41-8.508h-2.261l-1.41 8.508zM22.562 6.082l-2.072 8.21h2.008l1.246-8.21zM9.544 6.082L7.332 11.96 6.388 7.07c-.126-.644-.616-1.022-1.222-1.022H1.674v.392c.798.174 1.706.518 2.254.882.378.252.49.462.616.966l2.058 7.918H8.73l3.122-8.216zM15.352 9.07c-.49-.252-.924-.42-1.47-.42-1.554 0-2.646.826-2.646 2.002 0 .874.776 1.358 1.372 1.652.608.294.812.482.812.748 0 .406-.49.594-.938.594-.974 0-1.54-.252-1.996-.462l-.28-.134-.3.14-.15.092.35 2.196c.6.28 1.708.518 2.856.532 2.604 0 4.29-1.288 4.29-3.276.014-1.092-.658-1.932-2.1-2.628z" />
+              </svg>
+            </div>
+            {/* Mastercard */}
+            <div className="w-12 h-8 bg-[#111] rounded flex items-center justify-center shadow-sm overflow-hidden border border-white/10 relative" title="Mastercard">
+              <div className="flex -space-x-2">
+                <div className="w-5 h-5 rounded-full bg-[#EB001B]"></div>
+                <div className="w-5 h-5 rounded-full bg-[#F79E1B] opacity-80"></div>
+              </div>
+            </div>
+            {/* AMEX */}
+            <div className="w-12 h-8 bg-[#007bc1] rounded flex items-center justify-center shadow-sm overflow-hidden border border-[#007bc1]" title="American Express">
+              <span className="text-[10px] font-black tracking-widest text-white font-sans">AMEX</span>
+            </div>
+            {/* UPI */}
+            <div className="w-12 h-8 bg-white rounded flex flex-col items-center justify-center shadow-sm overflow-hidden border border-white/10" title="UPI">
+              <span className="text-[9px] font-black italic tracking-tighter text-[#0f54a4] leading-none">
+                U<span className="text-[#3c8b3f]">P</span>I
+              </span>
+              <div className="h-[1.5px] w-6 bg-gradient-to-r from-[#0f54a4] to-[#3c8b3f] mt-0.5"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -87,7 +107,7 @@ export default function Footer() {
         <div className="flex gap-6 font-body-md text-surface-cream/50 text-sm">
           <Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1" href="/privacy-policy">Privacy Policy</Link>
           <Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1" href="/terms-of-service">Terms</Link>
-          <Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1" href="/sitemap.xml">Sitemap</Link>
+          <a className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1" href="/sitemap.xml" target="_blank" rel="noopener noreferrer">Sitemap</a>
         </div>
       </div>
     </footer>

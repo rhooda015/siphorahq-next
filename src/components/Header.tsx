@@ -1,5 +1,5 @@
 "use client";
-import { Lock, Search, User, Heart, ShoppingBag, X, Menu, ChevronRight } from 'lucide-react';
+import { Lock, Search, User, Heart, ShoppingBag, X, Menu, ChevronRight, ChevronDown } from 'lucide-react';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -243,7 +243,11 @@ export default function Header() {
                 className="flex items-center justify-between font-headline-md text-2xl text-ink-charcoal hover:text-burnished-gold transition-colors border-b border-muted-sand pb-4"
               >
                 <span>{item.label}</span>
-                <ChevronRight className="w-6 h-6 text-on-surface-variant opacity-50" />
+                {item.hasMegaMenu ? (
+                  <ChevronDown className="w-6 h-6 text-on-surface-variant opacity-70" />
+                ) : (
+                  <ChevronRight className="w-6 h-6 text-on-surface-variant opacity-50" />
+                )}
               </Link>
               {item.hasMegaMenu && (
                 <div className="flex flex-col gap-3 pt-4 pl-4 border-l border-burnished-gold/30 mt-4">
