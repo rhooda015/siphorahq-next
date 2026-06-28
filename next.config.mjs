@@ -27,6 +27,16 @@ const nextConfig = {
         has: [{ type: 'host', value: 'www.siphorahq.in' }],
         destination: 'https://siphorahq.in/:path*',
         permanent: true,
+      },
+      {
+        source: '/terms',
+        destination: '/terms-of-service',
+        permanent: true,
+      },
+      {
+        source: '/privacy',
+        destination: '/privacy-policy',
+        permanent: true,
       }
     ];
   },
