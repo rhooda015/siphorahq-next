@@ -20,7 +20,7 @@ const SLIDES = [
     title: "Signature Gifting Sets",
     description: "Hand-curated collections delivered in our iconic premium packaging.",
     buttons: [
-      { text: "Browse Gift Sets", href: "/collections/gifting", primary: true },
+      { text: "Browse Gift Sets", href: "/collections/gift-sets", primary: true },
       { text: "Gift Concierge", href: "/contact", primary: false }
     ]
   }

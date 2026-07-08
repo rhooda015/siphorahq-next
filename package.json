@@ -8,7 +8,12 @@
     "build": "next build",
     "start": "next start",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seo:audit": "node scripts/seo-engine.js --mode=audit",
+    "seo:fix": "node scripts/seo-engine.js --mode=fix",
+    "seo:lighthouse": "node scripts/seo-engine.js --lighthouse",
+    "seo:gsc": "node scripts/seo-engine.js --gsc",
+    "seo:dashboard": "node scripts/seo-engine.js --dashboard"
   },
   "keywords": [],
   "author": "",

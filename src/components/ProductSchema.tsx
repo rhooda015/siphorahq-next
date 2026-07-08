@@ -18,14 +18,14 @@ export default function ProductSchema({ product, nonce }: { product: Product; no
     description: product.description || '',
     image: product.image?.startsWith('http')
       ? product.image
-      : `https://www.siphorahq.in${product.image}`,
+      : `https://siphorahq.in${product.image}`,
     brand: {
       '@type': 'Brand',
-      name: 'SiphoraHQ',
+      name: 'Siphorahq',
     },
     offers: {
       '@type': 'Offer',
-      url: `https://www.siphorahq.in/products/${product.id}`,
+      url: `https://siphorahq.in/products/${product.id}`,
       priceCurrency: 'INR',
       price: product.salePrice || product.price,
       priceValidUntil: '2026-12-31',

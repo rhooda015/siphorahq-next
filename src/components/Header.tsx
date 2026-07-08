@@ -20,8 +20,8 @@ const NAVIGATION_LINKS = [
 
 const MEGA_MENU_ITEMS = [
   { title: "Dining Collection", url: "/collections/dinnerware" },
-  { title: "Tea & Coffee Collection", url: "/collections/tea-coffee" },
-  { title: "Serveware", url: "/collections/serveware" },
+  { title: "Tea & Coffee Collection", url: "/collections/tea-sets" },
+  { title: "Serveware", url: "/collections/bowls" },
   { title: "Luxury Gift Sets", url: "/gift-sets" },
   { title: "Fine Porcelain Cups", url: "/products?category=cups" },
   { title: "Premium Mugs", url: "/products?category=mugs" }

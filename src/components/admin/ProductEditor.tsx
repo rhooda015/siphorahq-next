@@ -37,6 +37,8 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
   const activeStep = STEPS[activeStepIndex];
   
   const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop');
+  const [activePreviewImgIndex, setActivePreviewImgIndex] = useState(0);
+  const [previewQty, setPreviewQty] = useState(1);
 
   // Form State
   const [title, setTitle] = useState(initialData?.title || '');
@@ -73,6 +75,35 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
   });
 
   const [isSaving, setIsSaving] = useState(false);
+  const [isOptimizing, setIsOptimizing] = useState(false);
+
+  const handleAiOptimize = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!title.trim()) {
+      alert('Please enter a product title first so the AI has context.');
+      return;
+    }
+    setIsOptimizing(true);
+    try {
+      const res = await fetch('/api/admin/ai/optimize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, description }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to optimize description');
+      
+      if (data.optimizedHtml) {
+        editor?.commands.setContent(data.optimizedHtml);
+        setDescription(data.optimizedHtml);
+      }
+    } catch (err) {
+      console.error(err);
+      alert(err instanceof Error ? err.message : 'AI optimization failed.');
+    } finally {
+      setIsOptimizing(false);
+    }
+  };
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -154,8 +185,18 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-widest">Product Description</label>
-              <button className="text-[11px] font-bold text-luxury-gold uppercase tracking-widest flex items-center gap-1 hover:text-zinc-900 transition-colors">
-                <Sparkles size={12} /> Optimize with AI
+              <button
+                onClick={handleAiOptimize}
+                disabled={isOptimizing}
+                className="text-[11px] font-bold text-luxury-gold uppercase tracking-widest flex items-center gap-1 hover:text-zinc-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isOptimizing ? (
+                  <span>Optimizing...</span>
+                ) : (
+                  <>
+                    <Sparkles size={12} /> Optimize with AI
+                  </>
+                )}
               </button>
             </div>
             <div className="border border-zinc-200/60 rounded-xl overflow-hidden bg-white focus-within:border-luxury-gold/50 focus-within:ring-4 focus-within:ring-luxury-gold/10 transition-all">
@@ -319,6 +360,9 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
   };
 
   const renderPreview = () => {
+    const sizeList = sizes.split(',').map((s: string) => s.trim()).filter(Boolean);
+    const colorList = colors.split(',').map((c: string) => c.trim()).filter(Boolean);
+
     return (
       <div className={`mx-auto bg-white transition-all duration-500 origin-top shadow-2xl ${previewMode === 'mobile' ? 'w-[375px] h-[812px] rounded-[3rem] border-[8px] border-zinc-900 overflow-y-auto custom-scrollbar' : 'w-full h-full rounded-2xl border border-zinc-200/60 overflow-y-auto custom-scrollbar'}`}>
         
@@ -343,20 +387,24 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
             {/* Image Gallery */}
             <div className="space-y-4">
               <div className="aspect-[4/5] bg-[#f8f5ef] w-full overflow-hidden relative rounded-sm">
-                {images[0]?.url ? (
-                  <img src={images[0].url} className="w-full h-full object-contain bg-[#f8f5ef] max-h-[650px]" alt="" />
+                {images[activePreviewImgIndex]?.url ? (
+                  <img src={images[activePreviewImgIndex].url} className="w-full h-full object-contain bg-[#f8f5ef] max-h-[650px]" alt="" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-zinc-300">
                     <ImageIcon size={64} />
                   </div>
                 )}
               </div>
-              {previewMode === 'desktop' && images.length > 1 && (
-                <div className="flex gap-4">
-                  {images.slice(1, 4).map((img, i) => (
-                    <div key={i} className="aspect-square w-24 bg-[#f8f5ef] overflow-hidden rounded-sm">
-                      <img src={img.url} className="w-full h-full object-contain bg-[#f8f5ef]" alt="" />
-                    </div>
+              {images.length > 1 && (
+                <div className="flex gap-2 flex-wrap">
+                  {images.map((img: any, idx: number) => (
+                    <button 
+                      key={idx} 
+                      onClick={() => setActivePreviewImgIndex(idx)}
+                      className={`w-14 h-16 bg-[#f8f5ef] border rounded-sm overflow-hidden transition-all ${activePreviewImgIndex === idx ? 'border-luxury-gold ring-1 ring-luxury-gold' : 'border-zinc-200 hover:border-zinc-400'}`}
+                    >
+                      <img src={img.url} className="w-full h-full object-contain" alt="" />
+                    </button>
                   ))}
                 </div>
               )}
@@ -364,26 +412,160 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
 
             {/* Product Info */}
             <div className="flex flex-col">
+              {/* Category */}
               <p className="text-[10px] font-bold text-luxury-gold uppercase tracking-[0.2em] mb-2">{category || 'Category'}</p>
-              <h1 className="text-3xl font-serif text-zinc-900 mb-4">{title || 'Product Title'}</h1>
               
-              <div className="flex items-center gap-3 mb-6">
+              {/* Product Title */}
+              <h1 className="text-3xl font-serif text-zinc-900 mb-2">{title || 'Product Title'}</h1>
+              
+              {/* Reviews */}
+              <div className="flex items-center gap-3 mb-4">
                 <div className="flex text-zinc-900"><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/><Star size={14} fill="currentColor"/></div>
                 <span className="text-xs text-zinc-500">(12 Reviews)</span>
               </div>
 
-              <div className="flex items-end gap-3 mb-8 pb-8 border-b border-zinc-200">
-                <span className="text-2xl font-mono text-zinc-900">₹{price.toLocaleString() || '0'}</span>
+              {/* Price */}
+              <div className="flex items-baseline gap-3 mb-3">
+                <span className="text-2xl font-serif font-medium text-zinc-900">₹{price.toLocaleString() || '0'}</span>
                 {mrp > price && (
-                  <span className="text-sm font-mono text-zinc-400 line-through mb-1">₹{mrp.toLocaleString()}</span>
+                  <span className="text-sm font-sans text-zinc-400 line-through">₹{mrp.toLocaleString()}</span>
                 )}
               </div>
 
-              <div className="prose prose-sm text-zinc-600 font-sans mb-8 leading-relaxed" dangerouslySetInnerHTML={{ __html: description || '<p>Product description will appear here...</p>' }} />
+              {/* Core Attributes */}
+              <div className="flex items-center gap-2 mb-4 text-[9px] font-sans text-[#8A733F] font-bold tracking-widest uppercase">
+                <span>Premium Ceramic</span>
+                <span className="text-zinc-300">•</span>
+                <span>Food Safe</span>
+                <span className="text-zinc-300">•</span>
+                <span>Gift Ready</span>
+              </div>
 
-              <button className="w-full bg-zinc-900 text-white font-sans text-xs uppercase tracking-widest font-bold py-4 hover:bg-luxury-gold transition-colors duration-300">
-                Add to Cart
-              </button>
+              <div className="h-px bg-zinc-200/60 mb-5" />
+
+              {/* Description */}
+              <div className="prose prose-sm text-zinc-600 font-sans mb-5 leading-relaxed" dangerouslySetInnerHTML={{ __html: description || '<p>Product description will appear here...</p>' }} />
+
+              {/* Variant Selector - Colors */}
+              {colorList.length > 0 && (
+                <div className="mb-4">
+                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-2">Available Colors</span>
+                  <div className="flex flex-wrap gap-2">
+                    {colorList.map((col: string, idx: number) => (
+                      <button key={idx} className="px-3 py-1.5 border border-zinc-200 text-xs font-semibold rounded-sm hover:border-zinc-900 transition-colors uppercase tracking-wider bg-white">
+                        {col}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Variant Selector - Sizes */}
+              {sizeList.length > 0 && (
+                <div className="mb-4">
+                  <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest block mb-2">Select Size</span>
+                  <div className="flex flex-wrap gap-2">
+                    {sizeList.map((sz: string, idx: number) => (
+                      <button key={idx} className="px-3 py-1.5 border border-zinc-200 text-xs font-semibold rounded-sm hover:border-zinc-900 transition-colors uppercase tracking-wider bg-white">
+                        {sz}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Stock Indicator */}
+              {inventoryCount > 0 && inventoryCount < 10 && (
+                <div className="mb-4 flex items-center gap-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                  </span>
+                  <span className="text-xs font-semibold text-red-600 font-sans">Only {inventoryCount} left in stock - order soon!</span>
+                </div>
+              )}
+
+              {/* Estimated Delivery */}
+              <div className="mb-4 text-xs text-zinc-500 font-sans flex items-center gap-1.5">
+                <span className="font-semibold text-zinc-700">Estimated Delivery:</span>
+                <span>by {new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' })}</span>
+              </div>
+
+              <div className="h-px bg-zinc-200/60 mb-5" />
+
+              {/* Add to Cart, Quantity & Wishlist Button */}
+              <div className="flex items-center gap-3 mb-6">
+                {/* Quantity */}
+                <div className="flex border border-zinc-200 items-center h-12 bg-white flex-shrink-0">
+                  <button onClick={() => setPreviewQty(Math.max(1, previewQty - 1))} className="px-3 text-zinc-500 hover:text-zinc-900 h-full font-bold">-</button>
+                  <span className="w-8 text-center font-sans text-sm font-semibold">{previewQty}</span>
+                  <button onClick={() => setPreviewQty(previewQty + 1)} className="px-3 text-zinc-500 hover:text-zinc-900 h-full font-bold">+</button>
+                </div>
+
+                {/* Add to Cart Button */}
+                <button className="flex-1 bg-zinc-900 text-white font-sans text-xs uppercase tracking-widest font-bold h-12 hover:bg-luxury-gold transition-colors duration-300">
+                  Add to Cart
+                </button>
+
+                {/* Wishlist Button */}
+                <button className="w-12 h-12 border border-zinc-200 flex items-center justify-center text-zinc-400 hover:text-red-500 hover:border-red-200 transition-colors bg-white">
+                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                </button>
+              </div>
+
+              <div className="h-px bg-zinc-200/60 my-2" />
+
+              {/* Collapsible Accordions */}
+              <div className="mt-2 border-t border-zinc-200/60 mb-6">
+                {/* Specifications */}
+                {specifications && Object.values(specifications).some(Boolean) && (
+                  <details className="group border-b border-zinc-200/60 py-3 cursor-pointer">
+                    <summary className="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-zinc-700 outline-none">
+                      Specifications
+                      <span className="transition group-open:rotate-180 text-zinc-400">▼</span>
+                    </summary>
+                    <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-zinc-600 font-sans pl-1">
+                      {Object.entries(specifications).filter(([_, v]) => v).map(([key, val]: [string, any]) => (
+                        <div key={key} className="flex gap-2">
+                          <span className="font-semibold text-zinc-700 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</span>
+                          <span>{val as string}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </details>
+                )}
+
+                {/* Care Guide */}
+                <details className="group border-b border-zinc-200/60 py-3 cursor-pointer">
+                  <summary className="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-zinc-700 outline-none">
+                    Care Guide
+                    <span className="transition group-open:rotate-180 text-zinc-400">▼</span>
+                  </summary>
+                  <p className="mt-3 text-xs text-zinc-500 font-sans leading-relaxed pl-1">
+                    Wash with mild liquid soap and a soft sponge. Avoid abrasive metal scourers. Fully microwave and dishwasher safe under normal domestic usage conditions.
+                  </p>
+                </details>
+
+                {/* Shipping & Returns */}
+                <details className="group border-b border-zinc-200/60 py-3 cursor-pointer">
+                  <summary className="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-zinc-700 outline-none">
+                    Shipping & Returns
+                    <span className="transition group-open:rotate-180 text-zinc-400">▼</span>
+                  </summary>
+                  <p className="mt-3 text-xs text-zinc-500 font-sans leading-relaxed pl-1">
+                    Free shipping across India on all prepaid orders. Orders are shipped within 24-48 hours. Easy returns or replacements are accepted within 7 days of delivery.
+                  </p>
+                </details>
+              </div>
+
+              <div className="h-px bg-zinc-200/60 my-2" />
+
+              {/* Trust Badges */}
+              <div className="grid grid-cols-3 gap-2 text-center text-[9px] uppercase tracking-widest font-bold text-[#8A733F] font-sans">
+                <div className="bg-[#F7F5F0] border border-[#E8E1D3] py-2.5 rounded-sm">Free Shipping</div>
+                <div className="bg-[#F7F5F0] border border-[#E8E1D3] py-2.5 rounded-sm">Secure Checkout</div>
+                <div className="bg-[#F7F5F0] border border-[#E8E1D3] py-2.5 rounded-sm">Easy Returns</div>
+              </div>
             </div>
           </main>
         </div>

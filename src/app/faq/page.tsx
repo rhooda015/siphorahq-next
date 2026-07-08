@@ -1,4 +1,5 @@
 import React from "react";
+export { faqMetadata as metadata } from '@/lib/metadata';
 
 export default function Page() {
   return (

@@ -1,0 +1,72 @@
+{
+  "homepage": {
+    "desktop": {
+      "performance": 60,
+      "seo": 100,
+      "accessibility": 95,
+      "bestPractices": 73,
+      "lcp": "10.5 s",
+      "cls": "0",
+      "tbt": "290 ms",
+      "fcp": "3.9 s"
+    },
+    "source": "Lighthouse CLI (Local)"
+  },
+  "products": {
+    "status": "FAILED",
+    "error": "Command failed: npx lighthouse http://localhost:3000/products --output=json --output-path=\"/Users/mac/Desktop/ai studio/seo-history/2026-06-29/lighthouse/products.json\" --chrome-flags=\"--headless --no-sandbox\" --quiet",
+    "source": "Lighthouse CLI (Local)"
+  },
+  "collections": {
+    "desktop": {
+      "performance": 87,
+      "seo": 100,
+      "accessibility": 96,
+      "bestPractices": 73,
+      "lcp": "3.8 s",
+      "cls": "0",
+      "tbt": "130 ms",
+      "fcp": "1.5 s"
+    },
+    "source": "Lighthouse CLI (Local)"
+  },
+  "our-story": {
+    "desktop": {
+      "performance": 88,
+      "seo": 100,
+      "accessibility": 96,
+      "bestPractices": 73,
+      "lcp": "3.7 s",
+      "cls": "0",
+      "tbt": "120 ms",
+      "fcp": "1.5 s"
+    },
+    "source": "Lighthouse CLI (Local)"
+  },
+  "contact": {
+    "desktop": {
+      "performance": 89,
+      "seo": 100,
+      "accessibility": 84,
+      "bestPractices": 73,
+      "lcp": "3.5 s",
+      "cls": "0",
+      "tbt": "150 ms",
+      "fcp": "1.5 s"
+    },
+    "source": "Lighthouse CLI (Local)"
+  },
+  "product-detail": {
+    "desktop": {
+      "performance": 52,
+      "seo": 92,
+      "accessibility": 86,
+      "bestPractices": 73,
+      "lcp": "32.3 s",
+      "cls": "0",
+      "tbt": "180 ms",
+      "fcp": "28.7 s"
+    },
+    "source": "Lighthouse CLI (Local)"
+  }
+}

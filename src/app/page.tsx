@@ -6,16 +6,18 @@ import Script from "next/script";
 import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
 import { STATIC_PRODUCTS } from '@/data/products';
-import NewsletterFormDynamic from '@/components/NewsletterFormDynamic';
-import AutoCarousel from '@/components/AutoCarousel';
-import LuxuryTrustStrip from '@/components/LuxuryTrustStrip';
-import InspiredLiving from '@/components/InspiredLiving';
-import GiftPackaging from '@/components/GiftPackaging';
-import EditorialQuote from '@/components/EditorialQuote';
-import ProductCard from '@/components/ProductCard';
 import { headers } from 'next/headers';
-
 import { unstable_cache } from 'next/cache';
+import dynamic from 'next/dynamic';
+
+import AutoCarousel from '@/components/AutoCarousel';
+
+const NewsletterFormDynamic = dynamic(() => import('@/components/NewsletterFormDynamic'));
+const LuxuryTrustStrip = dynamic(() => import('@/components/LuxuryTrustStrip'));
+const InspiredLiving = dynamic(() => import('@/components/InspiredLiving'));
+const GiftPackaging = dynamic(() => import('@/components/GiftPackaging'));
+const EditorialQuote = dynamic(() => import('@/components/EditorialQuote'));
+const ProductCard = dynamic(() => import('@/components/ProductCard'));
 
 export const revalidate = 60; // Use ISR
 
@@ -99,7 +101,7 @@ export default async function HomePage() {
           })
         }}
       />
-      <h1 className="sr-only">Luxury Porcelain Tea Cups & Dinnerware in India</h1>
+      <h1 className="sr-only">Siphorahq — Luxury Porcelain Tea Cups & Dinnerware in India</h1>
       <AutoCarousel />
 
       <LuxuryTrustStrip />
@@ -130,7 +132,7 @@ export default async function HomePage() {
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-[32px]">
             <Link href="/collections/dinnerware" className="group relative aspect-[4/5] md:h-[600px] overflow-hidden">
-              <Image src="/images/homepage/dinnerware.png" alt="Dinnerware Collections" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+              <Image src="/images/homepage/dinnerware.webp" alt="Dinnerware Collections" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
               <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
               <div className="absolute bottom-4 sm:bottom-8 left-3 sm:left-6 text-surface-cream transition-transform duration-700 ease-out group-hover:-translate-y-2">
                 <h3 className="font-cormorant text-collection-sm sm:text-collection-lg mb-1 leading-snug">Dinnerware Sets</h3>
@@ -139,7 +141,7 @@ export default async function HomePage() {
             </Link>
             
             <Link href="/products" className="group relative aspect-[4/5] md:h-[600px] overflow-hidden">
-              <Image src="/images/homepage/mugs.png" alt="Cups & Mugs" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+              <Image src="/images/homepage/mugs.webp" alt="Cups & Mugs" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
               <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
               <div className="absolute bottom-4 sm:bottom-8 left-3 sm:left-6 text-surface-cream transition-transform duration-700 ease-out group-hover:-translate-y-2">
                 <h3 className="font-cormorant text-collection-sm sm:text-collection-lg mb-1 leading-snug">Cups &amp; Mugs</h3>
@@ -148,7 +150,7 @@ export default async function HomePage() {
             </Link>
 
             <Link href="/collections/tea-sets" className="group relative aspect-[4/5] md:h-[600px] overflow-hidden">
-              <Image src="/images/homepage/teasets.png" alt="Tea Sets" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+              <Image src="/images/homepage/teasets.webp" alt="Tea Sets" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
               <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
               <div className="absolute bottom-4 sm:bottom-8 left-3 sm:left-6 text-surface-cream transition-transform duration-700 ease-out group-hover:-translate-y-2">
                 <h3 className="font-cormorant text-collection-sm sm:text-collection-lg mb-1 leading-snug">Tea Sets</h3>
@@ -156,8 +158,8 @@ export default async function HomePage() {
               </div>
             </Link>
 
-            <Link href="/collections/gifting" className="group relative aspect-[4/5] md:h-[600px] overflow-hidden">
-              <Image src="/images/homepage/gifting.png" alt="Luxury Gifting" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+            <Link href="/collections/gift-sets" className="group relative aspect-[4/5] md:h-[600px] overflow-hidden">
+              <Image src="/images/homepage/gifting.webp" alt="Luxury Gifting" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
               <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
               <div className="absolute bottom-4 sm:bottom-8 left-3 sm:left-6 text-surface-cream transition-transform duration-700 ease-out group-hover:-translate-y-2">
                 <h3 className="font-cormorant text-collection-sm sm:text-collection-lg mb-1 leading-snug">Luxury Gifting</h3>
@@ -199,32 +201,32 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-[32px]">
-            <Link href="/collections/gifting" className="group relative aspect-[4/5] md:h-[500px] overflow-hidden">
-              <Image src="/images/homepage/wedding.png" alt="Wedding Gifts" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+            <Link href="/collections/gift-sets" className="group relative aspect-[4/5] md:h-[500px] overflow-hidden">
+              <Image src="/images/homepage/wedding.webp" alt="Wedding Gifts" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
               <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
               <div className="absolute bottom-4 sm:bottom-8 left-3 sm:left-6 text-surface-cream transition-transform duration-700 ease-out group-hover:-translate-y-2">
                 <h3 className="font-cormorant text-collection-sm sm:text-collection-lg mb-1 leading-snug">Wedding &amp; Trousseau</h3>
                 <span className="font-nav-sm sm:font-nav-lg uppercase tracking-widest border-b border-burnished-gold pb-0.5 sm:pb-1 group-hover:text-burnished-gold transition-colors">Explore</span>
               </div>
             </Link>
-            <Link href="/collections/gifting" className="group relative aspect-[4/5] md:h-[500px] overflow-hidden">
-              <Image src="/images/homepage/corporate.png" alt="Corporate Gifts" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+            <Link href="/collections/gift-sets" className="group relative aspect-[4/5] md:h-[500px] overflow-hidden">
+              <Image src="/images/homepage/corporate.webp" alt="Corporate Gifts" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
               <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
               <div className="absolute bottom-4 sm:bottom-8 left-3 sm:left-6 text-surface-cream transition-transform duration-700 ease-out group-hover:-translate-y-2">
                 <h3 className="font-cormorant text-collection-sm sm:text-collection-lg mb-1 leading-snug">Corporate Gifting</h3>
                 <span className="font-nav-sm sm:font-nav-lg uppercase tracking-widest border-b border-burnished-gold pb-0.5 sm:pb-1 group-hover:text-burnished-gold transition-colors">Explore</span>
               </div>
             </Link>
-            <Link href="/collections/gifting" className="group relative aspect-[4/5] md:h-[500px] overflow-hidden">
-              <Image src="/images/homepage/festive.png" alt="Festive Gifts" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+            <Link href="/collections/gift-sets" className="group relative aspect-[4/5] md:h-[500px] overflow-hidden">
+              <Image src="/images/homepage/festive.webp" alt="Festive Gifts" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
               <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
               <div className="absolute bottom-4 sm:bottom-8 left-3 sm:left-6 text-surface-cream transition-transform duration-700 ease-out group-hover:-translate-y-2">
                 <h3 className="font-cormorant text-collection-sm sm:text-collection-lg mb-1 leading-snug">Festive Gifts</h3>
                 <span className="font-nav-sm sm:font-nav-lg uppercase tracking-widest border-b border-burnished-gold pb-0.5 sm:pb-1 group-hover:text-burnished-gold transition-colors">Explore</span>
               </div>
             </Link>
-            <Link href="/collections/gifting" className="group relative aspect-[4/5] md:h-[500px] overflow-hidden">
-              <Image src="/images/homepage/everyday.png" alt="Everyday Dining" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
+            <Link href="/collections/gift-sets" className="group relative aspect-[4/5] md:h-[500px] overflow-hidden">
+              <Image src="/images/homepage/everyday.webp" alt="Everyday Dining" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 50vw, 25vw" />
               <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
               <div className="absolute bottom-4 sm:bottom-8 left-3 sm:left-6 text-surface-cream transition-transform duration-700 ease-out group-hover:-translate-y-2">
                 <h3 className="font-cormorant text-collection-sm sm:text-collection-lg mb-1 leading-snug">Everyday Dining</h3>
@@ -242,7 +244,7 @@ export default async function HomePage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[32px]">
             <Link href="/collections/dinnerware" className="group relative overflow-hidden flex flex-col h-full aspect-square md:aspect-auto md:h-[800px]">
-              <Image src="/images/homepage/imperial.png" alt="The Imperial White" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 640px" quality={70} />
+              <Image src="/images/homepage/imperial.webp" alt="The Imperial White" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 640px" />
               <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
               <div className="absolute bottom-8 left-8 text-surface-cream text-left transition-transform duration-700 ease-out group-hover:-translate-y-2">
                 <h3 className="font-cormorant text-section-sm md:text-section-lg mb-2">The Imperial White</h3>
@@ -252,8 +254,8 @@ export default async function HomePage() {
             </Link>
             
             <div className="flex flex-col gap-[32px]">
-              <Link href="/collections/gifting" className="group relative overflow-hidden flex-1 aspect-square md:aspect-auto md:h-[384px]">
-                <Image src="/images/homepage/handpainted.png" alt="The Handpainted Collection" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 640px" quality={70} />
+              <Link href="/collections/gift-sets" className="group relative overflow-hidden flex-1 aspect-square md:aspect-auto md:h-[384px]">
+                <Image src="/images/homepage/handpainted.webp" alt="The Handpainted Collection" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 640px" />
                 <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
                 <div className="absolute bottom-6 left-6 text-surface-cream text-left transition-transform duration-700 ease-out group-hover:-translate-y-2">
                   <h3 className="font-cormorant text-collection-sm md:text-collection-lg mb-2">The Handpainted Collection</h3>
@@ -263,7 +265,7 @@ export default async function HomePage() {
               </Link>
 
               <Link href="/collections/tea-sets" className="group relative overflow-hidden flex-1 aspect-square md:aspect-auto md:h-[384px]">
-                <Image src="/images/homepage/emerald.png" alt="The Emerald Heritage" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 640px" quality={70} />
+                <Image src="/images/homepage/emerald.webp" alt="The Emerald Heritage" fill className="object-cover transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 640px" />
                 <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.55),rgba(0,0,0,0))]"></div>
                 <div className="absolute bottom-6 left-6 text-surface-cream text-left transition-transform duration-700 ease-out group-hover:-translate-y-2">
                   <h3 className="font-cormorant text-collection-sm md:text-collection-lg mb-2">The Emerald Heritage</h3>
@@ -280,7 +282,7 @@ export default async function HomePage() {
       <section className="bg-ink-charcoal text-surface-cream">
         <div className="grid grid-cols-1 lg:grid-cols-2">
           <div className="relative h-[300px] md:h-[500px] lg:h-auto overflow-hidden group">
-            <Image src="/images/homepage/kintsugi.png" alt="Kintsugi Collection" fill className="object-cover opacity-90 transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 1280px" quality={70} />
+            <Image src="/images/homepage/kintsugi.webp" alt="Kintsugi Collection" fill className="object-cover opacity-90 transition-transform duration-700 ease-out group-hover:scale-105" sizes="(max-width: 768px) 100vw, 1280px" />
           </div>
           <div className="p-8 md:p-[120px] flex flex-col justify-center">
             <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-burnished-gold mb-4 block">Limited Edition</span>
@@ -302,7 +304,7 @@ export default async function HomePage() {
         <div className="max-w-container-max mx-auto">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
             <div className="w-full md:w-1/2 relative h-[300px] md:h-[600px] overflow-hidden">
-              <Image src="/images/homepage/brand_story.png" alt="Brand Story" fill className="object-cover transition-transform duration-1000 hover:scale-105" sizes="(max-width: 768px) 100vw, 640px" quality={70} />
+              <Image src="/images/homepage/brand_story.webp" alt="Brand Story" fill className="object-cover transition-transform duration-1000 hover:scale-105" sizes="(max-width: 768px) 100vw, 640px" />
             </div>
             <div className="w-full md:w-1/2 md:pl-10 text-left">
               <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-[#8b6914] mb-4 block">Our Philosophy</span>

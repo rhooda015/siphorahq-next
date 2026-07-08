@@ -1,11 +1,6 @@
 import React from 'react';
-import { BRAND } from "@/config/brand";
 import ProtectedEmail from '@/components/ProtectedEmail';
-
-export const metadata = {
-  title: `Terms & Conditions | ${BRAND.name}`,
-  description: 'Terms and conditions for purchasing from SiphoraHQ.',
-};
+export { termsMetadata as metadata } from '@/lib/metadata';
 
 export default function Page() {
   return (

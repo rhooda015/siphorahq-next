@@ -1,9 +1,9 @@
-
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight } from 'lucide-react';
 import { BRAND } from '@/config/brand';
+export { journalMetadata as metadata } from '@/lib/metadata';
 
 export default function JournalPage() {
   const articles = [

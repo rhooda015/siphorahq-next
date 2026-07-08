@@ -163,7 +163,7 @@ export default async function NewArrivalsPage() {
               Shop New Arrivals
             </Link>
             <Link 
-              href="/collections/gifting"
+              href="/collections/gift-sets"
               className="bg-transparent text-surface-cream border border-surface-cream/30 font-label-caps text-[12px] uppercase tracking-widest px-8 py-4 hover:border-surface-cream transition-colors duration-300"
             >
               Explore Gift Sets

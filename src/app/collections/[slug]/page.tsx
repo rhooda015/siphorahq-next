@@ -14,21 +14,29 @@ export function generateStaticParams() {
   }));
 }
 
+function getNormalizedSlug(slug: string): string {
+  if (slug === 'gifting') return 'gift-sets';
+  if (slug === 'tea-coffee') return 'tea-sets';
+  if (slug === 'serveware') return 'bowls';
+  return slug;
+}
+
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  const collection = collectionsData[params.slug];
+  const normSlug = getNormalizedSlug(params.slug);
+  const collection = collectionsData[normSlug];
   if (!collection) return { title: 'Collection Not Found' };
 
   return {
     title: collection.metaTitle,
     description: collection.metaDescription,
     alternates: {
-      canonical: `${BRAND.domain}/collections/${params.slug}`,
+      canonical: `${BRAND.domain}/collections/${normSlug}`,
     },
     openGraph: {
       title: collection.metaTitle,
       description: collection.metaDescription,
-      url: `${BRAND.domain}/collections/${params.slug}`,
+      url: `${BRAND.domain}/collections/${normSlug}`,
       type: 'website',
     },
     twitter: {
@@ -41,7 +49,8 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 
 export default async function CollectionPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  const collection = collectionsData[params.slug];
+  const normSlug = getNormalizedSlug(params.slug);
+  const collection = collectionsData[normSlug];
   const nonce = (await headers()).get('x-nonce') || '';
   
   if (!collection) {

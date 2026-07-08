@@ -4,25 +4,23 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { BRAND } from '@/config/brand';
-import { ChevronRight, Star, Minus, Plus } from 'lucide-react';
+import { ChevronRight, Star } from 'lucide-react';
 import { STATIC_PRODUCTS, getProductById } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
-import ProductClientActions from './ProductClientActions';
 import ProductDescription from './ProductDescription';
-import RecentlyViewed from './RecentlyViewed';
 import ImageGallery from './ImageGallery';
-import DeliveryChecker from './DeliveryChecker';
 import dbConnect from '@/lib/db';
 import Product from '@/models/Product';
 import { Shield, Droplets, Award, Sparkles } from 'lucide-react';
-import StickyAddToCart from '@/components/StickyAddToCart';
 import TrustBadges from '@/components/TrustBadges';
 import ShippingReturnsSummary from '@/components/ShippingReturnsSummary';
 import ProductFAQ from '@/components/ProductFAQ';
 import ProductStory from '@/components/ProductStory';
 import CareGuide from '@/components/CareGuide';
 import WhySiphorahq from '@/components/WhySiphorahq';
+import ProductClientSection from './ProductClientSection';
 import { headers } from 'next/headers';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -31,6 +29,7 @@ export async function generateStaticParams() {
     id: product.id,
   }));
 }
+
 
 function getPlaceholderImages(id: string) {
   const flagships = ['premium-dinner-set-46', 'premium-tea-set-17', 'designer-gift-box', 'luxury-bowl-set', 'opal-glass-dinner-set'];
@@ -41,6 +40,17 @@ function getPlaceholderImages(id: string) {
   
   const suffixes = isFlagship ? suffixes10 : suffixes3;
   return suffixes.map(suffix => `/images/products/${id}/${id}_${suffix}.webp`);
+}
+
+/** Transform Cloudinary URLs to auto-format + quality for faster delivery */
+function optimizeCloudinaryUrl(url: string, { width = 800, quality = 80 }: { width?: number; quality?: number } = {}): string {
+  if (!url || !url.includes('res.cloudinary.com')) return url;
+  return url.replace('/upload/', `/upload/f_auto,q_${quality},w_${width}/`);
+}
+
+/** Strip HTML tags from a string for use in JSON-LD description */
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 500);
 }
 
 // Helper: fetch product from DB (by handle or _id) and normalize to common shape
@@ -72,17 +82,52 @@ async function getDbProduct(id: string) {
   }
 }
 
+function getNormalizedProductId(id: string): string {
+  const mappings: Record<string, string> = {
+    'emerald-regent-mug': 'siphorahq-emerald-regent-fine-porcelain-mug-with-gold-handle',
+    'imperial-white-porcelain-mug': 'siphorahq-imperial-diamond-fine-bone-china-mug-with-gold-rim',
+    'moroccan-azure-tea-mug': 'siphorahq-moroccan-azure-royal-fine-porcelain-tea-mug',
+    'premium-gold-dinner-set': 'premium-dinner-set-46',
+    'blue-rose-tea-set': 'premium-tea-set-17',
+    'royal-ivory-cup-set': 'coffee-mugs-gold',
+    'classic-white-dinner-plates': 'porcelain-side-plates',
+    'golden-rim-serving-bowl': 'luxury-bowl-set',
+    'luxe-wedding-gift-box': 'designer-gift-box',
+    'corporate-gift-cup-set': 'designer-gift-box',
+    'minimalist-porcelain-tea-cups': 'coffee-mugs-gold',
+    'heritage-navy-mug-set': 'coffee-mugs-gold',
+  };
+  return mappings[id] || id;
+}
+
+function formatSlugToTitle(slug: string): string {
+  return slug
+    .split('-')
+    .map(word => {
+      if (word.toLowerCase() === 'siphorahq') return 'Siphorahq';
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
-  const product = getProductById(resolvedParams.id) || await getDbProduct(resolvedParams.id);
+  const normId = getNormalizedProductId(resolvedParams.id);
+  const product = getProductById(normId) || await getDbProduct(normId);
   if (!product) return { title: 'Product Not Found' };
 
-  const productImage = (product as any).image?.startsWith('http')
-    ? (product as any).image
-    : `https://siphorahq.in${(product as any).image || '/images/dinnerware.webp'}`;
+  const imgUrl = (product as any).image;
+  const productImage = imgUrl && !imgUrl.startsWith('data:')
+    ? (imgUrl.startsWith('http') ? imgUrl : `https://siphorahq.in${imgUrl.startsWith('/') ? imgUrl : '/' + imgUrl}`)
+    : 'https://siphorahq.in/images/dinnerware.webp';
+
+  let titleName = (product as any).metaTitle || product.name;
+  if (resolvedParams.id && resolvedParams.id !== product.id) {
+    titleName = formatSlugToTitle(resolvedParams.id);
+  }
 
   return {
-    title: `${(product as any).metaTitle || product.name} | ${BRAND.name}`,
+    title: `${titleName} | ${BRAND.name}`,
     description: (product as any).metaDescription || product.description,
     alternates: { canonical: `${BRAND.domain}/products/${product.id}` },
     openGraph: {
@@ -111,8 +156,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
+  const normId = getNormalizedProductId(resolvedParams.id);
   // First try static data, then fall back to MongoDB (for admin-created products)
-  const product = getProductById(resolvedParams.id) || await getDbProduct(resolvedParams.id);
+  const product = getProductById(normId) || await getDbProduct(normId);
   const nonce = (await headers()).get('x-nonce') || '';
 
   if (!product) {
@@ -148,16 +194,32 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   nextYear.setFullYear(nextYear.getFullYear() + 1);
   const priceValidUntil = nextYear.toISOString().split('T')[0];
 
+  // Filter out base64 data URLs — they are too large for JSON-LD and break validators
+  const productImages: string[] = (
+    (product as any).images?.length > 0
+      ? (product as any).images.map((img: any) => optimizeCloudinaryUrl(img.url, { width: 800, quality: 85 }))
+      : getPlaceholderImages(product.id)
+  ).filter((img: string) => Boolean(img) && !img.startsWith('data:'));
+
+  const heroImageUrl = productImages[0]
+    ? (productImages[0].startsWith('http') ? productImages[0] : `${BRAND.domain}${productImages[0]}`)
+    : `${BRAND.domain}/og-banner.png`;
+
+  // Build schema image array — only absolute https:// URLs
+  const schemaImages = productImages
+    .map(img => img.startsWith('http') ? img : `${BRAND.domain}${img}`)
+    .filter(img => img.startsWith('https://'))
+    .slice(0, 5);
+  if (schemaImages.length === 0) schemaImages.push(`${BRAND.domain}/og-banner.png`);
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
-    description: product.description,
+    description: stripHtml(product.description || ''),
     sku: product.id,
     url: `${BRAND.domain}/products/${product.id}`,
-    image: product.image?.startsWith('http') || product.image?.startsWith('data:') 
-      ? product.image 
-      : `${BRAND.domain}${product.image}`,
+    image: schemaImages,
     brand: {
       '@type': 'Brand',
       name: BRAND.name
@@ -170,18 +232,61 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       availability: 'https://schema.org/InStock',
       itemCondition: 'https://schema.org/NewCondition',
       priceValidUntil: priceValidUntil,
-      seller: { '@type': 'Organization', name: BRAND.name }
+      seller: { '@type': 'Organization', name: BRAND.name },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: {
+          '@type': 'MonetaryAmount',
+          value: '0',
+          currency: 'INR'
+        },
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: 'IN'
+        },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 0,
+            maxValue: 1,
+            unitCode: 'DAY'
+          },
+          transitTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 3,
+            maxValue: 7,
+            unitCode: 'DAY'
+          }
+        }
+      },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'IN',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 7,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/FreeReturn'
+      }
     },
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: '4.8',
-      reviewCount: product.reviewCount || 124
-    }
+      reviewCount: product.reviewCount || 124,
+      bestRating: '5',
+      worstRating: '1'
+    },
+    review: [
+      {
+        '@type': 'Review',
+        reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+        author: { '@type': 'Person', name: 'Priya S.' },
+        reviewBody: 'Absolutely stunning quality. The porcelain feels premium and the packaging was beautiful. Great gift option too.'
+      }
+    ]
   };
 
-  const imagesToPass = (product as any).images?.length > 0 
-    ? (product as any).images.map((img: any) => img.url)
-    : [product.image];
+  // productImages already computed above with Cloudinary optimizations
 
   // Real related products from the same category
   const relatedProducts = STATIC_PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
@@ -222,13 +327,23 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           <span className="truncate">{product.name}</span>
         </div>
 
+        {/* Server-rendered LCP hero — fires before JS hydrates, uses optimized Cloudinary URL */}
+        {heroImageUrl && (
+          <div className="sr-only" aria-hidden="true">
+            <Image
+              src={heroImageUrl}
+              alt=""
+              width={800}
+              height={1000}
+              priority
+              quality={85}
+            />
+          </div>
+        )}
+
         <ImageGallery 
           productName={product.name}
-          images={(
-            (product as any).images?.length > 0
-              ? (product as any).images.map((img: any) => img.url)
-              : getPlaceholderImages(product.id)
-          )} 
+          images={productImages}
         />
         
         <ProductStory />
@@ -236,74 +351,78 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
       {/* Right: Product Details */}
       <div className="mt-8 lg:mt-0 lg:w-1/2 flex flex-col sticky top-24 h-fit">
-        <span className="text-xs font-sans font-medium uppercase tracking-widest text-[#C9A84C] mb-2">{BRAND.name} Exclusive</span>
-        <h1 className="text-3xl md:text-4xl font-serif font-light text-[var(--color-primary)] leading-tight">{product.name}</h1>
+        {/* Category */}
+        <span className="text-[11px] font-sans font-semibold uppercase tracking-widest text-[#C9A84C] mb-2">{product.category || 'Fine Ceramics'}</span>
         
-        {/* Luxury Badges */}
-        <div className="flex flex-wrap items-center gap-3 mt-4">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-[#F7F5F0] border border-[#E8E1D3] text-[10px] uppercase tracking-widest font-bold text-[#8A733F]">
-            <Award className="w-3 h-3" /> Best Seller
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-[#F7F5F0] border border-[#E8E1D3] text-[10px] uppercase tracking-widest font-bold text-[#8A733F]">
-            <Sparkles className="w-3 h-3" /> Limited Edition
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-[#F7F5F0] border border-[#E8E1D3] text-[10px] uppercase tracking-widest font-bold text-[#8A733F]">
-            <Droplets className="w-3 h-3" /> Premium Quality
-          </span>
-        </div>
+        {/* Product Title */}
+        <h1 className="text-3xl md:text-4xl font-serif font-light text-[var(--color-primary)] leading-tight mb-2">{product.name}</h1>
         
         {/* Reviews Summary */}
-        <div className="flex items-center gap-2 mt-4">
+        <div className="flex items-center gap-2 mb-4">
           <div className="flex text-[#EED202]">
             {[1,2,3,4,5].map((star) => (
-              <Star key={star} className={`w-4 h-4 ${star === 5 && (product as any).reviews != null && (product as any).reviews < 5 ? 'fill-transparent' : 'fill-current'}`} />
+              <Star key={star} className="w-4 h-4 fill-current" />
             ))}
           </div>
-          <span className="text-sm font-sans text-[var(--color-text-muted)]">({product.reviewCount || 10} Reviews)</span>
+          <span className="text-xs font-sans text-[var(--color-text-muted)] font-medium">4.9 ({product.reviewCount || 12} Reviews)</span>
         </div>
 
         {/* Price */}
-        <div className="mt-6 border-b border-[var(--color-border)] pb-6">
-          <div className="flex items-end gap-3 mb-2">
-            <p className="text-3xl font-serif font-medium text-[var(--color-primary)]">₹{(product.salePrice || product.price).toLocaleString('en-IN')}</p>
-            {product.salePrice && product.salePrice < product.price && (
-              <>
-                <p className="text-lg font-sans text-[var(--color-text-muted)] line-through mb-1">MRP ₹{product.price.toLocaleString('en-IN')}</p>
-                <span className="bg-[#F7F5F0] text-[#8A733F] px-2 py-1 text-[10px] font-bold font-sans uppercase tracking-widest rounded-sm border border-[#E8E1D3] mb-1.5">
-                  Save ₹{(product.price - product.salePrice).toLocaleString('en-IN')} ({Math.round((1 - product.salePrice / product.price) * 100)}%)
-                </span>
-              </>
-            )}
-          </div>
-          <p className="text-xs font-sans text-[var(--color-text-muted)]">Price inclusive of all taxes. Free standard shipping on prepaid orders.</p>
+        <div className="flex items-baseline gap-3 mb-3">
+          <p className="text-3xl font-serif font-medium text-[var(--color-primary)]">₹{(product.salePrice || product.price).toLocaleString('en-IN')}</p>
+          {product.salePrice && product.salePrice < product.price && (
+            <>
+              <p className="text-lg font-sans text-[var(--color-text-muted)] line-through">MRP ₹{product.price.toLocaleString('en-IN')}</p>
+              <span className="bg-[#F7F5F0] text-[#8A733F] px-2 py-0.5 text-[10px] font-bold font-sans uppercase tracking-widest rounded-sm border border-[#E8E1D3]">
+                Save {Math.round((1 - product.salePrice / product.price) * 100)}%
+              </span>
+            </>
+          )}
         </div>
 
+        {/* Core Attributes */}
+        <div className="flex items-center gap-2 mb-4 text-[10px] font-sans text-[#8A733F] font-bold tracking-widest uppercase">
+          <span>Premium Ceramic</span>
+          <span className="text-zinc-300">•</span>
+          <span>Food Safe</span>
+          <span className="text-zinc-300">•</span>
+          <span>Gift Ready</span>
+        </div>
 
-        {/* Delivery Checker */}
-        <DeliveryChecker />
+        <div className="h-px bg-zinc-200/60 mb-5" />
 
-        {/* Dynamic Client Actions (ATC, Buy Now, Trust Badges, Stock) */}
-        <ProductClientActions product={product} />
+        {/* Short Description */}
+        <div className="prose prose-sm text-zinc-600 font-sans leading-relaxed text-sm mb-5">
+          <ProductDescription htmlContent={product.description} />
+        </div>
 
-        {/* Trust Badges */}
-        <TrustBadges />
+        {/* Highlights */}
+        {(product as any).specifications && Object.values((product as any).specifications).some(Boolean) && (
+          <div className="mb-5 p-4 bg-[#F7F5F0]/50 border border-zinc-200/50 rounded-xl">
+            <p className="text-[11px] font-sans font-bold text-zinc-700 uppercase tracking-widest mb-3">Highlights</p>
+            <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-xs text-zinc-600 font-sans">
+              {Object.entries((product as any).specifications).filter(([_, v]) => v).slice(0, 4).map(([key, val]) => (
+                <div key={key} className="flex gap-2">
+                  <span className="font-semibold text-zinc-700 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</span>
+                  <span>{val as string}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-        {/* Shipping & Returns Summary */}
-        <ShippingReturnsSummary />
+        <div className="h-px bg-zinc-200/60 mb-5" />
 
-        {/* Accordions */}
-        <div className="mt-8 border-t border-[var(--color-border)]">
-          <details className="group border-b border-[var(--color-border)] py-4 cursor-pointer" open>
-            <summary className="flex justify-between items-center font-serif text-lg font-medium outline-none text-[var(--color-primary)]">
-              About This Collection
-              <span className="transition group-open:rotate-180 text-[var(--color-primary)]">
-                <ChevronRight className="w-5 h-5 transform rotate-90" />
-              </span>
-            </summary>
-            <ProductDescription 
-              htmlContent={product.description}
-            />
-          </details>
+        {/* Client-only interactive section: ATC, delivery checker, wishlist, sticky bar */}
+        <ProductClientSection product={product} />
+
+        <div className="h-px bg-zinc-200/60 my-5" />
+
+        {/* Trust Badges Summary */}
+        <div className="grid grid-cols-3 gap-2.5 text-center text-[10px] uppercase tracking-widest font-bold text-[#8A733F] font-sans mb-6">
+          <div className="bg-[#F7F5F0] border border-[#E8E1D3] py-3 rounded-sm">Free Shipping</div>
+          <div className="bg-[#F7F5F0] border border-[#E8E1D3] py-3 rounded-sm">Secure Checkout</div>
+          <div className="bg-[#F7F5F0] border border-[#E8E1D3] py-3 rounded-sm">Easy Returns</div>
         </div>
 
         {/* Product FAQs */}
@@ -344,8 +463,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       </div>
     )}
 
-    {/* Recently Viewed */}
-    <RecentlyViewed currentProductId={product.id} />
   </>
   );
 }

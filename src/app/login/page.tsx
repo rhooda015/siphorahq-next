@@ -78,6 +78,7 @@ export default function LoginPage() {
         </div>
 
         <div className="w-full max-w-md mx-auto">
+          <h1 className="sr-only">Sign In to Siphorahq</h1>
           {/* Tabs */}
           <div className="flex border-b border-gray-200 mb-8 font-sans text-[11px] uppercase tracking-[2px]">
             <button 

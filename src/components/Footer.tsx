@@ -38,7 +38,7 @@ export default function Footer() {
         <div>
           <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">About</h4>
           <ul className="space-y-4 font-body-md text-surface-cream/80">
-            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/about">About Us</Link></li>
+            <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/our-story">About Us</Link></li>
             <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/craftsmanship">Our Craftsmanship</Link></li>
             <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/sustainability">Sustainability</Link></li>
             <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/why-choose-us">Why Choose Us</Link></li>

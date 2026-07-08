@@ -8,7 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: 'https://siphorahq.in', lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
     { url: 'https://siphorahq.in/products', lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
     { url: 'https://siphorahq.in/collections', lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: 'https://siphorahq.in/about', lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+    { url: 'https://siphorahq.in/our-story', lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: 'https://siphorahq.in/craftsmanship', lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
     { url: 'https://siphorahq.in/journal', lastModified: new Date(), changeFrequency: 'weekly', priority: 0.6 },
     { url: 'https://siphorahq.in/sustainability', lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },

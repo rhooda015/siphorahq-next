@@ -38,6 +38,30 @@ const inter = Inter({
 
 
 
+import { unstable_cache } from 'next/cache';
+
+const getCachedSettings = unstable_cache(
+  async () => {
+    await dbConnect();
+    const settings = await StoreSettings.findOne().lean();
+    return settings || {
+      seoTitle: `Siphorahq | Best Luxury Porcelain Gift Sets, Tea Sets & Fine Dinnerware | Shop Now`,
+      seoDescription: 'Shop Siphorahq\'s best seller luxury porcelain dinnerware, gold-finish tea sets, fine porcelain gift sets & more. Free shipping above ₹999. Pan-India delivery.',
+    };
+  },
+  ['store-settings'],
+  { revalidate: 60 }
+);
+
+const getCachedTheme = unstable_cache(
+  async () => {
+    await dbConnect();
+    return ThemeSettings.findOne().lean();
+  },
+  ['theme-settings'],
+  { revalidate: 60 }
+);
+
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -45,14 +69,13 @@ export const viewport = {
 };
 
 export async function generateMetadata() {
-  await dbConnect();
-  const settings = await StoreSettings.findOne().lean() || {
-    seoTitle: `Siphorahq | Best Luxury Porcelain Gift Sets, Tea Sets & Fine Dinnerware | Shop Now`,
-    seoDescription: 'Shop Siphorahq\'s best seller luxury porcelain dinnerware, gold-finish tea sets, fine porcelain gift sets & more. Free shipping above ₹999. Pan-India delivery.',
-  };
+  const settings = await getCachedSettings() as any;
 
   return {
     metadataBase: new URL(BRAND.domain),
+    alternates: {
+      canonical: BRAND.domain,
+    },
     title: settings.seoTitle,
     description: settings.seoDescription,
     openGraph: {
@@ -60,7 +83,7 @@ export async function generateMetadata() {
       description: settings.seoDescription,
       url: BRAND.domain,
       siteName: BRAND.name,
-      images: [{ url: `${BRAND.domain}/og-banner.png` }],
+      images: [{ url: `${BRAND.domain}/og-banner.png`, width: 1200, height: 630, alt: 'Siphorahq — Luxury Porcelain Dinnerware India' }],
       locale: 'en_IN',
       type: 'website',
     },
@@ -74,9 +97,8 @@ export async function generateMetadata() {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  await dbConnect();
-  const settings = await StoreSettings.findOne().lean();
-  const theme = await ThemeSettings.findOne().lean();
+  const settings = await getCachedSettings() as any;
+  const theme = await getCachedTheme();
   const nonce = (await headers()).get('x-nonce') || '';
 
   const schemaOrg = {
@@ -147,6 +169,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
       <head>
         <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
         <script
           nonce={nonce}

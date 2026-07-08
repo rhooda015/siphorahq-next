@@ -4,15 +4,68 @@ import ProductListing from '@/components/ProductListing';
 import { BRAND } from '@/config/brand';
 import Link from 'next/link';
 import { headers } from 'next/headers';
+import { Metadata } from 'next';
+import { productsMetadata } from '@/lib/metadata';
+import dbConnect from '@/lib/db';
+import Product from '@/models/Product';
+import { unstable_cache } from 'next/cache';
 
-export const metadata = {
-  title: 'Shop Premium Porcelain Cups, Tea Sets & Dinnerware | Siphorahq',
-  description: 'Browse Siphorahq premium porcelain cups, mugs, tea sets, dinnerware, serveware, and luxury gift sets for modern Indian homes.',
-  openGraph: {
-    title: 'Shop Premium Porcelain | Siphorahq',
-    description: 'Browse Siphorahq premium porcelain cups, mugs, tea sets, dinnerware, serveware, and luxury gift sets.',
+const getCachedDbProducts = unstable_cache(
+  async () => {
+    await dbConnect();
+    const dbProducts = await Product.find({ status: 'Live' }).sort({ createdAt: -1 }).lean();
+    return dbProducts.map((p: any) => ({
+      name: p.title,
+      slug: p.handle || p._id.toString(),
+      price: `₹${p.price.toLocaleString()}`,
+      category: p.category || 'Tableware',
+      image: p.images?.[0]?.url || '/images/dinnerware.webp'
+    }));
+  },
+  ['shop-db-products'],
+  { revalidate: 60 }
+);
+
+export async function generateMetadata(props: { searchParams: Promise<{ category?: string; q?: string; search?: string }> }): Promise<Metadata> {
+  const searchParams = await props.searchParams;
+  const category = searchParams.category;
+  const q = searchParams.q || searchParams.search;
+  
+  let title = productsMetadata.title as string;
+  let description = productsMetadata.description as string;
+  
+  if (category) {
+    const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ');
+    title = `Premium ${formattedCategory} | ${BRAND.name}`;
+    description = `Browse our exclusive collection of luxury handcrafted ${formattedCategory} for modern Indian homes. Free shipping above ₹999.`;
+  } else if (q) {
+    title = `Search Results for "${q}" | ${BRAND.name}`;
+    description = `Find luxury porcelain and ceramic tableware matching "${q}" at Siphorahq. Shop premium cups, dinnerware & more.`;
   }
-};
+  
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `${BRAND.domain}/products${category ? `?category=${category}` : q ? `?q=${q}` : ''}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${BRAND.domain}/products`,
+      siteName: BRAND.name,
+      images: [{ url: `${BRAND.domain}/og-banner.png` }],
+      locale: 'en_IN',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [`${BRAND.domain}/og-banner.png`],
+    },
+  };
+}
 
 const PRODUCTS = [
   {
@@ -115,13 +168,15 @@ const PRODUCTS = [
 
 export default async function ShopAllPage() {
   const nonce = (await headers()).get('x-nonce') || '';
+  const dbProducts = await getCachedDbProducts();
+  const allProducts = [...dbProducts, ...PRODUCTS];
   
   // JSON-LD Schemas
   const collectionPageSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Shop All Porcelain | Siphorahq',
-    description: metadata.description,
+    description: (productsMetadata.description as string) || '',
     url: `${BRAND.domain}/products`
   };
 
@@ -147,14 +202,14 @@ export default async function ShopAllPage() {
   const itemListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    itemListElement: PRODUCTS.map((p, idx) => ({
+    itemListElement: allProducts.map((p, idx) => ({
       '@type': 'ListItem',
       position: idx + 1,
       item: {
         '@type': 'Product',
         name: p.name,
         url: `${BRAND.domain}/products/${p.slug}`,
-        image: `${BRAND.domain}${p.image}`,
+        image: p.image.startsWith('http') ? p.image : `${BRAND.domain}${p.image}`,
         offers: {
           '@type': 'Offer',
           priceCurrency: 'INR',
@@ -213,7 +268,7 @@ export default async function ShopAllPage() {
       </div>
 
       {/* ── PRODUCT LISTING (Client Component) ── */}
-      <ProductListing products={PRODUCTS} />
+      <ProductListing products={allProducts} />
       
     </div>
   );

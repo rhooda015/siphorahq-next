@@ -2,7 +2,7 @@ export const BRAND = {
   name: "Siphorahq",
   domain: "https://siphorahq.in",
   social: {
-    instagram: "https://instagram.com/siphorahq",
+    instagram: "https://www.instagram.com/siporahq",
     pinterest: "https://pinterest.com/siphorahq",
   },
   contact: {

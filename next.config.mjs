@@ -29,6 +29,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: '/about',
+        destination: '/our-story',
+        permanent: true,
+      },
+      {
         source: '/terms',
         destination: '/terms-of-service',
         permanent: true,
@@ -36,6 +41,21 @@ const nextConfig = {
       {
         source: '/privacy',
         destination: '/privacy-policy',
+        permanent: true,
+      },
+      {
+        source: '/returns',
+        destination: '/refund-policy',
+        permanent: true,
+      },
+      {
+        source: '/shipping',
+        destination: '/shipping-policy',
+        permanent: true,
+      },
+      {
+        source: '/shipping-returns',
+        destination: '/shipping-policy',
         permanent: true,
       }
     ];

@@ -1,4 +1,14 @@
 import React from "react";
+import { Metadata } from 'next';
+import { BRAND } from '@/config/brand';
+
+export const metadata: Metadata = {
+  title: `Tableware Care & Maintenance | ${BRAND.name}`,
+  description: `Learn how to wash, store, and care for your premium porcelain, bone china, and gold-accented tea cups and dinnerware.`,
+  alternates: {
+    canonical: `${BRAND.domain}/care-instructions`,
+  }
+};
 
 export default function Page() {
   return (

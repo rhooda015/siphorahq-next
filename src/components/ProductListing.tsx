@@ -11,7 +11,7 @@ type Product = {
   slug: string;
   price: string; // it's already "₹999" format
   category: string;
-  badge: string;
+  badge?: string;
   image: string;
 };
 

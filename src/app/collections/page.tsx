@@ -4,15 +4,8 @@ import Link from 'next/link';
 import { BRAND } from '@/config/brand';
 import NewsletterForm from '@/components/NewsletterForm';
 import { headers } from 'next/headers';
-
-export const metadata = {
-  title: 'Luxury Porcelain Collections | Siphorahq',
-  description: 'Discover curated premium porcelain collections crafted for elegant dining and luxury gifting.',
-  openGraph: {
-    title: 'Luxury Porcelain Collections | Siphorahq',
-    description: 'Discover curated premium porcelain collections crafted for elegant dining and luxury gifting.',
-  }
-};
+import { collectionsMetadata } from '@/lib/metadata';
+export { collectionsMetadata as metadata };
 
 export default async function CollectionsPage() {
   const nonce = (await headers()).get('x-nonce') || '';
@@ -21,7 +14,7 @@ export default async function CollectionsPage() {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Luxury Porcelain Collections',
-    description: metadata.description,
+    description: (collectionsMetadata.description as string) || '',
     url: `${BRAND.domain}/collections`
   };
 
@@ -89,7 +82,7 @@ export default async function CollectionsPage() {
           </Link>
 
           {/* Tea & Coffee */}
-          <Link href="/collections/tea-coffee" className="group block relative aspect-[4/5] overflow-hidden">
+          <Link href="/collections/tea-sets" className="group block relative aspect-[4/5] overflow-hidden">
             <Image
               src="/images/media__1780323514271.webp"
               alt="Tea & Coffee Collection"
@@ -150,7 +143,7 @@ export default async function CollectionsPage() {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {['New Arrivals', 'Best Sellers', 'Serveware'].map((category, idx) => (
-            <Link key={idx} href={idx === 0 ? '/new-arrivals' : idx === 1 ? '/best-sellers' : '/collections/serveware'} className="group block relative aspect-square overflow-hidden bg-muted-sand/20">
+            <Link key={idx} href={idx === 0 ? '/new-arrivals' : idx === 1 ? '/best-sellers' : '/collections/bowls'} className="group block relative aspect-square overflow-hidden bg-muted-sand/20">
               <div className="absolute inset-0 flex items-center justify-center p-8">
                 <h3 className="font-headline-md text-xl md:text-2xl text-ink-charcoal group-hover:text-burnished-gold transition-colors">{category}</h3>
               </div>
