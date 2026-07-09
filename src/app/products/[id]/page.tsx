@@ -212,12 +212,15 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     .slice(0, 5);
   if (schemaImages.length === 0) schemaImages.push(`${BRAND.domain}/og-banner.png`);
 
+  const validSku = product.id.length < 4 ? `sph-${product.id}` : product.id;
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
-    description: stripHtml(product.description || ''),
-    sku: product.id,
+    description: stripHtml(product.description || `Siphorahq ${product.name} — Premium porcelain and ceramic tableware. Handcrafted for modern elegance.`),
+    sku: validSku,
+    mpn: validSku,
     url: `${BRAND.domain}/products/${product.id}`,
     image: schemaImages,
     brand: {

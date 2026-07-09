@@ -113,16 +113,23 @@ export default async function CollectionPage(props: { params: Promise<{ slug: st
   const itemListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    itemListElement: products.map((product: any, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      item: {
-        '@type': 'Product',
-        name: product.name,
-        url: `${BRAND.domain}/products/${product.id || product.slug}`,
-        image: product.image
-      }
-    }))
+    itemListElement: products.map((product: any, index) => {
+      const imgPath = product.image || '/images/dinnerware.webp';
+      const absImage = imgPath.startsWith('data:') 
+        ? `${BRAND.domain}/images/dinnerware.webp` 
+        : (imgPath.startsWith('http') ? imgPath : `${BRAND.domain}${imgPath.startsWith('/') ? imgPath : '/' + imgPath}`);
+      return {
+        '@type': 'ListItem',
+        position: index + 1,
+        item: {
+          '@type': 'Product',
+          name: product.name,
+          url: `${BRAND.domain}/products/${product.id || product.slug}`,
+          image: absImage,
+          brand: { '@type': 'Brand', name: 'Siphorahq' }
+        }
+      };
+    })
   };
 
   const faqSchema = collection.faqs?.length > 0 ? {

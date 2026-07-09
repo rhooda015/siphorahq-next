@@ -107,22 +107,21 @@ export default async function NewArrivalsPage() {
   const itemListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    itemListElement: PRODUCTS.map((p, idx) => ({
-      '@type': 'ListItem',
-      position: idx + 1,
-      item: {
-        '@type': 'Product',
-        name: p.name,
-        url: `${BRAND.domain}/products/${p.slug}`,
-        image: `${BRAND.domain}${p.image}`,
-        offers: {
-          '@type': 'Offer',
-          priceCurrency: 'INR',
-          price: p.price.replace(/[^0-9]/g, ''),
-          availability: 'https://schema.org/InStock'
+    itemListElement: PRODUCTS.map((p, idx) => {
+      const imgPath = p.image || '/images/dinnerware.webp';
+      const absImage = imgPath.startsWith('http') ? imgPath : `${BRAND.domain}${imgPath.startsWith('/') ? imgPath : '/' + imgPath}`;
+      return {
+        '@type': 'ListItem',
+        position: idx + 1,
+        item: {
+          '@type': 'Product',
+          name: p.name,
+          url: `${BRAND.domain}/products/${p.slug}`,
+          image: absImage,
+          brand: { '@type': 'Brand', name: 'Siphorahq' }
         }
-      }
-    }))
+      };
+    })
   };
 
   return (

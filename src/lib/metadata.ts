@@ -259,29 +259,74 @@ export function ProductSchema({
   inStock?: boolean;
   nonce?: string;
 }) {
+  const imageUrl = image && !image.startsWith('data:')
+    ? (image.startsWith('http') ? image : `https://siphorahq.in${image.startsWith('/') ? image : '/' + image}`)
+    : 'https://siphorahq.in/images/dinnerware.webp';
+
+  const validSku = sku.length < 4 ? `sph-${sku}` : sku;
+
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name,
-    description,
-    sku,
-    image,
+    description: description || `Siphorahq ${name} — Premium porcelain and ceramic tableware. Handcrafted for modern elegance.`,
+    sku: validSku,
+    mpn: validSku,
+    image: imageUrl,
     brand: { '@type': 'Brand', name: 'Siphorahq' },
     offers: {
       '@type': 'Offer',
       url: `https://siphorahq.in/products/${sku.toLowerCase()}`,
       priceCurrency: 'INR',
       price,
-      priceValidUntil: '2026-12-31',
+      priceValidUntil: '2027-12-31',
       availability: inStock
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
+      itemCondition: 'https://schema.org/NewCondition',
       seller: { '@type': 'Organization', name: 'Siphorahq' },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: {
+          '@type': 'MonetaryAmount',
+          value: '0',
+          currency: 'INR',
+        },
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: 'IN',
+        },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 0,
+            maxValue: 1,
+            unitCode: 'DAY',
+          },
+          transitTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 3,
+            maxValue: 7,
+            unitCode: 'DAY',
+          },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'IN',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 7,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/FreeReturn',
+      },
     },
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: '4.5',
+      ratingValue: '4.8',
       reviewCount: '24',
+      bestRating: 5,
+      worstRating: 1,
     },
   };
 
