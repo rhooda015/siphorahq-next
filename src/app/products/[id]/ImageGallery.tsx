@@ -59,6 +59,7 @@ export default function ImageGallery({ images, productName }: { images: string[]
                   alt={`${productName} view ${idx + 1}`}
                   fill
                   className="object-contain p-1"
+                  sizes="80px"
                   unoptimized={img.startsWith('data:')}
                 />
               </div>
@@ -102,6 +103,7 @@ export default function ImageGallery({ images, productName }: { images: string[]
             className="object-contain transition-transform duration-200 bg-[#f8f5ef]"
             style={zoomStyle}
             alt={productName}
+            sizes="(max-width: 768px) 100vw, 50vw"
             unoptimized={activeImage.startsWith('data:')}
             priority
           />

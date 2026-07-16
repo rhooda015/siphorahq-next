@@ -134,11 +134,14 @@ export default function ProductEditor({ initialData, onClose, onSave }: ProductE
   }, [title, isEdit]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    const newImages = acceptedFiles.map(file => ({
-      url: URL.createObjectURL(file),
-      altText: ''
-    }));
-    setImages(prev => [...prev, ...newImages]);
+    acceptedFiles.forEach(file => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setImages(prev => [...prev, { url: base64String, altText: '' }]);
+      };
+      reader.readAsDataURL(file);
+    });
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

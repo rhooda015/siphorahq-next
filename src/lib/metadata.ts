@@ -358,7 +358,7 @@ export const organizationSchema = {
     addressCountry: 'IN',
   },
   sameAs: [
-    'https://www.instagram.com/siporahq',
+    'https://www.instagram.com/siphorahq',
     'https://pinterest.com/siphorahq',
   ],
 };

@@ -122,19 +122,26 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     : 'https://siphorahq.in/images/dinnerware.webp';
 
   let titleName = (product as any).metaTitle || product.name;
-  if (resolvedParams.id && resolvedParams.id !== product.id) {
+  if (resolvedParams.id && resolvedParams.id !== product.id && resolvedParams.id !== (product as any).handle) {
     titleName = formatSlugToTitle(resolvedParams.id);
   }
 
+  // Prevent duplicate | Siphorahq suffix if already appended in titleName
+  const titleText = titleName.toLowerCase().includes(BRAND.name.toLowerCase())
+    ? titleName
+    : `${titleName} | ${BRAND.name}`;
+
+  const productUrl = `${BRAND.domain}/products/${(product as any).handle || product.id}`;
+
   return {
-    title: `${titleName} | ${BRAND.name}`,
+    title: titleText,
     description: (product as any).metaDescription || product.description,
-    alternates: { canonical: `${BRAND.domain}/products/${product.id}` },
+    alternates: { canonical: productUrl },
     openGraph: {
       type: 'website',
       title: product.name,
       description: (product as any).metaDescription || product.description,
-      url: `${BRAND.domain}/products/${product.id}`,
+      url: productUrl,
       siteName: BRAND.name,
       images: [
         {
@@ -194,20 +201,21 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   nextYear.setFullYear(nextYear.getFullYear() + 1);
   const priceValidUntil = nextYear.toISOString().split('T')[0];
 
-  // Filter out base64 data URLs — they are too large for JSON-LD and break validators
+  // Keep base64 data URLs for display (ImageGallery) — they only need to be filtered out for JSON-LD schemas
   const productImages: string[] = (
     (product as any).images?.length > 0
       ? (product as any).images.map((img: any) => optimizeCloudinaryUrl(img.url, { width: 800, quality: 85 }))
       : getPlaceholderImages(product.id)
-  ).filter((img: string) => Boolean(img) && !img.startsWith('data:'));
+  ).filter((img: string) => Boolean(img));
 
   const heroImageUrl = productImages[0]
-    ? (productImages[0].startsWith('http') ? productImages[0] : `${BRAND.domain}${productImages[0]}`)
+    ? (productImages[0].startsWith('http') || productImages[0].startsWith('data:') ? productImages[0] : `${BRAND.domain}${productImages[0]}`)
     : `${BRAND.domain}/og-banner.png`;
 
-  // Build schema image array — only absolute https:// URLs
+  // Build schema image array — only absolute https:// URLs (no base64)
   const schemaImages = productImages
-    .map(img => img.startsWith('http') ? img : `${BRAND.domain}${img}`)
+    .filter((img: string) => !img.startsWith('data:'))
+    .map(img => img.startsWith('http') ? img : `${BRAND.domain}${img.startsWith('/') ? img : '/' + img}`)
     .filter(img => img.startsWith('https://'))
     .slice(0, 5);
   if (schemaImages.length === 0) schemaImages.push(`${BRAND.domain}/og-banner.png`);
@@ -314,7 +322,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       <div className="w-full lg:hidden mb-4 flex items-center text-xs font-sans text-[var(--color-text-muted)]">
         <Link href="/">Home</Link>
         <ChevronRight className="w-3 h-3 mx-2" />
-        <Link href="/products">Collections</Link>
+        <Link href="/products">Shop</Link>
         <ChevronRight className="w-3 h-3 mx-2" />
         <span className="truncate">{product.name}</span>
       </div>
@@ -325,7 +333,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         <div className="hidden lg:flex mb-6 items-center text-xs font-sans text-[var(--color-text-muted)]">
           <Link href="/">Home</Link>
           <ChevronRight className="w-3 h-3 mx-2" />
-          <Link href="/products">Collections</Link>
+          <Link href="/products">Shop</Link>
           <ChevronRight className="w-3 h-3 mx-2" />
           <span className="truncate">{product.name}</span>
         </div>

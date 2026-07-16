@@ -76,8 +76,8 @@ export default function NewsletterForm() {
             </h3>
 
             <p className="mt-3 text-sm leading-7 text-white/75">
-              You now have early access to new collections, luxury gifting
-              launches, and exclusive member-only offers.
+              Welcome to the Siphorahq Circle! A confirmation email has been sent to your inbox.
+              Please check your email for your <strong className="text-[#D4AF37]">10% welcome discount code</strong> and early-access details.
             </p>
           </div>
         ) : (
