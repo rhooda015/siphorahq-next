@@ -6,7 +6,7 @@ import GeneratedAsset from '@/models/GeneratedAsset';
 import OpenAI from 'openai';
 import mongoose from 'mongoose';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || 'dummy_key' });
 
 // Curated scene presets for Siphorahq luxury ceramics
 export const SCENE_PRESETS = [

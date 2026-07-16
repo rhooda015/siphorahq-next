@@ -6,7 +6,7 @@ import GeneratedAsset from '@/models/GeneratedAsset';
 import OpenAI from 'openai';
 import mongoose from 'mongoose';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || 'dummy_key' });
 
 export async function POST(req: NextRequest) {
   const authError = await verifyAdminRequest(req);

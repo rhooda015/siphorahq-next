@@ -6,7 +6,7 @@ import GeneratedAsset from '@/models/GeneratedAsset';
 import OpenAI from 'openai';
 import sharp from 'sharp';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || 'dummy_key' });
 
 const SIPHORAHQ_CONTEXT = `
 You are analyzing a product image for Siphorahq — a premium Indian brand specializing in:
