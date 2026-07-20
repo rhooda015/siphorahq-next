@@ -8,9 +8,11 @@ import NewsletterForm from '@/components/NewsletterForm';
 export const metadata = {
   title: 'Our Story | Premium Porcelain Tableware for Elegant Indian Homes | Siphorahq',
   description: 'Discover Siphorahq’s story — premium porcelain tableware, elegant dining pieces, and gift-ready collections crafted for modern Indian homes.',
+  alternates: { canonical: `${BRAND.domain}/our-story` },
   openGraph: {
     title: 'Our Story | Premium Porcelain Tableware | Siphorahq',
     description: 'Discover Siphorahq’s story — premium porcelain tableware, elegant dining pieces, and gift-ready collections crafted for modern Indian homes.',
+    url: `${BRAND.domain}/our-story`,
   }
 };
 

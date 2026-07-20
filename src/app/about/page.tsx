@@ -5,6 +5,13 @@ import { BRAND } from '@/config/brand';
 
 export const metadata = {
   title: `Our Story | ${BRAND.name}`,
+  description: 'About Siphorahq porcelain and tableware.',
+  alternates: { canonical: `${BRAND.domain}/about` },
+  openGraph: {
+    title: `Our Story | ${BRAND.name}`,
+    description: 'About Siphorahq porcelain and tableware.',
+    url: `${BRAND.domain}/about`,
+  }
 };
 
 export default function AboutPage() {

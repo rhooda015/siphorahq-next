@@ -73,9 +73,6 @@ export async function generateMetadata() {
 
   return {
     metadataBase: new URL(BRAND.domain),
-    alternates: {
-      canonical: BRAND.domain,
-    },
     title: settings.seoTitle,
     description: settings.seoDescription,
     openGraph: {

@@ -11,27 +11,33 @@ import { headers } from 'next/headers';
 export const metadata = {
   title: 'Luxury Gift Sets | Premium Porcelain Gifting | Siphorahq',
   description: 'Shop Siphorahq’s luxury porcelain gift sets. Discover elegantly packaged dining and tea sets perfect for weddings, anniversaries, and corporate gifting.',
+  alternates: { canonical: `${BRAND.domain}/gift-sets` },
   openGraph: {
     title: 'Luxury Gift Sets | Premium Porcelain Gifting | Siphorahq',
     description: 'Shop Siphorahq’s luxury porcelain gift sets. Discover elegantly packaged dining and tea sets perfect for weddings, anniversaries, and corporate gifting.',
+    url: `${BRAND.domain}/gift-sets`,
   }
 };
 
 async function getGiftSets() {
   await dbConnect();
-  // Fetch products that are in the "gifting" collection or have a gift tag
+  const liveStatus = { $or: [{ status: 'Live' }, { status: 'active' }, { status: { $exists: false } }] };
   const products = await Product.find({ 
-    status: 'active',
-    $or: [
-      { collectionName: { $regex: /gift/i } },
-      { category: { $regex: /gift/i } },
-      { tags: { $in: ['gift', 'gifting'] } }
+    $and: [
+      liveStatus,
+      {
+        $or: [
+          { collectionName: { $regex: /gift/i } },
+          { category: { $regex: /gift/i } },
+          { tags: { $in: ['gift', 'gifting'] } }
+        ]
+      }
     ]
   }).limit(12).lean();
   
   // Fallback if no specific tags
   if (products.length === 0) {
-    const fallback = await Product.find({ status: 'active' }).limit(8).lean();
+    const fallback = await Product.find(liveStatus).limit(8).lean();
     return JSON.parse(JSON.stringify(fallback));
   }
   return JSON.parse(JSON.stringify(products));

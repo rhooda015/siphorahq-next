@@ -13,16 +13,24 @@ import { headers } from 'next/headers';
 export const metadata = {
   title: 'Best Sellers | Premium Indian Porcelain | Siphorahq',
   description: 'Shop Siphorahq’s best-selling luxury porcelain. Discover the most loved dinnerware, tea sets, and premium gifting collections crafted for modern Indian homes.',
+  alternates: { canonical: `${BRAND.domain}/best-sellers` },
   openGraph: {
     title: 'Best Sellers | Premium Indian Porcelain | Siphorahq',
     description: 'Shop Siphorahq’s best-selling luxury porcelain. Discover the most loved dinnerware, tea sets, and premium gifting collections crafted for modern Indian homes.',
+    url: `${BRAND.domain}/best-sellers`,
   }
 };
 
 async function getBestSellers() {
   await dbConnect();
-  // Fetch active products, limit to 12 as top picks.
-  const products = await Product.find({ status: 'active' }).limit(12).lean();
+  // Fetch active/live products, limit to 12 as top picks.
+  const products = await Product.find({
+    $or: [
+      { status: 'Live' },
+      { status: 'active' },
+      { status: { $exists: false } }
+    ]
+  }).limit(12).lean();
   return JSON.parse(JSON.stringify(products));
 }
 

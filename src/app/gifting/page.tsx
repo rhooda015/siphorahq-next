@@ -5,6 +5,13 @@ import { BRAND } from '@/config/brand';
 
 export const metadata = {
   title: `Corporate Gifting | ${BRAND.name}`,
+  description: 'Premium corporate gifting tableware sets by Siphorahq.',
+  alternates: { canonical: `${BRAND.domain}/gifting` },
+  openGraph: {
+    title: `Corporate Gifting | ${BRAND.name}`,
+    description: 'Premium corporate gifting tableware sets by Siphorahq.',
+    url: `${BRAND.domain}/gifting`,
+  }
 };
 
 export default function GiftingPage() {

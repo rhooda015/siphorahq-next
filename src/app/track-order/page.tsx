@@ -3,6 +3,13 @@ import { BRAND } from "@/config/brand";
 
 export const metadata = {
   title: `Track Your Order | ${BRAND.name}`,
+  description: 'Track your Siphorahq shipment status.',
+  alternates: { canonical: `${BRAND.domain}/track-order` },
+  openGraph: {
+    title: `Track Your Order | ${BRAND.name}`,
+    description: 'Track your Siphorahq shipment status.',
+    url: `${BRAND.domain}/track-order`,
+  }
 };
 
 export default function Page() {
