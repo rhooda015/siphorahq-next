@@ -185,7 +185,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       {
         '@type': 'ListItem',
         position: 2,
-        name: 'Collections',
+        name: 'Shop',
         item: `${BRAND.domain}/products`,
       },
       {

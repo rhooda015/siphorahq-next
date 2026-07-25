@@ -9,6 +9,7 @@ import { STATIC_PRODUCTS } from '@/data/products';
 import { headers } from 'next/headers';
 import { unstable_cache } from 'next/cache';
 import dynamic from 'next/dynamic';
+import { BRAND } from '@/config/brand';
 
 import AutoCarousel from '@/components/AutoCarousel';
 
@@ -20,6 +21,12 @@ const EditorialQuote = dynamic(() => import('@/components/EditorialQuote'));
 const ProductCard = dynamic(() => import('@/components/ProductCard'));
 
 export const revalidate = 60; // Use ISR
+
+export const metadata = {
+  alternates: {
+    canonical: BRAND.domain
+  }
+};
 
 const WHATSAPP_NUMBER = "919540027978";
 

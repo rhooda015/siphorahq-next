@@ -115,27 +115,41 @@ export default async function BestSellersPage() {
               {
                 text: "The dinner set completely transformed my dining table for our Diwali party. The porcelain feels incredibly premium and light, yet durable. A true luxury experience.",
                 author: "Priya Sharma",
-                location: "Delhi"
+                location: "Delhi",
+                date: "Oct 2025"
               },
               {
                 text: "I gifted the gold-rimmed tea set to my sister for her housewarming. The elegant packaging and the sheer quality of the pieces left her completely mesmerized.",
                 author: "Rohan Desai",
-                location: "Mumbai"
+                location: "Mumbai",
+                date: "Dec 2025"
               },
               {
                 text: "Absolutely stunning craftsmanship. I have been collecting luxury tableware for years, and Siphorahq's finish matches the best international brands I own.",
                 author: "Anjali Verma",
-                location: "Gurgaon"
+                location: "Gurgaon",
+                date: "Feb 2026"
               }
             ].map((review, idx) => (
               <div key={idx} className="bg-surface-cream p-10 border border-muted-sand hover:shadow-lg hover:-translate-y-1 transition-all duration-500">
-                <div className="flex text-burnished-gold text-sm mb-6">★★★★★</div>
+                <div className="flex justify-between items-center mb-6">
+                  <div className="flex text-burnished-gold text-sm">★★★★★</div>
+                  <span className="text-[9px] font-sans font-bold bg-[#E8F5E9] text-[#2E7D32] px-2 py-0.5 uppercase tracking-wider rounded-sm flex items-center gap-1 border border-[#C8E6C9]">
+                    <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Verified Buyer
+                  </span>
+                </div>
                 <p className="font-body-md text-on-surface-variant text-base leading-relaxed mb-8 italic">
                   "{review.text}"
                 </p>
-                <div>
-                  <p className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal">{review.author}</p>
-                  <p className="font-body-md text-xs text-on-surface-variant mt-1">{review.location}</p>
+                <div className="flex justify-between items-end">
+                  <div>
+                    <p className="font-label-caps text-[11px] uppercase tracking-widest text-ink-charcoal">{review.author}</p>
+                    <p className="font-body-md text-xs text-on-surface-variant mt-1">{review.location}</p>
+                  </div>
+                  <span className="text-[10px] font-sans text-on-surface-variant/60">{review.date}</span>
                 </div>
               </div>
             ))}
