@@ -243,7 +243,7 @@ export default async function ShopAllPage() {
       </div>
 
       {/* ── TRUST STRIP ── */}
-      <div className="bg-burnished-gold text-white py-3 border-y border-white/10">
+      <div className="bg-burnished-gold text-ink-charcoal py-3 border-y border-black/10">
         <div className="max-w-container-max mx-auto px-5 flex justify-between items-center overflow-hidden">
           <div className="flex animate-marquee md:animate-none md:justify-center md:w-full gap-8 md:gap-16 whitespace-nowrap">
             <div className="flex items-center gap-2">

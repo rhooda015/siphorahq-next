@@ -99,6 +99,8 @@ export default function ClientProductGrid({ products }: { products: any[] }) {
 
         {/* Sort */}
         <select
+          id="sort-products"
+          aria-label="Sort products"
           value={sortBy}
           onChange={e => setSortBy(e.target.value)}
           className="border border-[var(--color-border)] bg-transparent text-[var(--color-primary)] text-xs font-sans uppercase tracking-widest px-4 py-2 focus:outline-none focus:border-[var(--color-primary)] transition-colors cursor-pointer"
@@ -132,7 +134,7 @@ export default function ClientProductGrid({ products }: { products: any[] }) {
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10">
-            {sorted.map(product => (
+            {sorted.map((product, idx) => (
               <Link
                 href={`/products/${product.id}`}
                 key={product.id}
@@ -147,6 +149,7 @@ export default function ClientProductGrid({ products }: { products: any[] }) {
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      priority={idx < 4}
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">

@@ -119,8 +119,10 @@ export default function ProductListing({ products }: { products: Product[] }) {
               <SlidersHorizontal className=" w-5 h-5 inline-block" /> Filters
             </button>
             <div className="hidden md:flex items-center gap-3">
-              <span className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-on-surface-variant">Sort:</span>
+              <label htmlFor="sort-by" className="font-label-caps text-[11px] uppercase tracking-[0.18em] text-on-surface-variant cursor-pointer">Sort:</label>
               <select 
+                id="sort-by"
+                aria-label="Sort products"
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value)}
                 className="bg-transparent font-body-md text-sm text-ink-charcoal border-none outline-none cursor-pointer"
@@ -133,8 +135,8 @@ export default function ProductListing({ products }: { products: Product[] }) {
 
         {/* ── PRODUCT GRID ── */}
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 gap-y-12 md:gap-8 md:gap-y-16">
-          {sorted.map(product => (
-            <ProductCard key={product.slug} product={{ ...product, id: product.slug }} />
+          {sorted.map((product, idx) => (
+            <ProductCard key={product.slug} product={{ ...product, id: product.slug }} priority={idx < 4} />
           ))}
         </div>
       </div>

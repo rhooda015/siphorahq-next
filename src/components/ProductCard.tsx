@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import ProductCardActions from './ProductCardActions';
 
-export default function ProductCard({ product }: { product: any }) {
+export default function ProductCard({ product, priority = false }: { product: any, priority?: boolean }) {
   const price = product.salePrice || product.price;
   const oldPrice = product.oldPrice || (product.salePrice && product.salePrice < product.price ? product.price : null);
 
@@ -19,7 +19,7 @@ export default function ProductCard({ product }: { product: any }) {
       <Link href={`/products/${product.id || product.slug}`} className="block relative aspect-[4/5] overflow-hidden bg-[#faf7f2] mb-4 focus:outline-none rounded-sm">
         {/* Badges */}
         {product.badge && (
-          <div className="absolute top-4 left-4 z-10 bg-burnished-gold text-white px-2 py-1 font-label-caps text-[10px]">
+          <div className="absolute top-4 left-4 z-10 bg-burnished-gold text-ink-charcoal font-semibold px-2 py-1 font-label-caps text-[10px]">
             {product.badge}
           </div>
         )}
@@ -30,6 +30,7 @@ export default function ProductCard({ product }: { product: any }) {
           fill
           sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="w-full h-full object-cover bg-[#faf7f2] transition-transform duration-500 group-hover:scale-[1.03]"
+          priority={priority}
         />
 
         <ProductCardActions product={product} />
