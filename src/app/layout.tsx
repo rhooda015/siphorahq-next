@@ -42,12 +42,20 @@ import { unstable_cache } from 'next/cache';
 
 const getCachedSettings = unstable_cache(
   async () => {
-    await dbConnect();
-    const settings = await StoreSettings.findOne().lean();
-    return settings || {
-      seoTitle: `Siphorahq | Best Luxury Porcelain Gift Sets, Tea Sets & Fine Dinnerware | Shop Now`,
-      seoDescription: 'Shop Siphorahq\'s best seller luxury porcelain dinnerware, gold-finish tea sets, fine porcelain gift sets & more. Free shipping above ₹999. Pan-India delivery.',
-    };
+    try {
+      await dbConnect();
+      const settings = await StoreSettings.findOne().lean();
+      return settings || {
+        seoTitle: `Siphorahq | Best Luxury Porcelain Gift Sets, Tea Sets & Fine Dinnerware | Shop Now`,
+        seoDescription: 'Shop Siphorahq\'s best seller luxury porcelain dinnerware, gold-finish tea sets, fine porcelain gift sets & more. Free shipping above ₹999. Pan-India delivery.',
+      };
+    } catch (e) {
+      console.warn("Failed to fetch store settings from DB in layout:", e);
+      return {
+        seoTitle: `Siphorahq | Best Luxury Porcelain Gift Sets, Tea Sets & Fine Dinnerware | Shop Now`,
+        seoDescription: 'Shop Siphorahq\'s best seller luxury porcelain dinnerware, gold-finish tea sets, fine porcelain gift sets & more. Free shipping above ₹999. Pan-India delivery.',
+      };
+    }
   },
   ['store-settings'],
   { revalidate: 60 }
@@ -55,8 +63,13 @@ const getCachedSettings = unstable_cache(
 
 const getCachedTheme = unstable_cache(
   async () => {
-    await dbConnect();
-    return ThemeSettings.findOne().lean();
+    try {
+      await dbConnect();
+      return await ThemeSettings.findOne().lean();
+    } catch (e) {
+      console.warn("Failed to fetch theme settings from DB in layout:", e);
+      return null;
+    }
   },
   ['theme-settings'],
   { revalidate: 60 }
