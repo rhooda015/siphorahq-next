@@ -48,9 +48,9 @@ export default function ProductCard({ product, priority = false }: { product: an
         </Link>
         <div className="flex text-champagne-gold items-center mt-2">
           {[1,2,3,4,5].map((star) => (
-            <Star className=" w-5 h-5 inline-block" />
+            <Star key={star} className=" w-5 h-5 inline-block" />
           ))}
-          <span className="text-[10px] text-on-surface-variant ml-2 font-label-caps">({Math.floor(Math.random() * 50) + 4})</span>
+          <span className="text-[10px] text-on-surface-variant ml-2 font-label-caps">({(product.name.length * 7) % 45 + 8})</span>
         </div>
       </div>
     </div>
