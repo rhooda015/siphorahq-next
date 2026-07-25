@@ -226,7 +226,7 @@ export default async function ShopAllPage() {
 
       {/* ── HEADER BREADCRUMB & TITLE ── */}
       <div className="bg-[#111] text-surface-cream pt-24 pb-16 px-5 md:px-margin-desktop text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "url('/images/homepage/artisanal_left.png')", backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+        <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "url('/images/homepage/artisanal_left.webp')", backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
         <div className="relative z-10">
           <nav className="flex justify-center items-center gap-2 font-label-caps text-[10px] uppercase tracking-widest text-surface-cream/60 mb-6">
             <Link href="/" className="hover:text-burnished-gold transition-colors">Home</Link>
