@@ -3,7 +3,6 @@ import React from 'react';
 import ProductListing from '@/components/ProductListing';
 import { BRAND } from '@/config/brand';
 import Link from 'next/link';
-import { headers } from 'next/headers';
 import { Metadata } from 'next';
 import { productsMetadata } from '@/lib/metadata';
 import dbConnect from '@/lib/db';
@@ -167,7 +166,6 @@ const PRODUCTS = [
 ];
 
 export default async function ShopAllPage() {
-  const nonce = (await headers()).get('x-nonce') || '';
   const dbProducts = await getCachedDbProducts();
   const allProducts = [...dbProducts, ...PRODUCTS];
   
@@ -222,9 +220,9 @@ export default async function ShopAllPage() {
   return (
     <div className="min-h-screen bg-surface-cream text-ink-charcoal font-body-md overflow-x-hidden">
       {/* Schemas */}
-      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }} />
-      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
-      <script nonce={nonce} suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      <script suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }} />
+      <script suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbListSchema) }} />
+      <script suppressHydrationWarning={true} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
 
       {/* ── HEADER BREADCRUMB & TITLE ── */}
       <div className="bg-[#111] text-surface-cream pt-24 pb-16 px-5 md:px-margin-desktop text-center relative overflow-hidden">

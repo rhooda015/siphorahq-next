@@ -1,0 +1,10 @@
+user-agent: *
+allow: /
+disallow: /account/
+disallow: /api/
+disallow: /checkout/
+disallow: /cart/
+disallow: /admin/
+disallow: /*?*
+
+sitemap: https://siphorahq.in/sitemap.xml
