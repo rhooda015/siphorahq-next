@@ -10,7 +10,7 @@ export default function Footer() {
     <footer className="bg-ink-charcoal text-surface-cream pt-24 pb-12 px-5 md:px-margin-desktop border-t border-burnished-gold/20">
       <div className="max-w-container-max mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8 mb-20">
         <div>
-          <h3 className="font-headline-lg text-3xl italic mb-6">{BRAND.name}</h3>
+          <div className="font-headline-lg text-3xl italic mb-6">{BRAND.name}</div>
           <p className="font-body-md text-surface-cream/70 max-w-sm mb-8">
             Elevating everyday rituals with luxury porcelain, crafted for the modern home.
           </p>
@@ -25,7 +25,7 @@ export default function Footer() {
         </div>
         
         <div>
-          <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">Shop</h4>
+          <p className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6 font-semibold">Shop</p>
           <ul className="space-y-4 font-body-md text-surface-cream/80">
             <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/collections">Collections</Link></li>
             <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/collections/dinnerware">Dinnerware Sets</Link></li>
@@ -36,7 +36,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">About</h4>
+          <p className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6 font-semibold">About</p>
           <ul className="space-y-4 font-body-md text-surface-cream/80">
             <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/our-story">About Us</Link></li>
             <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/craftsmanship">Our Craftsmanship</Link></li>
@@ -47,7 +47,7 @@ export default function Footer() {
         </div>
         
         <div>
-          <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">Support</h4>
+          <p className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6 font-semibold">Support</p>
           <ul className="space-y-4 font-body-md text-surface-cream/80">
             <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/care-instructions">Care Instructions</Link></li>
             <li><Link className="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold rounded-sm px-1 -ml-1" href="/track-order">Track Order</Link></li>
@@ -58,7 +58,7 @@ export default function Footer() {
         </div>
         
         <div>
-          <h4 className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6">Contact Us</h4>
+          <p className="font-label-caps text-[12px] uppercase tracking-widest text-burnished-gold mb-6 font-semibold">Contact Us</p>
           <ul className="space-y-4 font-body-md text-surface-cream/80 mb-8">
             <li className="flex items-center gap-3">
               <Mail className="text-burnished-gold w-5 h-5 inline-block" /> 
