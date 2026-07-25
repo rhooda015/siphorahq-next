@@ -102,7 +102,7 @@ export default async function GiftSetsPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
           {[
             { title: 'Weddings', img: '/images/our-story/porcelain-table-setting.webp' },
-            { title: 'Anniversaries', img: '/images/media__1780323514271.webp' },
+            { title: 'Anniversaries', img: '/images/lifestyle_1.webp' },
             { title: 'Housewarmings', img: '/images/dinnerware_var2.webp' },
             { title: 'Corporate', img: '/images/craftsmanship.webp' }
           ].map((occasion, idx) => (

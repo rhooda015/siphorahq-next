@@ -84,7 +84,7 @@ export default async function CollectionsPage() {
           {/* Tea & Coffee */}
           <Link href="/collections/tea-sets" className="group block relative aspect-[4/5] overflow-hidden">
             <Image
-              src="/images/media__1780323514271.webp"
+              src="/images/teaset.webp"
               alt="Tea & Coffee Collection"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
