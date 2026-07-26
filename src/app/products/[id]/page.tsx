@@ -126,10 +126,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     titleName = formatSlugToTitle(resolvedParams.id);
   }
 
-  // Prevent duplicate | Siphorahq suffix if already appended in titleName
-  const titleText = titleName.toLowerCase().includes(BRAND.name.toLowerCase())
-    ? titleName
-    : `${titleName} | ${BRAND.name}`;
+  // Prevent duplicate | Siphorahq suffix by stripping it and re-appending cleanly
+  const cleanedTitleName = titleName.replace(/\s*\|\s*Siphorahq\s*$/i, '');
+  const titleText = `${cleanedTitleName} | ${BRAND.name}`;
 
   const productUrl = `${BRAND.domain}/products/${(product as any).handle || product.id}`;
 
@@ -202,11 +201,16 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const priceValidUntil = nextYear.toISOString().split('T')[0];
 
   // Keep base64 data URLs for display (ImageGallery) — they only need to be filtered out for JSON-LD schemas
-  const productImages: string[] = (
+  // Filter out any local blob: URLs to prevent local attachment leaks
+  let productImages: string[] = (
     (product as any).images?.length > 0
       ? (product as any).images.map((img: any) => optimizeCloudinaryUrl(img.url, { width: 800, quality: 85 }))
       : getPlaceholderImages(product.id)
-  ).filter((img: string) => Boolean(img));
+  ).filter((img: string) => Boolean(img) && !img.startsWith('blob:'));
+
+  if (productImages.length === 0) {
+    productImages = getPlaceholderImages(product.id);
+  }
 
   const heroImageUrl = productImages[0]
     ? (productImages[0].startsWith('http') || productImages[0].startsWith('data:') ? productImages[0] : `${BRAND.domain}${productImages[0]}`)

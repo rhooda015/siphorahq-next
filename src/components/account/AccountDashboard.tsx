@@ -600,7 +600,7 @@ export default function AccountDashboard({
             </p>
             <div className="flex gap-5" aria-label="Social media links">
               <a
-                href="https://www.instagram.com/siporahq"
+                href="https://www.instagram.com/siphorahq"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Siphora HQ on Instagram"

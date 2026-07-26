@@ -24,14 +24,20 @@ export default function ProductCard({ product, priority = false }: { product: an
           </div>
         )}
         
-        <Image
-          src={(product.images?.[0]?.url) || product.image || product.img || '/images/dinnerware.webp'}
-          alt={product.name}
-          fill
-          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="w-full h-full object-cover bg-[#faf7f2] transition-transform duration-500 group-hover:scale-[1.03]"
-          priority={priority}
-        />
+        {(() => {
+          const rawImage = (product.images?.[0]?.url) || product.image || product.img || '/images/dinnerware.webp';
+          const displayImage = rawImage.startsWith('blob:') ? '/images/dinnerware.webp' : rawImage;
+          return (
+            <Image
+              src={displayImage}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="w-full h-full object-cover bg-[#faf7f2] transition-transform duration-500 group-hover:scale-[1.03]"
+              priority={priority}
+            />
+          );
+        })()}
 
         <ProductCardActions product={product} />
       </Link>
