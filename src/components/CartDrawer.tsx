@@ -9,9 +9,10 @@ import { BRAND } from '@/config/brand';
 import { trackBeginCheckout } from '@/lib/analytics';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
+import { STATIC_PRODUCTS } from '@/data/products';
 
 export default function CartDrawer() {
-  const { items, isDrawerOpen, closeDrawer, removeItem, updateQuantity, cartTotal } = useCart();
+  const { items, isDrawerOpen, closeDrawer, removeItem, updateQuantity, cartTotal, addItem } = useCart();
   const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
@@ -39,6 +40,11 @@ export default function CartDrawer() {
 
   const firstName = session?.user?.name ? session.user.name.split(' ')[0] : null;
   const cartTitle = firstName ? `${firstName}'s Cart` : 'Your Cart';
+
+  // Find a product from STATIC_PRODUCTS that is not in the cart yet
+  const upsellCandidate = STATIC_PRODUCTS.find(
+    (sp) => !items.some((item) => item.id === sp.id)
+  ) || STATIC_PRODUCTS[0];
 
   return (
     <>
@@ -119,7 +125,7 @@ export default function CartDrawer() {
                         </button>
                       </div>
                       {item.isGiftWrapped && (
-                        <p className="text-[9px] text-[var(--color-primary)] font-medium mt-1 uppercase tracking-widest">+ Gift Wrapped (₹500)</p>
+                        <p className="text-[9px] text-[var(--color-primary)] font-medium mt-1 uppercase tracking-widest">+ Gift Wrapped (₹299)</p>
                       )}
                     </div>
                     <div className="flex items-end justify-between mt-2.5">
@@ -129,7 +135,7 @@ export default function CartDrawer() {
                         <button onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)} aria-label="Increase quantity" className="px-3 min-w-[44px] h-full flex items-center justify-center hover:bg-neutral-100 transition-colors focus:outline-none focus:bg-neutral-100"><Plus className="w-3 h-3" /></button>
                       </div>
                       <p className="font-sans font-medium text-sm text-[var(--color-primary)]">
-                        ₹{((item.salePrice || item.price) * item.quantity + (item.isGiftWrapped ? 500 * item.quantity : 0)).toLocaleString('en-IN')}
+                        ₹{((item.salePrice || item.price) * item.quantity + (item.isGiftWrapped ? 299 * item.quantity : 0)).toLocaleString('en-IN')}
                       </p>
                     </div>
                   </div>
@@ -137,21 +143,26 @@ export default function CartDrawer() {
               ))}
 
               {/* Upsell Section */}
-              <div className="mt-8 pt-6 border-t border-[var(--color-border)]">
-                <h4 className="font-serif text-sm text-[var(--color-primary)] mb-4">You May Also Like</h4>
-                <div className="flex gap-4">
-                  <div className="w-20 h-20 bg-neutral-100 relative rounded-sm overflow-hidden flex-shrink-0">
-                     <Image src="/images/teaset.webp" alt="Gold Rim Tea Cup" fill className="object-cover" />
-                  </div>
-                  <div className="flex-1 flex flex-col justify-center">
-                    <h5 className="font-serif text-[13px] leading-tight mb-1">Vintage Gold Rim Tea Cup</h5>
-                    <p className="font-sans text-xs text-[var(--color-text-muted)] mb-2">₹1,200</p>
-                    <button className="text-[10px] font-sans font-medium uppercase tracking-widest text-[var(--color-primary)] border border-[var(--color-primary)] min-h-[44px] px-6 self-start hover:bg-[var(--color-primary)] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-[var(--color-primary)]">
-                      Add
-                    </button>
+              {upsellCandidate && (
+                <div className="mt-8 pt-6 border-t border-[var(--color-border)]">
+                  <h4 className="font-serif text-sm text-[var(--color-primary)] mb-4">You May Also Like</h4>
+                  <div className="flex gap-4">
+                    <div className="w-20 h-20 bg-[#faf7f2] relative rounded-sm overflow-hidden flex-shrink-0 border border-neutral-100">
+                       <Image src={upsellCandidate.image} alt={upsellCandidate.name} fill className="object-cover" />
+                    </div>
+                    <div className="flex-1 flex flex-col justify-center">
+                      <h5 className="font-serif text-[13px] leading-tight mb-1">{upsellCandidate.name}</h5>
+                      <p className="font-sans text-xs text-[var(--color-text-muted)] mb-2">₹{(upsellCandidate.salePrice || upsellCandidate.price).toLocaleString('en-IN')}</p>
+                      <button 
+                        onClick={() => addItem(upsellCandidate, 1)}
+                        className="text-[10px] font-sans font-medium uppercase tracking-widest text-[var(--color-primary)] border border-[var(--color-primary)] min-h-[36px] px-6 self-start hover:bg-[var(--color-primary)] hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-[var(--color-primary)]"
+                      >
+                        Add
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           )}
         </div>

@@ -56,12 +56,12 @@ export default function ProductCardActions({ product }: { product: any }) {
         onClick={toggleWishlist}
         className={`absolute top-3 right-3 w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/95 shadow-sm flex items-center justify-center transition-all duration-300 z-10 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-heritage-navy ${
           isWished 
-            ? 'text-heritage-navy' 
+            ? 'text-red-500' 
             : 'text-on-surface-variant hover:text-heritage-navy opacity-100 md:opacity-0 md:group-hover:opacity-100'
         }`}
         aria-label={isWished ? "Remove from wishlist" : "Add to wishlist"}
       >
-        <Heart className="w-4 h-4 md:w-5 md:h-5 inline-block" aria-hidden="true" />
+        <Heart className={`w-4 h-4 md:w-5 md:h-5 inline-block ${isWished ? 'fill-current' : ''}`} aria-hidden="true" />
       </button>
 
       {/* Quick View could still be accessed via a long press or we can remove it to keep it clean. Let's keep the modal but hide the button to simplify unless needed. We'll rely on product page for details. */}

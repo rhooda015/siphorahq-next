@@ -50,7 +50,7 @@ export default function CheckoutOrderSummary({
                 <p className="text-[9px] text-[var(--color-primary)] font-medium mt-1 uppercase tracking-widest">+ Gift Wrapped</p>
               )}
               <span className="font-sans font-medium text-[var(--color-text)] text-sm mt-auto">
-                ₹{((item.salePrice || item.price) * item.quantity + (item.isGiftWrapped ? 500 * item.quantity : 0)).toLocaleString('en-IN')}
+                ₹{((item.salePrice || item.price) * item.quantity + (item.isGiftWrapped ? 299 * item.quantity : 0)).toLocaleString('en-IN')}
               </span>
             </div>
           </div>

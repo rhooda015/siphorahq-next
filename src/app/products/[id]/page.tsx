@@ -428,12 +428,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         <ProductClientSection product={product} />
 
         <div className="h-px bg-zinc-200/60 my-5" />
-
         {/* Trust Badges Summary */}
-        <div className="grid grid-cols-3 gap-2.5 text-center text-[10px] uppercase tracking-widest font-bold text-[#8A733F] font-sans mb-6">
-          <div className="bg-[#F7F5F0] border border-[#E8E1D3] py-3 rounded-sm">Free Shipping</div>
-          <div className="bg-[#F7F5F0] border border-[#E8E1D3] py-3 rounded-sm">Secure Checkout</div>
-          <div className="bg-[#F7F5F0] border border-[#E8E1D3] py-3 rounded-sm">Easy Returns</div>
+        <div className="mb-6">
+          <TrustBadges />
         </div>
 
         {/* Product FAQs */}

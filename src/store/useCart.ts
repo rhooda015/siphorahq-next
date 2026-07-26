@@ -80,7 +80,7 @@ export const useCart = create<CartStore>()(
         const { items } = get();
         return items.reduce((total, item) => {
           const itemTotal = (item.salePrice || item.price) * item.quantity;
-          const giftTotal = item.isGiftWrapped ? 500 * item.quantity : 0;
+          const giftTotal = item.isGiftWrapped ? 299 * item.quantity : 0;
           return total + itemTotal + giftTotal;
         }, 0);
       },

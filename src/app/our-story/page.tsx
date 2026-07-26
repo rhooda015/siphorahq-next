@@ -1,5 +1,4 @@
-import React from 'react';
-import { ShieldCheck, Gem, Gift, CheckCircle2, RefreshCw } from 'lucide-react';
+import { ShieldCheck, Gem, Gift, CheckCircle2, RefreshCw, Flame } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BRAND } from '@/config/brand';
@@ -179,7 +178,8 @@ export default function OurStoryPage() {
             { icon: <Gem className="w-8 h-8 text-burnished-gold mb-4" />, text: "Premium porcelain body" },
             { icon: <Gift className="w-8 h-8 text-burnished-gold mb-4" />, text: "Elegant gift-ready packaging" },
             { icon: <CheckCircle2 className="w-8 h-8 text-burnished-gold mb-4" />, text: "Carefully checked before dispatch" },
-            { icon: <RefreshCw className="w-8 h-8 text-burnished-gold mb-4" />, text: "Damage replacement support" }
+            { icon: <RefreshCw className="w-8 h-8 text-burnished-gold mb-4" />, text: "Damage replacement support" },
+            { icon: <Flame className="w-8 h-8 text-burnished-gold mb-4" />, text: "Fired at 1350°C for durability" }
           ].map((item, idx) => (
             <div key={idx} className="flex flex-col items-center">
               {item.icon}

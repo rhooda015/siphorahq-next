@@ -15,7 +15,7 @@ export default function Footer() {
             Elevating everyday rituals with luxury porcelain, crafted for the modern home.
           </p>
           <div className="flex gap-4">
-            <a className="w-11 h-11 rounded-full border border-surface-cream/20 flex items-center justify-center hover:bg-burnished-gold hover:border-burnished-gold transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold focus:ring-offset-2 focus:ring-offset-ink-charcoal" href="#" aria-label="Share on Pinterest">
+            <a className="w-11 h-11 rounded-full border border-surface-cream/20 flex items-center justify-center hover:bg-burnished-gold hover:border-burnished-gold transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold focus:ring-offset-2 focus:ring-offset-ink-charcoal" href={BRAND.social.pinterest} target="_blank" rel="noopener noreferrer" aria-label="Share on Pinterest">
               <Share2 className=" w-5 h-5 inline-block" aria-hidden="true" />
             </a>
             <a className="w-11 h-11 rounded-full border border-surface-cream/20 flex items-center justify-center hover:bg-burnished-gold hover:border-burnished-gold transition-colors focus:outline-none focus:ring-2 focus:ring-burnished-gold focus:ring-offset-2 focus:ring-offset-ink-charcoal" href={BRAND.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">

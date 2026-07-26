@@ -376,24 +376,40 @@ export default async function HomePage() {
               {
                 text: "The quality is simply unmatched. The weight, the finish, and the packaging make it feel like you're opening a piece of jewelry.",
                 author: "Priya S.",
-                location: "Mumbai"
+                location: "Mumbai",
+                date: "Nov 2025"
               },
               {
                 text: "I bought the Emerald series for my new home and it completely elevated my dining table. Every guest asks where I got them.",
                 author: "Aanya R.",
-                location: "Delhi"
+                location: "Delhi",
+                date: "Jan 2026"
               },
               {
                 text: "Their customer service is incredible. A piece was damaged in transit and they replaced it within 48 hours, no questions asked.",
                 author: "Karan M.",
-                location: "Bangalore"
+                location: "Bangalore",
+                date: "Mar 2026"
               }
             ].map((review, i) => (
-              <div key={i} className="bg-white p-10 border border-muted-sand hover:border-burnished-gold transition-colors">
-                <p className="font-body-md text-on-surface-variant text-lg italic leading-relaxed mb-8">"{review.text}"</p>
+              <div key={i} className="bg-white p-10 border border-muted-sand hover:border-burnished-gold transition-all duration-300 flex flex-col justify-between">
                 <div>
-                  <p className="font-label-caps text-[12px] uppercase tracking-widest text-ink-charcoal font-bold">{review.author}</p>
-                  <p className="font-body-md text-on-surface-variant text-sm mt-1">{review.location}</p>
+                  <div className="flex justify-between items-center mb-6">
+                    <span className="text-[9px] font-sans font-bold bg-[#E8F5E9] text-[#2E7D32] px-2 py-0.5 uppercase tracking-wider rounded-sm flex items-center gap-1 border border-[#C8E6C9]">
+                      <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      Verified Buyer
+                    </span>
+                  </div>
+                  <p className="font-body-md text-on-surface-variant text-lg italic leading-relaxed mb-8">"{review.text}"</p>
+                </div>
+                <div className="flex justify-between items-end border-t border-muted-sand/30 pt-4">
+                  <div>
+                    <p className="font-label-caps text-[12px] uppercase tracking-widest text-ink-charcoal font-bold">{review.author}</p>
+                    <p className="font-body-md text-on-surface-variant text-sm mt-1">{review.location}</p>
+                  </div>
+                  <span className="text-[10px] font-sans text-on-surface-variant/60">{review.date}</span>
                 </div>
               </div>
             ))}

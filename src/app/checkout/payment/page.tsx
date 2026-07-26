@@ -183,7 +183,7 @@ export default function PaymentPage() {
                 {orderDetails.items.some((i:any) => i.isGiftWrapped) && (
                   <div className="flex justify-between">
                     <span>Luxury Packaging</span>
-                    <span>₹{(orderDetails.items.filter((i:any) => i.isGiftWrapped).length * 500).toLocaleString('en-IN')}</span>
+                    <span>₹{(orderDetails.items.filter((i:any) => i.isGiftWrapped).length * 299).toLocaleString('en-IN')}</span>
                   </div>
                 )}
                 <div className="flex justify-between">

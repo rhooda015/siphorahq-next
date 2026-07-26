@@ -235,6 +235,20 @@ export default function Header() {
           </button>
         </div>
         <div className="flex flex-col p-6 space-y-6 overflow-y-auto">
+          {/* Mobile search bar */}
+          <form onSubmit={handleSearch} className="relative mb-2">
+            <input 
+              type="text" 
+              placeholder="Search products..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-white border border-muted-sand py-3 pl-4 pr-12 text-sm font-sans outline-none focus:border-burnished-gold rounded-sm"
+            />
+            <button type="submit" className="absolute right-2 top-2 text-on-surface-variant hover:text-ink-charcoal min-w-[36px] min-h-[36px] flex items-center justify-center">
+              <Search className="w-5 h-5" />
+            </button>
+          </form>
+
           {NAVIGATION_LINKS.map((item) => (
             <div key={item.label}>
               <Link 
