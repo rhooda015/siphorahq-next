@@ -30,7 +30,7 @@ export default function CookieConsent() {
   return (
     <>
       {showBanner && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[var(--color-border)] p-4 md:p-6 shadow-2xl z-[100] flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="fixed bottom-16 md:bottom-0 left-0 right-0 bg-white border-t border-[var(--color-border)] p-4 md:p-6 shadow-2xl z-[100] flex flex-col md:flex-row items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-16 duration-500">
           <div className="text-sm font-sans text-[var(--color-text-muted)] flex-1">
             <strong className="text-[var(--color-primary)] font-serif block mb-1">We value your privacy</strong>
             We use cookies to enhance your browsing experience, serve personalized ads, and analyze our traffic. By clicking "Accept", you consent to our use of cookies in accordance with the DPDP Act 2023.

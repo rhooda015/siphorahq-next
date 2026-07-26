@@ -31,7 +31,13 @@ async function getBestSellers() {
       { status: { $exists: false } }
     ]
   }).limit(12).lean();
-  return JSON.parse(JSON.stringify(products));
+  
+  const serialized = JSON.parse(JSON.stringify(products));
+  return serialized.map((p: any) => ({
+    ...p,
+    id: p.handle || p._id?.toString() || p.id,
+    slug: p.handle || p._id?.toString() || p.slug
+  }));
 }
 
 export default async function BestSellersPage() {

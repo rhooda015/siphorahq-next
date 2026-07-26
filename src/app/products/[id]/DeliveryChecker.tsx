@@ -24,7 +24,10 @@ export default function DeliveryChecker() {
   return (
     <div className="mt-8 bg-[var(--color-accent-light)] p-4 border border-[var(--color-border)] flex flex-col gap-2 mb-6">
       <label className="text-sm font-sans font-medium text-[var(--color-primary)]">Check Delivery & COD</label>
-      <div className="flex">
+      <form 
+        onSubmit={(e) => { e.preventDefault(); checkDelivery(); }}
+        className="flex"
+      >
         <input 
           type="text" 
           value={pincode}
@@ -33,12 +36,12 @@ export default function DeliveryChecker() {
           className="flex-1 bg-white border border-[var(--color-border)] px-3 py-2 text-sm font-sans outline-none focus:border-[#C9A84C]" 
         />
         <button 
-          onClick={checkDelivery}
+          type="submit"
           className="bg-[var(--color-primary)] text-white px-4 text-xs uppercase tracking-widest font-medium hover:bg-[var(--color-secondary)] transition-colors"
         >
           Check
         </button>
-      </div>
+      </form>
       {result?.error && <p className="text-xs text-red-600 mt-1">{result.error}</p>}
       {result?.date && (
         <p className="text-xs text-green-700 mt-1 font-medium">

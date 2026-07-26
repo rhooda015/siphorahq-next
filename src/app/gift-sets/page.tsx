@@ -38,9 +38,19 @@ async function getGiftSets() {
   // Fallback if no specific tags
   if (products.length === 0) {
     const fallback = await Product.find(liveStatus).limit(8).lean();
-    return JSON.parse(JSON.stringify(fallback));
+    const serialized = JSON.parse(JSON.stringify(fallback));
+    return serialized.map((p: any) => ({
+      ...p,
+      id: p.handle || p._id?.toString() || p.id,
+      slug: p.handle || p._id?.toString() || p.slug
+    }));
   }
-  return JSON.parse(JSON.stringify(products));
+  const serialized = JSON.parse(JSON.stringify(products));
+  return serialized.map((p: any) => ({
+    ...p,
+    id: p.handle || p._id?.toString() || p.id,
+    slug: p.handle || p._id?.toString() || p.slug
+  }));
 }
 
 export default async function GiftSetsPage() {

@@ -14,9 +14,10 @@ const getCachedDbProducts = unstable_cache(
     await dbConnect();
     const dbProducts = await Product.find({ status: 'Live' }).sort({ createdAt: -1 }).lean();
     return dbProducts.map((p: any) => ({
+      id: p.handle || p._id.toString(),
       name: p.title,
       slug: p.handle || p._id.toString(),
-      price: `₹${p.price.toLocaleString()}`,
+      price: p.price,
       category: p.category || 'Tableware',
       image: p.images?.[0]?.url || '/images/dinnerware.webp'
     }));
