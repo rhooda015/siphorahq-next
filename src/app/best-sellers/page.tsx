@@ -36,7 +36,9 @@ async function getBestSellers() {
   return serialized.map((p: any) => ({
     ...p,
     id: p.handle || p._id?.toString() || p.id,
-    slug: p.handle || p._id?.toString() || p.slug
+    name: p.title || p.name,
+    slug: p.handle || p._id?.toString() || p.slug,
+    image: p.images?.[0]?.url || p.image || '/images/dinnerware.webp'
   }));
 }
 
