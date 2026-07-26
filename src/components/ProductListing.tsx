@@ -9,7 +9,7 @@ import ProductCard from './ProductCard';
 type Product = {
   name: string;
   slug: string;
-  price: string; // it's already "₹999" format
+  price: number | string;
   category: string;
   badge?: string;
   image: string;
@@ -29,10 +29,19 @@ export default function ProductListing({ products }: { products: Product[] }) {
     return p.category === activeCategory;
   });
 
-  // Sort
+  // Sort helper to extract numeric price
+  const getPriceVal = (p: number | string): number => {
+    if (typeof p === 'number') return p;
+    if (typeof p === 'string') {
+      const clean = p.replace(/[^\d]/g, '');
+      return parseInt(clean, 10) || 0;
+    }
+    return 0;
+  };
+
   const sorted = [...filtered].sort((a, b) => {
-    const priceA = parseInt(a.price.replace(/[^\d]/g, ''), 10);
-    const priceB = parseInt(b.price.replace(/[^\d]/g, ''), 10);
+    const priceA = getPriceVal(a.price);
+    const priceB = getPriceVal(b.price);
     
     if (sortBy === 'Price: Low to High') return priceA - priceB;
     if (sortBy === 'Price: High to Low') return priceB - priceA;

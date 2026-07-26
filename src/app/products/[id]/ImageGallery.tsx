@@ -9,10 +9,9 @@ export default function ImageGallery({ images, productName }: { images: string[]
   const [zoomStyle, setZoomStyle] = useState({});
   const touchStartX = useRef<number | null>(null);
 
-  const validImages = images.filter(Boolean);
-  if (validImages.length === 0) return null;
-
-  const activeImage = validImages[activeIndex];
+  const validImages = images.filter(img => img && !img.startsWith('blob:'));
+  const displayImages = validImages.length > 0 ? validImages : ['/images/dinnerware.webp'];
+  const activeImage = displayImages[activeIndex];
 
   // Desktop zoom on hover
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -41,9 +40,9 @@ export default function ImageGallery({ images, productName }: { images: string[]
     <div className="flex flex-row gap-3">
       
       {/* ── Thumbnail Strip — DESKTOP ONLY (vertical, left side) ── */}
-      {validImages.length > 1 && (
+      {displayImages.length > 1 && (
         <div className="hidden md:flex flex-col gap-2 overflow-y-auto max-h-[560px] w-20 flex-shrink-0">
-          {validImages.map((img, idx) => (
+          {displayImages.map((img, idx) => (
             <button
               key={idx}
               onClick={() => setActiveIndex(idx)}
@@ -72,7 +71,7 @@ export default function ImageGallery({ images, productName }: { images: string[]
       <div className="flex-1 relative">
 
         {/* Mobile: left/right arrow buttons on image */}
-        {validImages.length > 1 && (
+        {displayImages.length > 1 && (
           <>
             <button
               onClick={() => setActiveIndex(i => Math.max(i - 1, 0))}
@@ -81,8 +80,8 @@ export default function ImageGallery({ images, productName }: { images: string[]
               <ChevronLeft className="w-5 h-5 text-[var(--color-primary)]" />
             </button>
             <button
-              onClick={() => setActiveIndex(i => Math.min(i + 1, validImages.length - 1))}
-              className={`md:hidden absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 backdrop-blur-sm rounded-full p-1.5 shadow-md ${activeIndex === validImages.length - 1 ? 'opacity-20 pointer-events-none' : 'opacity-90'}`}
+              onClick={() => setActiveIndex(i => Math.min(i + 1, displayImages.length - 1))}
+              className={`md:hidden absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 backdrop-blur-sm rounded-full p-1.5 shadow-md ${activeIndex === displayImages.length - 1 ? 'opacity-20 pointer-events-none' : 'opacity-90'}`}
             >
               <ChevronRight className="w-5 h-5 text-[var(--color-primary)]" />
             </button>
@@ -110,9 +109,9 @@ export default function ImageGallery({ images, productName }: { images: string[]
         </div>
 
         {/* Mobile: dot indicators INSIDE the component, not below — overlay on image bottom */}
-        {validImages.length > 1 && (
+        {displayImages.length > 1 && (
           <div className="flex justify-center gap-1.5 mt-2 md:hidden">
-            {validImages.map((_, idx) => (
+            {displayImages.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setActiveIndex(idx)}
