@@ -428,12 +428,10 @@ export default function AccountDashboard({
                         {item.description}
                       </p>
                     </div>
-                    <span
-                      className="material-symbols-outlined text-outline group-hover:text-ink-charcoal dark:group-hover:text-surface-cream transition-colors shrink-0 ml-4"
+                    <ChevronRight
+                      className="w-5 h-5 text-outline group-hover:text-ink-charcoal dark:group-hover:text-surface-cream transition-colors shrink-0 ml-4"
                       aria-hidden="true"
-                    >
-                      chevron_right
-                    </span>
+                    />
                   </Link>
                 ))}
               </div>
@@ -535,13 +533,10 @@ export default function AccountDashboard({
 
                 <div className="pt-8 border-t border-ink-charcoal/10 dark:border-surface-cream/10">
                   <div className="flex items-center gap-4 p-4 border border-ink-charcoal/10 dark:border-surface-cream/10 bg-white/60 dark:bg-black/20">
-                    <span
-                      className="material-symbols-outlined text-burnished-gold"
-                      style={{ fontVariationSettings: "'FILL' 1", fontSize: "24px" }}
+                    <Star
+                      className="w-6 h-6 text-burnished-gold fill-current"
                       aria-hidden="true"
-                    >
-                      stars
-                    </span>
+                    />
                     <div>
                       <p className="text-[10px] font-semibold uppercase tracking-widest mb-0.5">
                         Tier Status
