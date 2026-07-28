@@ -46,9 +46,11 @@ export default function LoginPage() {
 
       {/* Top Brand Logo */}
       <div className="mb-8 text-center">
-        <Link href="/" className="text-[#1e1a14] text-3xl md:text-4xl font-serif tracking-[6px] uppercase transition-opacity hover:opacity-80">
-          {BRAND.name}
-        </Link>
+        <h1 className="text-[#1e1a14] text-3xl md:text-4xl font-serif tracking-[6px] uppercase">
+          <Link href="/" className="transition-opacity hover:opacity-80">
+            {BRAND.name}
+          </Link>
+        </h1>
         <p className="text-zinc-500 font-sans text-[10px] tracking-[3px] uppercase mt-1">Luxury Redefined</p>
       </div>
 
