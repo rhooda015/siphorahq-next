@@ -1,5 +1,5 @@
 "use client";
-import { CheckCircle2, Package, Receipt } from 'lucide-react';
+import { CheckCircle2, Package, Receipt, Check, Truck, Home, Map, Headset } from 'lucide-react';
 
 import Image from "next/image";
 import Link from "next/link";
@@ -86,6 +86,15 @@ function formatDate(iso: string) {
 function formatDateTime(iso: string) {
   return dateTimeFormatter.format(new Date(iso)).replace(",", " ·");
 }
+
+const TIMELINE_ICONS: Record<string, React.ComponentType<any>> = {
+  receipt_long: Receipt,
+  fact_check: CheckCircle2,
+  box: Package,
+  local_shipping: Truck,
+  home: Home,
+  check: Check,
+};
 
 export default function OrderTracking({ data }: OrderTrackingProps) {
   const currentStepIndex = STATUS_ORDER.indexOf(data.status);
@@ -184,6 +193,8 @@ export default function OrderTracking({ data }: OrderTrackingProps) {
                   const isCurrent = index === currentStepIndex;
                   const isPending = index > currentStepIndex;
 
+                  const IconComp = TIMELINE_ICONS[isComplete ? "check" : step.icon] || Package;
+
                   return (
                     <li key={step.status} className={`relative flex gap-6 ${index < data.timeline.length - 1 ? "pb-10" : ""}`}>
                       <div
@@ -196,9 +207,7 @@ export default function OrderTracking({ data }: OrderTrackingProps) {
                           .filter(Boolean)
                           .join(" ")}
                       >
-                        <span className="material-symbols-outlined" aria-hidden="true">
-                          {isComplete ? "check" : step.icon}
-                        </span>
+                        <IconComp className="w-5 h-5 stroke-[2]" aria-hidden="true" />
                       </div>
                       <div>
                         <h4
@@ -242,14 +251,12 @@ export default function OrderTracking({ data }: OrderTrackingProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Link
                 href={data.courierTrackingHref}
-                className="group bg-ink-charcoal dark:bg-dark-surface-container text-white p-8 hover:scale-[1.02] transition-transform"
+                className="group bg-ink-charcoal dark:bg-dark-surface-container text-white p-8 hover:scale-[1.02] transition-transform flex flex-col"
               >
-                <span className="material-symbols-outlined text-burnished-gold text-4xl mb-6" aria-hidden="true">
-                  map
-                </span>
+                <Map className="text-burnished-gold w-10 h-10 mb-6 stroke-[1.5]" aria-hidden="true" />
                 <h4 className="font-serif text-3xl mb-3">Track courier</h4>
                 <p className="text-white/70 text-sm mb-6">View courier movement and delivery partner details.</p>
-                <span className="text-xs uppercase tracking-widest font-semibold border-b border-burnished-gold pb-1 group-hover:text-burnished-gold">
+                <span className="text-xs uppercase tracking-widest font-semibold border-b border-burnished-gold pb-1 group-hover:text-burnished-gold w-fit">
                   Launch tracking
                 </span>
               </Link>
@@ -260,11 +267,9 @@ export default function OrderTracking({ data }: OrderTrackingProps) {
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group bg-muted-sand dark:bg-dark-surface-container p-8 border border-transparent hover:border-burnished-gold transition-colors"
+                className="group bg-muted-sand dark:bg-dark-surface-container p-8 border border-transparent hover:border-burnished-gold transition-colors flex flex-col"
               >
-                <span className="material-symbols-outlined text-ink-charcoal dark:text-surface-cream text-4xl mb-6" aria-hidden="true">
-                  support_agent
-                </span>
+                <Headset className="text-ink-charcoal dark:text-surface-cream w-10 h-10 mb-6 stroke-[1.5]" aria-hidden="true" />
                 <h4 className="font-serif text-3xl mb-3">Concierge</h4>
                 <p className="text-on-surface-variant dark:text-dark-on-surface-variant text-sm mb-6">
                   Speak with our support team about this order.

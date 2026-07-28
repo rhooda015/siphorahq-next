@@ -1,5 +1,9 @@
 "use client";
-import { Search, User, Heart, ShoppingBag, Star, Truck, Award, Gift, ChevronRight, Gem, Camera, Share2, Mail, Phone, ArrowRight, Globe, MessageCircle } from 'lucide-react';
+import { 
+  Search, User, Heart, ShoppingBag, Star, Truck, Award, Gift, 
+  ChevronRight, Gem, Camera, Share2, Mail, Phone, ArrowRight, 
+  Globe, MessageCircle, Package, Shield, MapPin, CreditCard, Headset 
+} from 'lucide-react';
 
 import { useState } from "react";
 import Image from "next/image";
@@ -37,7 +41,7 @@ const NAV_LINKS = [
 
 const DASHBOARD_CARDS = [
   {
-    icon: "package_2",
+    icon: Package,
     title: "My Orders",
     description: "Track shipments, view history, and manage returns.",
     href: "/account/orders",
@@ -45,28 +49,28 @@ const DASHBOARD_CARDS = [
     badgeKey: "activeOrders" as const,
   },
   {
-    icon: "shield_person",
+    icon: Shield,
     title: "Login & Security",
     description: "Update passwords and secure your digital experience.",
     href: "/account/security",
     cta: "Manage access",
   },
   {
-    icon: "location_on",
+    icon: MapPin,
     title: "My Addresses",
     description: "Save and edit delivery locations for swift checkout.",
     href: "/account/addresses",
     cta: "Edit addresses",
   },
   {
-    icon: "credit_card",
+    icon: CreditCard,
     title: "Payment Methods",
     description: "Securely manage your cards and Siphora credit.",
     href: "/account/payments",
     cta: "Manage wallet",
   },
   {
-    icon: "favorite",
+    icon: Heart,
     title: "My Wishlist",
     description: "Keep track of artisanal pieces for future curation.",
     href: "/account/wishlist",
@@ -333,52 +337,43 @@ export default function AccountDashboard({
             Account overview
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {DASHBOARD_CARDS.map((card) => (
-              <article
-                key={card.title}
-                className="bg-white dark:bg-dark-surface-container border border-muted-sand dark:border-dark-muted-sand p-8 group hover:border-burnished-gold transition-all duration-500 luxury-hover flex flex-col justify-between min-h-72"
-              >
-                <div>
-                  <div className="flex justify-between items-start mb-6">
-                    <span
-                      className="material-symbols-outlined text-burnished-gold"
-                      style={{ fontSize: "28px" }}
-                      aria-hidden="true"
-                    >
-                      {card.icon}
-                    </span>
-                    {card.badgeKey === "activeOrders" && (
-                      <span className="text-[10px] font-semibold uppercase tracking-widest text-on-tertiary-container bg-muted-sand dark:bg-dark-muted-sand dark:text-burnished-gold px-2 py-1">
-                        {user.activeOrdersCount} Active
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="font-serif text-2xl font-medium mb-2">{card.title}</h3>
-                  <p className="text-on-surface-variant dark:text-dark-on-surface-variant text-sm leading-relaxed">
-                    {card.description}
-                  </p>
-                </div>
-                <Link
-                  href={card.href}
-                  className="text-[11px] font-semibold uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all duration-300 mt-6"
+            {DASHBOARD_CARDS.map((card) => {
+              const IconComponent = card.icon;
+              return (
+                <article
+                  key={card.title}
+                  className="bg-white dark:bg-dark-surface-container border border-muted-sand dark:border-dark-muted-sand p-8 group hover:border-burnished-gold transition-all duration-500 luxury-hover flex flex-col justify-between min-h-72"
                 >
-                  {card.cta}{" "}
-                  <ArrowRight className="w-5 h-5" aria-hidden="true" />
-                </Link>
-              </article>
-            ))}
+                  <div>
+                    <div className="flex justify-between items-start mb-6">
+                      <IconComponent className="w-7 h-7 text-burnished-gold stroke-[1.5]" aria-hidden="true" />
+                      {card.badgeKey === "activeOrders" && (
+                        <span className="text-[10px] font-semibold uppercase tracking-widest text-on-tertiary-container bg-muted-sand dark:bg-dark-muted-sand dark:text-burnished-gold px-2 py-1">
+                          {user.activeOrdersCount} Active
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="font-serif text-2xl font-medium mb-2">{card.title}</h3>
+                    <p className="text-on-surface-variant dark:text-dark-on-surface-variant text-sm leading-relaxed">
+                      {card.description}
+                    </p>
+                  </div>
+                  <Link
+                    href={card.href}
+                    className="text-[11px] font-semibold uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all duration-300 mt-6"
+                  >
+                    {card.cta}{" "}
+                    <ArrowRight className="w-5 h-5" aria-hidden="true" />
+                  </Link>
+                </article>
+              );
+            })}
 
             {/* Concierge Support — accent card */}
             <article className="bg-ink-charcoal dark:bg-black p-8 group transition-all duration-500 luxury-hover flex flex-col justify-between min-h-72">
               <div>
                 <div className="flex justify-between items-start mb-6">
-                  <span
-                    className="material-symbols-outlined text-burnished-gold"
-                    style={{ fontSize: "28px" }}
-                    aria-hidden="true"
-                  >
-                    support_agent
-                  </span>
+                  <Headset className="w-7 h-7 text-burnished-gold stroke-[1.5]" aria-hidden="true" />
                   <span className="text-[10px] font-semibold uppercase tracking-widest text-white/60">
                     24/7 Priority
                   </span>

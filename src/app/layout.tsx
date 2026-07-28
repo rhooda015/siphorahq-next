@@ -182,7 +182,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
         <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
         <script
           nonce={nonce}
