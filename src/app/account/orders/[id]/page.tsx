@@ -37,7 +37,7 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
         imageAlt: "Emerald Regent Set",
         craftsmanship: "Hand-painted 24k gold rims",
         detailing: "Translucent fine bone china",
-        qualityNote: "This piece has passed our rigorous 5-point quality inspection and is certified authentic Siphora HQ porcelain.",
+        qualityNote: "This piece has passed our rigorous 5-point quality inspection and is certified authentic Siphorahq porcelain.",
       },
       timeline: [
         {
@@ -59,7 +59,7 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
           title: "Packed with Care",
           icon: "box",
           timestamp: new Date().toISOString(),
-          description: "Your items are being secured in our signature Siphora HQ packaging.",
+          description: "Your items are being secured in our signature Siphorahq packaging.",
         },
         {
           status: "in_transit",
@@ -99,12 +99,12 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
     estimatedDelivery: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
     cartItemCount: orderDoc.items?.length || 0,
     product: {
-      name: orderDoc.items?.[0]?.name || "Siphora HQ Fine Porcelain",
+      name: orderDoc.items?.[0]?.name || "Siphorahq Fine Porcelain",
       collection: orderDoc.items?.[0]?.variant || "Premium Collection",
       image: orderDoc.items?.[0]?.image || orderDoc.items?.[0]?.img || "https://lh3.googleusercontent.com/aida/AP1WRLvJilvd4DAGPQIJUmgJCutZJW1wikX5GXdRfA-_nIQ2ZuoAvoR0C6VoIE1fYbODZBS4WetiZQEwzT3xdq6e7Vkr2WJbAqzX6S4dApdJWKn4RM_4BO65E8RKSaYBge501116uNlwxKffJRg1GN67d9tfePiJWwXmStFU1awCmbx9OExGE7BhtCzqtA5UP2plmqHLQv6hnRG8h2kYMZS6jkK8IK4H51ogxM8u7d1P5tUYV1ZrRgZ5D43sD4k",
       imageAlt: orderDoc.items?.[0]?.name || "Product Image",
       craftsmanship: "Authentic materials and finish",
-      detailing: "Inspected by Siphora HQ",
+      detailing: "Inspected by Siphorahq",
       qualityNote: "This piece has passed our rigorous quality inspection.",
     },
     timeline: [

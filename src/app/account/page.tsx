@@ -5,8 +5,8 @@ import AccountDashboard, { AccountUser } from "@/components/account/AccountDashb
 import { signOutAction, subscribeAction } from "./actions";
 
 export const metadata = {
-  title: "My Account | Siphora HQ",
-  description: "Manage your Siphora HQ experience",
+  title: "My Account | Siphorahq",
+  description: "Manage your Siphorahq experience",
 };
 
 export default async function AccountPage() {

@@ -4,6 +4,7 @@ import { Search, User, Heart, ShoppingBag, Star, Truck, Award, Gift, ChevronRigh
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { BRAND } from "@/config/brand";
 
 /**
  * Shape of the account data this component expects from the parent
@@ -177,10 +178,10 @@ export default function AccountDashboard({
           {/* Logo */}
           <Link
             href="/"
-            aria-label="Siphora HQ — go to homepage"
+            aria-label={`${BRAND.name} — go to homepage`}
             className="font-serif text-2xl font-semibold italic tracking-tight shrink-0"
           >
-            Siphora HQ
+            {BRAND.name}
           </Link>
 
           {/* Desktop nav */}
@@ -589,10 +590,10 @@ export default function AccountDashboard({
           <div className="col-span-12 lg:col-span-4 mb-10 lg:mb-0">
             <Link
               href="/"
-              aria-label="Siphora HQ — home"
+              aria-label={`${BRAND.name} — home`}
               className="font-serif text-2xl font-medium italic block mb-6"
             >
-              Siphora HQ
+              {BRAND.name}
             </Link>
             <p className="text-on-surface-variant dark:text-dark-on-surface-variant text-sm leading-relaxed max-w-xs mb-8">
               Crafting legacy through porcelain since 2021. Every piece tells a story of
@@ -603,7 +604,7 @@ export default function AccountDashboard({
                 href="https://www.instagram.com/siphorahq"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Siphora HQ on Instagram"
+                aria-label={`${BRAND.name} on Instagram`}
                 className=" hover:text-burnished-gold transition-colors"
               ><Globe className="w-5 h-5" /></a>
               <a
@@ -698,7 +699,7 @@ export default function AccountDashboard({
           {/* Bottom bar */}
           <div className="col-span-12 pt-16 border-t border-ink-charcoal/10 dark:border-surface-cream/10 flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-[10px] text-on-surface-variant dark:text-dark-on-surface-variant uppercase tracking-widest">
-              &copy; {new Date().getFullYear()} Siphora HQ. All rights reserved.
+              &copy; {new Date().getFullYear()} {BRAND.name}. All rights reserved.
             </p>
             <div className="flex gap-8">
                <Link href="/terms-of-service" className="text-[10px] text-on-surface-variant dark:text-dark-on-surface-variant hover:text-ink-charcoal dark:hover:text-surface-cream uppercase tracking-widest transition-colors">
@@ -720,7 +721,7 @@ export default function AccountDashboard({
         href="https://wa.me/919540027978?text=Hi%20Siphora%2C%20I%20need%20help."
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Chat with Siphora HQ concierge on WhatsApp"
+        aria-label={`Chat with ${BRAND.name} concierge on WhatsApp`}
         className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-ink-charcoal dark:bg-burnished-gold text-white dark:text-ink-charcoal px-5 py-3 rounded-full text-sm font-semibold shadow-lg hover:bg-burnished-gold dark:hover:bg-surface-cream transition-colors"
       >
         <MessageCircle className="w-5 h-5" aria-hidden="true" />

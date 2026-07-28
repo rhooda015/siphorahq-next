@@ -3,6 +3,7 @@ import { CheckCircle2, Package, Receipt } from 'lucide-react';
 
 import Image from "next/image";
 import Link from "next/link";
+import { BRAND } from "@/config/brand";
 
 export type OrderStatus =
   | "confirmed"
@@ -156,7 +157,7 @@ export default function OrderTracking({ data }: OrderTrackingProps) {
               <div className="mt-8 p-6 bg-muted-sand/60 dark:bg-dark-surface-container border-l-4 border-burnished-gold">
                 <p className="italic text-sm leading-relaxed">{data.product.qualityNote}</p>
                 <p className="text-xs uppercase tracking-widest font-semibold mt-4">
-                  — Siphora HQ Quality Team
+                  — {BRAND.name} Quality Team
                 </p>
               </div>
             </div>
@@ -255,7 +256,7 @@ export default function OrderTracking({ data }: OrderTrackingProps) {
 
               <a
                 href={`https://wa.me/919540027978?text=${encodeURIComponent(
-                  `Hi Siphora HQ, I need help with order ${data.orderId}.`
+                  `Hi ${BRAND.name}, I need help with order ${data.orderId}.`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
