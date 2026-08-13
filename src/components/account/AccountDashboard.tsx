@@ -9,6 +9,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BRAND } from "@/config/brand";
+import { signOut } from 'next-auth/react';
+
 
 /**
  * Shape of the account data this component expects from the parent
@@ -117,9 +119,9 @@ export default function AccountDashboard({
   const [promoEmails, setPromoEmails] = useState(true);
   const [msgCenter, setMsgCenter] = useState(true);
 
-  const handleSignOutClick = () => {
+  const handleSignOutClick = async () => {
     if (window.confirm("Sign out of your account?")) {
-      onSignOut();
+      await signOut({ callbackUrl: '/login' });
     }
   };
 
