@@ -46,14 +46,14 @@ const getCachedSettings = unstable_cache(
       await dbConnect();
       const settings = await StoreSettings.findOne().lean();
       return settings || {
-        seoTitle: `Siphorahq | Best Luxury Porcelain Gift Sets, Tea Sets & Fine Dinnerware | Shop Now`,
-        seoDescription: 'Shop Siphorahq\'s best seller luxury porcelain dinnerware, gold-finish tea sets, fine porcelain gift sets & more. Free shipping above ₹999. Pan-India delivery.',
+        seoTitle: "Siphorahq — Premium Porcelain Dinnerware & Tea Sets",
+        seoDescription: "Shop Siphorahq for artisan-made porcelain tea cup sets, luxury dinnerware, and handcrafted gifting collections — designed in India, delivered nationwide.",
       };
     } catch (e) {
       console.warn("Failed to fetch store settings from DB in layout:", e);
       return {
-        seoTitle: `Siphorahq | Best Luxury Porcelain Gift Sets, Tea Sets & Fine Dinnerware | Shop Now`,
-        seoDescription: 'Shop Siphorahq\'s best seller luxury porcelain dinnerware, gold-finish tea sets, fine porcelain gift sets & more. Free shipping above ₹999. Pan-India delivery.',
+        seoTitle: "Siphorahq — Premium Porcelain Dinnerware & Tea Sets",
+        seoDescription: "Shop Siphorahq for artisan-made porcelain tea cup sets, luxury dinnerware, and handcrafted gifting collections — designed in India, delivered nationwide.",
       };
     }
   },
