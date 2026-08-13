@@ -213,11 +213,11 @@ export default function AccountDashboard({
               aria-current="page"
               className="border-b-2 border-burnished-gold pb-0.5"><User className="w-5 h-5" /></Link>
             <Link
-              href="/wishlist"
+              href="/account/wishlist"
               aria-label="Wishlist"
               className="hover:text-burnished-gold transition-colors hidden sm:inline-flex"><Heart className="w-5 h-5" /></Link>
             <Link
-              href="/cart"
+              href="/checkout/cart"
               aria-label="Shopping bag"
               className="hover:text-burnished-gold transition-colors"><ShoppingBag className="w-5 h-5" /></Link>
 
@@ -270,7 +270,7 @@ export default function AccountDashboard({
               ))}
               <li className="pt-3 border-t border-muted-sand dark:border-dark-muted-sand mt-3">
                 <Link
-                  href="/wishlist"
+                  href="/account/wishlist"
                   onClick={() => setMobileNavOpen(false)}
                   className="block py-2 text-sm font-semibold uppercase tracking-widest hover:text-burnished-gold transition-colors"
                 >

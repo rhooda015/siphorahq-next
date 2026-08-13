@@ -154,7 +154,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         },
       },
       {
-        '@type': 'Store',
+        '@type': ['Store', 'LocalBusiness'],
         '@id': `${BRAND.domain}/#store`,
         name: 'Siphorahq',
         url: 'https://siphorahq.in',
@@ -170,6 +170,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           postalCode: '121004',
           addressCountry: 'IN'
         },
+        geo: {
+          '@type': 'GeoCoordinates',
+          'latitude': '28.3412',
+          'longitude': '77.3118'
+        },
+        openingHoursSpecification: [
+          {
+            '@type': 'OpeningHoursSpecification',
+            'dayOfWeek': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+            'opens': '09:00',
+            'closes': '21:00'
+          }
+        ],
         priceRange: '$$$'
       }
     ],
@@ -182,12 +195,31 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://connect.facebook.net" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.facebook.com" crossOrigin="anonymous" />
         <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
         <script
           nonce={nonce}
           suppressHydrationWarning={true}
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
+        />
+        <Script
+          id="fb-pixel"
+          strategy="afterInteractive"
+          nonce={nonce}
+          dangerouslySetInnerHTML={{ __html: `
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '1783313006760');
+            fbq('track', 'PageView');
+          ` }}
         />
       </head>
       <body className="bg-surface-cream text-ink-charcoal font-body-md antialiased min-h-screen pb-[64px] md:pb-0 flex flex-col overflow-x-hidden">

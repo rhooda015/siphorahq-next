@@ -4,6 +4,10 @@ export const BRAND = {
   social: {
     instagram: "https://www.instagram.com/siphorahq",
     pinterest: "https://pinterest.com/siphorahq",
+    facebook: "https://www.facebook.com/siphorahq",
+    twitter: "https://x.com/siphorahq",
+    youtube: "https://www.youtube.com/@siphorahq",
+    linkedin: "https://www.linkedin.com/company/siphorahq",
   },
   contact: {
     whatsappNumber: "919540027978",

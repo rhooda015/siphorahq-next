@@ -465,7 +465,7 @@ export default async function HomePage() {
         {/* SEO Content Section — thin content fix */}
         <section className="py-16 px-5 md:px-margin-desktop bg-white border-t border-muted-sand">
           <div className="max-w-3xl mx-auto text-center">
-            <span style={{ color: '#8b6914' }} className="font-label-caps text-[11px] uppercase tracking-[0.18em] mb-4 block">
+            <span className="text-[#8b6914] font-label-caps text-[11px] uppercase tracking-[0.18em] mb-4 block">
               India's Finest
             </span>
             <h2 className="font-headline-lg text-3xl md:text-4xl italic text-ink-charcoal mb-8">

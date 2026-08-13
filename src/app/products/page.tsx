@@ -166,7 +166,26 @@ const PRODUCTS = [
   }
 ];
 
-export default async function ShopAllPage() {
+export default async function ShopAllPage(props: { searchParams: Promise<{ category?: string; q?: string; search?: string }> }) {
+  const searchParams = await props.searchParams;
+  console.log("DEBUG: searchParams received on server:", searchParams);
+  const categoryQuery = searchParams?.category;
+  let initialCategory = 'All';
+  if (categoryQuery) {
+    const lower = categoryQuery.toLowerCase();
+    if (lower === 'cups' || lower === 'mugs' || lower === 'cups-mugs' || lower === 'drinkware') {
+      initialCategory = 'Cups & Mugs';
+    } else if (lower === 'dinnerware' || lower === 'dinner-set') {
+      initialCategory = 'Dinnerware';
+    } else if (lower === 'tea-sets' || lower === 'tea-set') {
+      initialCategory = 'Tea Sets';
+    } else if (lower === 'serveware' || lower === 'bowls') {
+      initialCategory = 'Serveware';
+    } else if (lower === 'gift-sets' || lower === 'gifting') {
+      initialCategory = 'Gift Sets';
+    }
+  }
+
   const dbProducts = await getCachedDbProducts();
   const allProducts = [...dbProducts, ...PRODUCTS];
   
@@ -266,7 +285,7 @@ export default async function ShopAllPage() {
       </div>
 
       {/* ── PRODUCT LISTING (Client Component) ── */}
-      <ProductListing products={allProducts} />
+      <ProductListing products={allProducts} initialCategory={initialCategory} />
       
     </div>
   );

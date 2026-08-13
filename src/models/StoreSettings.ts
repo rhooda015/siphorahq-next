@@ -48,7 +48,7 @@ const StoreSettingsSchema = new mongoose.Schema(
     adminPassword: { type: String, default: '' },
 
     // SEO
-    seoTitle: { type: String, default: 'Siphorahq — Luxury Porcelain Dinnerware India' },
+    seoTitle: { type: String, default: 'Siphorahq — Best Luxury Porcelain Dinnerware & Tea Sets in India' },
     seoDescription: { type: String, default: 'Shop artisan-made porcelain tea cup sets, luxury dinnerware, and handcrafted gifting collections — designed in India, delivered nationwide.' },
 
     // Zoho API

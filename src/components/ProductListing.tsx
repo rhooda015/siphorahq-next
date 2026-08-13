@@ -15,10 +15,16 @@ type Product = {
   image: string;
 };
 
-export default function ProductListing({ products }: { products: Product[] }) {
-  const [activeCategory, setActiveCategory] = useState('All');
+export default function ProductListing({ products, initialCategory = 'All' }: { products: Product[]; initialCategory?: string }) {
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [sortBy, setSortBy] = useState('Featured');
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+
+  React.useEffect(() => {
+    if (initialCategory) {
+      setActiveCategory(initialCategory);
+    }
+  }, [initialCategory]);
 
   const categories = ['All', 'Cups & Mugs', 'Tea Sets', 'Dinnerware', 'Serveware', 'Gift Sets', 'Limited Edition'];
   const sortOptions = ['Featured', 'Newest Arrivals', 'Price: Low to High', 'Price: High to Low', 'Best Selling'];
@@ -26,7 +32,13 @@ export default function ProductListing({ products }: { products: Product[] }) {
   // Filter
   const filtered = products.filter(p => {
     if (activeCategory === 'All') return true;
-    return p.category === activeCategory;
+    const normalize = (cat: string) => {
+      if (!cat) return '';
+      const lower = cat.toLowerCase().replace(/[^a-z]/g, '');
+      if (lower === 'cupsmugs' || lower === 'mugscups') return 'cupsmugs';
+      return lower;
+    };
+    return normalize(p.category) === normalize(activeCategory);
   });
 
   // Sort helper to extract numeric price
