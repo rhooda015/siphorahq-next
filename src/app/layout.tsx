@@ -16,8 +16,8 @@ import ThemeInjector from '@/components/ThemeInjector';
 import dynamic from 'next/dynamic';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { headers } from 'next/headers';
+import MobileBottomNav from '@/components/MobileBottomNav';
 
-const MobileBottomNav = dynamic(() => import('@/components/MobileBottomNav'));
 const Toaster = dynamic(() => import('react-hot-toast').then(mod => mod.Toaster));
 
 export const revalidate = 60;

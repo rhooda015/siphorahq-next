@@ -12,13 +12,12 @@ import dynamic from 'next/dynamic';
 import { BRAND } from '@/config/brand';
 
 import AutoCarousel from '@/components/AutoCarousel';
-
-const NewsletterFormDynamic = dynamic(() => import('@/components/NewsletterFormDynamic'));
-const LuxuryTrustStrip = dynamic(() => import('@/components/LuxuryTrustStrip'));
-const InspiredLiving = dynamic(() => import('@/components/InspiredLiving'));
-const GiftPackaging = dynamic(() => import('@/components/GiftPackaging'));
-const EditorialQuote = dynamic(() => import('@/components/EditorialQuote'));
-const ProductCard = dynamic(() => import('@/components/ProductCard'));
+import NewsletterFormDynamic from '@/components/NewsletterFormDynamic';
+import LuxuryTrustStrip from '@/components/LuxuryTrustStrip';
+import InspiredLiving from '@/components/InspiredLiving';
+import GiftPackaging from '@/components/GiftPackaging';
+import EditorialQuote from '@/components/EditorialQuote';
+import ProductCard from '@/components/ProductCard';
 
 export const revalidate = 60; // Use ISR
 
