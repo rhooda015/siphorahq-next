@@ -143,7 +143,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         '@id': `${BRAND.domain}/#website`,
         url: BRAND.domain,
         name: `${BRAND.name} — Luxury Porcelain Dinnerware India`,
+        description: 'Siphorahq crafts premium handcrafted porcelain dinnerware and tea sets, made by skilled artisans across India.',
         publisher: { '@id': `${BRAND.domain}/#organization` },
+        sameAs: [
+          BRAND.social.instagram,
+          BRAND.social.pinterest,
+          BRAND.social.facebook,
+          BRAND.social.twitter,
+          BRAND.social.youtube,
+          BRAND.social.linkedin
+        ],
         potentialAction: {
           '@type': 'SearchAction',
           target: {
