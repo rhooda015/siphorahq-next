@@ -57,6 +57,66 @@ const nextConfig = {
         source: '/shipping-returns',
         destination: '/shipping-policy',
         permanent: true,
+      },
+      {
+        source: '/products/emerald-regent-mug',
+        destination: '/products/siphorahq-emerald-regent-fine-porcelain-mug-with-gold-handle',
+        permanent: true,
+      },
+      {
+        source: '/products/imperial-white-porcelain-mug',
+        destination: '/products/siphorahq-imperial-diamond-fine-bone-china-mug-with-gold-rim',
+        permanent: true,
+      },
+      {
+        source: '/products/moroccan-azure-tea-mug',
+        destination: '/products/siphorahq-moroccan-azure-royal-fine-porcelain-tea-mug',
+        permanent: true,
+      },
+      {
+        source: '/products/premium-gold-dinner-set',
+        destination: '/products/premium-dinner-set-46',
+        permanent: true,
+      },
+      {
+        source: '/products/blue-rose-tea-set',
+        destination: '/products/premium-tea-set-17',
+        permanent: true,
+      },
+      {
+        source: '/products/royal-ivory-cup-set',
+        destination: '/products/coffee-mugs-gold',
+        permanent: true,
+      },
+      {
+        source: '/products/classic-white-dinner-plates',
+        destination: '/products/porcelain-side-plates',
+        permanent: true,
+      },
+      {
+        source: '/products/golden-rim-serving-bowl',
+        destination: '/products/luxury-bowl-set',
+        permanent: true,
+      },
+      {
+        source: '/products/luxe-wedding-gift-box',
+        destination: '/products/designer-gift-box',
+        permanent: true,
+      },
+      {
+        source: '/products/corporate-gift-cup-set',
+        destination: '/products/designer-gift-box',
+        permanent: true,
+      },
+      {
+        source: '/products/minimalist-porcelain-tea-cups',
+        destination: '/products/coffee-mugs-gold',
+        permanent: true,
+      },
+      {
+        source: '/products/heritage-navy-mug-set',
+        destination: '/products/coffee-mugs-gold',
+        permanent: true,
       }
     ];
   },

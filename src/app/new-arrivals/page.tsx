@@ -18,10 +18,10 @@ export const metadata = {
   }
 };
 
-const PRODUCTS = [
+const NEW_ARRIVALS = [
   {
-    name: "Imperial White Porcelain Mug",
-    slug: "imperial-white-porcelain-mug",
+    name: "Siphorahq Imperial Diamond Fine Bone China Mug with Gold Rim",
+    slug: "siphorahq-imperial-diamond-fine-bone-china-mug-with-gold-rim",
     category: "Cups & Mugs",
     price: "₹799",
     badge: "New Arrival",
@@ -29,49 +29,49 @@ const PRODUCTS = [
     image: "/images/products/imperial-white-mug.webp"
   },
   {
-    name: "Minimalist Porcelain Tea Cups",
-    slug: "minimalist-porcelain-tea-cups",
-    category: "Tea Sets",
-    price: "₹1,299",
+    name: "Luxury Porcelain Dinner Plates (Set of 6)",
+    slug: "porcelain-side-plates",
+    category: "Dinnerware",
+    price: "₹4,500",
     badge: "Just Launched",
     rating: "4.7",
-    image: "/images/products/minimalist-tea-cups.webp"
+    image: "/images/products/classic-white-dinner-plates.webp"
   },
   {
-    name: "Golden Rim Serving Bowl",
-    slug: "golden-rim-serving-bowl",
+    name: "Siphorahq Premium Serving Bowl Set of 3",
+    slug: "luxury-bowl-set",
     category: "Serveware",
-    price: "₹1,899",
+    price: "₹2,200",
     badge: "New Season",
     rating: "4.6",
     image: "/images/products/golden-rim-serving-bowl.webp"
   },
   {
-    name: "Blue Rose Tea Set",
-    slug: "blue-rose-tea-set",
+    name: "Siphorahq Blue Rose Tea Set of 17 Pcs",
+    slug: "premium-tea-set-17",
     category: "Tea Sets",
-    price: "₹4,999",
+    price: "₹8,500",
     badge: "Gift Ready",
     rating: "4.9",
     image: "/images/products/blue-rose-tea-set.webp"
   },
   {
-    name: "Royal Ivory Cup Set",
-    slug: "royal-ivory-cup-set",
+    name: "Luxury White & Gold Floral Coffee Mugs",
+    slug: "coffee-mugs-gold",
     category: "Cups & Mugs",
-    price: "₹1,499",
+    price: "₹1,800",
     badge: "Premium Pick",
     rating: "4.7",
     image: "/images/products/royal-ivory-cup-set.webp"
   },
   {
-    name: "Heritage Navy Mug Set",
-    slug: "heritage-navy-mug-set",
-    category: "Cups & Mugs",
-    price: "₹1,999",
+    name: "Siphorahq Designer Gift Box",
+    slug: "designer-gift-box",
+    category: "Gift Sets",
+    price: "₹5,000",
     badge: "New Arrival",
     rating: "4.8",
-    image: "/images/products/heritage-navy-mug-set.webp"
+    image: "/images/products/luxe-wedding-gift-box.webp"
   }
 ];
 
@@ -109,7 +109,7 @@ export default async function NewArrivalsPage() {
   const itemListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    itemListElement: PRODUCTS.map((p, idx) => {
+    itemListElement: NEW_ARRIVALS.map((p, idx) => {
       const imgPath = p.image || '/images/dinnerware.webp';
       const absImage = imgPath.startsWith('http') ? imgPath : `${BRAND.domain}${imgPath.startsWith('/') ? imgPath : '/' + imgPath}`;
       return {
@@ -202,7 +202,7 @@ export default async function NewArrivalsPage() {
       </div>
 
       {/* ── NEW ARRIVALS GRID (CLIENT) ── */}
-      <NewArrivalsClient products={PRODUCTS} />
+      <NewArrivalsClient products={NEW_ARRIVALS} />
 
       {/* ── ATELIER / STUDIO CRAFTSMANSHIP ── */}
       <section className="py-24 bg-[#F8F5F1] relative overflow-hidden">

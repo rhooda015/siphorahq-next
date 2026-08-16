@@ -69,100 +69,92 @@ export async function generateMetadata(props: { searchParams: Promise<{ category
 
 const PRODUCTS = [
   {
-    name: "Emerald Regent Mug",
-    slug: "emerald-regent-mug",
+    name: "Siphorahq Emerald Regent Fine Porcelain Mug with Gold Handle",
+    slug: "siphorahq-emerald-regent-fine-porcelain-mug-with-gold-handle",
     price: "₹999",
     category: "Cups & Mugs",
     badge: "Best Seller",
     image: "/images/products/emerald-regent-mug.webp"
   },
   {
-    name: "Imperial White Porcelain Mug",
-    slug: "imperial-white-porcelain-mug",
+    name: "Siphorahq Imperial Diamond Fine Bone China Mug with Gold Rim",
+    slug: "siphorahq-imperial-diamond-fine-bone-china-mug-with-gold-rim",
     price: "₹799",
     category: "Cups & Mugs",
     badge: "New Arrival",
     image: "/images/products/imperial-white-mug.webp"
   },
   {
-    name: "Moroccan Azure Tea Mug",
-    slug: "moroccan-azure-tea-mug",
+    name: "Siphorahq Moroccan Azure Royal Fine Porcelain Tea Mug",
+    slug: "siphorahq-moroccan-azure-royal-fine-porcelain-tea-mug",
     price: "₹599",
     category: "Cups & Mugs",
     badge: "Popular",
     image: "/images/products/moroccan-azure-tea-mug.webp"
   },
   {
-    name: "Premium Gold Dinner Set",
-    slug: "premium-gold-dinner-set",
+    name: "Siphorahq 46-Piece Dinner Set | Aesthetic Gold Pattern",
+    slug: "premium-dinner-set-46",
     price: "₹25,500",
     category: "Dinnerware",
     badge: "Limited Edition",
     image: "/images/products/premium-gold-dinner-set.webp"
   },
   {
-    name: "Blue Rose Tea Set",
-    slug: "blue-rose-tea-set",
-    price: "₹4,999",
+    name: "Siphorahq Blue Rose Tea Set of 17 Pcs",
+    slug: "premium-tea-set-17",
+    price: "₹8,500",
     category: "Tea Sets",
     badge: "Gift Ready",
     image: "/images/products/blue-rose-tea-set.webp"
   },
   {
-    name: "Royal Ivory Cup Set",
-    slug: "royal-ivory-cup-set",
-    price: "₹1,499",
+    name: "Luxury White & Gold Floral Coffee Mugs",
+    slug: "coffee-mugs-gold",
+    price: "₹1,800",
     category: "Cups & Mugs",
     badge: "Gift Ready",
     image: "/images/products/royal-ivory-cup-set.webp"
   },
   {
-    name: "Classic White Dinner Plates",
-    slug: "classic-white-dinner-plates",
-    price: "₹2,999",
+    name: "Luxury Porcelain Dinner Plates (Set of 6)",
+    slug: "porcelain-side-plates",
+    price: "₹4,500",
     category: "Dinnerware",
     badge: "Essential",
     image: "/images/products/classic-white-dinner-plates.webp"
   },
   {
-    name: "Golden Rim Serving Bowl",
-    slug: "golden-rim-serving-bowl",
-    price: "₹1,899",
+    name: "Siphorahq Premium Serving Bowl Set of 3",
+    slug: "luxury-bowl-set",
+    price: "₹2,200",
     category: "Serveware",
     badge: "New Arrival",
     image: "/images/products/golden-rim-serving-bowl.webp"
   },
   {
-    name: "Luxe Wedding Gift Box",
-    slug: "luxe-wedding-gift-box",
-    price: "₹3,999",
+    name: "Siphorahq Designer Gift Box",
+    slug: "designer-gift-box",
+    price: "₹5,000",
     category: "Gift Sets",
     badge: "Wedding Pick",
     image: "/images/products/luxe-wedding-gift-box.webp"
   },
   {
-    name: "Corporate Gift Cup Set",
-    slug: "corporate-gift-cup-set",
-    price: "₹2,499",
-    category: "Gift Sets",
-    badge: "Bulk Order",
-    image: "/images/products/corporate-gift-cup-set.webp"
-  },
-  {
-    name: "Minimalist Porcelain Tea Cups",
-    slug: "minimalist-porcelain-tea-cups",
-    price: "₹1,299",
-    category: "Tea Sets",
+    name: "Siphorahq Premium Serving Tray Set of 2",
+    slug: "leatherette-serving-tray",
+    price: "₹3,600",
+    category: "Serveware",
     badge: "New Arrival",
-    image: "/images/products/minimalist-tea-cups.webp"
+    image: "/images/prod1.webp"
   },
   {
-    name: "Heritage Navy Mug Set",
-    slug: "heritage-navy-mug-set",
-    price: "₹1,999",
-    category: "Cups & Mugs",
-    badge: "Premium Pick",
-    image: "/images/products/heritage-navy-mug-set.webp"
+    name: "Beautiful Translucent Opal Glass Dinnerware",
+    slug: "opal-glass-dinner-set",
+    price: "₹18,000",
+    category: "Dinnerware",
+    badge: "New Arrival",
+    image: "/images/cat_opalglass.webp"
   }
 ];
 
