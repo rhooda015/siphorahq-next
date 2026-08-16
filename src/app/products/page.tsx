@@ -26,28 +26,36 @@ const getCachedDbProducts = unstable_cache(
   { revalidate: 60 }
 );
 
-export async function generateMetadata(props: { searchParams: Promise<{ category?: string; q?: string; search?: string }> }): Promise<Metadata> {
+export async function generateMetadata(props: { searchParams: Promise<{ category?: string; q?: string; search?: string; tag?: string }> }): Promise<Metadata> {
   const searchParams = await props.searchParams;
   const category = searchParams.category;
   const q = searchParams.q || searchParams.search;
+  const tag = searchParams.tag;
   
   let title = productsMetadata.title as string;
   let description = productsMetadata.description as string;
+  let canonicalQuery = '';
   
-  if (category) {
+  if (tag?.toLowerCase() === 'gifts') {
+    title = `Premium Porcelain Gifting & Sets | ${BRAND.name}`;
+    description = `Explore Siphorahq's premium porcelain gift sets, designer gift boxes, and fine dining collections. Exquisite presentation, plastic-free packaging, pan-India delivery.`;
+    canonicalQuery = '?tag=gifts';
+  } else if (category) {
     const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ');
     title = `Premium ${formattedCategory} | ${BRAND.name}`;
     description = `Browse our exclusive collection of luxury handcrafted ${formattedCategory} for modern Indian homes. Free shipping above ₹999.`;
+    canonicalQuery = `?category=${category}`;
   } else if (q) {
     title = `Search Results for "${q}" | ${BRAND.name}`;
     description = `Find luxury porcelain and ceramic tableware matching "${q}" at Siphorahq. Shop premium cups, dinnerware & more.`;
+    canonicalQuery = `?q=${q}`;
   }
   
   return {
     title,
     description,
     alternates: {
-      canonical: `${BRAND.domain}/products${category ? `?category=${category}` : q ? `?q=${q}` : ''}`,
+      canonical: `${BRAND.domain}/products${canonicalQuery}`,
     },
     openGraph: {
       title,
@@ -158,10 +166,31 @@ const PRODUCTS = [
   }
 ];
 
-export default async function ShopAllPage(props: { searchParams: Promise<{ category?: string; q?: string; search?: string }> }) {
+function isGiftProduct(p: any): boolean {
+  const category = (p.category || '').toLowerCase();
+  const slug = (p.slug || p.handle || p.id || '').toLowerCase();
+  const title = (p.name || p.title || '').toLowerCase();
+  const occasion = (p.specifications?.occasion || '').toLowerCase();
+  const idealFor = (p.specifications?.idealFor || '').toLowerCase();
+  
+  return (
+    category.includes('gift') ||
+    category.includes('gifting') ||
+    slug.includes('gift') ||
+    title.includes('gift') ||
+    occasion.includes('gift') ||
+    idealFor.includes('gift') ||
+    p.tag === 'gifts'
+  );
+}
+
+export default async function ShopAllPage(props: { searchParams: Promise<{ category?: string; q?: string; search?: string; tag?: string }> }) {
   const searchParams = await props.searchParams;
   console.log("DEBUG: searchParams received on server:", searchParams);
   const categoryQuery = searchParams?.category;
+  const tagQuery = searchParams?.tag;
+  const isGiftingQuery = tagQuery?.toLowerCase() === 'gifts';
+
   let initialCategory = 'All';
   if (categoryQuery) {
     const lower = categoryQuery.toLowerCase();
@@ -181,13 +210,27 @@ export default async function ShopAllPage(props: { searchParams: Promise<{ categ
   const dbProducts = await getCachedDbProducts();
   const allProducts = [...dbProducts, ...PRODUCTS];
   
+  // Filter products if tag=gifts is set
+  const displayedProducts = isGiftingQuery
+    ? allProducts.filter(isGiftProduct)
+    : allProducts;
+
+  // Custom UI copy for tag=gifts
+  const pageTitle = isGiftingQuery ? "Premium Porcelain Gifting" : "Shop All Porcelain";
+  const pageDescription = isGiftingQuery
+    ? "Handpicked premium porcelain collections, designer gift boxes, and fine tea sets crafted for timeless celebrations and corporate gifting."
+    : "Explore premium porcelain cups, tea sets, dinnerware, and gift-ready tableware crafted for elegant Indian homes.";
+  const breadcrumbName = isGiftingQuery ? "Gifting" : "Shop All";
+
   // JSON-LD Schemas
   const collectionPageSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'Shop All Porcelain | Siphorahq',
-    description: (productsMetadata.description as string) || '',
-    url: `${BRAND.domain}/products`
+    name: isGiftingQuery ? 'Premium Porcelain Gifting & Sets | Siphorahq' : 'Shop All Porcelain | Siphorahq',
+    description: isGiftingQuery 
+      ? 'Explore Siphorahq\'s premium porcelain gift sets, designer gift boxes, and fine dining collections.'
+      : ((productsMetadata.description as string) || ''),
+    url: isGiftingQuery ? `${BRAND.domain}/products?tag=gifts` : `${BRAND.domain}/products`
   };
 
   const breadcrumbListSchema = {
@@ -203,8 +246,8 @@ export default async function ShopAllPage(props: { searchParams: Promise<{ categ
       {
         '@type': 'ListItem',
         position: 2,
-        name: 'Shop All',
-        item: `${BRAND.domain}/products`
+        name: breadcrumbName,
+        item: isGiftingQuery ? `${BRAND.domain}/products?tag=gifts` : `${BRAND.domain}/products`
       }
     ]
   };
@@ -212,7 +255,7 @@ export default async function ShopAllPage(props: { searchParams: Promise<{ categ
   const itemListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    itemListElement: allProducts.map((p, idx) => {
+    itemListElement: displayedProducts.map((p, idx) => {
       const imgPath = p.image || '/images/dinnerware.webp';
       const absImage = imgPath.startsWith('http') ? imgPath : `${BRAND.domain}${imgPath.startsWith('/') ? imgPath : '/' + imgPath}`;
       return {
@@ -243,11 +286,11 @@ export default async function ShopAllPage(props: { searchParams: Promise<{ categ
           <nav className="flex justify-center items-center gap-2 font-label-caps text-[10px] uppercase tracking-widest text-surface-cream/60 mb-6">
             <Link href="/" className="hover:text-burnished-gold transition-colors">Home</Link>
             <span>/</span>
-            <span className="text-burnished-gold">Shop All</span>
+            <span className="text-burnished-gold">{breadcrumbName}</span>
           </nav>
-          <h1 className="font-headline-lg text-4xl md:text-5xl italic tracking-tighter mb-4">Shop All Porcelain</h1>
+          <h1 className="font-headline-lg text-4xl md:text-5xl italic tracking-tighter mb-4">{pageTitle}</h1>
           <p className="font-body-md text-surface-cream/80 max-w-xl mx-auto">
-            Explore premium porcelain cups, tea sets, dinnerware, and gift-ready tableware crafted for elegant Indian homes.
+            {pageDescription}
           </p>
         </div>
       </div>
@@ -277,7 +320,7 @@ export default async function ShopAllPage(props: { searchParams: Promise<{ categ
       </div>
 
       {/* ── PRODUCT LISTING (Client Component) ── */}
-      <ProductListing products={allProducts} initialCategory={initialCategory} />
+      <ProductListing products={displayedProducts} initialCategory={isGiftingQuery ? 'Gift Sets' : initialCategory} />
       
     </div>
   );
