@@ -632,10 +632,13 @@ export default function AccountDashboard({
 
           <div className="col-span-6 lg:col-span-2 space-y-3">
             <p className="text-[10px] font-semibold uppercase tracking-widest mb-5">Customer Care</p>
-            <Link href="/shipping" className="block text-sm text-on-surface-variant dark:text-dark-on-surface-variant hover:text-ink-charcoal dark:hover:text-surface-cream transition-colors">
-              Shipping &amp; Returns
+            <Link href="/shipping-policy" className="block text-sm text-on-surface-variant dark:text-dark-on-surface-variant hover:text-ink-charcoal dark:hover:text-surface-cream transition-colors">
+              Shipping Policy
             </Link>
-            <Link href="/track" className="block text-sm text-on-surface-variant dark:text-dark-on-surface-variant hover:text-ink-charcoal dark:hover:text-surface-cream transition-colors">
+            <Link href="/refund-policy" className="block text-sm text-on-surface-variant dark:text-dark-on-surface-variant hover:text-ink-charcoal dark:hover:text-surface-cream transition-colors">
+              Refund &amp; Return Policy
+            </Link>
+            <Link href="/track-order" className="block text-sm text-on-surface-variant dark:text-dark-on-surface-variant hover:text-ink-charcoal dark:hover:text-surface-cream transition-colors">
               Track My Order
             </Link>
             <Link href="/contact" className="block text-sm text-on-surface-variant dark:text-dark-on-surface-variant hover:text-ink-charcoal dark:hover:text-surface-cream transition-colors">
