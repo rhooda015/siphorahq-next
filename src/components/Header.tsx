@@ -23,8 +23,8 @@ const MEGA_MENU_ITEMS = [
   { title: "Tea & Coffee Collection", url: "/collections/tea-sets" },
   { title: "Serveware", url: "/collections/bowls" },
   { title: "Luxury Gift Sets", url: "/gift-sets" },
-  { title: "Fine Porcelain Cups", url: "/products?category=cups" },
-  { title: "Premium Mugs", url: "/products?category=mugs" }
+  { title: "Fine Porcelain Cups", url: "/products?category=drinkware" },
+  { title: "Premium Mugs", url: "/products?category=drinkware" }
 ];
 
 export default function Header() {

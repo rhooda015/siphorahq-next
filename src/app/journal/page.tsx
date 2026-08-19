@@ -12,7 +12,7 @@ export default function JournalPage() {
       title: 'Best Porcelain Dinner Set for Gifting in India',
       category: 'Gifting',
       date: 'December 1, 2025',
-      link: '/products?category=dinner-set',
+      link: '/products?category=dinnerware',
       img: '/images/dinnerware.webp'
     },
     {
