@@ -8,11 +8,11 @@ import NewsletterForm from '@/components/NewsletterForm';
 import { headers } from 'next/headers';
 
 export const metadata = {
-  title: 'New Arrivals | Premium Porcelain Cups, Tea Sets & Dinnerware | Siphorahq',
+  title: 'New Arrivals: Premium Porcelain | Siphorahq',
   description: 'Discover the latest Siphorahq porcelain launches, including premium cups, mugs, tea sets, dinnerware, serveware, and luxury gift-ready tableware for Indian homes.',
   alternates: { canonical: `${BRAND.domain}/new-arrivals` },
   openGraph: {
-    title: 'New Arrivals | Premium Porcelain | Siphorahq',
+    title: 'New Arrivals: Premium Porcelain | Siphorahq',
     description: 'Discover the latest Siphorahq porcelain launches, including premium cups, mugs, tea sets, dinnerware, serveware, and luxury gift-ready tableware.',
     url: `${BRAND.domain}/new-arrivals`,
   }

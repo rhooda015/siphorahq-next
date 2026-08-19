@@ -127,7 +127,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 
   // Prevent duplicate | Siphorahq suffix by stripping it and re-appending cleanly
-  const cleanedTitleName = titleName.replace(/\s*\|\s*Siphorahq\s*$/i, '');
+  let cleanedTitleName = titleName.replace(/\s*\|\s*Siphorahq\s*$/i, '');
+  // Strip leading "Siphorahq" brand prefix to stay within 60-character SEO title limit
+  cleanedTitleName = cleanedTitleName.replace(/^Siphorahq\s+/i, '');
   const titleText = `${cleanedTitleName} | ${BRAND.name}`;
 
   const productUrl = `${BRAND.domain}/products/${(product as any).handle || product.id}`;

@@ -208,7 +208,7 @@ export const whyChooseUsMetadata: Metadata = {
 };
 
 export const sustainabilityMetadata: Metadata = {
-  title: 'Sustainability Commitment | Eco-Friendly Tableware | Siphorahq',
+  title: 'Sustainability Commitment | Siphorahq',
   description:
     'Learn about Siphorahq\'s commitment to eco-friendly practices, plastic-free 100% recyclable luxury packaging, and sustainable craftsmanship in India.',
   alternates: { canonical: '/sustainability' },
