@@ -1,5 +1,8 @@
 user-agent: *
 allow: /
+allow: /_next/image*
+allow: /products?category=*
+allow: /products?tag=*
 disallow: /account/
 disallow: /api/
 disallow: /checkout/
