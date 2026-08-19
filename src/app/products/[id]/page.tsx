@@ -347,7 +347,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           <div className="sr-only" aria-hidden="true">
             <Image
               src={heroImageUrl}
-              alt=""
+              alt={product.name}
               width={800}
               height={1000}
               priority
