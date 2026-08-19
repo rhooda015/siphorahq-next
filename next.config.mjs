@@ -20,6 +20,7 @@ const nextConfig = {
     optimizeCss: true,
   },
   productionBrowserSourceMaps: true,
+  htmlLimitedBots: /.*/,
   async redirects() {
     return [
       {
