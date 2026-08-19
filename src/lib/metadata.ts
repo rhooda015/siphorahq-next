@@ -160,7 +160,7 @@ export const contactMetadata: Metadata = {
 };
 
 export const privacyMetadata: Metadata = {
-  title: 'Privacy Policy',
+  title: 'Privacy Policy & Data Security | Siphorahq',
   description:
     'Read Siphorahq\'s Privacy Policy — how we collect, use, and protect your personal data when you shop with us.',
   alternates: { canonical: '/privacy-policy' },
@@ -176,7 +176,7 @@ export const refundMetadata: Metadata = {
 };
 
 export const shippingMetadata: Metadata = {
-  title: 'Shipping Policy',
+  title: 'Shipping Policy & Delivery Timelines | Siphorahq',
   description:
     'Siphorahq shipping information — free shipping above ₹999, delivery timelines, courier partners, and order tracking.',
   alternates: { canonical: '/shipping-policy' },
