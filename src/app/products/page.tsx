@@ -26,6 +26,45 @@ const getCachedDbProducts = unstable_cache(
   { revalidate: 60 }
 );
 
+const CATEGORY_MAP: Record<string, { title: string; desc: string; canonicalQuery: string }> = {
+  drinkware: {
+    title: "Fine Porcelain Mugs & Cups",
+    desc: "Discover Siphorahq's collection of handcrafted porcelain mugs, tea cups, and gold-finish cups. Fired at 1350°C for exceptional durability and detailed with genuine 24k gold, our mugs and cups elevate your daily morning coffee or evening tea ritual. Lead-free, food-safe, and designed with premium handles and comfortable grips for modern homes.",
+    canonicalQuery: "?category=drinkware"
+  },
+  dinnerware: {
+    title: "Modern Porcelain Dinnerware Sets",
+    desc: "Shop our collection of luxury porcelain dinner sets, plates, and serving bowls. Crafted to meet the practical demands of modern Indian homes, our dinnerware features chip-resistant vitrified clay bodies, elegant neutral glaze tones, and hand-painted gold borders. Perfect for both festive hosting and daily family meals.",
+    canonicalQuery: "?category=dinnerware"
+  },
+  teaware: {
+    title: "Artisanal Porcelain Tea Sets",
+    desc: "Brew and serve in elegance with our handcrafted teapots, cups, and saucers. Designed with pouring spouts and gold-painted details, our tea sets provide the perfect vessels for traditional Indian masala chai or premium loose-leaf green tea. Packaged in signature presentation boxes, ready for luxury gifting.",
+    canonicalQuery: "?category=tea-set"
+  },
+  serveware: {
+    title: "Handcrafted Porcelain Serveware & Bowls",
+    desc: "Explore our collection of wide serving bowls, soup bowls, side plates, and platters. Designed with balanced geometry, deep bases, and food-safe glazes to present your curries, rice, salads, and starters beautifully. Vitrified at 1350°C to guarantee long-term durability and chip-resistance.",
+    canonicalQuery: "?category=serveware"
+  },
+  gifting: {
+    title: "Curated Tableware Gift Sets",
+    desc: "Find the perfect housewarming, wedding, or corporate present with our pre-packaged dinnerware, tea set, and mug gift sets. Meticulously packed in our signature gold-trimmed presentation boxes using eco-friendly honeycomb paper. Omit pricing details at checkout and include a custom printed message card.",
+    canonicalQuery: "?category=gifting"
+  }
+};
+
+function getNormalizedCategoryKey(cat?: string): string | null {
+  if (!cat) return null;
+  const lower = cat.toLowerCase();
+  if (lower === 'cups' || lower === 'mugs' || lower === 'cups-mugs' || lower === 'drinkware') return 'drinkware';
+  if (lower === 'dinnerware' || lower === 'dinner-set') return 'dinnerware';
+  if (lower === 'tea-sets' || lower === 'tea-set') return 'teaware';
+  if (lower === 'serveware' || lower === 'bowls') return 'serveware';
+  if (lower === 'gift-sets' || lower === 'gifting') return 'gifting';
+  return null;
+}
+
 export async function generateMetadata(props: { searchParams: Promise<{ category?: string; q?: string; search?: string; tag?: string }> }): Promise<Metadata> {
   const searchParams = await props.searchParams;
   const category = searchParams.category;
@@ -40,15 +79,18 @@ export async function generateMetadata(props: { searchParams: Promise<{ category
     title = `Premium Porcelain Gifting & Sets | ${BRAND.name}`;
     description = `Explore Siphorahq's premium porcelain gift sets, designer gift boxes, and fine dining collections. Exquisite presentation, plastic-free packaging, pan-India delivery.`;
     canonicalQuery = '?tag=gifts';
-  } else if (category) {
-    const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ');
-    title = `Premium ${formattedCategory} | ${BRAND.name}`;
-    description = `Browse our exclusive collection of luxury handcrafted ${formattedCategory} for modern Indian homes. Free shipping above ₹999.`;
-    canonicalQuery = `?category=${category}`;
-  } else if (q) {
-    title = `Search Results for "${q}" | ${BRAND.name}`;
-    description = `Find luxury porcelain and ceramic tableware matching "${q}" at Siphorahq. Shop premium cups, dinnerware & more.`;
-    canonicalQuery = `?q=${q}`;
+  } else {
+    const catKey = getNormalizedCategoryKey(category);
+    if (catKey && CATEGORY_MAP[catKey]) {
+      const info = CATEGORY_MAP[catKey];
+      title = `${info.title} | ${BRAND.name}`;
+      description = info.desc;
+      canonicalQuery = info.canonicalQuery;
+    } else if (q) {
+      title = `Search Results for "${q}" | ${BRAND.name}`;
+      description = `Find luxury porcelain and ceramic tableware matching "${q}" at Siphorahq. Shop premium cups, dinnerware & more.`;
+      canonicalQuery = `?q=${q}`;
+    }
   }
   
   return {
@@ -192,19 +234,15 @@ export default async function ShopAllPage(props: { searchParams: Promise<{ categ
   const isGiftingQuery = tagQuery?.toLowerCase() === 'gifts';
 
   let initialCategory = 'All';
-  if (categoryQuery) {
-    const lower = categoryQuery.toLowerCase();
-    if (lower === 'cups' || lower === 'mugs' || lower === 'cups-mugs' || lower === 'drinkware') {
-      initialCategory = 'Cups & Mugs';
-    } else if (lower === 'dinnerware' || lower === 'dinner-set') {
-      initialCategory = 'Dinnerware';
-    } else if (lower === 'tea-sets' || lower === 'tea-set') {
-      initialCategory = 'Tea Sets';
-    } else if (lower === 'serveware' || lower === 'bowls') {
-      initialCategory = 'Serveware';
-    } else if (lower === 'gift-sets' || lower === 'gifting') {
-      initialCategory = 'Gift Sets';
-    }
+  const catKey = getNormalizedCategoryKey(categoryQuery);
+  const catInfo = catKey ? CATEGORY_MAP[catKey] : null;
+
+  if (catKey) {
+    if (catKey === 'drinkware') initialCategory = 'Cups & Mugs';
+    else if (catKey === 'dinnerware') initialCategory = 'Dinnerware';
+    else if (catKey === 'teaware') initialCategory = 'Tea Sets';
+    else if (catKey === 'serveware') initialCategory = 'Serveware';
+    else if (catKey === 'gifting') initialCategory = 'Gift Sets';
   }
 
   const dbProducts = await getCachedDbProducts();
@@ -215,22 +253,32 @@ export default async function ShopAllPage(props: { searchParams: Promise<{ categ
     ? allProducts.filter(isGiftProduct)
     : allProducts;
 
-  // Custom UI copy for tag=gifts
-  const pageTitle = isGiftingQuery ? "Premium Porcelain Gifting" : "Shop All Porcelain";
+  // Custom UI copy for tag=gifts and categories
+  const pageTitle = isGiftingQuery 
+    ? "Premium Porcelain Gifting" 
+    : (catInfo ? catInfo.title : "Shop All Porcelain");
+    
   const pageDescription = isGiftingQuery
     ? "Handpicked premium porcelain collections, designer gift boxes, and fine tea sets crafted for timeless celebrations and corporate gifting."
-    : "Explore premium porcelain cups, tea sets, dinnerware, and gift-ready tableware crafted for elegant Indian homes.";
-  const breadcrumbName = isGiftingQuery ? "Gifting" : "Shop All";
+    : (catInfo ? catInfo.desc : "Explore premium porcelain cups, tea sets, dinnerware, and gift-ready tableware crafted for elegant Indian homes.");
+    
+  const breadcrumbName = isGiftingQuery 
+    ? "Gifting" 
+    : (catInfo ? catInfo.title : "Shop All");
 
   // JSON-LD Schemas
   const collectionPageSchema = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: isGiftingQuery ? 'Premium Porcelain Gifting & Sets | Siphorahq' : 'Shop All Porcelain | Siphorahq',
+    name: isGiftingQuery 
+      ? 'Premium Porcelain Gifting & Sets | Siphorahq' 
+      : (catInfo ? `${catInfo.title} | Siphorahq` : 'Shop All Porcelain | Siphorahq'),
     description: isGiftingQuery 
       ? 'Explore Siphorahq\'s premium porcelain gift sets, designer gift boxes, and fine dining collections.'
-      : ((productsMetadata.description as string) || ''),
-    url: isGiftingQuery ? `${BRAND.domain}/products?tag=gifts` : `${BRAND.domain}/products`
+      : (catInfo ? catInfo.desc : ((productsMetadata.description as string) || '')),
+    url: isGiftingQuery 
+      ? `${BRAND.domain}/products?tag=gifts` 
+      : (catInfo ? `${BRAND.domain}/products${catInfo.canonicalQuery}` : `${BRAND.domain}/products`)
   };
 
   const breadcrumbListSchema = {
@@ -247,7 +295,9 @@ export default async function ShopAllPage(props: { searchParams: Promise<{ categ
         '@type': 'ListItem',
         position: 2,
         name: breadcrumbName,
-        item: isGiftingQuery ? `${BRAND.domain}/products?tag=gifts` : `${BRAND.domain}/products`
+        item: isGiftingQuery 
+          ? `${BRAND.domain}/products?tag=gifts` 
+          : (catInfo ? `${BRAND.domain}/products${catInfo.canonicalQuery}` : `${BRAND.domain}/products`)
       }
     ]
   };

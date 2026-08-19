@@ -54,9 +54,14 @@ export default function JournalPage() {
       {/* Header Section */}
       <div className="pt-24 pb-16 text-center border-b-[0.5px] border-[var(--color-border)] px-4">
         <h1 className="text-4xl md:text-6xl font-serif text-[var(--color-primary)] mb-6 tracking-wide">The Siphora Journal</h1>
-        <p className="text-[var(--color-text-muted)] font-sans max-w-2xl mx-auto leading-loose text-sm md:text-base">
-          Explore our editorial musings on style, heritage, and the modern art of dining.
-        </p>
+        <div className="max-w-2xl mx-auto space-y-4 text-[var(--color-text-muted)] font-sans text-sm md:text-base leading-relaxed">
+          <p>
+            Explore our editorial musings on style, heritage, and the modern art of dining. Here, we share insights into the deep history of high-temperature porcelain firing, the delicate techniques behind gold-accent handcrafting, and guides to choosing dinnerware that matches the unique aesthetics of modern homes.
+          </p>
+          <p>
+            Whether you are arranging a grand dining layout for a festive hosting night, picking out the perfect corporate gift package, or learning how to preserve the fine luster of your cups and saucers, the Siphora Journal is your curated source of table design inspiration.
+          </p>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-16">

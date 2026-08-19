@@ -52,6 +52,29 @@ export default function ContactPage() {
           </div>
 
         </div>
+
+        {/* Additional Info Section */}
+        <div className="mt-20 pt-16 border-t border-[var(--color-border)] grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div>
+            <h4 className="font-serif text-xl text-[var(--color-primary)] mb-3">Wedding Registry</h4>
+            <p className="text-zinc-500 text-sm leading-relaxed">
+              We help couples set up a curated wedding registry. Select your dinnerware sets and mugs, and we will handle the gifting coordination and single-point delivery.
+            </p>
+          </div>
+          <div>
+            <h4 className="font-serif text-xl text-[var(--color-primary)] mb-3">Bespoke Commissions</h4>
+            <p className="text-zinc-500 text-sm leading-relaxed">
+              For boutique hotels, luxury cafes, and high-end restaurants, we offer custom shape modeling and glaze customization to match your culinary theme.
+            </p>
+          </div>
+          <div>
+            <h4 className="font-serif text-xl text-[var(--color-primary)] mb-3">Experience Center</h4>
+            <p className="text-zinc-500 text-sm leading-relaxed">
+              Visit our workshop and experience center in Faridabad, Haryana, by scheduling an appointment via email. Experience poetry in porcelain firsthand.
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
   );

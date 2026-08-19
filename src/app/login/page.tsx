@@ -168,6 +168,17 @@ export default function LoginPage() {
           </p>
         </div>
       </div>
+
+      {/* Membership Benefits Box */}
+      <div className="w-full max-w-[420px] mt-6 bg-[#fcfbfa] border border-zinc-200/50 rounded-lg p-5 shadow-[0_4px_12px_rgba(0,0,0,0.01)]">
+        <h3 className="font-sans text-xs font-semibold text-zinc-800 uppercase tracking-wider mb-3">Siphorahq Membership Benefits</h3>
+        <ul className="space-y-2 text-[11px] text-zinc-500 font-sans leading-relaxed">
+          <li>• <strong className="text-zinc-700">Instant Wallet Reward</strong>: Get 2,000 complimentary membership reward points in your wallet instantly upon registration.</li>
+          <li>• <strong className="text-zinc-700">Express Checkouts</strong>: Securely store and manage multiple delivery addresses for a fast, seamless checkout experience.</li>
+          <li>• <strong className="text-zinc-700">Advanced Order Tracking</strong>: Easily access detailed shipping updates, transit history, and direct carrier notifications.</li>
+          <li>• <strong className="text-zinc-700">Priority Concierge Support</strong>: Enjoy fast-track WhatsApp and email support for all order queries and custom requests.</li>
+        </ul>
+      </div>
     </div>
   );
 }
